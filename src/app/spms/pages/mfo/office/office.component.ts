@@ -8,9 +8,9 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
 })
 export class OfficeComponent implements OnInit{
   mfoService = inject(MfoService);
-  mfo = this.mfoService.mfo;
+  mfo:any = this.mfoService.mfo;
   officeId = "OFFPHRMONZ3WT7D";
-
+  expandedRow = 0;
   ngOnInit(): void {
     this.mfoService.GetMFOes(this.officeId);
 
