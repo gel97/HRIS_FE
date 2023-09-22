@@ -9,6 +9,7 @@ import { UserComponent } from './components/user/user.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { SpmsModule } from './spms/spms.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +24,8 @@ import { SpmsModule } from './spms/spms.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SpmsModule
+    SpmsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
