@@ -15,6 +15,11 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'spms',
+        loadChildren: () => import('./spms/spms.module')
+        .then(m => m.SpmsModule),
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent,
       },
