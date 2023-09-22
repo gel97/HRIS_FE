@@ -9,6 +9,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { UserComponent } from './components/user/user.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
+import { OpcrComponent } from './spms/pages/opcr/opcr.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
     SidebarComponent,
     UserComponent,
     FooterComponent,
-    MainlayoutComponent
+    MainlayoutComponent,
+    OpcrComponent
   ],
   imports: [
     BrowserModule,
