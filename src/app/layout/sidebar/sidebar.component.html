@@ -82,7 +82,7 @@
                     <a routerLink="spms/mfo/office" class="menu-link">
                         <div data-i18n="Without menu">Office</div>
                     </a>
-                </li>       
+                </li>
             </ul>
         </li>
         <li class="menu-item" [ngClass]="sample1==1?'open':''" routerLinkActive="active" (click)="toggleSubMenu1(1)">
@@ -92,18 +92,18 @@
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" routerLinkActive="active">
                     <a routerLink="spms/opcr/target" class="menu-link">
                         <div data-i18n="Without menu">Target</div>
                     </a>
-                </li>       
+                </li>
             </ul>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item" routerLinkActive="active">
                     <a routerLink="spms/opcr/actual" class="menu-link">
                         <div data-i18n="Without menu">Actual</div>
                     </a>
-                </li>       
+                </li>
             </ul>
         </li>
 
