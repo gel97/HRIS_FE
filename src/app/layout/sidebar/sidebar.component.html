@@ -47,7 +47,7 @@
                     </g>
                 </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">HRIS</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -71,8 +71,8 @@
         </li>
 
         <!-- SPMS -->
-        <li class="menu-item" [ngClass]="sample==1?'open':''" routerLinkActive="active" (click)="toggleSubMenu(1)">
-            <a routerLink="user" class="menu-link menu-toggle">
+        <li class="menu-item" [ngClass]="sample==1?'open':''" routerLinkActive="active">
+            <a routerLink="user" class="menu-link menu-toggle" (click)="toggleSubMenu(1)">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Major Final Output</div>
             </a>
@@ -85,8 +85,8 @@
                 </li>       
             </ul>
         </li>
-        <li class="menu-item" [ngClass]="sample1==1?'open':''" routerLinkActive="active" (click)="toggleSubMenu1(1)">
-            <a routerLink="user" class="menu-link menu-toggle">
+        <li class="menu-item" [ngClass]="sample1==1?'open':''" routerLinkActive="active">
+            <a routerLink="user" class="menu-link menu-toggle" (click)="toggleSubMenu1(1)">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">OPCR</div>
             </a>

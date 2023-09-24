@@ -1,1 +1,37 @@
-<p>opcr-actual works!</p>
+<div class="example-container">
+    <h2>Available MFO</h2>
+    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="[mfo, null]" 
+        class="example-list" (cdkDropListDropped)="drop($event, 1)">
+        <div class="example-box" *ngFor="let item of mfo; let z = index" cdkDrag>{{item.mfo}}
+            <!-- Indicator -->
+            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="[item,item.si]" [cdkDropListConnectedTo]="[doneList]"
+                class="example-list" (cdkDropListDropped)="drop($event, 2)">
+                <div class="example-box2" *ngFor="let si of item.si" cdkDrag>
+                    <p>{{si.indicator}}</p>
+                    <button class="btn btn-primary" (click)="add(z, item)">ADD</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="example-container">
+    <h2>Selected MFO</h2>
+
+    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="mfoSelected" [cdkDropListConnectedTo]="[todoList]"
+        class="example-list" (cdkDropListDropped)="drop($event, 1)">
+        <div class="example-box" *ngFor="let item of mfoSelected; let z = index" cdkDrag>{{item.mfo}}
+            <!-- Indicator -->
+            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="[item,item.si]" [cdkDropListConnectedTo]="[todoList]"
+                class="example-list" (cdkDropListDropped)="drop($event, 2)">
+                <div class="example-box2" *ngFor="let si of item.si" cdkDrag>
+                    <p>{{si.indicator}}</p>
+                    <button class="btn btn-danger" (click)="remove(z, item)">REMOVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
