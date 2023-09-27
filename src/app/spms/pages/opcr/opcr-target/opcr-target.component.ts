@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OpcrService } from 'src/app/spms/service/opcr.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-opcr-target',
@@ -31,10 +32,30 @@ export class OpcrTargetComponent implements OnInit {
         this.opcrdetails = opcrDetails;
         console.log(this.opcrDetails());
       }
+    } else {
+      this.isShow = 0;
     }
     this.GetOPCRs();
   }
 
+  trig() {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: 'success',
+      title: 'Signed in successfully',
+    });
+  }
   GetOPCRs() {
     this.opcrService.GetOPCRs(this.getYear, this.officeId);
   }
@@ -45,9 +66,13 @@ export class OpcrTargetComponent implements OnInit {
 
   OPCRDetails(opcrid: string, opcrdetails: string, isShow: number) {
     this.opcrService.GetOPCRDetails(opcrid);
-    this.isShow = 1;
     localStorage.setItem('isShow', isShow.toString());
     localStorage.setItem('opcrId', opcrid);
     localStorage.setItem('opcrDetails', opcrdetails);
+  }
+
+  removelocalStorage() {
+    localStorage.clear();
+    this.ngOnInit();
   }
 }

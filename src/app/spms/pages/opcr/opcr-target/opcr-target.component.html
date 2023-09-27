@@ -1,8 +1,20 @@
 <!-- Bordered Table -->
+<button (click)="trig()">
+
+</button>
 <div class="card">
     <div class="row">
-        <h1 class="card-header">Target <span *ngIf="isShow == 1"><i
-                    class='bx bx-chevron-right'></i>&nbsp;{{opcrdetails}}</span></h1>
+        <div class="col-6">
+            <h1 class="card-header">Target <span *ngIf="isShow == 1"><i
+                        class='bx bx-chevron-right'></i>&nbsp;{{opcrdetails}}</span></h1>
+        </div>
+        <div *ngIf="isShow == 1" class="col-6"><br>
+            <a class="pointer float-end">
+                <span class="row px-4" (click)="removelocalStorage()">
+                    <i class='bx bx-arrow-back'></i>
+                </span>
+            </a>
+        </div>
     </div>
     <div class="card-body">
         <div *ngIf="isShow ==0">
@@ -30,7 +42,7 @@
                     <tbody *ngFor="let data of opcr().data; let i = index">
                         <tr>
                             <td class="pointer">
-                                <a (click)="OPCRDetails(data.opcrId, data.details, isShow = 1)">
+                                <a (click)="OPCRDetails(data.opcrId,opcrdetails = data.details, isShow = 1)">
                                     <strong>{{ data.details }}</strong>
                                 </a>
                             </td>
@@ -81,8 +93,8 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Project</th>
-                            <th>Client</th>
+                            <th>Division</th>
+                            <th>Indicator</th>
                             <th>Users</th>
                             <th>Status</th>
                             <th>Actions</th>
