@@ -1,3 +1,4 @@
+
 <div *ngIf="!error().error" class="card">
   <div class="row justify-content-between">
     <h5 class="card-header">
@@ -18,7 +19,7 @@
               <i class="tf-icons bx bx-search"></i>
             </ng-template>
             </span>
-            <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice($event)" class="form-control"
+            <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
               placeholder="Search..." /> 
           </div>
         </div>
@@ -72,7 +73,6 @@
                 <td colspan="4" class="p-custom bg-lightest"
                   (click)="expandedRowChild == y ? expandedRowChild = null :expandedRowChild = y">
                   <div>
-
                     <div class="form-text text-gray">
                       <i class='bx bx-chevron-right'></i> {{b.indicator}}
                     </div>
@@ -123,11 +123,8 @@
                       </table>
                           </div>
                         </div>
-                      </div>
-
-                   
+                      </div>          
                     </ng-container>
-
                   </div>
                 </td>
               </tr>
@@ -148,9 +145,20 @@
       </div>
       <div class="offcanvas-body my-auto mx-0 flex-grow-0">
         <label for="nameWithTitle" class="form-label">MFO</label>
-        <input [(ngModel)]="data.mfo" type="text" id="nameWithTitle" class="form-control" placeholder="Enter MFO" />
+        <input [(ngModel)]="data.MFO" type="text" (ngModelChange)="CheckMfoIfExist()" id="nameWithTitle" class="form-control" placeholder="Enter MFO" />
         <br>
-        <button type="button" class="btn btn-primary mb-2 d-grid w-100" (click)="AddMfo()">Submit</button>
+        <button type="button" class="btn btn-primary mb-2 d-grid w-100" (click)="AddMfo()">
+          <div
+          class="spinner-border spinner-border-sm text-primary"
+          role="status"
+          *ngIf="mfo().isLoadingSave; else showSubmitLabel"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <ng-template #showSubmitLabel>
+          Submit
+        </ng-template>
+        </button>
         <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
           Cancel
         </button>

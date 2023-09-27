@@ -1,9 +1,12 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { SpmsApiService } from './spms-api.service';
 import { ErrorService } from './error.service';
 import { api } from 'src/app/connection';
+import { AlertService } from './alert.service';
+import Swal from 'sweetalert2'
+
 @Injectable({
   providedIn: 'root',
 })
@@ -37,10 +40,9 @@ export class MfoService {
 
   isSearchLoading = signal<boolean>(false);
 
-  _error = this.errorService.error();
-
   constructor(
     private errorService: ErrorService,
+    private alertService: AlertService,
     private http: HttpClient,
     private url: SpmsApiService
   ) {}
@@ -55,7 +57,7 @@ export class MfoService {
             (a.data = response),
               (a.isLoading = false),
               (a.error = false),
-              (a.errorStatus = null);
+              (a.errorStatus = null)
           });
 
           this.errorService.error.mutate(a => {
@@ -85,12 +87,61 @@ export class MfoService {
       .post<any[]>(api + this.url.post_mfo(), mfo, { responseType: `json` })
       .subscribe({
         next: (response: any = {}) => {
-          this.mfo.mutate((a) => (a.data = response));
-          this.mfo.mutate((a) => (a.isLoadingSave = false));
+          this.mfo.mutate((a) => {
+            (a.data = response),
+            (a.isLoadingSave = false)
+        });
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'success',
+          title: 'Signed in successfully'
+        })
+          this.alertService.save();
         },
-        error: (error: any) => {},
+        error: (error: any) => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+          
+          Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully'
+          })
+          this.alertService.error();
+
+        },
         complete: () => {},
       });
+  }
+
+  CheckMfoIfExist(payload: any): Observable<boolean> {
+    return this.http.post<any[]>(api + this.url.post_mfo_search_office(), payload, {
+      responseType: 'json',
+    })
+    .pipe(
+      map((response: any) => {
+        return response.length > 0;
+      })
+    );
   }
 
   SearchMfoOffice(payload: any) {

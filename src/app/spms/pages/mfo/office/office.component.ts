@@ -20,8 +20,12 @@ export class OfficeComponent implements OnInit{
   expandedRow:any;
   expandedRowChild:any;
 
-  data:any = {};
+  data:any = {
+    officeId: this.officeId
+  };
   search:any = {};
+  isExistMfo:boolean = false;
+
   ngOnInit(): void {
 
     this.mfoService.GetMFOes(this.officeId);
@@ -29,13 +33,23 @@ export class OfficeComponent implements OnInit{
 
   }
   
+
   AddMfo(){
     this.data.officeId = this.officeId;
-    this.mfoService.AddMfo(this.data);
+    if(this.data.MFO !== undefined || this.data.MFO !== ''){
+      this.mfoService.AddMfo(this.data);
+    }
+
 
   }
-  searchMfoOffice(value:any){
-    console.log(value)
+
+  CheckMfoIfExist(){
+    this.mfoService.CheckMfoIfExist(this.data).subscribe((isExist: boolean) => {
+      console.log(this.isExistMfo);
+    });
+  }
+
+  searchMfoOffice(){
     this.search.officeId = this.officeId;
     this.mfoService.SearchMfoOffice(this.search);
 
