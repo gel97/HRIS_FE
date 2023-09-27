@@ -45,8 +45,7 @@ export class OpcrActualComponent {
     }
   ];
 
-  drop(event: CdkDragDrop<any>, value:number) {
-    console.log(" value " , value)
+  drop(event: CdkDragDrop<any>) {
 
     console.log(event.previousContainer.data)
     console.log(event.previousIndex)
