@@ -7,10 +7,12 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { Component, signal } from '@angular/core';
+
 @Component({
   selector: 'app-opcr-actual',
   templateUrl: './opcr-actual.component.html',
-  styleUrls: ['./opcr-actual.component.css']
+  styleUrls: ['./opcr-actual.component.css'],
 })
 export class OpcrActualComponent {
  
@@ -96,5 +98,10 @@ export class OpcrActualComponent {
       this.mfoSelected.splice(index, 1); // Remove one element at the specified index
       this.mfo.push(item);
   }
+  count = signal(0);
+
+  changeCount() {
+    this.count.set(5);
+    console.log(this.count());
   }
 }
