@@ -11,7 +11,9 @@ export class OfficeComponent implements OnInit{
   mfoService   = inject(MfoService);
   errorService = inject(ErrorService);
 
-  mfo:any      = this.mfoService.mfo;
+  mfo:any = this.mfoService.mfo;
+  isSearchLoading:any = this.mfoService.isSearchLoading;
+
   error:any    = this.errorService.error;
 
   officeId = "OFFPHRMONZ3WT7D";

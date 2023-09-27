@@ -1,4 +1,3 @@
-
 <div *ngIf="!error().error" class="card">
   <div class="row justify-content-between">
     <h5 class="card-header">
@@ -6,16 +5,28 @@
     <div class="">
       <div class="row px-4">
         <div class="col-6">
-            <div class="input-group">
-              <span class="input-group-text"><i class="tf-icons bx bx-search"></i></span>
-              <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice($event)" class="form-control" placeholder="Search..." />
+          <div class="input-group">
+            <span class="input-group-text">
+              <div
+              class="spinner-border spinner-border-sm text-primary"
+              role="status"
+              *ngIf="isSearchLoading(); else showIcon"
+            >
+              <span class="visually-hidden">Loading...</span>
             </div>
+            <ng-template #showIcon>
+              <i class="tf-icons bx bx-search"></i>
+            </ng-template>
+            </span>
+            <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice($event)" class="form-control"
+              placeholder="Search..." /> 
+          </div>
         </div>
         <div class="col-6">
           <button type="button" class="btn btn-primary float-end" data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
-          <i class='bx bx-plus'></i>MFO
-        </button>
+            data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+            <i class='bx bx-plus'></i>MFO
+          </button>
         </div>
       </div>
       <div class="table-responsive text-nowrap w-100">
@@ -30,16 +41,17 @@
           </thead>
 
           <ng-container *ngIf="mfo().isLoading">
-          <tbody>
-            <tr>
-              <td colspan="4" class="text-center"><app-spinner></app-spinner>
-              </td>
-            </tr>
-          </tbody>
+            <tbody>
+              <tr>
+                <td colspan="4" class="text-center"><app-spinner></app-spinner>
+                </td>
+              </tr>
+            </tbody>
           </ng-container>
           <tbody *ngFor="let a of mfo().data; let i = index" class="table-border-bottom-0">
             <tr>
-              <td style="max-width: 5px;" (click)="expandedRow == i?expandedRow = null :expandedRow = i"><i class='bx bx-chevron-right'></i>
+              <td style="max-width: 5px;" (click)="expandedRow == i?expandedRow = null :expandedRow = i"><i
+                  class='bx bx-chevron-right'></i>
               </td>
               <td style="max-width: 5px;">{{i+1}}</td>
               <td style="max-width: 800px;min-width: 800px;">{{a.mfo}}</td>
@@ -65,7 +77,11 @@
                       <i class='bx bx-chevron-right'></i> {{b.indicator}}
                     </div>
                     <ng-container *ngIf="expandedRowChild == y">
-                      <table class="table">
+                      <!-- Bordered Table -->
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="table-responsive text-nowrap">
+                         <table class="table table-bordered ">
                         <thead>
                           <th>
                             Rating
@@ -105,6 +121,11 @@
                           </tr>
                         </tbody>
                       </table>
+                          </div>
+                        </div>
+                      </div>
+
+                   
                     </ng-container>
 
                   </div>

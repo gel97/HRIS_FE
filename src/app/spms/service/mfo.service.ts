@@ -35,6 +35,8 @@ export class MfoService {
     isLoading: false,
   });
 
+  isSearchLoading = signal<boolean>(false);
+
   _error = this.errorService.error();
 
   constructor(
@@ -92,6 +94,8 @@ export class MfoService {
   }
 
   SearchMfoOffice(payload: any) {
+    this.isSearchLoading.set(true);
+
     return this.http
       .post<any[]>(api + this.url.post_mfo_search_office(), payload, {
         responseType: 'json',
@@ -102,7 +106,9 @@ export class MfoService {
           this.mfo.mutate((a) => (a.isLoading = false));
         },
         error: (error: any) => {},
-        complete: () => {},
+        complete: () => {    
+          this.isSearchLoading.set(false);
+        },
       });
   }
 
