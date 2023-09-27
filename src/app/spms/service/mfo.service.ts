@@ -60,19 +60,15 @@ export class MfoService {
               (a.errorStatus = null)
           });
 
-          this.errorService.error.mutate(a => {
-            a.error = false,
-            a.errorStatus = null
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
           });
         },
         error: (error: any) => {
-          this.mfo.mutate((a) => 
-            a.isLoading = false
-          );
+          this.mfo.mutate((a) => (a.isLoading = false));
 
-          this.errorService.error.mutate(a => {
-            a.error = true,
-            a.errorStatus = error.status
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
           });
 
           console.log(this.mfo());
@@ -157,7 +153,7 @@ export class MfoService {
           this.mfo.mutate((a) => (a.isLoading = false));
         },
         error: (error: any) => {},
-        complete: () => {    
+        complete: () => {
           this.isSearchLoading.set(false);
         },
       });

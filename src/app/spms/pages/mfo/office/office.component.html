@@ -8,16 +8,13 @@
         <div class="col-6">
           <div class="input-group">
             <span class="input-group-text">
-              <div
-              class="spinner-border spinner-border-sm text-primary"
-              role="status"
-              *ngIf="isSearchLoading(); else showIcon"
-            >
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <ng-template #showIcon>
-              <i class="tf-icons bx bx-search"></i>
-            </ng-template>
+              <div class="spinner-border spinner-border-sm text-primary" role="status"
+                *ngIf="isSearchLoading(); else showIcon">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <ng-template #showIcon>
+                <i class="tf-icons bx bx-search"></i>
+              </ng-template>
             </span>
             <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
               placeholder="Search..." /> 
@@ -81,49 +78,51 @@
                       <div class="card">
                         <div class="card-body">
                           <div class="table-responsive text-nowrap">
-                         <table class="table table-bordered ">
-                        <thead>
-                          <th>
-                            Rating
-                          </th>
-                          <th>
-                            Quality
-                          </th>
-                          <th>
-                            Timeliness
-                          </th>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>5</td>
-                            <td>{{b.standard.qlty5}}</td>
-                            <td>{{b.standard.timely5}}</td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td>{{b.standard.qlty4}}</td>
-                            <td>{{b.standard.timely4}}</td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td>{{b.standard.qlty3}}</td>
-                            <td>{{b.standard.timely3}}</td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>{{b.standard.qlty2}}</td>
-                            <td>{{b.standard.timely2}}</td>
-                          </tr>
-                          <tr>
-                            <td>1</td>
-                            <td>{{b.standard.qlty1}}</td>
-                            <td>{{b.standard.timely1}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                            <table class="table table-bordered ">
+                              <thead>
+                                <th>
+                                  Rating
+                                </th>
+                                <th>
+                                  Quality
+                                </th>
+                                <th>
+                                  Timeliness
+                                </th>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>5</td>
+                                  <td>{{b.standard.qlty5}}</td>
+                                  <td>{{b.standard.timely5}}</td>
+                                </tr>
+                                <tr>
+                                  <td>4</td>
+                                  <td>{{b.standard.qlty4}}</td>
+                                  <td>{{b.standard.timely4}}</td>
+                                </tr>
+                                <tr>
+                                  <td>3</td>
+                                  <td>{{b.standard.qlty3}}</td>
+                                  <td>{{b.standard.timely3}}</td>
+                                </tr>
+                                <tr>
+                                  <td>2</td>
+                                  <td>{{b.standard.qlty2}}</td>
+                                  <td>{{b.standard.timely2}}</td>
+                                </tr>
+                                <tr>
+                                  <td>1</td>
+                                  <td>{{b.standard.qlty1}}</td>
+                                  <td>{{b.standard.timely1}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
-                      </div>          
+                      </div>
+
+                   
                     </ng-container>
                   </div>
                 </td>
