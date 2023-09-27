@@ -6,29 +6,29 @@ import { OpcrActualComponent } from './pages/opcr/opcr-actual/opcr-actual.compon
 import { OpcrTargetComponent } from './pages/opcr/opcr-target/opcr-target.component';
 import { SpmsComponent } from './spms.component';
 
-const routes: Routes = [{
-  path: '',
-  component: SpmsComponent,
-  children: [
-    {
-      path: 'mfo/office',
-      component: OfficeComponent,
-    },
-    {
-      path: 'opcr/target',
-      component: OpcrTargetComponent,
-    },
-    {
-      path: 'opcr/actual',
-      component: OpcrActualComponent,
-    },
-  ],
-}];
+const routes: Routes = [
+  {
+    path: '',
+    component: SpmsComponent,
+    children: [
+      {
+        path: 'mfo/office',
+        component: OfficeComponent,
+      },
+      {
+        path: 'opcr/target',
+        component: OpcrTargetComponent,
+      },
+      {
+        path: 'opcr/actual',
+        component: OpcrActualComponent,
+      },
+    ],
+  },
+];
 
 @NgModule({
   exports: [RouterModule],
-  imports: [
-    RouterModule.forChild(routes)
-  ]
+  imports: [RouterModule.forChild(routes)],
 })
-export class SpmsRoutingModule { }
+export class SpmsRoutingModule {}
