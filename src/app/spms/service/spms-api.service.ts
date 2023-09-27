@@ -8,5 +8,10 @@ export class SpmsApiService {
   get_mfoes = (officeId: string) => `/tPMMFOes/${officeId}`;
   post_mfo_search_office = () => `/tPMMFOes/Search`;
 
+  constructor() { }
+  get_mfoes = (officeId:string)=> `/tPMMFOes/${officeId}`;
+  post_mfo  = ()=> `/tPMMFOes`
+  post_mfo_search_office = ()=> `/tPMMFOes/Search`;
+
   get_opcrs = (year: string) => `/tPMOpcrs/${year}`;
 }
