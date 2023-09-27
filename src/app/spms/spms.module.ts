@@ -7,18 +7,33 @@ import { OpcrActualComponent } from './pages/opcr/opcr-actual/opcr-actual.compon
 import { OpcrTargetComponent } from './pages/opcr/opcr-target/opcr-target.component';
 import { SpmsRoutingModule } from './spms-routing.module';
 import { SpmsComponent } from './spms.component';
+import { SpinnerComponent } from './components/spinner.component';
+import { LinearLoadingComponent } from './components/linear-loading/linear-loading.component';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     SpmsComponent,
     OfficeComponent,
     OpcrActualComponent,
-    OpcrTargetComponent
+    OpcrTargetComponent,
+    SpinnerComponent,
+    LinearLoadingComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule,
-    SpmsRoutingModule
+    SpmsRoutingModule,
+    CdkDrag,
+    CdkDropList,
+    CdkDropListGroup,
   ]
 })
 export class SpmsModule { }
