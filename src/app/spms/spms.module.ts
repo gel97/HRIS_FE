@@ -17,6 +17,8 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -34,6 +36,7 @@ import {
     CdkDrag,
     CdkDropList,
     CdkDropListGroup,
+    MatTooltipModule
   ]
 })
 export class SpmsModule { }
