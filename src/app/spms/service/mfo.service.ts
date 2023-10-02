@@ -45,10 +45,13 @@ export class MfoService {
     private url: SpmsApiService
   ) {}
 
-  GetMFOes(officeId: string) {
+  GetMFOes(officeId: string, isCommon: number) {
+    this.mfo.set({});
     this.mfo.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_mfoes(officeId), { responseType: `json` })
+      .get<any[]>(api + this.url.get_mfoes(officeId, isCommon), {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
