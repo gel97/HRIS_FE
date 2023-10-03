@@ -226,6 +226,20 @@ export class MfoService {
         complete: () => {},
       });
   }
+
+  async DeleteSI(indicatorId: string) {
+    try {
+      let deleteData = await this.alertService.delete(this.url.delete_success_indicator(indicatorId));
+
+       if(deleteData){
+        this.GetMFOes();
+      }else{
+        //console.log("cancel")
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
   
 
 

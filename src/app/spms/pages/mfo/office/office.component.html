@@ -96,10 +96,17 @@
                         </div>
                       </div>
                       <div class="col-6">
-                        <button (click)="setSiData(a,b); isAdd = false" class="btn btn-secondary float-end"
-                          data-bs-toggle="offcanvas" data-bs-target="#offcanvasSI" aria-controls="offcanvasSI">
-                          <i class='bx bx-edit-alt'></i> EDIT
+                        <div class="float-end">       
+                          <button (click)="setSiData(a,b); isAdd = false" class="btn btn-secondary"
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasSI" aria-controls="offcanvasSI">
+                            <i class='bx bx-edit-alt'></i> EDIT
+                          </button> &nbsp;
+                          <button (click)="DeleteSI(b.indicatorId)" class="btn btn-danger"
+                          >
+                          <i class='bx bx-trash text-white'></i>
                         </button>
+                        </div>
+                     
                       </div>
                     </div>
 

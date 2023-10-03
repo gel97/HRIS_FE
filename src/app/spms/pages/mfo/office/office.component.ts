@@ -80,7 +80,8 @@ export class OfficeComponent implements OnInit{
 
   }
 
-  DeleteSI(){
+  DeleteSI(indicatorId:any){
+    this.mfoService.DeleteSI(indicatorId);
   }
 
   setSiData(mfo:any, si:any){
