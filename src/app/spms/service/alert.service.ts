@@ -50,47 +50,47 @@ export class AlertService {
     })
   }
 
-  delete(url:any, getFun:any) {
-    let data:any;
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      console.log(result)
-      if (result.isConfirmed) {
-         this.http
-      .delete<any[]>(api + url, { responseType: `json` })
-      .subscribe({
-        next: (response: any = {}) => {
-          getFun;
-          Swal.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          )
-        },
-        error: (error: any) => { 
-          Swal.fire(
-            'Oops!',
-            'Error.',
-            'error'
-          )
-        },
-        complete: () => {},
+  async delete(url: any): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+          this.http
+            .delete<any[]>(api + url, { responseType: `json` })
+            .subscribe({
+              next: (response: any = {}) => {
+                Swal.fire(
+                  'Deleted!',
+                  'Your file has been deleted.',
+                  'success'
+                );
+                resolve(true); 
+              },
+              error: (error: any) => { 
+                Swal.fire(
+                  'Oops!',
+                  'Error.',
+                  'error'
+                );
+                resolve(false);
+              },
+              complete: () => {},
+            });
+        } else {
+          resolve(false);
+        }
       });
-       
-      }
-     data = result.isConfirmed;
-    })
-
-    return data;
+    });
   }
-
+  
   error(){
     const Toast = Swal.mixin({
       toast: true,

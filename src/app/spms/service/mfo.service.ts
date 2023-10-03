@@ -11,26 +11,6 @@ import Swal from 'sweetalert2'
   providedIn: 'root',
 })
 export class MfoService {
-  // mfo:Observable<any[]> = of( [
-  //   {
-  //     MFOId: "MFO1234",
-  //     MFO: "Sample MFO 1",
-  //     category: 1,
-  //     si: [{ indicatorId: "IND1234", indicator: "Sample IND 1", target: 10 },{ indicatorId: "IND121314", indicator: "Sample IND 4", target: 50} ],
-  //   },
-  //   {
-  //     MFOId: "MFO5678",
-  //     MFO: "Sample MFO 2",
-  //     category: 2,
-  //     si: [{ indicatorId: "IND5678", indicator: "Sample IND 2", target: 20 }],
-  //   },
-  //   {
-  //     MFOId: "MFO91011",
-  //     MFO: "Sample MFO 3",
-  //     category: 3,
-  //     si: [{ indicatorId: "IND91011", indicator: "Sample IND 3", target: 30 }],
-  //   }
-  // ]);
 
   mfo = signal<any>({
     data: [],
@@ -133,8 +113,18 @@ export class MfoService {
       });
   }
 
-  DeleteMfo(mfoId:string){
-    this.alertService.delete(this.url.delete_mfo(mfoId), this.GetMFOes()) 
+  async DeleteMfo(mfoId: string) {
+    try {
+      let deleteData = await this.alertService.delete(this.url.delete_mfo(mfoId));
+
+       if(deleteData){
+        this.GetMFOes();
+      }else{
+        //console.log("cancel")
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   AddSI(si: any, standard:any) {

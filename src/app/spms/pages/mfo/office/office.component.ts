@@ -56,7 +56,6 @@ export class OfficeComponent implements OnInit{
 
   DeleteMfo(mfoId:any){
     this.mfoService.DeleteMfo(mfoId);
-
   }
 
   AddSI(){
