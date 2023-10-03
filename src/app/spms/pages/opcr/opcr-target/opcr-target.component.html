@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-6">
                 <h1 class="card-header">OPCR <span *ngIf="isShow == 1"><i
-                            class='bx bx-chevron-right'></i>&nbsp;{{opcrdetails}}</span></h1>
+                            class='bx bx-chevron-right'></i>&nbsp;{{opcrName}}</span></h1>
                 <!-- Custom style2 Breadcrumb -->
                 <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
                     <ol class="breadcrumb breadcrumb-style1">
@@ -61,7 +61,7 @@
                         <tbody *ngFor="let data of opcr().data; let i = index">
                             <tr>
                                 <td class="pointer">
-                                    <a (click)="OPCRDetails(data.opcrId,opcrdetails = data.details, isShow = 1)">
+                                    <a (click)="OPCRDetails(data.opcrId,opcrName = data.details, isShow = 1)">
                                         <strong>{{ data.details }}</strong>
                                     </a>
                                 </td>
@@ -109,113 +109,283 @@
                 </div>
             </div>
             <!--/ Bordered Table -->
-            <div *ngIf="isShow ==1">
-                <div class="card mb-4 thick-border" *ngFor="let data of opcrDetails().data; let parent = index ">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
-                            </div>
-                            <div class="col-6">
-                                <div *ngFor="let item of category">
-                                    <span *ngIf="item.int == data.categoryId"
-                                        class="badge rounded-pill bg-label-primary float-end"
-                                        style="font-size: 16px; padding: 12px;">
-                                        {{item.type}}
-                                    </span>
+            <!-- Content -->
 
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Accordion -->
-                        <div class="row">
-                            <div class="col-md mb-4 mb-md-0">
-                                <div class="accordion mt-3" id="accordionExample">
-                                    <div class="card accordion-item bg-lightest thick-border"
-                                        *ngFor="let si of data.si; let i =index">
-                                        <h2 class="accordion-header" id="heading{{parent}}{{i}}">
-                                            <button type="button" class="accordion-button collapsed"
-                                                data-bs-toggle="collapse"
-                                                [attr.data-bs-target]="'#accordion' + parent + i" aria-expanded="false"
-                                                [attr.aria-controls]="'accordion' + parent + i">
-                                                <i class='bx bx-label'></i>
-                                                <strong style="color: blue;">&nbsp;{{si.indicator}}</strong>
-                                            </button>
-                                        </h2>
-                                        <div id="accordion{{parent}}{{i}}" class="accordion-collapse collapse"
-                                            [attr.aria-labelledby]="'heading' + parent + i"
-                                            data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                <!-- Bordered Table -->
-                                                <div class="table-responsive text-nowrap">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>RATING</th>
-                                                                <th>QUANTITY</th>
-                                                                <th>QUALITY</th>
-                                                                <th>TIMELINESS</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>{{'5'}}</td>
-                                                                <td>{{si.standard.qty5}}</td>
-                                                                <td>{{si.standard.qlty5}}</td>
-                                                                <td>{{si.standard.timely5}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{'4'}}</td>
-                                                                <td>{{si.standard.qty4}}</td>
-                                                                <td>{{si.standard.qlty4}}</td>
-                                                                <td>{{si.standard.timely4}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{'3'}}</td>
-                                                                <td>{{si.standard.qty3}}</td>
-                                                                <td>{{si.standard.qlty3}}</td>
-                                                                <td>{{si.standard.timely3}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{'2'}}</td>
-                                                                <td>{{si.standard.qty2}}</td>
-                                                                <td>{{si.standard.qlty2}}</td>
-                                                                <td>{{si.standard.timely2}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>{{'1'}}</td>
-                                                                <td>{{si.standard.qty1}}</td>
-                                                                <td>{{si.standard.qlty1}}</td>
-                                                                <td>{{si.standard.timely1}}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+            <div class="container-xxl flex-grow-1 container-p-y" *ngIf="isShow ==1">
+                <!-- Basic Layout -->
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-body scrollable-details">
+                                <div class="card mb-4 thick-border "
+                                    *ngFor="let data of opcrDetails().data; let parent = index ">
+                                    <div class="card-body ">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
+                                            </div>
+                                            <div class="col-6">
+                                                <div *ngFor="let item of category">
+                                                    <span *ngIf="item.int == data.categoryId"
+                                                        class="badge rounded-pill bg-label-primary float-end"
+                                                        style="font-size: 16px; padding: 12px;">
+                                                        {{item.type}}
+                                                    </span>
+
                                                 </div>
-                                                <!--/ Bordered Table -->
                                             </div>
                                         </div>
+                                        <!-- Accordion -->
+                                        <div class="row">
+                                            <div class="col-md mb-4 mb-md-0">
+                                                <div class="accordion mt-3" id="accordionExample">
+                                                    <div class="card accordion-item bg-lightest thick-border"
+                                                        *ngFor="let si of data.si; let i =index">
+                                                        <h2 class="accordion-header" id="heading{{parent}}{{i}}">
+                                                            <button type="button" class="accordion-button collapsed"
+                                                                data-bs-toggle="collapse"
+                                                                [attr.data-bs-target]="'#accordion' + parent + i"
+                                                                aria-expanded="false"
+                                                                [attr.aria-controls]="'accordion' + parent + i">
+                                                                <i class='bx bx-label'></i>
+                                                                <strong style="color: #697A8D;">&nbsp;<span
+                                                                        style="color: black;">{{si.qty}}</span>&nbsp;{{si.indicator}}</strong>
+                                                            </button>
+                                                        </h2>
+                                                        <div id="accordion{{parent}}{{i}}"
+                                                            class="accordion-collapse collapse"
+                                                            [attr.aria-labelledby]="'heading' + parent + i"
+                                                            data-bs-parent="#accordionExample">
+                                                            <div class="accordion-body">
+                                                                <!-- Bordered Table -->
+                                                                <div class="table-responsive text-nowrap">
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>RATING</th>
+                                                                                <th>QUANTITY</th>
+                                                                                <th>QUALITY</th>
+                                                                                <th>TIMELINESS</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>{{'5'}}</td>
+                                                                                <td>{{si.standard.qty5}}</td>
+                                                                                <td>{{si.standard.qlty5}}</td>
+                                                                                <td>{{si.standard.timely5}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'4'}}</td>
+                                                                                <td>{{si.standard.qty4}}</td>
+                                                                                <td>{{si.standard.qlty4}}</td>
+                                                                                <td>{{si.standard.timely4}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'3'}}</td>
+                                                                                <td>{{si.standard.qty3}}</td>
+                                                                                <td>{{si.standard.qlty3}}</td>
+                                                                                <td>{{si.standard.timely3}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'2'}}</td>
+                                                                                <td>{{si.standard.qty2}}</td>
+                                                                                <td>{{si.standard.qlty2}}</td>
+                                                                                <td>{{si.standard.timely2}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'1'}}</td>
+                                                                                <td>{{si.standard.qty1}}</td>
+                                                                                <td>{{si.standard.qlty1}}</td>
+                                                                                <td>{{si.standard.timely1}}</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!--/ Bordered Table -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/ Accordion -->
                                     </div>
+                                </div>
+                                <div *ngIf="opcrDetails().data.length ===0 && flag ==0">
+                                    <img src="assets/img/document.png" alt="" width="200" height="200"
+                                        style="display: block; margin: 0 auto" />
+                                    <span style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    ">
+                                        <label><strong>No Data Found!</strong></label>&nbsp;
+                                        <!-- <button (click)="GetMFOs()" (click)="flag =1" type="button"
+                                            class="btn rounded-pill btn-icon btn-primary">
+                                            <span class="tf-icons bx bx bx-plus"></span>
+                                        </button> -->
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <!--/ Accordion -->
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="">
+                            <div class="">
+                                <!-- Bootstrap Table with Header - Light -->
+                                <div class="">
+                                    <div class="col-xl-12">
+                                        <div class="nav-align-top mb-4">
+                                            <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                                                <li class="nav-item">
+                                                    <button (click)="setMFOs(0)" type="button" class="nav-link active"
+                                                        role="tab" data-bs-toggle="tab"
+                                                        data-bs-target="#navs-pills-justified-home"
+                                                        aria-controls="navs-pills-justified-home" aria-selected="true">
+                                                        <i class="tf-icons bx bx-home"></i> MFO
+                                                        <span
+                                                            class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger">3</span>
+                                                    </button>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <button (click)="setMFOs(1)" type="button" class="nav-link"
+                                                        role="tab" data-bs-toggle="tab"
+                                                        data-bs-target="#navs-pills-justified-profile"
+                                                        aria-controls="navs-pills-justified-profile"
+                                                        aria-selected="false">
+                                                        <i class="tf-icons bx bx-user"></i> Common MFO
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content scrollable-container">
+                                                <div class="tab-pane fade show active" id="navs-pills-justified-home"
+                                                    role="tabpanel">
+                                                    <!-- Bootstrap Table with Header - Light -->
+                                                    <div class="table-responsive text-nowrap">
+                                                        <table class="table">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th style="width: 100px; color: blue;">Indicator
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody *ngFor="let data of mfo().data"
+                                                                class="table-border-bottom-0"><br>
+                                                                <tr class="text-justify"
+                                                                    style="color: blue; white-space: normal;">
+                                                                    <strong><i
+                                                                            class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
+                                                                </tr>
+                                                                <tr *ngFor="let si of data.si">
+                                                                    <td>
+                                                                        <div class="row">
+                                                                            <div class="col-11 text-justify"
+                                                                                style="white-space: normal;">
+                                                                                <i
+                                                                                    class='bx bx-chevron-right'></i><strong>{{si.target}}</strong>&nbsp;{{si.indicator}}
+                                                                            </div>
+                                                                            <!-- <div
+                                                                                *ngFor="let data of opcrDetails().data; let parent = index ">
+                                                                                <div *ngFor="let ind of data.si">
+                                                                                    <ng-container
+                                                                                        *ngIf="ind.indicatorId != si.indicatorId; else showButton">
+                                                                                        <span
+                                                                                            class="badge rounded-pill bg-label-info">Info</span>
+                                                                                    </ng-container>
+                                                                                </div>
+                                                                            </div> -->
+                                                                            <!-- <ng-template #showButton> -->
+                                                                            <!-- <div
+                                                                                *ngFor="let details of opcrDetails().data">
+                                                                                <div
+                                                                                    *ngFor="let si_indicator of details.si">
+                                                                                    <ng-container
+                                                                                        *ngIf="si_indicator.indicatorId != si.indicatorId">
+                                                                                        <span
+                                                                                            class="badge rounded-pill bg-label-info">Info</span>
+                                                                                    </ng-container>
+                                                                                </div>
+                                                                            </div> -->
+                                                                            <div class="col-1">
+                                                                                <!-- <ng-container>
+
+                                                                                </ng-container> -->
+                                                                                <button (click)="mfoDetails = si"
+                                                                                    type="button" data-bs-toggle="modal"
+                                                                                    data-bs-target="#modalAdd"
+                                                                                    class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                                    <span
+                                                                                        class="tf-icons bx bx bx-plus"></span></button>
+                                                                            </div>
+                                                                            <!-- </ng-template> -->
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!-- Bootstrap Table with Header - Light -->
+                                                </div>
+                                                <div class="tab-pane fade" id="navs-pills-justified-profile"
+                                                    role="tabpanel">
+                                                    <!-- Bootstrap Table with Header - Light -->
+                                                    <div class="table-responsive text-nowrap">
+                                                        <table class="table">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th
+                                                                        style="width: 100px; color: blue; white-space: normal;">
+                                                                        Indicator
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody *ngFor="let data of mfo().data"
+                                                                class="table-border-bottom-0"><br>
+                                                                <tr class="text-justify"
+                                                                    style="color: blue; white-space: normal;">
+                                                                    <strong><i
+                                                                            class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
+                                                                </tr>
+                                                                <tr *ngFor="let si of data.si">
+                                                                    <td>
+                                                                        <div class="row">
+                                                                            <div class="col-11 text-justify"
+                                                                                style="white-space: normal;">
+                                                                                <i
+                                                                                    class='bx bx-chevron-right'></i><strong>{{si.target}}</strong>&nbsp;{{si.indicator}}
+                                                                            </div>
+                                                                            <div class="col-1">
+                                                                                <button type="button"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#modalAdd"
+                                                                                    class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                                    <span
+                                                                                        class="tf-icons bx bx bx-plus"></span></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!-- Bootstrap Table with Header - Light -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <button type="button" class="btn btn-primary">
+                                            Done
+                                        </button> -->
+                                    </div>
+                                </div>
+                                <!-- Bootstrap Table with Header - Light -->
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div *ngIf="opcrDetails().data.length ===0 && flag ==0">
-                    <img src="assets/img/document.png" alt="" width="200" height="200"
-                        style="display: block; margin: 0 auto" />
-                    <span style="
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    ">
-                        <label><strong>No Data Found!</strong></label>&nbsp;
-                        <button (click)="GetMFOs()" (click)="flag =1" type="button"
-                            class="btn rounded-pill btn-icon btn-primary">
-                            <span class="tf-icons bx bx bx-plus"></span>
-                        </button>
-                    </span>
-                </div>
+            </div>
+            <!-- / Content -->
+            <!-- <div *ngIf="isShow ==5">
                 <div class="d-flex justify-content-end">
                     <button *ngIf="flag ==1" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#modalCenter">
@@ -223,102 +393,7 @@
                     </button>
                 </div>
                 <br>
-                <!-- Bootstrap Table with Header - Light -->
-                <div class="" *ngIf="flag ==1">
-                    <div class="col-xl-12">
-                        <div class="nav-align-top mb-4">
-                            <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-                                <li class="nav-item">
-                                    <button (click)="isCommon=0" (click)="GetMFOs()" type="button"
-                                        class="nav-link active" role="tab" data-bs-toggle="tab"
-                                        data-bs-target="#navs-pills-justified-home"
-                                        aria-controls="navs-pills-justified-home" aria-selected="true">
-                                        <i class="tf-icons bx bx-home"></i> Not Common
-                                        <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger">3</span>
-                                    </button>
-                                </li>
-                                <li class="nav-item">
-                                    <button (click)="isCommon=1" (click)="GetMFOs()" type="button" class="nav-link"
-                                        role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile"
-                                        aria-controls="navs-pills-justified-profile" aria-selected="false">
-                                        <i class="tf-icons bx bx-user"></i> Common
-                                    </button>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
-                                    <!-- Bootstrap Table with Header - Light -->
-                                    <div class="table-responsive text-nowrap">
-                                        <table class="table">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th style="width: 100px; color: blue;">Indicator</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0"><br>
-                                                <tr style="color: blue;">
-                                                    <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
-                                                </tr>
-                                                <tr>
-                                                    <div *ngFor="let si of data.si">
-                                                        <td>
-                                                            <i
-                                                                class='bx bx-chevron-right'></i><strong>{{si.target}}</strong>&nbsp;{{si.indicator}}
-                                                        </td>
-                                                        <td class="text-right">&nbsp;
-                                                            <button type="button"
-                                                                class="btn rounded-pill btn-icon btn-primary"
-                                                                data-bs-toggle="modal" data-bs-target="#modalAdd"> <span
-                                                                    class="tf-icons bx bx bx-plus"></span></button>
-                                                        </td>
-                                                    </div>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- Bootstrap Table with Header - Light -->
-                                </div>
-                                <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
-                                    <!-- Bootstrap Table with Header - Light -->
-                                    <div class="table-responsive text-nowrap">
-                                        <table class="table">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th style="width: 100px; color: blue;">Indicator</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0"><br>
-                                                <tr style="color: blue;">
-                                                    <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
-                                                </tr>
-                                                <tr>
-                                                    <div *ngFor="let si of data.si">
-                                                        <td>
-                                                            <i
-                                                                class='bx bx-chevron-right'></i><strong>{{si.target}}</strong>&nbsp;{{si.indicator}}
-                                                        </td>
-                                                        <td class="text-right">&nbsp;
-                                                            <button type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#modalAdd"
-                                                                class="btn rounded-pill btn-icon btn-primary"> <span
-                                                                    class="tf-icons bx bx bx-plus"></span></button>
-                                                        </td>
-                                                    </div>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- Bootstrap Table with Header - Light -->
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-primary">
-                            Done
-                        </button>
-                    </div>
-                </div>
-                <!-- Bootstrap Table with Header - Light -->
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -358,74 +433,131 @@
 <!-- Vertically Centered Modal -->
 <!-- Button trigger modal -->
 
-
-<!-- Modal -->
-<div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title" id="modalCenterTitle">View</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col mb-3">
-                        <label for="nameWithTitle" class="form-label">Name</label>
-                        <input type="text" id="nameWithTitle" class="form-control" placeholder="Enter Name" />
-                    </div>
-                </div>
-                <div class="row g-2">
-                    <div class="col mb-0">
-                        <label for="emailWithTitle" class="form-label">Email</label>
-                        <input type="text" id="emailWithTitle" class="form-control" placeholder="xxxx@xxx.xx" />
-                    </div>
-                    <div class="col mb-0">
-                        <label for="dobWithTitle" class="form-label">DOB</label>
-                        <input type="text" id="dobWithTitle" class="form-control" placeholder="DD / MM / YY" />
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal -->
 <div class="modal fade" id="modalAdd" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title" id="modalCenterTitle">Addtional Details</h1>
+                <h1 class="modal-title" id="modalCenterTitle">{{mfoDetails.indicator}}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col mb-3">
-                        <label for="nameWithTitle" class="form-label">Name</label>
-                        <input type="text" id="nameWithTitle" class="form-control" placeholder="Enter Name" />
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label" for="basic-default-fullname">Quantity</label>
+                            <input [(ngModel)]="mfoDetails.qty" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-6">
+                            <div class="col-md">
+                                <small class="text-light fw-semibold">DIVISION</small>
+                                <div class="form-check mt-3" *ngFor="let data of officeDivision().data; let i = index">
+                                    <input [(ngModel)]="isCheck[i]" class="form-check-input" type="checkbox" value=""
+                                        id="defaultCheck{{i}}" (change)="onCheckboxChange(i)" />
+                                    <label class="form-check-label"
+                                        for="defaultCheck{{i}}">{{data.divisionName}}</label>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-                <div class="row g-2">
-                    <div class="col mb-0">
-                        <label for="emailWithTitle" class="form-label">Email</label>
-                        <input type="text" id="emailWithTitle" class="form-control" placeholder="xxxx@xxx.xx" />
-                    </div>
-                    <div class="col mb-0">
-                        <label for="dobWithTitle" class="form-label">DOB</label>
-                        <input type="text" id="dobWithTitle" class="form-control" placeholder="DD / MM / YY" />
+                <!-- Bootstrap Table with Header - Light -->
+                <div class="card">
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>RATING</th>
+                                    <th>QUANTITY</th>
+                                    <th>QUALITY</th>
+                                    <th>TIMELINESS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                <tr>
+                                    <td>{{'5'}}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qty5}}
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qlty5}}
+                                        </span></td>
+                                    <td><span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.timely5}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'4'}}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qty4}}
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qlty4}}
+                                        </span></td>
+                                    <td><span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.timely4}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'3'}}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qty3}}
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qlty3}}
+                                        </span></td>
+                                    <td><span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.timely3}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'2'}}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qty2}}
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qlty2}}
+                                        </span></td>
+                                    <td><span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.timely2}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'1'}}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qty1}}
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.qlty1}}
+                                        </span></td>
+                                    <td><span *ngIf="mfoDetails.standard">
+                                            {{mfoDetails.standard.timely1}}
+                                        </span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+                <!-- Bootstrap Table with Header - Light -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button data-bs-dismiss="modal" (click)="PostOPCRDetails()" type="button" class="btn btn-primary">Save
+                    changes</button>
             </div>
         </div>
     </div>
