@@ -1,4 +1,4 @@
-import { Component, OnInit ,inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ErrorService } from 'src/app/spms/service/error.service';
 import Swal from 'sweetalert2';
 
@@ -7,106 +7,99 @@ import { AlertService } from 'src/app/spms/service/alert.service';
 @Component({
   selector: 'app-office',
   templateUrl: './office.component.html',
-  styleUrls: ['./office.component.css']
+  styleUrls: ['./office.component.css'],
 })
-export class OfficeComponent implements OnInit{
-  mfoService   = inject(MfoService);
+export class OfficeComponent implements OnInit {
+  mfoService = inject(MfoService);
   errorService = inject(ErrorService);
   alertService = inject(AlertService);
 
-  mfo:any = this.mfoService.mfo;
-  isSearchLoading:any = this.mfoService.isSearchLoading;
+  mfo: any = this.mfoService.mfo;
+  isSearchLoading: any = this.mfoService.isSearchLoading;
   isCommon: any = this.mfoService.isCommon;
-  error:any    = this.errorService.error;
+  error: any = this.errorService.error;
 
+  officeId = 'OFFPHRMONZ3WT7D';
+  expandedRow: any;
+  expandedRowChild: any;
 
-  expandedRow:any;
-  expandedRowChild:any;
+  mfoData: any = {};
+  siData: any = {};
+  standard: any = {};
+  search: any = {};
+  isExistMfo: boolean = false;
 
-  mfoData:any = {};
-  siData:any = {};
-  standard:any = {};
-  search:any = {};
-  isExistMfo:boolean = false;
-
-  isAdd:boolean = true;
+  isAdd: boolean = true;
 
   ngOnInit(): void {
-
     this.mfoService.GetMFOes();
-    console.log(this.mfo())
-
+    console.log(this.mfo());
   }
-  
 
-  AddMfo(){
+  AddMfo() {
     console.log(this.mfoData);
-    if(this.mfoData.MFO !== undefined || this.mfoData.MFO !== ''){
+    if (this.mfoData.MFO !== undefined || this.mfoData.MFO !== '') {
       this.mfoService.AddMfo(this.mfoData);
     }
-
   }
 
-  EditMfo(){
-
-    if(this.mfoData.mfo !== undefined || this.mfoData.mfo !== ''){
+  EditMfo() {
+    if (this.mfoData.mfo !== undefined || this.mfoData.mfo !== '') {
       this.mfoService.EditMfo(this.mfoData);
     }
   }
 
-  DeleteMfo(mfoId:any){
+  DeleteMfo(mfoId: any) {
     this.mfoService.DeleteMfo(mfoId);
   }
 
-  AddSI(){
+  AddSI() {
     this.siData.mfoId = this.mfoData.mfoId;
 
-    if(this.siData.inidicator !== undefined || this.siData.inidicator !== ''){
+    if (this.siData.inidicator !== undefined || this.siData.inidicator !== '') {
       console.log(this.siData);
       this.mfoService.AddSI(this.siData, this.standard);
     }
   }
 
-  EditSI(){ 
+  EditSI() {
     this.siData.mfoId = this.mfoData.mfoId;
 
-    if(this.siData.inidicator !== undefined || this.siData.inidicator !== ''){
+    if (this.siData.inidicator !== undefined || this.siData.inidicator !== '') {
       this.mfoService.EditSI(this.siData);
 
       this.standard.indicatorId = this.siData.indicatorId;
 
       this.mfoService.EditStandard(this.standard);
     }
-
   }
 
   DeleteSI(indicatorId:any){
     this.mfoService.DeleteSI(indicatorId);
   }
 
-  setSiData(mfo:any, si:any){
+  setSiData(mfo: any, si: any) {
     this.mfoData = mfo;
     this.siData = si;
-    console.log(si)
-    if(si.standard !== null){
+    console.log(si);
+    if (si.standard !== null) {
       this.standard = si.standard;
-    }    
-
+    }
   }
-  CheckMfoIfExist(){
-    this.mfoService.CheckMfoIfExist(this.mfoData).subscribe((isExist: boolean) => {
-      console.log(this.isExistMfo);
-    });
+  CheckMfoIfExist() {
+    this.mfoService
+      .CheckMfoIfExist(this.mfoData)
+      .subscribe((isExist: boolean) => {
+        console.log(this.isExistMfo);
+      });
   }
 
-  searchMfoOffice(){
+  searchMfoOffice() {
     this.mfoService.SearchMfoOffice(this.search);
-
   }
 
-  setIsCommon(value:number){
-    this.mfoService.isCommon.set(value)
+  setIsCommon(value: number) {
+    this.mfoService.isCommon.set(value);
     this.mfoService.GetMFOes();
   }
-
 }

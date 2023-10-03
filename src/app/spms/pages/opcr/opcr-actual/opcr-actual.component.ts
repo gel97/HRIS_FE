@@ -24,7 +24,7 @@ export class OpcrActualComponent implements OnInit {
   opcrDetails: any = this.opcrService.opcrDetails;
 
   ngOnInit(): void {
-    this.opcrService.GetOPCRDetails('O2301121009046AC0D9B');
+    this.opcrService.GetOPCRDetails('O2301121009046AC0D9B', "", 1);
   }
 
   ReportStandard() {

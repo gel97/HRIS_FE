@@ -1,3 +1,26 @@
 .pointer {
     cursor: pointer;
 }
+
+.thick-border {
+    border: 2px solid lightgray; /* You can adjust the thickness and color as needed */
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .scrollable-container {
+    max-height: 1500px; /* Set the maximum height as needed */
+    overflow-y: auto; /* Enable vertical scroll when content overflows */
+}
+
+.scrollable-details{
+  max-height: 1000px; /* Set the maximum height as needed */
+  overflow-y: auto; /* Enable vertical scroll when content overflows */
+}
+
+
+
+
+  

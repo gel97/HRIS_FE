@@ -5,7 +5,7 @@ import { SpmsApiService } from './spms-api.service';
 import { ErrorService } from './error.service';
 import { api } from 'src/app/connection';
 import { AlertService } from './alert.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class MfoService {
   });
 
   isCommon = signal<number>(0);
-  officeId = signal<string>("OFFPHRMONZ3WT7D");
+  officeId = signal<string>('OFFPHRMONZ3WT7D');
 
   isSearchLoading = signal<boolean>(false);
 
@@ -33,14 +33,16 @@ export class MfoService {
   GetMFOes() {
     this.mfo.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_mfoes(this.officeId(),this.isCommon()), { responseType: `json` })
+      .get<any[]>(api + this.url.get_mfoes(this.officeId(), this.isCommon()), {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
             (a.data = response),
               (a.isLoading = false),
               (a.error = false),
-              (a.errorStatus = null)
+              (a.errorStatus = null);
           });
 
           this.errorService.error.mutate((a) => {
@@ -69,26 +71,25 @@ export class MfoService {
     this.http
       .post<any[]>(api + this.url.post_mfo(), mfo, { responseType: `json` })
       .subscribe({
-        next: (response: any = {}) => { 
+        next: (response: any = {}) => {
           this.GetMFOes();
 
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
 
           this.alertService.save();
         },
         error: (error: any) => {
           this.alertService.error();
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
         },
         complete: () => {},
       });
   }
 
-  
   EditMfo(mfo: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
@@ -96,18 +97,17 @@ export class MfoService {
       .put<any[]>(api + this.url.put_mfo(), mfo, { responseType: `json` })
       .subscribe({
         next: (response: any = {}) => {
-
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
 
           this.alertService.update();
         },
         error: (error: any) => {
           this.alertService.error();
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
         },
         complete: () => {},
       });
@@ -127,15 +127,16 @@ export class MfoService {
     }
   }
 
-  AddSI(si: any, standard:any) {
+  AddSI(si: any, standard: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
     si.officeId = this.officeId();
 
     this.http
-      .post<any[]>(api + this.url.post_success_indicator(), si, { responseType: `json` })
+      .post<any[]>(api + this.url.post_success_indicator(), si, {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
-          
           standard.indicatorId = response.indicatorId;
           standard.recNo = response.recNo;
 
@@ -146,38 +147,36 @@ export class MfoService {
         error: (error: any) => {
           this.alertService.error();
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
 
   AddStandard(standard: any) {
     this.http
-      .post<any[]>(api + this.url.post_standard(), standard, { responseType: `json` })
+      .post<any[]>(api + this.url.post_standard(), standard, {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
-          
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
-        this.GetMFOes();
+            a.isLoadingSave = false;
+          });
+          this.GetMFOes();
 
           this.alertService.save();
         },
         error: (error: any) => {
           this.alertService.error();
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
-
 
   EditSI(si: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
@@ -185,20 +184,22 @@ export class MfoService {
     si.officeId = this.officeId();
 
     this.http
-      .put<any[]>(api + this.url.put_success_indicator(), si, { responseType: `json` })
+      .put<any[]>(api + this.url.put_success_indicator(), si, {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
 
           this.alertService.update();
         },
         error: (error: any) => {
           this.alertService.error();
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
         },
         complete: () => {},
       });
@@ -208,20 +209,22 @@ export class MfoService {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
     this.http
-      .put<any[]>(api + this.url.put_standard(), standard, { responseType: `json` })
+      .put<any[]>(api + this.url.put_standard(), standard, {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
 
           this.alertService.update();
         },
         error: (error: any) => {
           this.alertService.error();
           this.mfo.mutate((a) => {
-            (a.isLoadingSave = false)
-        });
+            a.isLoadingSave = false;
+          });
         },
         complete: () => {},
       });
@@ -244,14 +247,15 @@ export class MfoService {
 
 
   CheckMfoIfExist(payload: any): Observable<boolean> {
-    return this.http.post<any[]>(api + this.url.post_mfo_search_office(), payload, {
-      responseType: 'json',
-    })
-    .pipe(
-      map((response: any) => {
-        return response.length > 0;
+    return this.http
+      .post<any[]>(api + this.url.post_mfo_search_office(), payload, {
+        responseType: 'json',
       })
-    );
+      .pipe(
+        map((response: any) => {
+          return response.length > 0;
+        })
+      );
   }
 
   SearchMfoOffice(payload: any) {
