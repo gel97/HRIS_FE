@@ -61,7 +61,7 @@
                         <tbody *ngFor="let data of opcr().data; let i = index">
                             <tr>
                                 <td class="pointer">
-                                    <a (click)="OPCRDetails(data.opcrId,opcrName = data.details, isShow = 1)">
+                                    <a (click)="OPCRDetails(data.opcrId, opcrName = data.details, isShow = 1)">
                                         <strong>{{ data.details }}</strong>
                                     </a>
                                 </td>
@@ -205,6 +205,13 @@
                                                                 <!--/ Bordered Table -->
                                                             </div>
                                                         </div>
+                                                        <div>
+                                                            <button (click)="DeleteOPCRDetails(si.opcrDataId)"
+                                                                type="button"
+                                                                class="btn rounded-pill btn-icon btn-danger float-end">
+                                                                <span class="tf-icons bx bx-trash"></span>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,6 +265,12 @@
                                                     </button>
                                                 </li>
                                             </ul>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="tf-icons bx bx-search"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Search..." />
+                                            </div><br>
                                             <div class="tab-content scrollable-container">
                                                 <div class="tab-pane fade show active" id="navs-pills-justified-home"
                                                     role="tabpanel">

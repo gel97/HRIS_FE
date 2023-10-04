@@ -8,9 +8,9 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
   styleUrls: ['./opcr-target.component.css'],
 })
 export class OpcrTargetComponent implements OnInit {
-  constructor() {}
+  constructor(private opcrService: OpcrService) {}
 
-  opcrService = inject(OpcrService);
+  // opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
 
   getYear = '2023';
@@ -21,7 +21,7 @@ export class OpcrTargetComponent implements OnInit {
   mfoDetails: any = {};
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
-  opcrName: string | null = '';
+  opcrName: string | any = '';
   isShow: number | any = 0;
   flag: number = 0;
   category: any = [
@@ -32,25 +32,30 @@ export class OpcrTargetComponent implements OnInit {
   data: any = {};
   isCheck: boolean[] = []; // An array to store checkbox values (true if selected, false if not)
   selectedDivisions: string[] = []; // An array to store selected division names
-  sortMfo: any = [];
   finalSort: any = [];
 
   ngOnInit(): void {
-    let id: string | any = localStorage.getItem('opcrId');
-    if ((this.isShow = localStorage.getItem('isShow'))) {
-      this.isShow = this.isShow;
-      this.opcrName = localStorage.getItem('opcrDetails');
-      this.opcrService.StorageOPCRDetails(id);
-    } else {
-      this.isShow = 0;
-    }
+    this.localStorage();
     this.GetOPCRs();
-    this.opcrService.GetOPCRDetails('O2301121009046AC0D9B', '', 0);
+    // this.opcrService.GetOPCRDetails('O23011210225814D9FEB', 'PHRMO OPCR #2', 1);
     console.log('opcr', this.opcrDetails());
     this.mfoService.GetMFOes();
     console.log('mfo', this.mfo());
     // this.GetMFOs();
     this.GetOfficeDivision();
+    this.sortExcist();
+  }
+
+  localStorage() {
+    let id: string | any = localStorage.getItem('opcrId');
+    if ((this.isShow = localStorage.getItem('isShow'))) {
+      this.isShow = this.isShow;
+      this.opcrName = localStorage.getItem('opcrDetails');
+      this.opcrService.GetOPCRDetails(id, this.opcrName, this.isShow);
+      this.sortExcist();
+    } else {
+      this.isShow = 0;
+    }
   }
 
   GetOPCRs() {
@@ -62,7 +67,6 @@ export class OpcrTargetComponent implements OnInit {
   GetMFOs() {
     this.mfoService.GetMFOes();
     console.log('mfo', this.mfo());
-    this.sortExcist();
   }
 
   GetOfficeDivision() {
@@ -73,6 +77,7 @@ export class OpcrTargetComponent implements OnInit {
   setMFOs(set: number) {
     this.mfoService.isCommon.set(set);
     this.GetMFOs();
+    this.sortExcist();
   }
 
   PostOPCR() {
@@ -90,6 +95,13 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.opcrId = localStorage.getItem('opcrId');
     console.log('mfdetails', this.mfoDetails);
     this.opcrService.AddOPCRData(this.mfoDetails);
+    this.sortExcist();
+  }
+
+  DeleteOPCRDetails(opcrDataId: string) {
+    this.opcrService.DeleteOPCRDetails(opcrDataId);
+    this.sortExcist();
+    this.GetMFOs();
   }
 
   concatSelectedDivisions(): string {
@@ -114,26 +126,52 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   OPCRDetails(opcrid: string, opcrdetails: string, isShow: number) {
+    // this.opcrService.GetOPCRDetails(opcrid, opcrdetails, isShow);
+    // console.log('opcrdetails', this.opcrDetails());
+    console.log('opcrid', opcrid);
     this.opcrService.GetOPCRDetails(opcrid, opcrdetails, isShow);
-    console.log(this.opcrDetails());
-    console.log('opcrdetails', this.opcrDetails());
     this.sortExcist();
   }
 
   sortExcist() {
-    console.log('mfo', this.mfo().data);
-    console.log('opcr', this.opcrDetails().data);
-    this.mfo().data.forEach((item: any) => {
-      item.si.forEach((si: any) => {
-        this.opcrDetails().data.forEach((data: any) => {
-          for (let i of data.si) {
-            if (i.indicatorId == si.indicatorId) {
-              this.sortMfo.push(si.indicatorId);
+    setTimeout(() => {
+      console.log('mfo', this.mfo());
+      console.log('opcr', this.opcrDetails());
+      // opcrData.data.forEach((a: any) => {
+      //   console.log('a', a);
+      // });
+      for (let outerItem of this.mfo().data) {
+        for (let innerItem of outerItem.si) {
+          for (let opcrDetail of this.opcrDetails().data) {
+            for (let opcrDetailItem of opcrDetail.si) {
+              if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
+                // Find the index of the item in the array and remove it using splice
+                const indexToRemove = outerItem.si.indexOf(innerItem);
+                if (indexToRemove !== -1) {
+                  outerItem.si.splice(indexToRemove, 1);
+                  console.log('Item removed');
+                }
+              }
             }
           }
-        });
-      });
-    });
+        }
+      }
+    }, 3000);
+    // console.log('final', this.mfo());
+    // this.mfo().data.map((a: any) => {
+    //   a.si.map((b: any) => {
+    //     this.opcrDetails().data.map((c: any) => {
+    //       for (let i of c.si) {
+    //         if (i.indicatorId == b.indicatorId) {
+    //           this.mfo().data.splice(b, 1);
+    //           console.log('found');
+    //         }
+    //       }
+    //     });
+    //   });
+    // });
+    // this.sortMfo.mutate((a) => (a.data = this.mfo().data));
+    // console.log('splice', this.mfo().data);
     // console.log('exist', this.sortMfo);
     // this.mfo().data.forEach((item: any) => {
     //   item.si.forEach((si: any) => {
@@ -175,6 +213,7 @@ export class OpcrTargetComponent implements OnInit {
 
   removelocalStorage() {
     localStorage.clear();
-    this.ngOnInit();
+    this.localStorage();
+    this.GetMFOs();
   }
 }

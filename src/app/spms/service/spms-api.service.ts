@@ -25,5 +25,6 @@ export class SpmsApiService {
   get_opcrdetails = (opcrId: string) => `/tPMOpcrDatas/${opcrId}`;
   post_opcr = () => `/tPMOpcrs`;
   post_opcrdata = () => `/tPMOpcrDatas`;
+  delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
   get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
 }
