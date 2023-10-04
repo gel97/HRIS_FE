@@ -45,6 +45,8 @@ export class OpcrTargetComponent implements OnInit {
       this.isShow = 0;
     }
     this.GetOPCRs();
+    this.opcrService.GetOPCRDetails('O2301121009046AC0D9B', '', 0);
+    console.log('opcr', this.opcrDetails());
     this.mfoService.GetMFOes();
     console.log('mfo', this.mfo());
     // this.GetMFOs();
@@ -120,17 +122,18 @@ export class OpcrTargetComponent implements OnInit {
 
   sortExcist() {
     console.log('mfo', this.mfo().data);
-    // this.mfo().data.forEach((item: any) => {
-    //   item.si.forEach((si: any) => {
-    //     this.opcrDetails().data.forEach((data: any) => {
-    //       for (let i of data.si) {
-    //         if (i.indicatorId == si.indicatorId) {
-    //           this.sortMfo.push(si.indicatorId);
-    //         }
-    //       }
-    //     });
-    //   });
-    // });
+    console.log('opcr', this.opcrDetails().data);
+    this.mfo().data.forEach((item: any) => {
+      item.si.forEach((si: any) => {
+        this.opcrDetails().data.forEach((data: any) => {
+          for (let i of data.si) {
+            if (i.indicatorId == si.indicatorId) {
+              this.sortMfo.push(si.indicatorId);
+            }
+          }
+        });
+      });
+    });
     // console.log('exist', this.sortMfo);
     // this.mfo().data.forEach((item: any) => {
     //   item.si.forEach((si: any) => {
@@ -155,15 +158,15 @@ export class OpcrTargetComponent implements OnInit {
     //   });
     // });
 
-    for (let i of this.opcrDetails().data[0].si) {
-      for (let e = 0; e < this.mfo().data.si.length; e++) {
-        if (i.indicatorId == this.mfo().data[0].si[e].indicatorId) {
-          this.mfo().data.si.splice(e, 1);
-          console.log('here');
-          break;
-        }
-      }
-    }
+    // for (let i of this.opcrDetails().data[0].si) {
+    //   for (let e = 0; e < this.mfo().data.si.length; e++) {
+    //     if (i.indicatorId == this.mfo().data[0].si[e].indicatorId) {
+    //       this.mfo().data.si.splice(e, 1);
+    //       console.log('here');
+    //       break;
+    //     }
+    //   }
+    // }
     // this.sortMfo = this.mfo().data.filter((item: any) => {
 
     //   return !this.opcrDetails().data.some((i: any) => item.mfoId === i.mfoId);
