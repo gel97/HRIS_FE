@@ -52,6 +52,7 @@ export class PdfService {
     let _pageOrientation = report.isPortrait ? 'portrait' : 'landscape';
 
     const def = {
+      //pageMargins:[20,20,20,20],
       header: (currentPage: any, pageCount: any) => {
         if (currentPage === 1) {
           return {
@@ -59,7 +60,12 @@ export class PdfService {
               {
                 stack: [
                   {
-                    text: report.title1,
+                    text:'',
+                    fontSize: 5,
+                    alignment: 'center',
+                  },
+                  {
+                    text:report.title1,
                     fontSize: 16,
                     bold: true,
                     alignment: 'center',

@@ -21,17 +21,48 @@ export class OpcrActualComponent implements OnInit {
     console.log(this.count());
   }
 
-  opcrDetails: any = this.opcrService.opcrDetails;
+  opcrMfoes: any = this.opcrService.opcrDetails;
 
   ngOnInit(): void {
-    this.opcrService.GetOPCRDetails('O2301121009046AC0D9B', "", 1);
+  }
+
+  get opcrMfoesData():{ [key: number]: any[] }{
+    const groupedData: { [key: number]: any[] } = this.opcrMfoes().data.reduce((acc:any, data:any) => {
+      const { categoryId } = data;
+      if (acc[categoryId]) {
+        acc[categoryId].push(data);
+      } else {
+        acc[categoryId] = [data];
+      }
+      return acc;
+    }, {});
+    return groupedData;
+  }
+
+  categoryName(cat:string){
+    let catName = "";
+    switch (cat) {
+      case "1":
+        catName = "STRATEGIC"
+        break;
+      case "2":
+        catName = "CORE"
+        break;
+      case "3":
+        catName = "SUPPORT"
+        break;
+      default:
+        break;
+    }
+
+    return catName + " FUNCTION";
   }
 
   ReportStandard() {
-    this.reportStandardService.ReportStandard(this.opcrDetails().data);
+    this.reportStandardService.ReportStandard(this.opcrMfoes().data);
   }
   
   ReportOPCR(){
-    this.reportActualService.ReportActual(this.opcrDetails().data);
+    this.reportActualService.ReportActual(this.opcrMfoes().data);
   }
 }

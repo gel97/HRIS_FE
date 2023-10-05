@@ -5,25 +5,25 @@ import { api } from 'src/app/connection';
 })
 export class SpmsApiService {
   constructor() {}
-  get_mfoes = (officeId: string, type: number) =>
-    `/tPMMFOes/${officeId}/${type}`;
+  get_mfoes              = (officeId: string, type: number) => `/tPMMFOes/${officeId}/${type}`;
   post_mfo_search_office = () => `/tPMMFOes/Search`;
-  post_mfo = () => `/tPMMFOes`;
-  put_mfo = () => `/tPMMFOes`;
-  delete_mfo = (mfoId: string) => `/tPMMFOes/${mfoId}`;
+  post_mfo               = () => `/tPMMFOes`;
+  put_mfo                = () => `/tPMMFOes`;
+  delete_mfo             = (mfoId: string) => `/tPMMFOes/${mfoId}`;
+  put_mfo_category       = (mfoId: string, categoryId: number) => `tPMMFOes/category/${mfoId}/${categoryId}`;
 
-  post_success_indicator = () => `/tPMMFOIndicators`;
-  put_success_indicator = () => `/tPMMFOIndicators`;
-  delete_success_indicator = (indicatorId: string) =>
-    `/tPMMFOIndicators/${indicatorId}`;
+  post_success_indicator   = () => `/tPMMFOIndicators`;
+  put_success_indicator    = () => `/tPMMFOIndicators`;
+  delete_success_indicator = (indicatorId: string) => `/tPMMFOIndicators/${indicatorId}`;
 
   post_standard = () => `/tPMMFOStandards`;
-  put_standard = () => `/tPMMFOStandards`;
+  put_standard  = () => `/tPMMFOStandards`;
 
-  get_opcrs = (year: string, officeId: string) =>
-    `/tPMOpcrs/${year},${officeId}`;
-  get_opcrdetails = (opcrId: string) => `/tPMOpcrDatas/${opcrId}`;
+  get_opcrs = (year: string, officeId: string) => `/tPMOpcrs/${year},${officeId}`;
   post_opcr = () => `/tPMOpcrs`;
-  post_opcrdata = () => `/tPMOpcrDatas`;
+  
+  post_opcrdata    = () => `/tPMOpcrDatas`;
+  get_opcrdetails  = (opcrId: string)  => `/tPMOpcrDatas/${opcrId}`;
+
   get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
 }
