@@ -9,6 +9,7 @@ import { SpmsRoutingModule } from './spms-routing.module';
 import { SpmsComponent } from './spms.component';
 import { SpinnerComponent } from './components/spinner.component';
 import { LinearLoadingComponent } from './components/linear-loading/linear-loading.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -36,7 +37,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     CdkDrag,
     CdkDropList,
     CdkDropListGroup,
-    MatTooltipModule
+    MatTooltipModule,
+    NgxSkeletonLoaderModule
   ]
 })
 export class SpmsModule { }
