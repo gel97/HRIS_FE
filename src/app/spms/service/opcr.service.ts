@@ -101,6 +101,24 @@ export class OpcrService {
       });
   }
 
+  PutMFOCategory(mfoId: string, categoryId: number) {
+    console.log(mfoId);
+    console.log(categoryId);
+    this.http
+      .put<any[]>(api + this.url.put_mfo_category(mfoId, categoryId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
   GetOfficeDivision(officeId: string) {
     this.officeDivision.mutate((a) => (a.isLoading = true));
     this.http

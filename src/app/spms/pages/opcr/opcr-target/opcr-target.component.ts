@@ -25,11 +25,6 @@ export class OpcrTargetComponent implements OnInit {
   officeDivision: any = this.opcrService.officeDivision;
   opcrName: string | any = '';
   flag: number = 0;
-  category: any = [
-    { int: 1, type: `STRATEGIC` },
-    { int: 2, type: `CORE` },
-    { int: 3, type: `SUPPORT` },
-  ];
   data: any = {};
   isCheck: boolean[] = []; // An array to store checkbox values (true if selected, false if not)
   selectedDivisions: string[] = []; // An array to store selected division names
@@ -56,6 +51,42 @@ export class OpcrTargetComponent implements OnInit {
     }
   }
 
+  displayCatergory(cat: number) {
+    let catName = '';
+    switch (cat) {
+      case 1:
+        catName = 'Strategic';
+        break;
+      case 2:
+        catName = 'Core';
+
+        break;
+      case 3:
+        catName = 'Support';
+        break;
+      default:
+        break;
+    }
+
+    if (cat == null) {
+      catName = 'No Category';
+    }
+
+    return catName;
+  }
+
+  calculateRating() {
+    this.mfoDetails.qty5 = Math.floor(
+      this.mfoDetails.qty * 0.3 + this.mfoDetails.qty
+    );
+    this.mfoDetails.qty4 = Math.floor(
+      this.mfoDetails.qty * 0.15 + this.mfoDetails.qty
+    );
+    this.mfoDetails.qty3 = Math.floor(this.mfoDetails.qty);
+    this.mfoDetails.qty2 = Math.floor(this.mfoDetails.qty / 2 + 1);
+    this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
+  }
+
   GetOPCRs() {
     this.opcrService.GetOPCRs(this.getYear, this.officeId);
   }
@@ -78,6 +109,10 @@ export class OpcrTargetComponent implements OnInit {
     this.data.year = this.getYear;
     this.data.officeId = this.officeId;
     this.opcrService.AddOPCR(this.data);
+  }
+
+  PutMFOCategory(mfoId: string, categoryId: number) {
+    this.opcrService.PutMFOCategory(mfoId, categoryId);
   }
 
   PostOPCRDetails() {
