@@ -36,15 +36,12 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
     this.mfoService.GetMFOes();
     this.GetOfficeDivision();
-    this.sortExcist();  
+    this.sortExcist();
   }
-
-
 
   localStorage() {
     if (this.opcrService.storageIsShow() === '1') {
       this.opcrService.GetOPCRDetails();
-
     } else {
       localStorage.setItem('isShow', '0');
       this.opcrService.storageIsShow.set(0);
@@ -69,7 +66,7 @@ export class OpcrTargetComponent implements OnInit {
     }
 
     if (cat == null) {
-      catName = 'No Category';
+      catName = 'No Function';
     }
 
     return catName;
@@ -167,6 +164,10 @@ export class OpcrTargetComponent implements OnInit {
     this.sortExcist();
   }
 
+  qtyUnit(value: number) {
+    this.mfoDetails.qtyUnit = value;
+  }
+
   sortExcist() {
     setTimeout(() => {
       for (let outerItem of this.mfo().data) {
@@ -196,7 +197,6 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrId', '');
     localStorage.setItem('opcrName', '');
 
-  
     this.GetMFOs();
   }
 }
