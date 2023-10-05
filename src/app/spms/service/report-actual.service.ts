@@ -405,6 +405,7 @@ export class ReportActualService {
 
     content.push([
       {
+        margin:[0,20,0,0],
         text: [
           { text: 'I, ' },
           {

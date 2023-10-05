@@ -11,6 +11,8 @@ export class SpmsApiService {
   post_mfo = () => `/tPMMFOes`;
   put_mfo = () => `/tPMMFOes`;
   delete_mfo = (mfoId: string) => `/tPMMFOes/${mfoId}`;
+  put_mfo_category = (mfoId: string, categoryId: number) =>
+    `tPMMFOes/category/${mfoId}/${categoryId}`;
 
   post_success_indicator = () => `/tPMMFOIndicators`;
   put_success_indicator = () => `/tPMMFOIndicators`;
@@ -22,9 +24,11 @@ export class SpmsApiService {
 
   get_opcrs = (year: string, officeId: string) =>
     `/tPMOpcrs/${year},${officeId}`;
-  get_opcrdetails = (opcrId: string) => `/tPMOpcrDatas/${opcrId}`;
   post_opcr = () => `/tPMOpcrs`;
-  post_opcrdata = () => `/tPMOpcrDatas`;
+
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
+  post_opcrdata = () => `/tPMOpcrDatas`;
+  get_opcrdetails = (opcrId: string) => `/tPMOpcrDatas/${opcrId}`;
+
   get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
 }
