@@ -3,11 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { SpmsApiService } from './spms-api.service';
 import { api } from 'src/app/connection';
 import Swal from 'sweetalert2';
+import { AlertService } from './alert.service';
 @Injectable({
   providedIn: 'root',
 })
 export class OpcrService {
-  constructor(private http: HttpClient, private url: SpmsApiService) {}
+  constructor(
+    private http: HttpClient,
+    private url: SpmsApiService,
+    private alertService: AlertService
+  ) {}
+
+  getId: string | any = localStorage.getItem('opcrId');
 
   getYear = '2023';
   officeId = 'OFFPHRMONZ3WT7D';
@@ -47,7 +54,9 @@ export class OpcrService {
           this.opcr.mutate((a) => (a.data = response));
           this.opcr.mutate((a) => (a.isLoading = false));
         },
-        error: () => {},
+        error: () => {
+          this.alertService.error();
+        },
         complete: () => {},
       });
   }
@@ -56,17 +65,20 @@ export class OpcrService {
     localStorage.setItem('isShow', isShow.toString());
     localStorage.setItem('opcrId', opcrid);
     localStorage.setItem('opcrDetails', opcrdetails);
-    this.opcrDetails.mutate((a) => (a.isLoading = true));
+    // this.opcrDetails().data = [];
+    this.opcrDetails.mutate((a: any) => (a.isLoading = true));
     this.http
       .get<any[]>(api + this.url.get_opcrdetails(opcrid), {
         responseType: `json`,
       })
       .subscribe({
         next: (response: any = {}) => {
-          this.opcrDetails.mutate((a) => (a.data = response));
-          this.opcrDetails.mutate((a) => (a.isLoading = false));
+          this.opcrDetails.mutate((a: any) => (a.data = response));
+          this.opcrDetails.mutate((a: any) => (a.isLoading = false));
         },
-        error: () => {},
+        error: () => {
+          this.alertService.error();
+        },
         complete: () => {},
       });
   }
@@ -82,7 +94,9 @@ export class OpcrService {
           this.opcrDetails.mutate((a) => (a.data = response));
           this.opcrDetails.mutate((a) => (a.isLoading = false));
         },
-        error: () => {},
+        error: () => {
+          this.alertService.error();
+        },
         complete: () => {},
       });
   }
@@ -98,25 +112,23 @@ export class OpcrService {
           this.officeDivision.mutate((a) => (a.data = response));
           this.officeDivision.mutate((a) => (a.isLoading = false));
         },
-        error: () => {},
+        error: () => {
+          this.alertService.error();
+        },
         complete: () => {},
       });
   }
 
-  AddOPCR(data: any) {
-    this.opcr.mutate((a) => (a.isLoadingSave = true));
+  DeleteOPCRDetails(opcrDataId: string) {
     this.http
-      .post<any[]>(api + this.url.post_opcr(), data, {
-        responseType: `json`,
-      })
+      .delete<any[]>(api + this.url.delete_opcrdata(opcrDataId))
       .subscribe({
-        next: (response: any = {}) => {
-          this.opcr.mutate((a) => (a.data = response));
-          this.opcr.mutate((a) => (a.isLoadingSave = false));
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.error();
         },
-        error: (error: any) => {},
         complete: () => {
-          this.GetOPCRs(this.getYear, this.officeId);
+          this.StorageOPCRDetails(this.getId);
           const Toast = Swal.mixin({
             toast: true,
             position: 'top-start',
@@ -131,8 +143,29 @@ export class OpcrService {
 
           Toast.fire({
             icon: 'success',
-            title: 'Data added successfully',
+            title: 'Deleted successfully',
           });
+        },
+      });
+  }
+
+  AddOPCR(data: any) {
+    this.opcr.mutate((a) => (a.isLoadingSave = true));
+    this.http
+      .post<any[]>(api + this.url.post_opcr(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.opcr.mutate((a) => (a.data = response));
+          this.opcr.mutate((a) => (a.isLoadingSave = false));
+        },
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.GetOPCRs(this.getYear, this.officeId);
+          this.alertService.save();
         },
       });
   }
@@ -148,25 +181,12 @@ export class OpcrService {
           this.opcrData.mutate((a) => (a.data = response));
           this.opcrData.mutate((a) => (a.isLoadingSave = false));
         },
-        error: (error: any) => {},
+        error: (error: any) => {
+          this.alertService.error();
+        },
         complete: () => {
-          // this.GetOPCRDetails(data.opcrId);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-start',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
-            },
-          });
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Data added successfully',
-          });
+          this.StorageOPCRDetails(data.opcrId);
+          this.alertService.save();
         },
       });
   }

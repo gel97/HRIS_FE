@@ -23,46 +23,48 @@ export class OpcrActualComponent implements OnInit {
 
   opcrMfoes: any = this.opcrService.opcrDetails;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  get opcrMfoesData():{ [key: number]: any[] }{
-    const groupedData: { [key: number]: any[] } = this.opcrMfoes().data.reduce((acc:any, data:any) => {
-      const { categoryId } = data;
-      if (acc[categoryId]) {
-        acc[categoryId].push(data);
-      } else {
-        acc[categoryId] = [data];
-      }
-      return acc;
-    }, {});
+  get opcrMfoesData(): { [key: number]: any[] } {
+    const groupedData: { [key: number]: any[] } = this.opcrMfoes().data.reduce(
+      (acc: any, data: any) => {
+        const { categoryId } = data;
+        if (acc[categoryId]) {
+          acc[categoryId].push(data);
+        } else {
+          acc[categoryId] = [data];
+        }
+        return acc;
+      },
+      {}
+    );
     return groupedData;
   }
 
-  categoryName(cat:string){
-    let catName = "";
+  categoryName(cat: string) {
+    let catName = '';
     switch (cat) {
-      case "1":
-        catName = "STRATEGIC"
+      case '1':
+        catName = 'STRATEGIC';
         break;
-      case "2":
-        catName = "CORE"
+      case '2':
+        catName = 'CORE';
         break;
-      case "3":
-        catName = "SUPPORT"
+      case '3':
+        catName = 'SUPPORT';
         break;
       default:
         break;
     }
 
-    return catName + " FUNCTION";
+    return catName + ' FUNCTION';
   }
 
   ReportStandard() {
     this.reportStandardService.ReportStandard(this.opcrMfoes().data);
   }
-  
-  ReportOPCR(){
+
+  ReportOPCR() {
     this.reportActualService.ReportActual(this.opcrMfoes().data);
   }
 }

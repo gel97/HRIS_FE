@@ -21,7 +21,7 @@ export class OpcrTargetComponent implements OnInit {
   mfoDetails: any = {};
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
-  opcrName: string | null = '';
+  opcrName: string | any = '';
   isShow: number | any = 0;
   flag: number = 0;
   category: any = [
@@ -32,62 +32,69 @@ export class OpcrTargetComponent implements OnInit {
   data: any = {};
   isCheck: boolean[] = []; // An array to store checkbox values (true if selected, false if not)
   selectedDivisions: string[] = []; // An array to store selected division names
-  sortMfo: any = [];
-  finalSort: any = [];
+  isSearchLoading: any = this.mfoService.isSearchLoading;
+  search: any = {};
 
   ngOnInit(): void {
+    this.localStorage();
+    this.GetOPCRs();
+    this.mfoService.GetMFOes();
+    this.GetOfficeDivision();
+    this.sortExcist();
+  }
+
+  localStorage() {
     let id: string | any = localStorage.getItem('opcrId');
     if ((this.isShow = localStorage.getItem('isShow'))) {
       this.isShow = this.isShow;
       this.opcrName = localStorage.getItem('opcrDetails');
-      this.opcrService.StorageOPCRDetails(id);
+      this.opcrService.GetOPCRDetails(id, this.opcrName, this.isShow);
+      this.sortExcist();
     } else {
       this.isShow = 0;
     }
-    this.GetOPCRs();
-    this.mfoService.GetMFOes();
-    console.log('mfo', this.mfo());
-    // this.GetMFOs();
-    this.GetOfficeDivision();
   }
 
   GetOPCRs() {
     this.opcrService.GetOPCRs(this.getYear, this.officeId);
-    // console.log('2nd');
-    // console.log('opcrreturndetails', this.opcr());
   }
 
   GetMFOs() {
     this.mfoService.GetMFOes();
-    console.log('mfo', this.mfo());
-    this.sortExcist();
   }
 
   GetOfficeDivision() {
     this.opcrService.GetOfficeDivision(this.officeId);
-    console.log('officedivision', this.officeDivision());
   }
 
   setMFOs(set: number) {
     this.mfoService.isCommon.set(set);
     this.GetMFOs();
+    this.sortExcist();
   }
 
   PostOPCR() {
-    console.log('check');
     this.data.year = this.getYear;
     this.data.officeId = this.officeId;
-    // console.log('opcr', this.data);
     this.opcrService.AddOPCR(this.data);
-    // console.log('1st');
-    // this.GetOPCRs();
   }
 
   PostOPCRDetails() {
     this.mfoDetails.sharedDiv = this.concatSelectedDivisions();
     this.mfoDetails.opcrId = localStorage.getItem('opcrId');
-    console.log('mfdetails', this.mfoDetails);
     this.opcrService.AddOPCRData(this.mfoDetails);
+    this.sortExcist();
+  }
+
+  searchMfoOffice() {
+    this.mfoService.SearchMfoOffice(this.search);
+    this.sortExcist();
+  }
+
+  DeleteOPCRDetails(opcrDataId: string) {
+    this.opcrService.DeleteOPCRDetails(opcrDataId);
+    this.sortExcist();
+    this.GetMFOs();
   }
 
   concatSelectedDivisions(): string {
@@ -113,65 +120,33 @@ export class OpcrTargetComponent implements OnInit {
 
   OPCRDetails(opcrid: string, opcrdetails: string, isShow: number) {
     this.opcrService.GetOPCRDetails(opcrid, opcrdetails, isShow);
-    console.log(this.opcrDetails());
-    console.log('opcrdetails', this.opcrDetails());
+    console.log('opcr', this.opcrDetails());
     this.sortExcist();
   }
 
   sortExcist() {
-    console.log('mfo', this.mfo().data);
-    // this.mfo().data.forEach((item: any) => {
-    //   item.si.forEach((si: any) => {
-    //     this.opcrDetails().data.forEach((data: any) => {
-    //       for (let i of data.si) {
-    //         if (i.indicatorId == si.indicatorId) {
-    //           this.sortMfo.push(si.indicatorId);
-    //         }
-    //       }
-    //     });
-    //   });
-    // });
-    // console.log('exist', this.sortMfo);
-    // this.mfo().data.forEach((item: any) => {
-    //   item.si.forEach((si: any) => {
-    //     this.sortMfo.forEach((data_si: any) => {
-    //       if (data_si.indicatorId != si.indicatorId) {
-    //         this.finalSort.push(item);
-    //       }
-    //     });
-    //   });
-    // });
-    // let data = this.mfo().data;
-    // this.mfo().data.map((a: any, z: any) => {
-    //   a.si.map((b: any) => {
-    //     this.opcrDetails().data.map((c: any) => {
-    //       c.si.map((d: any, y: number) => {
-    //         if (b.indicatorId == d.indicatorId) {
-    //           this.mfo().data.splice(y, 1);
-    //           console.log(this.mfo().data[z].si[y]);
-    //         }
-    //       });
-    //     });
-    //   });
-    // });
-
-    for (let i of this.opcrDetails().data[0].si) {
-      for (let e = 0; e < this.mfo().data.si.length; e++) {
-        if (i.indicatorId == this.mfo().data[0].si[e].indicatorId) {
-          this.mfo().data.si.splice(e, 1);
-          console.log('here');
-          break;
+    setTimeout(() => {
+      for (let outerItem of this.mfo().data) {
+        for (let innerItem of outerItem.si) {
+          for (let opcrDetail of this.opcrDetails().data) {
+            for (let opcrDetailItem of opcrDetail.si) {
+              if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
+                // Find the index of the item in the array and remove it using splice
+                const indexToRemove = outerItem.si.indexOf(innerItem);
+                if (indexToRemove !== -1) {
+                  outerItem.si.splice(indexToRemove, 1);
+                }
+              }
+            }
+          }
         }
       }
-    }
-    // this.sortMfo = this.mfo().data.filter((item: any) => {
-
-    //   return !this.opcrDetails().data.some((i: any) => item.mfoId === i.mfoId);
-    // });
+    }, 3000);
   }
 
   removelocalStorage() {
     localStorage.clear();
-    this.ngOnInit();
+    this.localStorage();
+    this.GetMFOs();
   }
 }
