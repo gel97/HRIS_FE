@@ -1,9 +1,15 @@
 
- <!-- <div class="item">
-    <ngx-skeleton-loader count="5" appearance="line"></ngx-skeleton-loader>
-  </div> -->
+<ng-template #showSkeleton>
+    <app-opcr-actual-skeleton *ngIf="isLoading; else EmptyData" />
+</ng-template>
+<ng-template #EmptyData>
+    <div class="justify-content-center text-center pt-5">
+        <h1>No data found.</h1>
+    </div>
+</ng-template>
+
 <!-- Bordered Table -->
-<div class="card">
+<div *ngIf="!isLoading && notEmpty; else showSkeleton" class="card">
     <div class="row px-4 pt-2">
         <div class="col-10">
             <h5 class="">OPCR ACTUAL</h5>
@@ -36,7 +42,7 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let item of opcrMfoesData | keyvalue">
-                        <tr>
+                        <tr [ngClass]="item.key == '1' ? 'bg-label-success': item.key == '2' ? 'bg-label-primary': item.key == '3' ? 'bg-label-warning': 'bg-label-secondary'">
                             <td colspan="4">{{categoryName(item.key)}}</td>
                         </tr>
                         <ng-container *ngFor="let a of item.value; let x = index">

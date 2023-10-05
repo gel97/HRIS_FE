@@ -2,7 +2,7 @@
     <div class="">
         <div class="row">
             <div class="col-6">
-                <h1 class="card-header">OPCR <span *ngIf="isShow == 1"><i
+                <h1 class="card-header">OPCR <span *ngIf="isShow() == 1"><i
                             class='bx bx-chevron-right'></i>&nbsp;{{opcrName}}</span></h1>
                 <!-- Custom style2 Breadcrumb -->
                 <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
@@ -18,14 +18,14 @@
                 <!--/ Custom style2 Breadcrumb -->
             </div>
 
-            <div *ngIf="isShow == 1" class="col-6"><br>
+            <div *ngIf="isShow() == 1" class="col-6"><br>
                 <a class="pointer float-end">
                     <span class="row px-4" (click)="removelocalStorage()">
                         <i class='bx bx-arrow-back'></i>
                     </span>
                 </a>
             </div>
-            <div *ngIf="isShow == 0" class="col-6" style="padding: 20px;">
+            <div *ngIf="isShow() == 0" class="col-6" style="padding: 20px;">
                 <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
                     <i class='bx bx-plus'></i>OPCR
@@ -35,7 +35,7 @@
     </div>
     <div class="">
         <div class="card-body">
-            <div *ngIf="isShow ==0">
+            <div *ngIf="isShow() ==0">
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
                     (ngModelChange)="onChangeYear($event)">
                     <option value="2024">2024</option>
@@ -45,7 +45,7 @@
                 </select>
             </div>
             <br>
-            <div *ngIf="isShow ==0">
+            <div *ngIf="isShow() ==0">
                 <!-- Bordered Table -->
                 <div class="table-responsive text-nowrap">
                     <table class="table table-bordered">
@@ -61,7 +61,7 @@
                         <tbody *ngFor="let data of opcr().data; let i = index">
                             <tr>
                                 <td class="pointer">
-                                    <a (click)="OPCRDetails(data.opcrId, opcrName = data.details, isShow = 1)">
+                                    <a (click)="OPCRDetails(data.opcrId, opcrName = data.details)">
                                         <strong>{{ data.details }}</strong>
                                     </a>
                                 </td>
@@ -111,7 +111,7 @@
             <!--/ Bordered Table -->
             <!-- Content -->
 
-            <div class="container-xxl flex-grow-1 container-p-y" *ngIf="isShow ==1">
+            <div class="container-xxl flex-grow-1 container-p-y" *ngIf="isShow() ==1">
                 <!-- Basic Layout -->
                 <div class="row">
                     <div class="col-xl-6">
@@ -427,7 +427,7 @@
                 </div>
             </div>
             <!-- / Content -->
-            <!-- <div *ngIf="isShow ==5">
+            <!-- <div *ngIf="isShow() ==5">
                 <div class="d-flex justify-content-end">
                     <button *ngIf="flag ==1" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#modalCenter">

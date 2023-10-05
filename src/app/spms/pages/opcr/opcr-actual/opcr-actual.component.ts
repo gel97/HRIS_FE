@@ -22,8 +22,22 @@ export class OpcrActualComponent implements OnInit {
   }
 
   opcrMfoes: any = this.opcrService.opcrDetails;
+  isLoading: boolean = false;
+  notEmpty: boolean = false;
 
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+    this.opcrService.GetOPCRDetails();
+
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false;
+      this.notEmpty =  this.opcrMfoes().data.length > 0;
+
+    }, 1000);
+   // console.log(this.opcrService.storage)
+
+  }
 
   get opcrMfoesData(): { [key: number]: any[] } {
     const groupedData: { [key: number]: any[] } = this.opcrMfoes().data.reduce(
@@ -57,7 +71,7 @@ export class OpcrActualComponent implements OnInit {
         break;
     }
 
-    return catName + ' FUNCTION';
+    return catName? catName + ' FUNCTION' : 'NO FUNCTION';
   }
 
   ReportStandard() {

@@ -17,12 +17,13 @@ export class OpcrTargetComponent implements OnInit {
   officeId = 'OFFPHRMONZ3WT7D';
   isCommon = 0;
   opcr: any = this.opcrService.opcr;
+  isShow: number | any = this.opcrService.storageIsShow;
+
   mfo: any = this.mfoService.mfo;
   mfoDetails: any = {};
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
   opcrName: string | any = '';
-  isShow: number | any = 0;
   flag: number = 0;
   category: any = [
     { int: 1, type: `STRATEGIC` },
@@ -40,18 +41,18 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
     this.mfoService.GetMFOes();
     this.GetOfficeDivision();
-    this.sortExcist();
+    this.sortExcist();  
   }
 
+
+
   localStorage() {
-    let id: string | any = localStorage.getItem('opcrId');
-    if ((this.isShow = localStorage.getItem('isShow'))) {
-      this.isShow = this.isShow;
-      this.opcrName = localStorage.getItem('opcrDetails');
-      this.opcrService.GetOPCRDetails(id, this.opcrName, this.isShow);
-      this.sortExcist();
+    if (this.opcrService.storageIsShow() === '1') {
+      this.opcrService.GetOPCRDetails();
+
     } else {
-      this.isShow = 0;
+      localStorage.setItem('isShow', '0');
+      this.opcrService.storageIsShow.set(0);
     }
   }
 
@@ -118,9 +119,16 @@ export class OpcrTargetComponent implements OnInit {
     this.opcrService.GetOPCRs(year, this.officeId);
   }
 
-  OPCRDetails(opcrid: string, opcrdetails: string, isShow: number) {
-    this.opcrService.GetOPCRDetails(opcrid, opcrdetails, isShow);
-    console.log('opcr', this.opcrDetails());
+  OPCRDetails(opcrid: string, opcrdetails: string) {
+    this.opcrService.storageIsShow.set(1);
+    this.opcrService.storageOpcrId.set(opcrid);
+    this.opcrService.storageOpcrDetails.set(opcrdetails);
+
+    localStorage.setItem('isShow', '1');
+    localStorage.setItem('opcrId', opcrid);
+    localStorage.setItem('opcrDetails', opcrdetails);
+
+    this.opcrService.GetOPCRDetails();
     this.sortExcist();
   }
 
@@ -145,8 +153,15 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   removelocalStorage() {
-    localStorage.clear();
-    this.localStorage();
+    this.opcrService.storageIsShow.set(0);
+    this.opcrService.storageOpcrId.set(null);
+    this.opcrService.storageOpcrDetails.set(null);
+
+    localStorage.setItem('isShow', '0');
+    localStorage.setItem('opcrId', '');
+    localStorage.setItem('opcrName', '');
+
+  
     this.GetMFOs();
   }
 }
