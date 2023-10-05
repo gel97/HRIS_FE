@@ -125,14 +125,53 @@
                                                 <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
                                             </div>
                                             <div class="col-2">
-                                                <div *ngFor="let item of category">
+                                                <div class="btn-group float-end">
+
+                                                    <span class="badge rounded-pill bg-label-primary float-end pointer"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"
+                                                        style="font-size: 16px; padding: 12px;">
+                                                        {{displayCatergory(data.categoryId) }}
+                                                    </span>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a (click)="PutMFOCategory(data.mfoId, 1); data.categoryId = 1"
+                                                                class="dropdown-item"
+                                                                href="javascript:void(0);">STRATEGIC</a></li>
+                                                        <li><a (click)="PutMFOCategory(data.mfoId, 2); data.categoryId = 2"
+                                                                class="dropdown-item" href="javascript:void(0);">CORE
+                                                            </a>
+                                                        </li>
+                                                        <li><a (click)="PutMFOCategory(data.mfoId, 3); data.categoryId = 3"
+                                                                class="dropdown-item" href="javascript:void(0);">SUPPORT
+                                                            </a></li>
+                                                    </ul>
+                                                </div>
+                                                <!-- <div *ngFor="let item of category">
                                                     <span *ngIf="item.int == data.categoryId"
                                                         class="badge rounded-pill bg-label-primary float-end"
                                                         style="font-size: 16px; padding: 12px;">
                                                         {{item.type}}
                                                     </span>
+                                                </div> -->
+                                                <!-- <div *ngIf="data.categoryId == null" class="btn-group float-end">
+                                                    <button type="button"
+                                                        class="btn btn-secondary btn-icon rounded-pill dropdown-toggle hide-arrow "
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a (click)="PutMFOCategory(data.mfoId, 1)"
+                                                                class="dropdown-item"
+                                                                href="javascript:void(0);">STRATEGIC</a></li>
+                                                        <li><a (click)="PutMFOCategory(data.mfoId, 2)"
+                                                                class="dropdown-item" href="javascript:void(0);">CORE
+                                                            </a>
+                                                        </li>
+                                                        <li><a (click)="PutMFOCategory(data.mfoId, 3)"
+                                                                class="dropdown-item" href="javascript:void(0);">SUPPORT
+                                                            </a></li>
+                                                    </ul>
+                                                </div> -->
 
-                                                </div>
                                             </div>
                                         </div>
                                         <!-- Accordion -->
@@ -305,15 +344,11 @@
                                                                                     class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
                                                                         </div>
                                                                         <div class="col-4">
-                                                                            <div *ngFor="let item of category">
-                                                                                <span
-                                                                                    *ngIf="item.int == data.categoryId"
-                                                                                    class="badge rounded-pill bg-label-primary float-end"
-                                                                                    style="font-size: 16px; padding: 12px;">
-                                                                                    {{item.type}}
-                                                                                </span>
-
-                                                                            </div>
+                                                                            <span
+                                                                                class="badge rounded-pill bg-label-primary float-end"
+                                                                                style="font-size: 16px; padding: 12px;">
+                                                                                {{displayCatergory(data.categoryId)}}
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                 </tr>
@@ -491,8 +526,8 @@
                     <div class="row">
                         <div class="col-6">
                             <label class="form-label" for="basic-default-fullname">Quantity</label>
-                            <input [(ngModel)]="mfoDetails.qty" type="number" class="form-control"
-                                id="basic-default-fullname" placeholder="" />
+                            <input [(ngModel)]="mfoDetails.qty" (ngModelChange)="calculateRating()" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" />
                             <div class="col-md">
                                 <!-- <small class="text-light fw-semibold d-block">Inline Radio</small> -->
                                 <div class="form-check form-check-inline mt-3">
@@ -539,9 +574,9 @@
                                         <span *ngIf="mfoDetails.standard">
                                             <!-- {{mfoDetails.standard.qty5}} -->
                                             <div class="form-floating">
-                                                <input type="number" class="form-control" id="floatingInput"
-                                                    placeholder="" aria-describedby="floatingInputHelp" />
-                                                <label for="floatingInput">Quantity 5</label>
+                                                <input [(ngModel)]="mfoDetails.qty5" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
                                             </div>
                                         </span>
                                     </td>
@@ -558,9 +593,9 @@
                                         <span *ngIf="mfoDetails.standard">
                                             <!-- {{mfoDetails.standard.qty4}} -->
                                             <div class="form-floating">
-                                                <input type="number" class="form-control" id="floatingInput"
-                                                    placeholder="" aria-describedby="floatingInputHelp" />
-                                                <label for="floatingInput">Quantity 4</label>
+                                                <input [(ngModel)]="mfoDetails.qty4" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
                                             </div>
                                         </span>
                                     </td>
@@ -577,9 +612,9 @@
                                         <span *ngIf="mfoDetails.standard">
                                             <!-- {{mfoDetails.standard.qty3}} -->
                                             <div class="form-floating">
-                                                <input type="number" class="form-control" id="floatingInput"
-                                                    placeholder="" aria-describedby="floatingInputHelp" />
-                                                <label for="floatingInput">Quantity 3</label>
+                                                <input [(ngModel)]="mfoDetails.qty3" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
                                             </div>
                                         </span>
                                     </td>
@@ -596,9 +631,9 @@
                                         <span *ngIf="mfoDetails.standard">
                                             <!-- {{mfoDetails.standard.qty2}} -->
                                             <div class="form-floating">
-                                                <input type="number" class="form-control" id="floatingInput"
-                                                    placeholder="" aria-describedby="floatingInputHelp" />
-                                                <label for="floatingInput">Quantity 2</label>
+                                                <input [(ngModel)]="mfoDetails.qty2" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
                                             </div>
                                         </span>
                                     </td>
@@ -615,9 +650,9 @@
                                         <span *ngIf="mfoDetails.standard">
                                             <!-- {{mfoDetails.standard.qty1}} -->
                                             <div class="form-floating">
-                                                <input type="number" class="form-control" id="floatingInput"
-                                                    placeholder="" aria-describedby="floatingInputHelp" />
-                                                <label for="floatingInput">Quantity 5</label>
+                                                <input [(ngModel)]="mfoDetails.qty1" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
                                             </div>
                                         </span>
                                     </td>
