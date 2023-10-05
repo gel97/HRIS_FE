@@ -17,18 +17,14 @@ export class OpcrTargetComponent implements OnInit {
   officeId = 'OFFPHRMONZ3WT7D';
   isCommon = 0;
   opcr: any = this.opcrService.opcr;
+  isShow: number | any = this.opcrService.storageIsShow;
+
   mfo: any = this.mfoService.mfo;
   mfoDetails: any = {};
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
   opcrName: string | any = '';
-  isShow: number | any = 0;
   flag: number = 0;
-  category: any = [
-    { int: 1, type: `STRATEGIC` },
-    { int: 2, type: `CORE` },
-    { int: 3, type: `SUPPORT` },
-  ];
   data: any = {};
   isCheck: boolean[] = []; // An array to store checkbox values (true if selected, false if not)
   selectedDivisions: string[] = []; // An array to store selected division names
@@ -40,19 +36,55 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
     this.mfoService.GetMFOes();
     this.GetOfficeDivision();
-    this.sortExcist();
+    this.sortExcist();  
   }
 
+
+
   localStorage() {
-    let id: string | any = localStorage.getItem('opcrId');
-    if ((this.isShow = localStorage.getItem('isShow'))) {
-      this.isShow = this.isShow;
-      this.opcrName = localStorage.getItem('opcrDetails');
-      this.opcrService.GetOPCRDetails(id, this.opcrName, this.isShow);
-      this.sortExcist();
+    if (this.opcrService.storageIsShow() === '1') {
+      this.opcrService.GetOPCRDetails();
+
     } else {
-      this.isShow = 0;
+      localStorage.setItem('isShow', '0');
+      this.opcrService.storageIsShow.set(0);
     }
+  }
+
+  displayCatergory(cat: number) {
+    let catName = '';
+    switch (cat) {
+      case 1:
+        catName = 'Strategic';
+        break;
+      case 2:
+        catName = 'Core';
+
+        break;
+      case 3:
+        catName = 'Support';
+        break;
+      default:
+        break;
+    }
+
+    if (cat == null) {
+      catName = 'No Category';
+    }
+
+    return catName;
+  }
+
+  calculateRating() {
+    this.mfoDetails.qty5 = Math.floor(
+      this.mfoDetails.qty * 0.3 + this.mfoDetails.qty
+    );
+    this.mfoDetails.qty4 = Math.floor(
+      this.mfoDetails.qty * 0.15 + this.mfoDetails.qty
+    );
+    this.mfoDetails.qty3 = Math.floor(this.mfoDetails.qty);
+    this.mfoDetails.qty2 = Math.floor(this.mfoDetails.qty / 2 + 1);
+    this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
   }
 
   GetOPCRs() {
@@ -77,6 +109,10 @@ export class OpcrTargetComponent implements OnInit {
     this.data.year = this.getYear;
     this.data.officeId = this.officeId;
     this.opcrService.AddOPCR(this.data);
+  }
+
+  PutMFOCategory(mfoId: string, categoryId: number) {
+    this.opcrService.PutMFOCategory(mfoId, categoryId);
   }
 
   PostOPCRDetails() {
@@ -118,9 +154,16 @@ export class OpcrTargetComponent implements OnInit {
     this.opcrService.GetOPCRs(year, this.officeId);
   }
 
-  OPCRDetails(opcrid: string, opcrdetails: string, isShow: number) {
-    this.opcrService.GetOPCRDetails(opcrid, opcrdetails, isShow);
-    console.log('opcr', this.opcrDetails());
+  OPCRDetails(opcrid: string, opcrdetails: string) {
+    this.opcrService.storageIsShow.set(1);
+    this.opcrService.storageOpcrId.set(opcrid);
+    this.opcrService.storageOpcrDetails.set(opcrdetails);
+
+    localStorage.setItem('isShow', '1');
+    localStorage.setItem('opcrId', opcrid);
+    localStorage.setItem('opcrDetails', opcrdetails);
+
+    this.opcrService.GetOPCRDetails();
     this.sortExcist();
   }
 
@@ -145,8 +188,15 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   removelocalStorage() {
-    localStorage.clear();
-    this.localStorage();
+    this.opcrService.storageIsShow.set(0);
+    this.opcrService.storageOpcrId.set(null);
+    this.opcrService.storageOpcrDetails.set(null);
+
+    localStorage.setItem('isShow', '0');
+    localStorage.setItem('opcrId', '');
+    localStorage.setItem('opcrName', '');
+
+  
     this.GetMFOs();
   }
 }

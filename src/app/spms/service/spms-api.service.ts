@@ -12,7 +12,7 @@ export class SpmsApiService {
   put_mfo = () => `/tPMMFOes`;
   delete_mfo = (mfoId: string) => `/tPMMFOes/${mfoId}`;
   put_mfo_category = (mfoId: string, categoryId: number) =>
-    `tPMMFOes/category/${mfoId}/${categoryId}`;
+    `/tPMMFOes/category/${mfoId}/${categoryId}`;
 
   post_success_indicator = () => `/tPMMFOIndicators`;
   put_success_indicator = () => `/tPMMFOIndicators`;

@@ -19,6 +19,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     OpcrActualComponent,
     OpcrTargetComponent,
     SpinnerComponent,
-    LinearLoadingComponent
+    LinearLoadingComponent,
+    OpcrActualSkeletonComponent
   ],
   imports: [
     CommonModule,

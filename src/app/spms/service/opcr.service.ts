@@ -14,6 +14,10 @@ export class OpcrService {
     private alertService: AlertService
   ) {}
 
+  storageIsShow = signal<any>(localStorage.getItem('isShow'));
+  storageOpcrId = signal<any>(localStorage.getItem('opcrId'));
+  storageOpcrDetails = signal<any>(localStorage.getItem('opcrDetails'));
+
   getId: string | any = localStorage.getItem('opcrId');
 
   getYear = '2023';
@@ -61,14 +65,10 @@ export class OpcrService {
       });
   }
 
-  GetOPCRDetails(opcrid: string, opcrdetails: string, isShow: number) {
-    localStorage.setItem('isShow', isShow.toString());
-    localStorage.setItem('opcrId', opcrid);
-    localStorage.setItem('opcrDetails', opcrdetails);
-    // this.opcrDetails().data = [];
+  GetOPCRDetails() {
     this.opcrDetails.mutate((a: any) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_opcrdetails(opcrid), {
+      .get<any[]>(api + this.url.get_opcrdetails(this.storageOpcrId()), {
         responseType: `json`,
       })
       .subscribe({
@@ -98,6 +98,24 @@ export class OpcrService {
           this.alertService.error();
         },
         complete: () => {},
+      });
+  }
+
+  PutMFOCategory(mfoId: string, categoryId: number) {
+    console.log(mfoId);
+    console.log(categoryId);
+    this.http
+      .put<any[]>(api + this.url.put_mfo_category(mfoId, categoryId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.update();
+        },
       });
   }
 
