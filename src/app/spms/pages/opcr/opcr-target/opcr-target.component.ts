@@ -86,6 +86,18 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
   }
 
+  editcalculateRating() {
+    this.editopcrDetails.qty5 = Math.floor(
+      this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
+    );
+    this.editopcrDetails.qty4 = Math.floor(
+      this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
+    );
+    this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
+    this.editopcrDetails.qty2 = Math.floor(this.editopcrDetails.qty / 2 + 1);
+    this.editopcrDetails.qty1 = Math.floor(this.editopcrDetails.qty / 2);
+  }
+
   GetOPCRs() {
     this.opcrService.GetOPCRs(this.getYear, this.officeId);
   }
@@ -132,6 +144,18 @@ export class OpcrTargetComponent implements OnInit {
     this.GetMFOs();
   }
 
+  checkedNumeric: boolean = false;
+  checkedPercentaged: boolean = false;
+  checker(qtyUnit: number) {
+    if (qtyUnit == 0) {
+      this.checkedNumeric = true;
+      this.checkedPercentaged = false;
+    } else {
+      this.checkedNumeric = false;
+      this.checkedPercentaged = true;
+    }
+  }
+
   concatSelectedDivisions(): string {
     return this.selectedDivisions.join('/'); // Use a comma and space as the separator
   }
@@ -153,6 +177,10 @@ export class OpcrTargetComponent implements OnInit {
     this.opcrService.GetOPCRs(year, this.officeId);
   }
 
+  EditOPCRData() {
+    this.opcrService.EditOPCRData(this.editopcrDetails);
+  }
+
   OPCRDetails(opcrid: string, opcrdetails: string) {
     this.opcrService.storageIsShow.set(1);
     this.opcrService.storageOpcrId.set(opcrid);
@@ -169,6 +197,10 @@ export class OpcrTargetComponent implements OnInit {
 
   qtyUnit(value: number) {
     this.mfoDetails.qtyUnit = value;
+  }
+
+  editQtyUnit(value: number) {
+    this.editopcrDetails.qtyUnit = value;
   }
 
   sortExcist() {
