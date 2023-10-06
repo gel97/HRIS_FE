@@ -227,7 +227,7 @@
                                                                 <span class="tf-icons bx bx-trash"></span>
                                                             </button>
                                                             <button type="button" data-bs-toggle="modal"
-                                                                (click)="editopcrDetails = si; editMFODetails = data"
+                                                                (click)="editopcrDetails = si; editMFODetails = data; displayDivision(si.sharedDiv)"
                                                                 data-bs-target="#editDetails"
                                                                 class="btn rounded-pill btn-icon btn-primary float-end">
                                                                 <span class="tf-icons bx bx-pencil"></span>
@@ -338,7 +338,7 @@
                                                                                 {{si.indicator}}
                                                                             </div>
                                                                             <div class="col-1">
-                                                                                <button (click)="mfoDetails = si"
+                                                                                <button (click)="mfoDetails = si; clearSelectedDiv()"
                                                                                     type="button" data-bs-toggle="modal"
                                                                                     data-bs-target="#modalAdd"
                                                                                     class="btn rounded-pill btn-icon btn-primary float-end">
@@ -487,11 +487,12 @@
                         <div *ngIf="!mfoService.isCommon()" class="col-6">
                             <div class="col-md">
                                 <small class="text-light fw-semibold">DIVISION</small>
-                                <div class="form-check mt-3" *ngFor="let data of officeDivision().data; let i = index">
-                                    <input [(ngModel)]="isCheck[i]" class="form-check-input" type="checkbox" value=""
-                                        id="defaultCheck{{i}}" (change)="onCheckboxChange(i)" />
-                                    <label class="form-check-label"
-                                        for="defaultCheck{{i}}">{{data.divisionName}}</label>
+                                <div *ngFor="let data of division; let i = index">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" [id]="data.divisionName" [checked]="data.isCheckDiv" (change)="onCheckDivision(data.divisionName, $event)"/>
+                                        <label class="form-check-label" [for]="data.divisionName"> {{data.divisionName}}
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -660,17 +661,10 @@
                         <div *ngIf="!editMFODetails.isCommon" class="col-6">
                             <div class="col-md">
                                 <small class="text-light fw-semibold">DIVISION</small>
-                                <!-- <div class="form-check mt-3" *ngFor="let data of officeDivision().data; let i = index">
-                                    <input [(ngModel)]="isCheck[i]" class="form-check-input" type="checkbox" value=""
-                                        id="defaultCheck{{i}}" (change)="onCheckboxChange(i)" />
-                                    <label class="form-check-label"
-                                        for="defaultCheck{{i}}">{{data.divisionName}}</label>
-                                </div> -->
-                                <div *ngFor="let data of officeDivision().data">
+                                <div *ngFor="let data of division; let i = index">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3"
-                                            checked />
-                                        <label class="form-check-label" for="defaultCheck3"> {{data.divisionName}}
+                                        <input class="form-check-input" type="checkbox" value="" [id]="data.divisionName" [checked]="data.isCheckDiv" (change)="onCheckDivision(data.divisionName, $event)"/>
+                                        <label class="form-check-label" [for]="data.divisionName"> {{data.divisionName}}
                                         </label>
                                     </div>
                                 </div>
