@@ -87,15 +87,19 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   editcalculateRating() {
-    this.editopcrDetails.qty5 = Math.floor(
+    this.editopcrDetails.standard.qty5 = Math.floor(
       this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
     );
-    this.editopcrDetails.qty4 = Math.floor(
+    this.editopcrDetails.standard.qty4 = Math.floor(
       this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
     );
-    this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
-    this.editopcrDetails.qty2 = Math.floor(this.editopcrDetails.qty / 2 + 1);
-    this.editopcrDetails.qty1 = Math.floor(this.editopcrDetails.qty / 2);
+    this.editopcrDetails.standard.qty3 = Math.floor(this.editopcrDetails.qty);
+    this.editopcrDetails.standard.qty2 = Math.floor(
+      this.editopcrDetails.qty / 2 + 1
+    );
+    this.editopcrDetails.standard.qty1 = Math.floor(
+      this.editopcrDetails.qty / 2
+    );
   }
 
   GetOPCRs() {
