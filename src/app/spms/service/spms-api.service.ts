@@ -27,6 +27,7 @@ export class SpmsApiService {
   post_opcr = () => `/tPMOpcrs`;
 
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
+  put_opcrdata = () => `/tPMOpcrDatas`;
   post_opcrdata = () => `/tPMOpcrDatas`;
   get_opcrdetails = (opcrId: string) => `/tPMOpcrDatas/${opcrId}`;
 

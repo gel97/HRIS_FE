@@ -208,4 +208,27 @@ export class OpcrService {
         },
       });
   }
+
+  EditOPCRData(opcrData: any) {
+    this.opcrDetails.mutate((a) => (a.isLoadingSave = true));
+
+    this.http
+      .put<any[]>(api + this.url.put_opcrdata(), opcrData, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.opcrDetails.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.opcrDetails.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+        },
+        complete: () => {},
+      });
+  }
 }
