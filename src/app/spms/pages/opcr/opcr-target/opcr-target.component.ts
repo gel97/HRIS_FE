@@ -30,6 +30,8 @@ export class OpcrTargetComponent implements OnInit {
   selectedDivisions: string[] = []; // An array to store selected division names
   isSearchLoading: any = this.mfoService.isSearchLoading;
   search: any = {};
+  editopcrDetails: any = {};
+  editMFODetails: any = {};
 
   ngOnInit(): void {
     this.localStorage();
@@ -161,6 +163,7 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrDetails', opcrdetails);
 
     this.opcrService.GetOPCRDetails();
+    console.log('opcr', this.opcrDetails());
     this.sortExcist();
   }
 
