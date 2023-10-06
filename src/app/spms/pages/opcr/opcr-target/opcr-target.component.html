@@ -121,10 +121,10 @@
                                     *ngFor="let data of opcrDetails().data; let parent = index ">
                                     <div class="card-body ">
                                         <div class="row">
-                                            <div class="col-10">
+                                            <div class="col-8">
                                                 <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
                                             </div>
-                                            <div class="col-2">
+                                            <div class="col-4">
                                                 <div class="btn-group float-end">
 
                                                     <span class="badge rounded-pill bg-label-primary float-end pointer"
@@ -225,6 +225,12 @@
                                                                 type="button"
                                                                 class="btn rounded-pill btn-icon btn-danger float-end">
                                                                 <span class="tf-icons bx bx-trash"></span>
+                                                            </button>
+                                                            <button type="button" data-bs-toggle="modal"
+                                                                (click)="editopcrDetails = si; editMFODetails = data"
+                                                                data-bs-target="#editDetails"
+                                                                class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                <span class="tf-icons bx bx-pencil"></span>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -597,6 +603,187 @@
                                         </span></td>
                                     <td><span *ngIf="mfoDetails.standard">
                                             {{mfoDetails.standard.timely1}}
+                                        </span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Bootstrap Table with Header - Light -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button data-bs-dismiss="modal" (click)="PostOPCRDetails()" type="button" class="btn btn-primary">Save
+                    changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Vertically Centered Modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="editDetails" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
+                    {{editopcrDetails.indicator}} {{editopcrDetails.sharedDiv}} {{editopcrDetails.qtyUnit}}
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label" for="basic-default-fullname">Quantity</label>
+                            <input [(ngModel)]="editopcrDetails.qty" (ngModelChange)="calculateRating()" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" />
+                            <div class="col-md">
+                                <!-- <small class="text-light fw-semibold d-block">Inline Radio</small> -->
+                                <div class="form-check form-check-inline mt-3">
+                                    <input (click)="qtyUnit(0)" class="form-check-input" type="radio"
+                                        name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                                    <label class="form-check-label" for="inlineRadio1">Numeric</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input (click)="qtyUnit(1)" class="form-check-input" type="radio"
+                                        name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                                    <label class="form-check-label" for="inlineRadio2">Percentage</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!editMFODetails.isCommon" class="col-6">
+                            <div class="col-md">
+                                <small class="text-light fw-semibold">DIVISION</small>
+                                <!-- <div class="form-check mt-3" *ngFor="let data of officeDivision().data; let i = index">
+                                    <input [(ngModel)]="isCheck[i]" class="form-check-input" type="checkbox" value=""
+                                        id="defaultCheck{{i}}" (change)="onCheckboxChange(i)" />
+                                    <label class="form-check-label"
+                                        for="defaultCheck{{i}}">{{data.divisionName}}</label>
+                                </div> -->
+                                <div *ngFor="let data of officeDivision().data">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3"
+                                            checked />
+                                        <label class="form-check-label" for="defaultCheck3"> {{data.divisionName}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bootstrap Table with Header - Light -->
+                <div class="card">
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>RATING</th>
+                                    <th>QUANTITY</th>
+                                    <th>QUALITY</th>
+                                    <th>TIMELINESS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                <tr>
+                                    <td>{{'5'}}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails.standard">
+                                            <!-- {{mfoDetails.standard.qty5}} -->
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.standard.qty5" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.qlty5}}
+                                        </span></td>
+                                    <td><span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.timely5}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'4'}}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails.standard">
+                                            <!-- {{mfoDetails.standard.qty4}} -->
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.standard.qty4" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.qlty4}}
+                                        </span></td>
+                                    <td><span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.timely4}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'3'}}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails.standard">
+                                            <!-- {{mfoDetails.standard.qty3}} -->
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.standard.qty3" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.qlty3}}
+                                        </span></td>
+                                    <td><span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.timely3}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'2'}}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails.standard">
+                                            <!-- {{mfoDetails.standard.qty2}} -->
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.standard.qty2" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.qlty2}}
+                                        </span></td>
+                                    <td><span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.timely2}}
+                                        </span></td>
+                                </tr>
+                                <tr>
+                                    <td>{{'1'}}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails.standard">
+                                            <!-- {{mfoDetails.standard.qty1}} -->
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.standard.qty1" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td> <span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.qlty1}}
+                                        </span></td>
+                                    <td><span *ngIf="editopcrDetails.standard">
+                                            {{editopcrDetails.standard.timely1}}
                                         </span></td>
                                 </tr>
                             </tbody>
