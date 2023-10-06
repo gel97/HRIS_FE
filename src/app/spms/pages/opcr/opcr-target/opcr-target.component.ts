@@ -52,39 +52,37 @@ export class OpcrTargetComponent implements OnInit {
     }
   }
 
-  displayDivision(sharedDiv:string){
-   this.division = [];   
-    this.officeDivision().data.map((a:any)=>{
+  displayDivision(sharedDiv: string) {
+    this.division = [];
+    this.officeDivision().data.map((a: any) => {
       if (sharedDiv.includes(a.divisionName)) {
-        this.division.push({divisionName:a.divisionName, isCheckDiv: true})
-      }
-      else{
-        this.division.push({divisionName:a.divisionName, isCheckDiv: false})
+        this.division.push({ divisionName: a.divisionName, isCheckDiv: true });
+      } else {
+        this.division.push({ divisionName: a.divisionName, isCheckDiv: false });
       }
     });
   }
 
-  onCheckDivision(divName:string, event:any){
-   let index = this.division.findIndex((a:any) => a.divisionName === divName);
-   this.division[index].isCheckDiv = event.target.checked;
+  onCheckDivision(divName: string, event: any) {
+    let index = this.division.findIndex((a: any) => a.divisionName === divName);
+    this.division[index].isCheckDiv = event.target.checked;
   }
 
-  sharedDivValue(){
-    let value = "";
-    this.division.map((a:any)=>{
-      if(a.isCheckDiv){
-        value += a.divisionName+"/";
+  sharedDivValue() {
+    let value = '';
+    this.division.map((a: any) => {
+      if (a.isCheckDiv) {
+        value += a.divisionName + '/';
       }
-    })
+    });
     return value.slice(0, -1);
   }
 
-  clearSelectedDiv(){
-    this.division.map((a:any)=>{
+  clearSelectedDiv() {
+    this.division.map((a: any) => {
       a.isCheckDiv = false;
-    })
+    });
   }
-
 
   displayCatergory(cat: number) {
     let catName = '';
@@ -122,6 +120,22 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
   }
 
+  editcalculateRating() {
+    this.editopcrDetails.standard.qty5 = Math.floor(
+      this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
+    );
+    this.editopcrDetails.standard.qty4 = Math.floor(
+      this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
+    );
+    this.editopcrDetails.standard.qty3 = Math.floor(this.editopcrDetails.qty);
+    this.editopcrDetails.standard.qty2 = Math.floor(
+      this.editopcrDetails.qty / 2 + 1
+    );
+    this.editopcrDetails.standard.qty1 = Math.floor(
+      this.editopcrDetails.qty / 2
+    );
+  }
+
   GetOPCRs() {
     this.opcrService.GetOPCRs(this.getYear, this.officeId);
   }
@@ -133,7 +147,7 @@ export class OpcrTargetComponent implements OnInit {
   GetOfficeDivision() {
     this.opcrService.GetOfficeDivision(this.officeId);
     setTimeout(() => {
-      this.displayDivision("");
+      this.displayDivision('');
     }, 1000);
   }
 
@@ -171,8 +185,25 @@ export class OpcrTargetComponent implements OnInit {
     this.GetMFOs();
   }
 
+  checkedNumeric: boolean = false;
+  checkedPercentaged: boolean = false;
+  checker(qtyUnit: number) {
+    if (qtyUnit == 0) {
+      this.checkedNumeric = true;
+      this.checkedPercentaged = false;
+    } else {
+      this.checkedNumeric = false;
+      this.checkedPercentaged = true;
+    }
+  }
+
   onChangeYear(year: any) {
     this.opcrService.GetOPCRs(year, this.officeId);
+  }
+
+  EditOPCRData() {
+    this.editopcrDetails.sharedDiv = this.sharedDivValue();
+    this.opcrService.EditOPCRData(this.editopcrDetails);
   }
 
   OPCRDetails(opcrid: string, opcrdetails: string) {
@@ -191,6 +222,10 @@ export class OpcrTargetComponent implements OnInit {
 
   qtyUnit(value: number) {
     this.mfoDetails.qtyUnit = value;
+  }
+
+  editQtyUnit(value: number) {
+    this.editopcrDetails.qtyUnit = value;
   }
 
   sortExcist() {
