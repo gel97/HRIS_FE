@@ -33,7 +33,8 @@ export class OpcrTargetComponent implements OnInit {
   editopcrDetails: any = {};
   editMFODetails: any = {};
   division:any = [];
-
+  isExpandMfoes:boolean= false;
+  
   ngOnInit(): void {
     this.localStorage();
     this.GetOPCRs();
@@ -169,23 +170,6 @@ export class OpcrTargetComponent implements OnInit {
     this.sortExcist();
     this.GetMFOs();
   }
-
-  // concatSelectedDivisions(): string {
-  //   return this.selectedDivisions.join('/'); // Use a comma and space as the separator
-  // }
-  // // Function to handle checkbox change event
-  // onCheckboxChange(index: number) {
-  //   if (this.isCheck[index]) {
-  //     this.selectedDivisions.push(
-  //       this.officeDivision().data[index].divisionName
-  //     );
-  //   } else {
-  //     const removedDivision = this.officeDivision().data[index].divisionName;
-  //     this.selectedDivisions = this.selectedDivisions.filter(
-  //       (division) => division !== removedDivision
-  //     );
-  //   }
-  // }
 
   onChangeYear(year: any) {
     this.opcrService.GetOPCRs(year, this.officeId);

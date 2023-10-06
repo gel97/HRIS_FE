@@ -20,6 +20,13 @@
   overflow-y: auto; /* Enable vertical scroll when content overflows */
 }
 
+.offcanvas-end {
+  width: 40%;
+  border-left: 1px solid rgba(67, 89, 113, 0.2);
+  border-left-width: 5px;
+  border-left-style: solid;
+  border-left-color: rgba(67, 89, 113, 0.2);
+}
 
 
 
