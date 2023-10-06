@@ -32,6 +32,7 @@ export class OpcrTargetComponent implements OnInit {
   search: any = {};
   editopcrDetails: any = {};
   editMFODetails: any = {};
+  division: any = [];
 
   ngOnInit(): void {
     this.localStorage();
@@ -48,6 +49,38 @@ export class OpcrTargetComponent implements OnInit {
       localStorage.setItem('isShow', '0');
       this.opcrService.storageIsShow.set(0);
     }
+  }
+
+  displayDivision(sharedDiv: string) {
+    this.division = [];
+    this.officeDivision().data.map((a: any) => {
+      if (sharedDiv.includes(a.divisionName)) {
+        this.division.push({ divisionName: a.divisionName, isCheckDiv: true });
+      } else {
+        this.division.push({ divisionName: a.divisionName, isCheckDiv: false });
+      }
+    });
+  }
+
+  onCheckDivision(divName: string, event: any) {
+    let index = this.division.findIndex((a: any) => a.divisionName === divName);
+    this.division[index].isCheckDiv = event.target.checked;
+  }
+
+  sharedDivValue() {
+    let value = '';
+    this.division.map((a: any) => {
+      if (a.isCheckDiv) {
+        value += a.divisionName + '/';
+      }
+    });
+    return value.slice(0, -1);
+  }
+
+  clearSelectedDiv() {
+    this.division.map((a: any) => {
+      a.isCheckDiv = false;
+    });
   }
 
   displayCatergory(cat: number) {
@@ -112,6 +145,9 @@ export class OpcrTargetComponent implements OnInit {
 
   GetOfficeDivision() {
     this.opcrService.GetOfficeDivision(this.officeId);
+    setTimeout(() => {
+      this.displayDivision('');
+    }, 1000);
   }
 
   setMFOs(set: number) {
@@ -131,7 +167,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   PostOPCRDetails() {
-    this.mfoDetails.sharedDiv = this.concatSelectedDivisions();
+    this.mfoDetails.sharedDiv = this.sharedDivValue();
     this.mfoDetails.opcrId = localStorage.getItem('opcrId');
     this.opcrService.AddOPCRData(this.mfoDetails);
     this.sortExcist();
@@ -160,28 +196,29 @@ export class OpcrTargetComponent implements OnInit {
     }
   }
 
-  concatSelectedDivisions(): string {
-    return this.selectedDivisions.join('/'); // Use a comma and space as the separator
-  }
-  // Function to handle checkbox change event
-  onCheckboxChange(index: number) {
-    if (this.isCheck[index]) {
-      this.selectedDivisions.push(
-        this.officeDivision().data[index].divisionName
-      );
-    } else {
-      const removedDivision = this.officeDivision().data[index].divisionName;
-      this.selectedDivisions = this.selectedDivisions.filter(
-        (division) => division !== removedDivision
-      );
-    }
-  }
+  // concatSelectedDivisions(): string {
+  //   return this.selectedDivisions.join('/'); // Use a comma and space as the separator
+  // }
+  // // Function to handle checkbox change event
+  // onCheckboxChange(index: number) {
+  //   if (this.isCheck[index]) {
+  //     this.selectedDivisions.push(
+  //       this.officeDivision().data[index].divisionName
+  //     );
+  //   } else {
+  //     const removedDivision = this.officeDivision().data[index].divisionName;
+  //     this.selectedDivisions = this.selectedDivisions.filter(
+  //       (division) => division !== removedDivision
+  //     );
+  //   }
+  // }
 
   onChangeYear(year: any) {
     this.opcrService.GetOPCRs(year, this.officeId);
   }
 
   EditOPCRData() {
+    this.editopcrDetails.sharedDiv = this.sharedDivValue();
     this.opcrService.EditOPCRData(this.editopcrDetails);
   }
 
