@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OfficeComponent } from './office/office.component';
 import { FormsModule } from '@angular/forms';
+import { OfficeComponent } from './office/office.component';
 import { SpinnerComponent } from '../../components/spinner.component';
 import { MfoRoutingModule } from './mfo-routing.module';
 import { ToggleMfoComponent } from './office/components/toggle-mfo.component';

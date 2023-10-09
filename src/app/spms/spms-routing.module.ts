@@ -24,6 +24,11 @@ const routes: Routes = [
         path: 'opcr/actual',
         component: OpcrActualComponent,
       },
+      {
+        path:'dpcr',
+        loadChildren: () => import('./pages/dpcr/dpcr.module')
+        .then(m => m.DpcrModule),
+      }
     ],
   },
 ];
