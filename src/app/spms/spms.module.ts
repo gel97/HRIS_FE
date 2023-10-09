@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { OfficeComponent } from './pages/mfo/office/office.component';
+import { MfoComponent } from './pages/mfo/mfo.component';
+import { DpcrComponent } from './pages/dpcr/dpcr.component';
 import { OpcrActualComponent } from './pages/opcr/opcr-actual/opcr-actual.component';
 import { OpcrTargetComponent } from './pages/opcr/opcr-target/opcr-target.component';
 import { SpmsRoutingModule } from './spms-routing.module';
@@ -24,12 +25,13 @@ import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components
 @NgModule({
   declarations: [
     SpmsComponent,
-    OfficeComponent,
+    MfoComponent,
     OpcrActualComponent,
     OpcrTargetComponent,
-    SpinnerComponent,
+    DpcrComponent,
+    ///SpinnerComponent,
     LinearLoadingComponent,
-    OpcrActualSkeletonComponent
+    OpcrActualSkeletonComponent,
   ],
   imports: [
     CommonModule,
