@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, ViewChild, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SpmsApiService } from './spms-api.service';
 import { api } from 'src/app/connection';
@@ -13,6 +13,9 @@ export class OpcrService {
     private url: SpmsApiService,
     private alertService: AlertService
   ) {}
+
+  // @ViewChild('closebutton')
+  // closebutton!: { nativeElement: { click: () => void } };
 
   storageIsShow = signal<any>(localStorage.getItem('isShow'));
   storageOpcrId = signal<any>(localStorage.getItem('opcrId'));
@@ -168,7 +171,7 @@ export class OpcrService {
   }
 
   AddOPCR(data: any) {
-    this.opcr.mutate((a) => (a.isLoadingSave = true));
+    this.opcr.mutate((a) => (a.isLoading = true));
     this.http
       .post<any[]>(api + this.url.post_opcr(), data, {
         responseType: `json`,
@@ -176,7 +179,7 @@ export class OpcrService {
       .subscribe({
         next: (response: any = {}) => {
           this.opcr.mutate((a) => (a.data = response));
-          this.opcr.mutate((a) => (a.isLoadingSave = false));
+          this.opcr.mutate((a) => (a.isLoading = false));
         },
         error: (error: any) => {
           this.alertService.error();
@@ -189,7 +192,7 @@ export class OpcrService {
   }
 
   AddOPCRData(data: any) {
-    this.opcrData.mutate((a) => (a.isLoadingSave = true));
+    this.opcrData.mutate((a) => (a.isLoading = true));
     this.http
       .post<any[]>(api + this.url.post_opcrdata(), data, {
         responseType: `json`,
@@ -197,38 +200,49 @@ export class OpcrService {
       .subscribe({
         next: (response: any = {}) => {
           this.opcrData.mutate((a) => (a.data = response));
-          this.opcrData.mutate((a) => (a.isLoadingSave = false));
+          this.opcrData.mutate((a) => (a.isLoading = false));
         },
         error: (error: any) => {
           this.alertService.error();
+          this.opcrData.mutate((a) => {
+            a.isLoading = false;
+            a.error = true;
+          });
         },
         complete: () => {
           this.StorageOPCRDetails(data.opcrId);
           this.alertService.save();
+          console.log('here service');
         },
       });
   }
 
   EditOPCRData(opcrData: any) {
-    this.opcrDetails.mutate((a) => (a.isLoadingSave = true));
+    this.opcrDetails.mutate((a) => (a.isLoading = true));
 
     this.http
-      .put<any[]>(api + this.url.put_opcrdata(), opcrData, { responseType: `json` })
+      .put<any[]>(api + this.url.put_opcrdata(), opcrData, {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
           this.opcrDetails.mutate((a) => {
-            a.isLoadingSave = false;
+            a.isLoading = false;
+            a.error = false;
           });
-
-          this.alertService.update();
         },
         error: (error: any) => {
           this.alertService.error();
           this.opcrDetails.mutate((a) => {
-            a.isLoadingSave = false;
+            a.isLoading = false;
+            a.error = true;
           });
         },
-        complete: () => {},
+        complete: () => {
+          // this.closebutton.nativeElement.click();
+          this.alertService.update();
+          console.log('here service');
+        },
       });
   }
 }

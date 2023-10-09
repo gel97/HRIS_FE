@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { OpcrService } from 'src/app/spms/service/opcr.service';
 import { MfoService } from 'src/app/spms/service/mfo.service';
 
@@ -23,6 +23,7 @@ export class OpcrTargetComponent implements OnInit {
   mfoDetails: any = {};
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
+  opcrData: any = this.opcrService.opcrData;
   opcrName: string | any = '';
   flag: number = 0;
   data: any = {};
@@ -32,9 +33,11 @@ export class OpcrTargetComponent implements OnInit {
   search: any = {};
   editopcrDetails: any = {};
   editMFODetails: any = {};
-  division:any = [];
-  isExpandMfoes:boolean= false;
-  
+  division: any = [];
+  isExpandMfoes: boolean = false;
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
   ngOnInit(): void {
     this.localStorage();
     this.GetOPCRs();
@@ -171,6 +174,12 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.sharedDiv = this.sharedDivValue();
     this.mfoDetails.opcrId = localStorage.getItem('opcrId');
     this.opcrService.AddOPCRData(this.mfoDetails);
+    setTimeout(() => {
+      if (!this.opcrData().error) {
+        this.closebutton.nativeElement.click();
+        console.log('here ts');
+      }
+    }, 3000);
     this.sortExcist();
   }
 
@@ -202,8 +211,19 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   EditOPCRData() {
+    this.editopcrDetails.qty5 = this.editopcrDetails.standard.qty5;
+    this.editopcrDetails.qty4 = this.editopcrDetails.standard.qty4;
+    this.editopcrDetails.qty3 = this.editopcrDetails.standard.qty3;
+    this.editopcrDetails.qty2 = this.editopcrDetails.standard.qty2;
+    this.editopcrDetails.qty1 = this.editopcrDetails.standard.qty1;
     this.editopcrDetails.sharedDiv = this.sharedDivValue();
     this.opcrService.EditOPCRData(this.editopcrDetails);
+    setTimeout(() => {
+      if (!this.opcrDetails().error) {
+        this.closebutton.nativeElement.click();
+        console.log('here ts');
+      }
+    }, 3000);
   }
 
   OPCRDetails(opcrid: string, opcrdetails: string) {
