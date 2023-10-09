@@ -179,7 +179,7 @@ export class OpcrTargetComponent implements OnInit {
         this.closebutton.nativeElement.click();
         console.log('here ts');
       }
-    }, 3000);
+    }, 1000);
     this.sortExcist();
   }
 
@@ -223,7 +223,7 @@ export class OpcrTargetComponent implements OnInit {
         this.closebutton.nativeElement.click();
         console.log('here ts');
       }
-    }, 3000);
+    }, 1000);
   }
 
   OPCRDetails(opcrid: string, opcrdetails: string) {

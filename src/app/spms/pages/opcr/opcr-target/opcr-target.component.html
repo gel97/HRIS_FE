@@ -124,7 +124,7 @@
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             {{displayCatergory(data.categoryId) }}
                                         </small>
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                                        <ul class="dropdown-menu dropdown-menu-end pointer">
                                             <li *ngIf="data.isCommon == 0"><a
                                                     (click)="PutMFOCategory(data.mfoId, 1); data.categoryId = 1"
                                                     class="dropdown-item">STRATEGIC</a></li>
@@ -213,14 +213,14 @@
                                             </div>
                                             <div>
                                                 <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
-                                                    class="btn rounded-pill btn-icon btn-danger float-end">
+                                                    class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
                                                     <span class="tf-icons bx bx-trash"></span>
                                                 </button>
                                                 <button (click)="checker(editopcrDetails.qtyUnit)" type="button"
                                                     data-bs-toggle="modal"
                                                     (click)="editopcrDetails = si; editMFODetails = data; displayDivision(si.sharedDiv)"
                                                     data-bs-target="#editDetails"
-                                                    class="btn rounded-pill btn-icon btn-primary float-end">
+                                                    class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
                                                     <span class="tf-icons bx bx-pencil"></span>
                                                 </button>
                                             </div>
