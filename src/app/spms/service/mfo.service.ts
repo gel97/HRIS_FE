@@ -76,6 +76,7 @@ export class MfoService {
 
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = false;
           });
 
           this.alertService.save();
@@ -84,13 +85,14 @@ export class MfoService {
           this.alertService.error();
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = true;
           });
         },
         complete: () => {},
       });
   }
 
-  EditMfo(mfo: any) {
+   EditMfo(mfo: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
     this.http
@@ -99,6 +101,7 @@ export class MfoService {
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = false;
           });
 
           this.alertService.update();
@@ -107,6 +110,8 @@ export class MfoService {
           this.alertService.error();
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = true;
+
           });
         },
         complete: () => {},
@@ -163,6 +168,7 @@ export class MfoService {
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = false
           });
           this.GetMFOes();
 
@@ -172,6 +178,7 @@ export class MfoService {
           this.alertService.error();
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = true
           });
         },
         complete: () => {},
@@ -191,6 +198,7 @@ export class MfoService {
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = false;
           });
 
           this.alertService.update();
@@ -199,6 +207,8 @@ export class MfoService {
           this.alertService.error();
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            a.error = true;
+
           });
         },
         complete: () => {},

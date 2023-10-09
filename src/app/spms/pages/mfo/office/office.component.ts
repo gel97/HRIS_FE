@@ -1,6 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ViewChild } from '@angular/core';
 import { ErrorService } from 'src/app/spms/service/error.service';
-import Swal from 'sweetalert2';
 
 import { MfoService } from 'src/app/spms/service/mfo.service';
 import { AlertService } from 'src/app/spms/service/alert.service';
@@ -10,6 +9,11 @@ import { AlertService } from 'src/app/spms/service/alert.service';
   styleUrls: ['./office.component.css'],
 })
 export class OfficeComponent implements OnInit {
+  @ViewChild('closebuttonMFO')
+  closebuttonMFO!: { nativeElement: { click: () => void } };
+  @ViewChild('closebuttonSI')
+  closebuttonSI!: { nativeElement: { click: () => void } };
+  
   mfoService = inject(MfoService);
   errorService = inject(ErrorService);
   alertService = inject(AlertService);
@@ -20,6 +24,7 @@ export class OfficeComponent implements OnInit {
   error: any = this.errorService.error;
 
   officeId = 'OFFPHRMONZ3WT7D';
+  
   expandedRow: any;
   expandedRowChild: any;
 
@@ -33,12 +38,10 @@ export class OfficeComponent implements OnInit {
 
   ngOnInit(): void {
     this.mfoService.GetMFOes();
-    console.log(this.mfo());
   }
 
   AddMfo() {
-    console.log(this.mfoData);
-    if (this.mfoData.MFO !== undefined || this.mfoData.MFO !== '') {
+    if (this.mfoData.MFO !== undefined || this.mfoData.MFO !== '') {  
       this.mfoService.AddMfo(this.mfoData);
     }
   }
@@ -57,7 +60,6 @@ export class OfficeComponent implements OnInit {
     this.siData.mfoId = this.mfoData.mfoId;
 
     if (this.siData.inidicator !== undefined || this.siData.inidicator !== '') {
-      console.log(this.siData);
       this.mfoService.AddSI(this.siData, this.standard);
     }
   }
@@ -78,14 +80,14 @@ export class OfficeComponent implements OnInit {
     this.mfoService.DeleteSI(indicatorId);
   }
 
-  setSiData(mfo: any, si: any) {
-    this.mfoData = mfo;
-    this.siData = si;
-    console.log(si);
-    if (si.standard !== null) {
-      this.standard = si.standard;
+  setSiData(data:any) {
+    this.mfoData = data.mfo;
+    this.siData = data.si;
+    if (data.si.standard !== null) {
+      this.standard = data.si.standard;
     }
   }
+  
   CheckMfoIfExist() {
     this.mfoService
       .CheckMfoIfExist(this.mfoData)
