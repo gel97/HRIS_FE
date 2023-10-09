@@ -124,7 +124,7 @@
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             {{displayCatergory(data.categoryId) }}
                                         </small>
-                                        <ul class="dropdown-menu dropdown-menu-end">
+                                        <ul class="dropdown-menu dropdown-menu-end pointer">
                                             <li *ngIf="data.isCommon == 0"><a
                                                     (click)="PutMFOCategory(data.mfoId, 1); data.categoryId = 1"
                                                     class="dropdown-item">STRATEGIC</a></li>
@@ -213,14 +213,14 @@
                                             </div>
                                             <div>
                                                 <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
-                                                    class="btn rounded-pill btn-icon btn-danger float-end">
+                                                    class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
                                                     <span class="tf-icons bx bx-trash"></span>
                                                 </button>
                                                 <button (click)="checker(editopcrDetails.qtyUnit)" type="button"
                                                     data-bs-toggle="modal"
                                                     (click)="editopcrDetails = si; editMFODetails = data; displayDivision(si.sharedDiv)"
                                                     data-bs-target="#editDetails"
-                                                    class="btn rounded-pill btn-icon btn-primary float-end">
+                                                    class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
                                                     <span class="tf-icons bx bx-pencil"></span>
                                                 </button>
                                             </div>
@@ -263,16 +263,28 @@
                                         <button (click)="setMFOs(0)" type="button" class="nav-link active" role="tab"
                                             data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home"
                                             aria-controls="navs-pills-justified-home" aria-selected="true">
-                                            <i class='bx bx-grid-alt'></i> OFFICE MFO
-                                            <span
-                                                class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"></span>
+                                            <ng-container *ngIf="mfo().isLoading != true; else isLoading">
+                                                <i class='bx bx-grid-alt'></i> OFFICE MFO
+                                            </ng-container>
+                                            <ng-template #isLoading>
+                                                <i class='bx bx-grid-alt'></i> OFFICE MFO &nbsp;
+                                                <div class="spinner-border spinner-border-sm" role="status">
+                                                </div>
+                                            </ng-template>
                                         </button>
                                     </li>
                                     <li class="nav-item">
                                         <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
                                             data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile"
                                             aria-controls="navs-pills-justified-profile" aria-selected="false">
-                                            <i class='bx bx-grid-alt'></i> COMMON MFO
+                                            <ng-container *ngIf="mfo().isLoading != true; else isLoading">
+                                                <i class='bx bx-grid-alt'></i> COMMON MFO
+                                            </ng-container>
+                                            <ng-template #isLoading>
+                                                <i class='bx bx-grid-alt'></i> COMMON MFO &nbsp;
+                                                <div class="spinner-border spinner-border-sm" role="status">
+                                                </div>
+                                            </ng-template>
                                         </button>
                                     </li>
                                 </ul>
@@ -444,7 +456,8 @@
                     <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{mfoDetails.indicator}}
                 </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -601,8 +614,15 @@
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button data-bs-dismiss="modal" (click)="PostOPCRDetails()" type="button" class="btn btn-primary">Save
-                    changes</button>
+                <button (click)="PostOPCRDetails()" type="button" class="btn btn-primary">
+                    <ng-container *ngIf="opcrData().isLoading != true; else isLoading">
+                        <span>Save Details</span>
+                    </ng-container>
+                    <ng-template #isLoading>
+                        <div class="spinner-border spinner-border-sm" role="status">
+                        </div> &nbsp;<span>Loading...</span>
+                    </ng-template>
+                </button>
             </div>
         </div>
     </div>
@@ -617,9 +637,10 @@
             <div class="modal-header">
                 <h1 class="modal-title" id="modalCenterTitle">
                     <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
-                    {{editopcrDetails.indicator}} {{editopcrDetails.sharedDiv}} {{editopcrDetails.qtyUnit}}
+                    {{editopcrDetails.indicator}}
                 </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -777,8 +798,17 @@
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button data-bs-dismiss="modal" (click)="EditOPCRData()" type="button" class="btn btn-primary">Save
-                    changes</button>
+                <!-- <button data-bs-dismiss="modal" (click)="EditOPCRData()" type="button" class="btn btn-primary">Save
+                        changes</button> -->
+                <button (click)="EditOPCRData()" type="button" class="btn btn-primary">
+                    <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
+                        <span>Save Details</span>
+                    </ng-container>
+                    <ng-template #isLoading>
+                        <div class="spinner-border spinner-border-sm" role="status">
+                        </div> &nbsp;<span>Loading...</span>
+                    </ng-template>
+                </button>
             </div>
         </div>
     </div>
