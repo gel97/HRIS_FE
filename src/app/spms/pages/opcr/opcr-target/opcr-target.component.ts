@@ -9,11 +9,11 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
 })
 export class OpcrTargetComponent implements OnInit {
   constructor() {}
-
   opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
 
   getYear = '2023';
+  fullYear = '0';
   officeId = 'OFFPHRMONZ3WT7D';
   isCommon = 0;
   opcr: any = this.opcrService.opcr;
@@ -47,7 +47,8 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   localStorage() {
-    if (this.opcrService.storageIsShow() === '1') {
+    if (this.opcrService.storageIsShow() == 1) {
+      localStorage.setItem('isShow', '1');
       this.opcrService.GetOPCRDetails();
     } else {
       localStorage.setItem('isShow', '0');
@@ -170,17 +171,31 @@ export class OpcrTargetComponent implements OnInit {
     this.opcrService.PutMFOCategory(mfoId, categoryId);
   }
 
+  trap: boolean = false;
+  prompt: boolean = false;
+  // alwaysCheck: boolean = true;
   PostOPCRDetails() {
     this.mfoDetails.sharedDiv = this.sharedDivValue();
     this.mfoDetails.opcrId = localStorage.getItem('opcrId');
-    this.opcrService.AddOPCRData(this.mfoDetails);
-    setTimeout(() => {
-      if (!this.opcrData().error) {
-        this.closebutton.nativeElement.click();
-        console.log('here ts');
-      }
-    }, 1000);
-    this.sortExcist();
+    if (this.mfoDetails.sharedDiv == '' || this.mfoDetails.qtyUnit == null) {
+      this.trap = true;
+    }
+    // if (this.mfoDetails.qtyUnit == null) {
+    //   this.trap = true;
+    // }
+    if (!this.trap) {
+      this.prompt = false;
+      this.opcrService.AddOPCRData(this.mfoDetails);
+      setTimeout(() => {
+        if (!this.opcrData().error) {
+          this.closebutton.nativeElement.click();
+        }
+      }, 1000);
+      this.sortExcist();
+    } else {
+      this.prompt = true;
+      this.trap = false;
+    }
   }
 
   searchMfoOffice() {
@@ -221,7 +236,6 @@ export class OpcrTargetComponent implements OnInit {
     setTimeout(() => {
       if (!this.opcrDetails().error) {
         this.closebutton.nativeElement.click();
-        console.log('here ts');
       }
     }, 1000);
   }
@@ -236,7 +250,6 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrDetails', opcrdetails);
 
     this.opcrService.GetOPCRDetails();
-    console.log('opcr', this.opcrDetails());
     this.sortExcist();
   }
 
@@ -266,6 +279,10 @@ export class OpcrTargetComponent implements OnInit {
         }
       }
     }, 3000);
+  }
+
+  onChangeYearInput(year: any) {
+    this.data.semester = year;
   }
 
   removelocalStorage() {
