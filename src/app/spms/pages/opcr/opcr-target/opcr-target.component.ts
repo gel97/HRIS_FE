@@ -262,6 +262,8 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   sortExcist() {
+    this.mfo.mutate((a: any) => (a.isLoading = true));
+    // console.log('here start');
     setTimeout(() => {
       for (let outerItem of this.mfo().data) {
         for (let innerItem of outerItem.si) {
@@ -278,6 +280,8 @@ export class OpcrTargetComponent implements OnInit {
           }
         }
       }
+      this.mfo.mutate((a: any) => (a.isLoading = false));
+      // console.log('here end');
     }, 3000);
   }
 
