@@ -12,8 +12,9 @@ const routes: Routes = [
     component: SpmsComponent,
     children: [
       {
-        path: 'mfo/office',
-        component: OfficeComponent,
+        path: 'mfo',
+        loadChildren: () => import('./pages/mfo/mfo.module')
+        .then(m => m.MfoModule),
       },
       {
         path: 'opcr/target',
@@ -23,6 +24,11 @@ const routes: Routes = [
         path: 'opcr/actual',
         component: OpcrActualComponent,
       },
+      {
+        path:'dpcr',
+        loadChildren: () => import('./pages/dpcr/dpcr.module')
+        .then(m => m.DpcrModule),
+      }
     ],
   },
 ];

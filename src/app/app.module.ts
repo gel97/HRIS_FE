@@ -11,6 +11,7 @@ import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { SpmsModule } from './spms/spms.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorComponent } from './spms/components/error/error.component';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,13 +21,14 @@ import { ErrorComponent } from './spms/components/error/error.component';
     UserComponent,
     FooterComponent,
     MainlayoutComponent,
-    ErrorComponent
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SpmsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
