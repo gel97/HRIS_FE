@@ -216,7 +216,7 @@
                                                     class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
                                                     <span class="tf-icons bx bx-trash"></span>
                                                 </button>
-                                                <button (click)="checker(editopcrDetails.qtyUnit)" type="button"
+                                                <button (click)="checker(si.qtyUnit)" type="button"
                                                     data-bs-toggle="modal"
                                                     (click)="editopcrDetails = si; editMFODetails = data; displayDivision(si.sharedDiv)"
                                                     data-bs-target="#editDetails"
@@ -435,6 +435,16 @@
                         </div>
                     </div><br>
                 </div>
+                <div class="col-md-12">
+                    <div>
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="fullYear"
+                            (ngModelChange)="onChangeYearInput($event)">
+                            <option value="0" selected>Full Year</option>
+                            <option value="1">1st Sem</option>
+                            <option value="2">2nd Sem</option>
+                        </select>
+                    </div>
+                </div><br>
                 <button (click)="PostOPCR()" type="button" class="btn btn-primary mb-2 d-grid w-100">Save</button>
                 <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
                     Cancel
@@ -488,11 +498,16 @@
                                         <input class="form-check-input" type="checkbox" value=""
                                             [id]="data.divisionName" [checked]="data.isCheckDiv"
                                             (change)="onCheckDivision(data.divisionName, $event)" />
-                                        <label class="form-check-label" [for]="data.divisionName"> {{data.divisionName}}
-                                        </label>
+                                        <label class="form-check-label" [for]="data.divisionName">{{ data.divisionName
+                                            }}</label>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div *ngIf="this.prompt">
+                        <div class="alert alert-danger" role="alert"><i class='bx bxs-x-square'></i>&nbsp;Please fill
+                            the missing fields!
                         </div>
                     </div>
                 </div>

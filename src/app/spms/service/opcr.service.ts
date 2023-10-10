@@ -105,8 +105,6 @@ export class OpcrService {
   }
 
   PutMFOCategory(mfoId: string, categoryId: number) {
-    console.log(mfoId);
-    console.log(categoryId);
     this.http
       .put<any[]>(api + this.url.put_mfo_category(mfoId, categoryId), {
         responseType: `json`,
@@ -185,7 +183,7 @@ export class OpcrService {
           this.alertService.error();
         },
         complete: () => {
-          this.GetOPCRs(this.getYear, this.officeId);
+          this.GetOPCRs(data.year, data.officeId);
           this.alertService.save();
         },
       });
@@ -212,7 +210,6 @@ export class OpcrService {
         complete: () => {
           this.StorageOPCRDetails(data.opcrId);
           this.alertService.save();
-          console.log('here service');
         },
       });
   }
@@ -241,7 +238,6 @@ export class OpcrService {
         complete: () => {
           // this.closebutton.nativeElement.click();
           this.alertService.update();
-          console.log('here service');
         },
       });
   }
