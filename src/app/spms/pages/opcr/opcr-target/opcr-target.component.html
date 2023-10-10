@@ -1,236 +1,281 @@
-<div class="card">
-    <div class="row">
-        <div class="col-9">
-            <h1 class="card-header">OPCR <span *ngIf="isShow() == 1"><i
-                        class='bx bx-chevron-right'></i>&nbsp;{{opcrService.storageOpcrDetails()}}</span></h1>
-            <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
-                <ol class="breadcrumb breadcrumb-style1">
-                    <li class="breadcrumb-item">
-                        <a href="javascript:void(0);"><i class='bx bx-data'></i>&nbsp;OPCR</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        <a href="javascript:void(0);"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-        <div *ngIf="isShow() == 1" class="col-3"><br>
-            <a class="pointer float-end">
-                <span class="row px-4" (click)="removelocalStorage()">
-                    <i class='bx bx-arrow-back'></i>
-                </span>
-            </a>
-        </div>
-        <div *ngIf="isShow() == 0" class="col-3">
-            <div class="pt-4" style="margin-right:5px;">
-                <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
-                    <i class='bx bx-plus'></i>OPCR
-                </button>
+<ng-container *ngIf="opcr().isLoading != true; else isLoading">
+    <div class="card">
+        <div class="row">
+            <div class="col-9">
+                <h1 class="card-header">OPCR <span *ngIf="isShow() == 1"><i
+                            class='bx bx-chevron-right'></i>&nbsp;{{opcrService.storageOpcrDetails()}}</span></h1>
+                <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
+                    <ol class="breadcrumb breadcrumb-style1">
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0);"><i class='bx bx-data'></i>&nbsp;OPCR</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <a href="javascript:void(0);"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>
+                        </li>
+                    </ol>
+                </nav>
             </div>
+            <div *ngIf="isShow() == 1" class="col-3"><br>
+                <a class="pointer float-end">
+                    <span class="row px-4" (click)="removelocalStorage()">
+                        <i class='bx bx-arrow-back'></i>
+                    </span>
+                </a>
+            </div>
+            <div *ngIf="isShow() == 0" class="col-3">
+                <div class="pt-4" style="margin-right:5px;">
+                    <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                        <i class='bx bx-plus'></i>OPCR
+                    </button>
+                </div>
 
+            </div>
         </div>
-    </div>
-    <div *ngIf="isShow() == 0" class="card-body">
-        <div>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
-                (ngModelChange)="onChangeYear($event)">
-                <option value="2024">2024</option>
-                <option value="2023" selected>2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-            </select>
-        </div>
-        <br>
-        <div>
-            <!-- Bordered Table -->
-            <div class="table-responsive text-nowrap">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Details</th>
-                            <th>User</th>
-                            <th>Year</th>
-                            <th>Transaction Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let data of opcr().data; let i = index">
-                        <tr>
-                            <td class="pointer">
-                                <a (click)="OPCRDetails(data.opcrId, opcrName = data.details)">
-                                    <strong>{{ data.details }}</strong>
-                                </a>
-                            </td>
-                            <td>
-                                <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                        class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                                        <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                                    </li>
-                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                        class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                                        <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                                    </li>
-                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                        class="avatar avatar-xs pull-up" title="Christina Parker">
-                                        <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                                    </li>
-                                </ul>
-                            </td>
-                            <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
-                            <td>
-                                {{data.transDT | date:'MMM. dd, yyyy' }}
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                class="bx bx-trash me-1"></i>
-                                            Delete</a>
+        <div *ngIf="isShow() == 0" class="card-body">
+            <div>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
+                    (ngModelChange)="onChangeYear($event)">
+                    <option value="2024">2024</option>
+                    <option value="2023" selected>2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                </select>
+            </div>
+            <br>
+            <div>
+                <!-- Bordered Table -->
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Details</th>
+                                <th>User</th>
+                                <th>Year</th>
+                                <th>Transaction Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let data of opcr().data; let i = index">
+                            <tr>
+                                <td class="pointer">
+                                    <a (click)="OPCRDetails(data.opcrId, opcrName = data.details)">
+                                        <strong>{{ data.details }}</strong>
+                                    </a>
+                                </td>
+                                <td>
+                                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                            class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                                            <img src="../assets/img/avatars/5.png" alt="Avatar"
+                                                class="rounded-circle" />
+                                        </li>
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                            class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                                            <img src="../assets/img/avatars/6.png" alt="Avatar"
+                                                class="rounded-circle" />
+                                        </li>
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                            class="avatar avatar-xs pull-up" title="Christina Parker">
+                                            <img src="../assets/img/avatars/7.png" alt="Avatar"
+                                                class="rounded-circle" />
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
+                                <td>
+                                    {{data.transDT | date:'MMM. dd, yyyy' }}
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="javascript:void(0);"><i
+                                                    class="bx bx-edit-alt me-1"></i> Edit</a>
+                                            <a class="dropdown-item" href="javascript:void(0);"><i
+                                                    class="bx bx-trash me-1"></i>
+                                                Delete</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</ng-container>
+<ng-template #isLoading>
+    <app-opcr-target-skeleton></app-opcr-target-skeleton>
+</ng-template>
 <div class="container-fluid flex-grow-1 py-4" *ngIf="isShow() ==1">
     <!-- Basic Layout -->
     <div class="row p-0">
         <div class="col-xl-6 p-0">
             <div class=" p-0">
                 <div class=" scrollable-details">
-                    <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index ">
-                        <div class="card-body ">
-                            <div class="row">
-                                <div class="col-8">
-                                    <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
-                                </div>
-                                <div class="col-4">
-                                    <div class="btn-group float-end">
+                    <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
+                        <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index ">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="btn-group float-end">
 
-                                        <small class="badge rounded-pill float-end pointer"
-                                            [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            {{displayCatergory(data.categoryId) }}
-                                        </small>
-                                        <ul class="dropdown-menu dropdown-menu-end pointer">
-                                            <li *ngIf="data.isCommon == 0"><a
-                                                    (click)="PutMFOCategory(data.mfoId, 1); data.categoryId = 1"
-                                                    class="dropdown-item">STRATEGIC</a></li>
-                                            <li><a (click)="PutMFOCategory(data.mfoId, 2); data.categoryId = 2"
-                                                    class="dropdown-item">CORE
-                                                </a>
-                                            </li>
-                                            <li><a (click)="PutMFOCategory(data.mfoId, 3); data.categoryId = 3"
-                                                    class="dropdown-item">SUPPORT
-                                                </a></li>
-                                        </ul>
+                                            <small class="badge rounded-pill float-end pointer"
+                                                [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{displayCatergory(data.categoryId) }}
+                                            </small>
+                                            <ul class="dropdown-menu dropdown-menu-end pointer">
+                                                <li *ngIf="data.isCommon == 0"><a
+                                                        (click)="PutMFOCategory(data.mfoId, 1); data.categoryId = 1"
+                                                        class="dropdown-item">STRATEGIC</a></li>
+                                                <li><a (click)="PutMFOCategory(data.mfoId, 2); data.categoryId = 2"
+                                                        class="dropdown-item">CORE
+                                                    </a>
+                                                </li>
+                                                <li><a (click)="PutMFOCategory(data.mfoId, 3); data.categoryId = 3"
+                                                        class="dropdown-item">SUPPORT
+                                                    </a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Accordion -->
-                            <div class="row">
-                                <div class="col-md mb-4 mb-md-0">
-                                    <div class="accordion mt-3" id="accordionExample">
-                                        <div class="card accordion-item bg-lightest thick-border"
-                                            *ngFor="let si of data.si; let i =index">
-                                            <h2 class="accordion-header" id="heading{{parent}}{{i}}">
-                                                <button type="button" class="accordion-button collapsed"
-                                                    data-bs-toggle="collapse"
-                                                    [attr.data-bs-target]="'#accordion' + parent + i"
-                                                    aria-expanded="false"
-                                                    [attr.aria-controls]="'accordion' + parent + i">
-                                                    <i class='bx bx-label'></i>
-                                                    <strong style="color: #697A8D;">&nbsp;<span
-                                                            style="color: black;">{{si.qty}}</span>&nbsp;{{si.indicator}}</strong>
-                                                </button>
-                                                <h4 *ngIf="si.isShared ==1" style="margin-left: 50px;">
-                                                    <i class='bx bx-carousel'></i>&nbsp;{{si.sharedDiv}}
-                                                </h4>
-                                            </h2>
-                                            <div id="accordion{{parent}}{{i}}" class="accordion-collapse collapse"
-                                                [attr.aria-labelledby]="'heading' + parent + i"
-                                                data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <!-- Bordered Table -->
-                                                    <div class="table-responsive text-nowrap">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>RATING</th>
-                                                                    <th>QUANTITY</th>
-                                                                    <th>QUALITY</th>
-                                                                    <th>TIMELINESS</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>{{'5'}}</td>
-                                                                    <td>{{si.standard.qty5}}</td>
-                                                                    <td>{{si.standard.qlty5}}</td>
-                                                                    <td>{{si.standard.timely5}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'4'}}</td>
-                                                                    <td>{{si.standard.qty4}}</td>
-                                                                    <td>{{si.standard.qlty4}}</td>
-                                                                    <td>{{si.standard.timely4}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'3'}}</td>
-                                                                    <td>{{si.standard.qty3}}</td>
-                                                                    <td>{{si.standard.qlty3}}</td>
-                                                                    <td>{{si.standard.timely3}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'2'}}</td>
-                                                                    <td>{{si.standard.qty2}}</td>
-                                                                    <td>{{si.standard.qlty2}}</td>
-                                                                    <td>{{si.standard.timely2}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'1'}}</td>
-                                                                    <td>{{si.standard.qty1}}</td>
-                                                                    <td>{{si.standard.qlty1}}</td>
-                                                                    <td>{{si.standard.timely1}}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                <!-- Accordion -->
+                                <div class="row">
+                                    <div class="col-md mb-4 mb-md-0">
+                                        <div class="accordion mt-3" id="accordionExample">
+                                            <div class="card accordion-item bg-lightest thick-border"
+                                                *ngFor="let si of data.si; let i =index">
+                                                <h2 class="accordion-header" id="heading{{parent}}{{i}}">
+                                                    <button type="button" class="accordion-button collapsed"
+                                                        data-bs-toggle="collapse"
+                                                        [attr.data-bs-target]="'#accordion' + parent + i"
+                                                        aria-expanded="false"
+                                                        [attr.aria-controls]="'accordion' + parent + i">
+                                                        <i class='bx bx-label'></i>
+                                                        <strong style="color: #697A8D;">&nbsp;<span
+                                                                style="color: black;">{{si.qty}}</span>&nbsp;{{si.indicator}}</strong>
+                                                    </button>
+                                                    <h4 *ngIf="si.isShared ==1" style="margin-left: 50px;">
+                                                        <i class='bx bx-carousel'></i>&nbsp;{{si.sharedDiv}}
+                                                    </h4>
+                                                </h2>
+                                                <div id="accordion{{parent}}{{i}}" class="accordion-collapse collapse"
+                                                    [attr.aria-labelledby]="'heading' + parent + i"
+                                                    data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <!-- Bordered Table -->
+                                                        <div class="table-responsive text-nowrap">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>RATING</th>
+                                                                        <th>QUANTITY</th>
+                                                                        <th>QUALITY</th>
+                                                                        <th>TIMELINESS</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>{{'5'}}</td>
+                                                                        <td>{{si.standard.qty5}}</td>
+                                                                        <td>{{si.standard.qlty5}}</td>
+                                                                        <td>{{si.standard.timely5}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{'4'}}</td>
+                                                                        <td>{{si.standard.qty4}}</td>
+                                                                        <td>{{si.standard.qlty4}}</td>
+                                                                        <td>{{si.standard.timely4}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{'3'}}</td>
+                                                                        <td>{{si.standard.qty3}}</td>
+                                                                        <td>{{si.standard.qlty3}}</td>
+                                                                        <td>{{si.standard.timely3}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{'2'}}</td>
+                                                                        <td>{{si.standard.qty2}}</td>
+                                                                        <td>{{si.standard.qlty2}}</td>
+                                                                        <td>{{si.standard.timely2}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{'1'}}</td>
+                                                                        <td>{{si.standard.qty1}}</td>
+                                                                        <td>{{si.standard.qlty1}}</td>
+                                                                        <td>{{si.standard.timely1}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <!--/ Bordered Table -->
                                                     </div>
-                                                    <!--/ Bordered Table -->
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
-                                                    class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
-                                                    <span class="tf-icons bx bx-trash"></span>
-                                                </button>
-                                                <button (click)="checker(si.qtyUnit)" type="button"
-                                                    data-bs-toggle="modal"
-                                                    (click)="editopcrDetails = si; editMFODetails = data; displayDivision(si.sharedDiv)"
-                                                    data-bs-target="#editDetails"
-                                                    class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
-                                                    <span class="tf-icons bx bx-pencil"></span>
-                                                </button>
+                                                <div>
+                                                    <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
+                                                        class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
+                                                        <span class="tf-icons bx bx-trash"></span>
+                                                    </button>
+                                                    <button (click)="checker(si.qtyUnit)" type="button"
+                                                        data-bs-toggle="modal"
+                                                        (click)="editopcrDetails = si; editMFODetails = data; displayDivision(si.sharedDiv)"
+                                                        data-bs-target="#editDetails"
+                                                        class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
+                                                        <span class="tf-icons bx bx-pencil"></span>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!--/ Accordion -->
                             </div>
-                            <!--/ Accordion -->
                         </div>
-                    </div>
+                    </ng-container>
+                    <ng-template #isLoading>
+                        <div class="center-container">
+                            <div class="demo-inline-spacing">
+                                <div class="spinner-grow" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-secondary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-success" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-danger" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-warning" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-info" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="spinner-grow text-dark" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+
+
                     <div *ngIf="opcrDetails().data.length ===0 && flag ==0">
                         <img src="assets/img/document.png" alt="" width="200" height="200"
                             style="display: block; margin: 0 auto" />

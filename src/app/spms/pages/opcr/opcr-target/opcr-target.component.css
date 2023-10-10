@@ -28,6 +28,14 @@
   border-left-color: rgba(67, 89, 113, 0.2);
 }
 
+.center-container {
+  display: flex;
+  justify-content: center; /* Horizontal centering */
+  align-items: center; /* Vertical centering */
+  height: 100vh; /* Optional: Makes the container take the full viewport height */
+}
+
+
 
 
 

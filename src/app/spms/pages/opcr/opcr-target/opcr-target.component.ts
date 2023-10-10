@@ -48,8 +48,12 @@ export class OpcrTargetComponent implements OnInit {
 
   localStorage() {
     if (this.opcrService.storageIsShow() == 1) {
-      localStorage.setItem('isShow', '1');
-      this.opcrService.GetOPCRDetails();
+      this.opcrDetails.mutate((a: any) => (a.isLoading = true));
+      setTimeout(() => {
+        this.opcrDetails.mutate((a: any) => (a.isLoading = false));
+        localStorage.setItem('isShow', '1');
+        this.opcrService.GetOPCRDetails();
+      }, 1000);
     } else {
       localStorage.setItem('isShow', '0');
       this.opcrService.storageIsShow.set(0);
@@ -141,7 +145,11 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   GetOPCRs() {
-    this.opcrService.GetOPCRs(this.getYear, this.officeId);
+    this.opcr.mutate((a: any) => (a.isLoading = true));
+    setTimeout(() => {
+      this.opcr.mutate((a: any) => (a.isLoading = false));
+      this.opcrService.GetOPCRs(this.getYear, this.officeId);
+    }, 1000);
   }
 
   GetMFOs() {
@@ -249,8 +257,12 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrId', opcrid);
     localStorage.setItem('opcrDetails', opcrdetails);
 
-    this.opcrService.GetOPCRDetails();
-    this.sortExcist();
+    this.opcrDetails.mutate((a: any) => (a.isLoading = true));
+    setTimeout(() => {
+      this.opcrDetails.mutate((a: any) => (a.isLoading = false));
+      this.opcrService.GetOPCRDetails();
+      this.sortExcist();
+    }, 1000);
   }
 
   qtyUnit(value: number) {
@@ -298,6 +310,7 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrId', '');
     localStorage.setItem('opcrName', '');
 
+    this.GetOPCRs();
     this.GetMFOs();
   }
 }
