@@ -281,16 +281,17 @@
                                         </button>
 
                                         <li class="nav-item">
-                                            <button (click)="setMFOs(0)" type="button" class="nav-link active"
-                                                role="tab" data-bs-toggle="tab"
-                                                data-bs-target="#navs-pills-justified-home"
+                                            <button (click)="setMFOs(0)" type="button" class="nav-link"
+                                                [ngClass]="!mfoService.isCommon()? 'active': ''" role="tab"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home"
                                                 aria-controls="navs-pills-justified-home" aria-selected="true">
                                                 <i class='bx bx-grid-alt'></i> OFFICE MFO
                                             </button>
                                         </li>
                                         <li class="nav-item">
                                             <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
-                                                data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile"
+                                                [ngClass]="mfoService.isCommon()? 'active': ''" data-bs-toggle="tab"
+                                                data-bs-target="#navs-pills-justified-profile"
                                                 aria-controls="navs-pills-justified-profile" aria-selected="false">
                                                 <i class='bx bx-grid-alt'></i> COMMON MFO
                                             </button>
