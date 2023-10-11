@@ -199,6 +199,9 @@ export class OpcrTargetComponent implements OnInit {
     ) {
       this.trap = true;
     }
+    if (this.mfoService.isCommon()) {
+      this.trap = false;
+    }
     // if (this.mfoDetails.qtyUnit == null) {
     //   this.trap = true;
     // }
