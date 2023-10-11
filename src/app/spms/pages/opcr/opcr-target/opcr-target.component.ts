@@ -56,11 +56,13 @@ export class OpcrTargetComponent implements OnInit {
       setTimeout(() => {
         this.opcrDetails.mutate((a: any) => (a.isLoading = false));
         localStorage.setItem('isShow', '1');
+        // this.mfoService.isCommon.set(0);
         this.opcrService.GetOPCRDetails();
         this.sortExcist();
       }, 1000);
     } else {
       localStorage.setItem('isShow', '0');
+      // this.mfoService.isCommon.set(0);
       this.opcrService.storageIsShow.set(0);
       this.sortExcist();
     }
@@ -340,7 +342,7 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('isShow', '0');
     localStorage.setItem('opcrId', '');
     localStorage.setItem('opcrName', '');
-
+    // this.mfoService.isCommon.set(0);
     this.GetOPCRs();
     this.GetMFOs();
   }
