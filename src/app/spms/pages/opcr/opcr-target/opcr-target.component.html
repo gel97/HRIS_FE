@@ -1,38 +1,38 @@
-<ng-container *ngIf="opcr().isLoading != true; else isLoading">
-    <div class="card">
-        <div class="row">
-            <div class="col-9">
-                <h1 class="card-header">OPCR <span *ngIf="isShow() == 1"><i
-                            class='bx bx-chevron-right'></i>&nbsp;{{opcrService.storageOpcrDetails()}}</span></h1>
-                <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
-                    <ol class="breadcrumb breadcrumb-style1">
-                        <li class="breadcrumb-item">
-                            <a href="javascript:void(0);"><i class='bx bx-data'></i>&nbsp;OPCR</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <a href="javascript:void(0);"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-            <div *ngIf="isShow() == 1" class="col-3"><br>
-                <a class="pointer float-end">
-                    <span class="row px-4" (click)="removelocalStorage()">
-                        <i class='bx bx-arrow-back'></i>
-                    </span>
-                </a>
-            </div>
-            <div *ngIf="isShow() == 0" class="col-3">
-                <div class="pt-4" style="margin-right:5px;">
-                    <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
-                        <i class='bx bx-plus'></i>OPCR
-                    </button>
-                </div>
-
-            </div>
+<div class="card">
+    <div class="row">
+        <div class="col-9">
+            <h1 class="card-header">OPCR <span *ngIf="isShow() == 1"><i
+                        class='bx bx-chevron-right'></i>&nbsp;{{opcrService.storageOpcrDetails()}}</span></h1>
+            <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
+                <ol class="breadcrumb breadcrumb-style1">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:void(0);"><i class='bx bx-data'></i>&nbsp;OPCR</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a href="javascript:void(0);"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>
+                    </li>
+                </ol>
+            </nav>
         </div>
-        <div *ngIf="isShow() == 0" class="card-body">
+        <div *ngIf="isShow() == 1" class="col-3"><br>
+            <a class="pointer float-end">
+                <span class="row px-4" (click)="removelocalStorage()">
+                    <i class='bx bx-arrow-back'></i>
+                </span>
+            </a>
+        </div>
+        <div *ngIf="isShow() == 0" class="col-3">
+            <div class="pt-4" style="margin-right:5px;">
+                <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                    <i class='bx bx-plus'></i>OPCR
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <div *ngIf="isShow() == 0" class="card-body">
+        <ng-container *ngIf="opcr().isLoading != true; else isLoading">
             <div>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
                     (ngModelChange)="onChangeYear($event)">
@@ -52,7 +52,7 @@
                                 <th>Details</th>
                                 <th>User</th>
                                 <th>Year</th>
-                                <th>Transaction Date</th>
+                                <th>Date Created</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -87,7 +87,7 @@
                                     {{data.transDT | date:'MMM. dd, yyyy' }}
                                 </td>
                                 <td>
-                                    <div class="dropdown">
+                                    <div class="dropdown position-static">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
@@ -106,12 +106,14 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </ng-container>
+        <ng-template #isLoading>
+            <app-opcr-target-skeleton></app-opcr-target-skeleton>
+        </ng-template>
     </div>
-</ng-container>
-<ng-template #isLoading>
-    <app-opcr-target-skeleton></app-opcr-target-skeleton>
-</ng-template>
+</div>
+
+
 <div class="container-fluid flex-grow-1 py-4" *ngIf="isShow() ==1">
     <!-- Basic Layout -->
     <div class="row p-0">
@@ -243,40 +245,14 @@
                     </ng-container>
                     <ng-template #isLoading>
                         <div class="center-container">
-                            <div class="demo-inline-spacing">
-                                <div class="spinner-grow" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-secondary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-success" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-danger" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-warning" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-info" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-light" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-dark" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+                            <div class="spinner-border spinner-border-lg text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
                     </ng-template>
 
 
-                    <div *ngIf="opcrDetails().data.length ===0 && flag ==0">
+                    <div *ngIf="opcrDetails().data.length ===0 && flag ==0 && opcrDetails().isLoading != true">
                         <img src="assets/img/document.png" alt="" width="200" height="200"
                             style="display: block; margin: 0 auto" />
                         <span style="
@@ -290,171 +266,171 @@
                 </div>
             </div>
         </div>
+
         <div *ngIf="!isExpandMfoes" class="col-xl-6">
             <div class="">
                 <div class="">
                     <!-- Bootstrap Table with Header - Light -->
                     <div class="">
-                        <div class="col-xl-12">
-                            <div class="nav-align-top mb-4">
-                                <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-                                    <button type="button" (click)="isExpandMfoes = true"
-                                        class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll">
-                                        <i class='bx bx-expand'></i>
-                                    </button>
+                        <ng-container *ngIf="mfo().isLoading != true; else isLoading">
+                            <div class="col-xl-12">
+                                <div class="nav-align-top mb-4">
+                                    <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                                        <button type="button" (click)="isExpandMfoes = true"
+                                            class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll">
+                                            <i class='bx bx-expand'></i>
+                                        </button>
 
-                                    <li class="nav-item">
-                                        <button (click)="setMFOs(0)" type="button" class="nav-link active" role="tab"
-                                            data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home"
-                                            aria-controls="navs-pills-justified-home" aria-selected="true">
-                                            <ng-container *ngIf="mfo().isLoading != true; else isLoading">
+                                        <li class="nav-item">
+                                            <button (click)="setMFOs(0)" type="button" class="nav-link active"
+                                                role="tab" data-bs-toggle="tab"
+                                                data-bs-target="#navs-pills-justified-home"
+                                                aria-controls="navs-pills-justified-home" aria-selected="true">
                                                 <i class='bx bx-grid-alt'></i> OFFICE MFO
-                                            </ng-container>
-                                            <ng-template #isLoading>
-                                                <i class='bx bx-grid-alt'></i> OFFICE MFO &nbsp;
-                                                <div class="spinner-border spinner-border-sm" role="status">
-                                                </div>
-                                            </ng-template>
-                                        </button>
-                                    </li>
-                                    <li class="nav-item">
-                                        <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
-                                            data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile"
-                                            aria-controls="navs-pills-justified-profile" aria-selected="false">
-                                            <ng-container *ngIf="mfo().isLoading != true; else isLoading">
+                                            </button>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
+                                                data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile"
+                                                aria-controls="navs-pills-justified-profile" aria-selected="false">
                                                 <i class='bx bx-grid-alt'></i> COMMON MFO
-                                            </ng-container>
-                                            <ng-template #isLoading>
-                                                <i class='bx bx-grid-alt'></i> COMMON MFO &nbsp;
-                                                <div class="spinner-border spinner-border-sm" role="status">
-                                                </div>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status"
+                                                *ngIf="isSearchLoading(); else showIcon">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <ng-template #showIcon>
+                                                <i class="tf-icons bx bx-search"></i>
                                             </ng-template>
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <div class="spinner-border spinner-border-sm text-primary" role="status"
-                                            *ngIf="isSearchLoading(); else showIcon">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                        <ng-template #showIcon>
-                                            <i class="tf-icons bx bx-search"></i>
-                                        </ng-template>
-                                    </span>
-                                    <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()"
-                                        class="form-control" placeholder="Search..." />
-                                </div>
-                                <br>
-                                <div class="tab-content scrollable-container">
-                                    <div class="tab-pane fade show active" id="navs-pills-justified-home"
-                                        role="tabpanel">
-                                        <!-- Bootstrap Table with Header - Light -->
-                                        <div class="table-responsive text-nowrap">
-                                            <table class="table">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th style="width: 100px; color: blue;">Indicator
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0">
-                                                    <br>
-                                                    <tr class="text-justify" style="color: blue; white-space: normal;">
-                                                        <div class="row">
-                                                            <div class="col-8">
-                                                                <strong><i
-                                                                        class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
-                                                            </div>
-                                                            <div class="col-4">
-                                                                <small class="badge rounded-pill float-end"
-                                                                    [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    {{displayCatergory(data.categoryId)}}
-                                                                </small>
-                                                            </div>
-                                                        </div>
-                                                    </tr>
-                                                    <tr *ngFor="let si of data.si">
-                                                        <td>
-                                                            <div class="row">
-                                                                <div class="col-11 text-justify"
-                                                                    style="white-space: normal;">
-                                                                    <i class='bx bx-chevron-right'></i>
-                                                                    <!-- <strong>{{si.target}}</strong> -->
-                                                                    &nbsp;
-                                                                    {{si.indicator}}
-                                                                </div>
-                                                                <div class="col-1">
-                                                                    <button
-                                                                        (click)="mfoDetails = si; clearSelectedDiv()"
-                                                                        type="button" data-bs-toggle="modal"
-                                                                        data-bs-target="#modalAdd"
-                                                                        class="btn rounded-pill btn-icon btn-primary float-end">
-                                                                        <span
-                                                                            class="tf-icons bx bx bx-plus"></span></button>
-                                                                </div>
-                                                                <!-- </ng-template> -->
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!-- Bootstrap Table with Header - Light -->
+                                        </span>
+                                        <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()"
+                                            class="form-control" placeholder="Search..." />
                                     </div>
-                                    <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
-                                        <!-- Bootstrap Table with Header - Light -->
-                                        <div class="table-responsive text-nowrap">
-                                            <table class="table">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th style="width: 100px; color: blue; white-space: normal;">
-                                                            Indicator
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0">
-                                                    <br>
-                                                    <tr class="text-justify" style="color: blue; white-space: normal;">
-                                                        <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
-                                                    </tr>
-                                                    <tr *ngFor="let si of data.si">
-                                                        <td>
+                                    <br>
+                                    <div class="tab-content scrollable-container">
+                                        <div class="tab-pane fade show active" id="navs-pills-justified-home"
+                                            role="tabpanel">
+                                            <!-- Bootstrap Table with Header - Light -->
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th style="width: 100px; color: blue;">Indicator
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngFor="let data of mfo().data"
+                                                        class="table-border-bottom-0">
+                                                        <br>
+                                                        <tr class="text-justify"
+                                                            style="color: blue; white-space: normal;">
                                                             <div class="row">
-                                                                <div class="col-11 text-justify"
-                                                                    style="white-space: normal;">
-                                                                    <i
-                                                                        class='bx bx-chevron-right'></i><strong>{{si.target}}</strong>&nbsp;{{si.indicator}}
+                                                                <div class="col-8">
+                                                                    <strong><i
+                                                                            class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
                                                                 </div>
-                                                                <div class="col-1">
-                                                                    <button type="button" (click)="mfoDetails = si"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#modalAdd"
-                                                                        class="btn rounded-pill btn-icon btn-primary float-end">
-                                                                        <span
-                                                                            class="tf-icons bx bx bx-plus"></span></button>
+                                                                <div class="col-4">
+                                                                    <small class="badge rounded-pill float-end"
+                                                                        [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        {{displayCatergory(data.categoryId)}}
+                                                                    </small>
                                                                 </div>
                                                             </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                        </tr>
+                                                        <tr *ngFor="let si of data.si">
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col-11 text-justify"
+                                                                        style="white-space: normal;">
+                                                                        <i class='bx bx-chevron-right'></i>
+                                                                        <!-- <strong>{{si.target}}</strong> -->
+                                                                        &nbsp;
+                                                                        {{si.indicator}}
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <button
+                                                                            (click)="mfoDetails = si; clearSelectedDiv()"
+                                                                            type="button" data-bs-toggle="modal"
+                                                                            data-bs-target="#modalAdd"
+                                                                            class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                            <span
+                                                                                class="tf-icons bx bx bx-plus"></span></button>
+                                                                    </div>
+                                                                    <!-- </ng-template> -->
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- Bootstrap Table with Header - Light -->
                                         </div>
-                                        <!-- Bootstrap Table with Header - Light -->
+                                        <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
+                                            <!-- Bootstrap Table with Header - Light -->
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th style="width: 100px; color: blue; white-space: normal;">
+                                                                Indicator
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngFor="let data of mfo().data"
+                                                        class="table-border-bottom-0">
+                                                        <br>
+                                                        <tr class="text-justify"
+                                                            style="color: blue; white-space: normal;">
+                                                            <strong><i
+                                                                    class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
+                                                        </tr>
+                                                        <tr *ngFor="let si of data.si">
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col-11 text-justify"
+                                                                        style="white-space: normal;">
+                                                                        <i
+                                                                            class='bx bx-chevron-right'></i><strong>{{si.target}}</strong>&nbsp;{{si.indicator}}
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <button type="button" (click)="mfoDetails = si"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#modalAdd"
+                                                                            class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                            <span
+                                                                                class="tf-icons bx bx bx-plus"></span></button>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- Bootstrap Table with Header - Light -->
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- <button type="button" class="btn btn-primary">
+                                    Done
+                                </button> -->
                             </div>
-                            <!-- <button type="button" class="btn btn-primary">
-                                Done
-                            </button> -->
-                        </div>
+                        </ng-container>
+                        <ng-template #isLoading>
+                            <app-opcr-target-skeleton></app-opcr-target-skeleton>
+                        </ng-template>
                     </div>
                     <!-- Bootstrap Table with Header - Light -->
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
 <!-- End Offcanvas -->
@@ -526,7 +502,7 @@
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                             <div class="col-md">
                                 <!-- <small class="text-light fw-semibold d-block">Inline Radio</small> -->
-                                <div class="form-check form-check-inline mt-3">
+                                <!-- <div class="form-check form-check-inline mt-3">
                                     <input (click)="qtyUnit(0)" class="form-check-input" type="radio"
                                         name="inlineRadioOptions" id="inlineRadio1" value="option1" />
                                     <label class="form-check-label" for="inlineRadio1">Numeric</label>
@@ -535,6 +511,16 @@
                                     <input (click)="qtyUnit(1)" class="form-check-input" type="radio"
                                         name="inlineRadioOptions" id="inlineRadio2" value="option2" />
                                     <label class="form-check-label" for="inlineRadio2">Percentage</label>
+                                </div> -->
+                                <div class="form-check form-check-inline mt-3">
+                                    <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1"
+                                        class="form-check-input" type="radio" value="0" id="defaultRadio2" checked />
+                                    <label class="form-check-label" for="defaultRadio2"> Numeric </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1"
+                                        class="form-check-input" type="radio" value="1" id="defaultRadio1" />
+                                    <label class="form-check-label" for="defaultRadio1"> Percentage </label>
                                 </div>
                             </div>
                         </div>
@@ -702,7 +688,7 @@
                     <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{editopcrDetails.indicator}}
                 </h1>
-                <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
+                <button #closebuttonEdit type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
