@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { OpcrService } from 'src/app/spms/service/opcr.service';
 import { MfoService } from 'src/app/spms/service/mfo.service';
+import { interval, take } from 'rxjs';
 
 @Component({
   selector: 'app-opcr-target',
@@ -38,6 +39,9 @@ export class OpcrTargetComponent implements OnInit {
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
+  @ViewChild('closebuttonEdit')
+  closebuttonEdit!: { nativeElement: { click: () => void } };
+
   ngOnInit(): void {
     this.localStorage();
     this.GetOPCRs();
@@ -53,10 +57,12 @@ export class OpcrTargetComponent implements OnInit {
         this.opcrDetails.mutate((a: any) => (a.isLoading = false));
         localStorage.setItem('isShow', '1');
         this.opcrService.GetOPCRDetails();
+        this.sortExcist();
       }, 1000);
     } else {
       localStorage.setItem('isShow', '0');
       this.opcrService.storageIsShow.set(0);
+      this.sortExcist();
     }
   }
 
@@ -185,7 +191,10 @@ export class OpcrTargetComponent implements OnInit {
   PostOPCRDetails() {
     this.mfoDetails.sharedDiv = this.sharedDivValue();
     this.mfoDetails.opcrId = localStorage.getItem('opcrId');
-    if (this.mfoDetails.sharedDiv == '' || this.mfoDetails.qtyUnit == null) {
+    if (
+      this.mfoDetails.sharedDiv == '' ||
+      this.mfoDetails.qtyUnit == undefined
+    ) {
       this.trap = true;
     }
     // if (this.mfoDetails.qtyUnit == null) {
@@ -243,7 +252,7 @@ export class OpcrTargetComponent implements OnInit {
     this.opcrService.EditOPCRData(this.editopcrDetails);
     setTimeout(() => {
       if (!this.opcrDetails().error) {
-        this.closebutton.nativeElement.click();
+        this.closebuttonEdit.nativeElement.click();
       }
     }, 1000);
   }
@@ -265,9 +274,9 @@ export class OpcrTargetComponent implements OnInit {
     }, 1000);
   }
 
-  qtyUnit(value: number) {
-    this.mfoDetails.qtyUnit = value;
-  }
+  // qtyUnit(value: number) {
+  //   this.mfoDetails.qtyUnit = value;
+  // }
 
   editQtyUnit(value: number) {
     this.editopcrDetails.qtyUnit = value;
@@ -275,26 +284,48 @@ export class OpcrTargetComponent implements OnInit {
 
   sortExcist() {
     this.mfo.mutate((a: any) => (a.isLoading = true));
-    console.log('here start');
-    setTimeout(() => {
-      for (let outerItem of this.mfo().data) {
-        for (let innerItem of outerItem.si) {
-          for (let opcrDetail of this.opcrDetails().data) {
-            for (let opcrDetailItem of opcrDetail.si) {
-              if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
-                // Find the index of the item in the array and remove it using splice
-                const indexToRemove = outerItem.si.indexOf(innerItem);
-                if (indexToRemove !== -1) {
-                  outerItem.si.splice(indexToRemove, 1);
+    // console.log('here start');
+
+    // setTimeout(() => {
+    //   for (let outerItem of this.mfo().data) {
+    //     for (let innerItem of outerItem.si) {
+    //       for (let opcrDetail of this.opcrDetails().data) {
+    //         for (let opcrDetailItem of opcrDetail.si) {
+    //           if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
+    //             // Find the index of the item in the array and remove it using splice
+    //             const indexToRemove = outerItem.si.indexOf(innerItem);
+    //             if (indexToRemove !== -1) {
+    //               outerItem.si.splice(indexToRemove, 1);
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    //   this.mfo.mutate((a: any) => (a.isLoading = false));
+    //   console.log('here end');
+    // }, 3000);
+
+    interval(1300)
+      .pipe(take(1))
+      .subscribe((value) => {
+        for (let outerItem of this.mfo().data) {
+          for (let innerItem of outerItem.si) {
+            for (let opcrDetail of this.opcrDetails().data) {
+              for (let opcrDetailItem of opcrDetail.si) {
+                if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
+                  // Find the index of the item in the array and remove it using splice
+                  const indexToRemove = outerItem.si.indexOf(innerItem);
+                  if (indexToRemove !== -1) {
+                    outerItem.si.splice(indexToRemove, 1);
+                  }
                 }
               }
             }
           }
         }
-      }
-      this.mfo.mutate((a: any) => (a.isLoading = false));
-      console.log('here end');
-    }, 1000);
+        this.mfo.mutate((a: any) => (a.isLoading = false));
+      });
   }
 
   onChangeYearInput(year: any) {
