@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class SidebarComponent {
   sample: number = 0;
   sample1: number = 0;
+  sample2: number = 0;
 
   toggleSubMenu(menuNumber: number): void {
     this.sample = this.sample === menuNumber ? 0 : menuNumber;
@@ -15,5 +16,8 @@ export class SidebarComponent {
 
   toggleSubMenu1(menuNumber: number): void {
     this.sample1 = this.sample1 === menuNumber ? 0 : menuNumber;
+  }
+  toggleSubMenu2(menuNumber: number): void {
+    this.sample2 = this.sample2 === menuNumber ? 0 : menuNumber;
   }
 }
