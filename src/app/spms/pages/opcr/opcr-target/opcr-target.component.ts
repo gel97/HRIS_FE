@@ -344,7 +344,7 @@ export class OpcrTargetComponent implements OnInit {
 
     localStorage.setItem('isShow', '0');
     localStorage.setItem('opcrId', '');
-    localStorage.setItem('opcrName', '');
+    // localStorage.setItem('opcrName', '');
     // this.mfoService.isCommon.set(0);
     this.GetOPCRs();
     this.GetMFOs();
