@@ -127,7 +127,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                             class="col-12 text-justify"
                           >
                             <i class="bx bx-chevron-right"></i
-                            ><strong>{{ b.qty }}</strong
+                            ><strong>{{ b.qtyOpcr }}</strong
                             >&nbsp;{{ b.indicator }}
                           </div>
                           <ng-template #LoadingSI>
@@ -159,8 +159,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                               else LoadingBtn
                             "
                             type="button"
+                            (click)="SetDpcrDataObj(a,b)"
                             data-bs-toggle="modal"
-                            data-bs-target="#modalAdd"
+                            data-bs-target="#modalDpcrData"
                             class="btn rounded-pill btn-icon btn-primary float-end"
                           >
                             <span class="tf-icons bx bx bx-plus"></span>
@@ -231,7 +232,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                             class="col-12 text-justify"
                           >
                             <i class="bx bx-chevron-right"></i
-                            ><strong>{{ b.qty }}</strong
+                            ><strong>{{ b.qtyOpcr }}</strong
                             >&nbsp;{{ b.indicator }}
                           </div>
                           <ng-template #LoadingSI>
@@ -263,8 +264,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                               else LoadingBtn
                             "
                             type="button"
+                            (click)="SetDpcrDataObj(a,b)"
                             data-bs-toggle="modal"
-                            data-bs-target="#modalAdd"
+                            data-bs-target="#modalDpcrData"
                             class="btn rounded-pill btn-icon btn-primary float-end"
                           >
                             <span class="tf-icons bx bx bx-plus"></span>
@@ -305,8 +307,7 @@ export class TableDpcrDataMfoesComponent {
 
   @Input() dpcrDataMfoes: any;
 
-  @Output() isAddDpcr = new EventEmitter<boolean>();
-  @Output() setDpcr = new EventEmitter<any>();
+  @Output() setDpcrDataObj = new EventEmitter<any>();
 
   search: any = '';
 
@@ -317,9 +318,8 @@ export class TableDpcrDataMfoesComponent {
     this.dpcrService.GetDpcrDataSearchMfoes(this.search);
   }
 
-  SetDpcr(item: any) {
-    console.log(item);
-    this.setDpcr.emit(item);
+  SetDpcrDataObj(mfoData:any,siData:any){
+    this.setDpcrDataObj.emit({mfoData,siData});
   }
 
   setMFOs(value: number) {

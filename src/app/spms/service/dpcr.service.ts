@@ -100,6 +100,35 @@ export class DpcrService {
       });
   }
 
+  AddDpcrData(dpcrData: any) {
+    this.dpcr.mutate((a) => (a.isLoadingSave = true));
+
+    dpcrData.dpcrId = this.storageDpcrId();
+    
+    this.http
+      .post<any[]>(api + this.url.post_dpcr_data(), dpcrData, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDpcrData();
+
+          this.dpcrData.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.save();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.dpcrData.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
   GetDpcrData() {
     this.dpcrData.mutate((a) => (a.isLoading = true));
     this.http
@@ -200,6 +229,31 @@ export class DpcrService {
         },
         complete: () => {
           console.log("dpcrDataSearchMfoes: ", this.dpcrData());
+        },
+      });
+  }
+
+  DeleteDPCRData(dpcrDataId:string){
+    this.http
+      .delete<any[]>(api + this.url.delete_dpcr_data(dpcrDataId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          
+          this.GetDpcrData();
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+
+        },
+        complete: () => {
         },
       });
   }

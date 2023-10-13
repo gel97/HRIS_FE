@@ -1,33 +1,24 @@
 <div class="card">
-    <app-header-target 
-    [isShowDpcrData]="dpcrService.storageIsShowDpcrData()" 
-    (isAddDpcr)="isAddDpcr=$event; dpcrObj={}"
-    />
+    <app-header-target [isShowDpcrData]="dpcrService.storageIsShowDpcrData()"
+        (isAddDpcr)="isAddDpcr=$event; dpcrObj={}" />
 
-    <app-table-dpcr 
-    *ngIf="!dpcrService.storageIsShowDpcrData()"
-    [dpcr]="dpcr" 
-    (getDpcrData)="GetDPCRData()"
-    (setDpcr)="dpcrObj=$event" 
-    (isAddDpcr)="isAddDpcr=$event"
-    />
+    <app-table-dpcr *ngIf="!dpcrService.storageIsShowDpcrData()" [dpcr]="dpcr" (getDpcrData)="GetDPCRData()"
+        (setDpcr)="dpcrObj=$event" (isAddDpcr)="isAddDpcr=$event" />
 </div>
 
-<div class="row my-4">
+<div class="row my-4" *ngIf="dpcrService.storageIsShowDpcrData()">
     <div class="col-6">
-        <app-table-dpcr-data
-        *ngIf="dpcrService.storageIsShowDpcrData()"
-        [dpcrData]="dpcrData" 
-        />
+        <app-table-dpcr-data *ngIf="dpcrData.data.length > 0; else EmptyData" [dpcrData]="dpcrData"
+            (deleteDpcrDataIndicator)="DeleteDPCRData($event)" />
+        <ng-template #EmptyData>
+            <app-empty-data/>
+        </ng-template>
     </div>
     <div class="col-6">
-        <app-table-dpcr-data-mfoes
-        *ngIf="dpcrService.storageIsShowDpcrData()"
-        [dpcrDataMfoes]="dpcrDataMfoes" 
-        
-        />  
+        <app-table-dpcr-data-mfoes [dpcrDataMfoes]="dpcrDataMfoes" (setDpcrDataObj)="setDpcrDataObj($event)" />
     </div>
 </div>
 
-
-<app-canvas-target-dpcr [dpcrObj]="dpcrObj" (submit)="AddDpcr()"/>
+<app-canvas-target-dpcr [dpcrObj]="dpcrObj" (submit)="AddDpcr()" />
+<app-modal-dpcr-data [dpcrMFOData]="dpcrMFOData" [dpcrSIData]="dpcrSIData" [error]="dpcrData.error"
+    (submit)="AddDpcrData()" />
