@@ -1,8 +1,7 @@
 <div class="card">
     <div class="row">
         <div class="col-9">
-            <h1 class="card-header">OPCR <span *ngIf="isShow() == 1"><i
-                        class='bx bx-chevron-right'></i>&nbsp;{{opcrService.storageOpcrDetails()}}</span></h1>
+            <h1 class="card-header"> </h1>
             <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
                 <ol class="breadcrumb breadcrumb-style1">
                     <li class="breadcrumb-item">
@@ -10,6 +9,10 @@
                     </li>
                     <li class="breadcrumb-item active">
                         <a href="javascript:void(0);"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>
+                    </li>
+                    <li *ngIf="isShow() == 1" class="breadcrumb-item active">
+                        <a href="javascript:void(0);">
+                            {{opcrService.storageOpcrDetails()}}</a>
                     </li>
                 </ol>
             </nav>
