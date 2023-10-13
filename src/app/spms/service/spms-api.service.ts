@@ -31,5 +31,17 @@ export class SpmsApiService {
   post_opcrdata = () => `/tPMOpcrDatas`;
   get_opcrdetails = (opcrId: string) => `/tPMOpcrDatas/${opcrId}`;
 
+  post_dpcr = () => `/tPMDpcr`;
+  put_dpcr = () => `/tPMDpcr`;
+  delete_dpcr = (dpcrId: string) => `/tPMDpcr/${dpcrId}`;
+  get_dpcr = (divisionId: string) => `/tPMDpcr/list/${divisionId}`;
+
+  post_dpcr_data = () => `/tPMDpcrData`;
+  put_dpcr_data = () => `/tPMDpcrData`;
+  delete_dpcr_data = (dpcrDataId: string) => `/tPMDpcrData/${dpcrDataId}`;
+  get_dpcr_data_mfoes = (dpcrId: string, divisionName: string, mfoType:number) => `/tPMDpcrData/mfoes/${dpcrId}/${divisionName}/${mfoType}`;
+  get_dpcr_data_search_mfoes = (dpcrId: string, divisionName: string, mfoType:number, searchMfo:string) => `/tPMDpcrData/searchMfoes/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
+  get_dpcr_data = (dpcrId: string) => `/tPMDpcrData/list/${dpcrId}`;
+
   get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
 }
