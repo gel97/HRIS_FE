@@ -10,7 +10,8 @@ import { CanvasTargetDpcrComponent } from './dpcr-target/components/canvas-targe
 import { TableDpcrDataComponent } from './dpcr-target/components/table-dpcr-data.component';
 import { TableDpcrDataMfoesComponent } from './dpcr-target/components/table-dpcr-data-mfoes.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-
+import { ModalDpcrDataComponent } from './dpcr-target/components/modal-dpcr-data.component';
+import { EmptyDataComponent } from '../../components/empty-data.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -20,12 +21,15 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     TableDpcrDataComponent,
     TableDpcrDataMfoesComponent,
     CanvasTargetDpcrComponent,
+    ModalDpcrDataComponent,
+    EmptyDataComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     DpcrRoutingModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    
   ]
 })
 export class DpcrModule { }

@@ -15,6 +15,8 @@ export class DpcrTargetComponent implements OnInit{
   dpcrDataMfoes = this.dpcrService.dpcrDataMfoes();
 
   dpcrObj:any ={};
+  dpcrMFOData:any ={};
+  dpcrSIData:any ={};
 
   isAddDpcr:boolean = false;
 
@@ -31,8 +33,25 @@ export class DpcrTargetComponent implements OnInit{
     }
   }
 
+  AddDpcrData(){
+    console.log(this.dpcrSIData);
+    this.dpcrSIData.isSubTask = 0;
+    this.dpcrService.AddDpcrData(this.dpcrSIData);
+  }
+
   GetDPCRData(){
     this.dpcrService.GetDpcrData();
+  }
+
+  DeleteDPCRData(dpcrDataId:string){
+    this.dpcrService.DeleteDPCRData(dpcrDataId);
+  }
+
+
+  setDpcrDataObj(data:any){
+    console.log(data)
+    this.dpcrMFOData = data.mfoData;
+    this.dpcrSIData = data.siData;
   }
 
   localStorage() {
