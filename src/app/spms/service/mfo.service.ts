@@ -247,7 +247,6 @@ export class MfoService {
        if(deleteData){
         this.GetMFOes();
       }else{
-        //console.log("cancel")
       }
     } catch (error) {
       console.error("Error:", error);
