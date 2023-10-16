@@ -12,6 +12,7 @@ import { TableDpcrDataMfoesComponent } from './dpcr-target/components/table-dpcr
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ModalDpcrDataComponent } from './dpcr-target/components/modal-dpcr-data.component';
 import { EmptyDataComponent } from '../../components/empty-data.component';
+import { ModalSubTaskComponent } from './dpcr-target/components/modal-sub-task.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -22,7 +23,8 @@ import { EmptyDataComponent } from '../../components/empty-data.component';
     TableDpcrDataMfoesComponent,
     CanvasTargetDpcrComponent,
     ModalDpcrDataComponent,
-    EmptyDataComponent
+    EmptyDataComponent,
+    ModalSubTaskComponent
   ],
   imports: [
     CommonModule,

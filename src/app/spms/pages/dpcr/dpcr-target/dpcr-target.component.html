@@ -8,11 +8,13 @@
 
 <div class="row my-4" *ngIf="dpcrService.storageIsShowDpcrData()">
     <div class="col-6">
-        <app-table-dpcr-data *ngIf="dpcrData.data.length > 0; else EmptyData" [dpcrData]="dpcrData"
+        <app-table-dpcr-data 
+            *ngIf="dpcrData.data.length > 0"
+            [dpcrData]="dpcrData"
+            (setDataSubTask)="setDpcrDataObj($event)"
             (deleteDpcrDataIndicator)="DeleteDPCRData($event)" />
-        <ng-template #EmptyData>
-            <app-empty-data/>
-        </ng-template>
+
+        <app-empty-data *ngIf="dpcrData.data.length == 0 && !dpcrData.isLoading"/>
     </div>
     <div class="col-6">
         <app-table-dpcr-data-mfoes [dpcrDataMfoes]="dpcrDataMfoes" (setDpcrDataObj)="setDpcrDataObj($event)" />
@@ -22,3 +24,5 @@
 <app-canvas-target-dpcr [dpcrObj]="dpcrObj" (submit)="AddDpcr()" />
 <app-modal-dpcr-data [dpcrMFOData]="dpcrMFOData" [dpcrSIData]="dpcrSIData" [error]="dpcrData.error"
     (submit)="AddDpcrData()" />
+
+<app-modal-sub-task [dpcrMFOData]="dpcrMFOData" [dpcrSIData]="dpcrSIData"/>
