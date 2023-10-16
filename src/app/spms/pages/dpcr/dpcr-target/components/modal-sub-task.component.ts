@@ -1,11 +1,21 @@
-import { Component, EventEmitter, Output, Input, inject, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
 @Component({
   selector: 'app-modal-sub-task',
   template: `
     <!-- Modal -->
     <div class="modal fade" id="modalSubTask" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-lg"
+        role="document"
+      >
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalScrollableTitle">
@@ -19,19 +29,28 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body row">
-          <div class="card bg-primary text-white mb-3">
-                    <div class="card-body p-2">
-                      <h5 class="card-title text-white">MFO</h5>
-                      <p class="card-text">{{dpcrMFOData.mfo}}</p>
-                    </div>
-                  </div>
-                  <div class="card bg-success text-white mb-3">
-                    <div class="card-body p-2">
-                      <h5 class="card-title text-white">Success Indicator</h5>
-                      <p class="card-text text-white"><b>{{ dpcrSIData.qty }}</b> {{dpcrSIData.indicator}}</p>
-                    </div>
-                  </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-6">
+                <div class="card bg-primary text-white mb-3">
+                <div class="card-body p-2 ">
+                  <h5 class="card-title text-white">MFO</h5>
+                  <p class="card-text">{{ dpcrMFOData.mfo }}</p>
+                </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="card bg-success text-white mb-3">
+                <div class="card-body p-2">
+                  <h5 class="card-title text-white">Success Indicator</h5>
+                  <p class="card-text text-white">
+                    <b>{{ dpcrSIData.qty }}</b> {{ dpcrSIData.indicator }}
+                  </p>
+                </div>
+                </div>
+              </div>
+            </div>
+
             <div
               *ngIf="dpcrSIData.qty > dpcrSIData.qtyOpcr"
               class="alert alert-danger mt-2"
@@ -43,7 +62,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 ><u>{{ dpcrSIData.qtyOpcr }}</u></strong
               >
             </div>
-            <div class="table-responsive text-nowrap">
+            <app-stepper-subtask />
+            <!-- <div class="table-responsive text-nowrap">
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -151,7 +171,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div> -->
           </div>
           <div class="modal-footer">
             <button
@@ -161,7 +181,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             >
               Close
             </button>
-            <button type="button" (click)="Submit()" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -182,16 +201,16 @@ export class ModalSubTaskComponent {
 
   @Output() submit = new EventEmitter<any>();
 
-  Submit(){
-    this.submit.emit("submit");
+  Submit() {
+    this.submit.emit('submit');
     this.handleStatus();
   }
 
-  handleStatus(){
+  handleStatus() {
     setTimeout(() => {
-      if(!this.error){
-          this.closeModal.nativeElement.click();
-        }    
+      if (!this.error) {
+        this.closeModal.nativeElement.click();
+      }
     }, 500);
   }
 
