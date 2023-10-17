@@ -11,6 +11,7 @@ import { SpmsComponent } from './spms.component';
 import { SpinnerComponent } from './components/spinner.component';
 import { LinearLoadingComponent } from './components/linear-loading/linear-loading.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+
 import {
   CdkDrag,
   CdkDragDrop,
@@ -19,8 +20,9 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton.component';
+import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components/opcr-target-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components
     ///SpinnerComponent,
     LinearLoadingComponent,
     OpcrActualSkeletonComponent,
+    OpcrTargetSkeletonComponent,
   ],
   imports: [
     CommonModule,
@@ -42,7 +45,7 @@ import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components
     CdkDropList,
     CdkDropListGroup,
     MatTooltipModule,
-    NgxSkeletonLoaderModule
-  ]
+    NgxSkeletonLoaderModule,
+  ],
 })
-export class SpmsModule { }
+export class SpmsModule {}
