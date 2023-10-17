@@ -1,9 +1,9 @@
 <div class="card">
     <div class="row">
-        <div class="col-9">
-            <h1 class="card-header"> </h1>
+        <div class="col-8">
+            <h1 class="card-header p-3"> </h1>
             <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
-                <ol class="breadcrumb breadcrumb-style1">
+                <ol class="breadcrumb breadcrumb-style1 m-0">
                     <li class="breadcrumb-item">
                         <a href="javascript:void(0);"><i class='bx bx-data'></i>&nbsp;OPCR</a>
                     </li>
@@ -17,14 +17,14 @@
                 </ol>
             </nav>
         </div>
-        <div *ngIf="isShow() == 1" class="col-3"><br>
+        <div *ngIf="isShow() == 1" class="col-4"><br>
             <a class="pointer float-end">
                 <span class="row px-4" (click)="removelocalStorage()">
                     <i class='bx bx-arrow-back'></i>
                 </span>
             </a>
         </div>
-        <div *ngIf="isShow() == 0" class="col-3">
+        <div *ngIf="isShow() == 0" class="col-4">
             <div class="pt-4" style="margin-right:5px;">
                 <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
