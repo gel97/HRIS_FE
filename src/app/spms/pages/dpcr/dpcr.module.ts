@@ -18,8 +18,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRadioModule} from '@angular/material/radio';
-
 import { StepperSubtaskComponent } from './dpcr-target/components/stepper-subtask.component';
+import { ViewSubtaskComponent } from './dpcr-target/components/view-sub-task.component';
+
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -32,7 +33,8 @@ import { StepperSubtaskComponent } from './dpcr-target/components/stepper-subtas
     ModalDpcrDataComponent,
     EmptyDataComponent,
     ModalSubTaskComponent,
-    StepperSubtaskComponent
+    StepperSubtaskComponent,
+    ViewSubtaskComponent
   ],
   imports: [
     CommonModule,

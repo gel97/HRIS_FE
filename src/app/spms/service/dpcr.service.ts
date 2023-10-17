@@ -25,6 +25,11 @@ export class DpcrService {
     error: false,
     isLoading: false,
   });
+  dpcrDataSubtask = signal<any>({
+    data: {},
+    error: false,
+    isLoading: false,
+  });
 
   officeId = this.mfoService.officeId;
   divisionId = signal<any>("DIVADMIJAI162");
@@ -191,6 +196,66 @@ export class DpcrService {
         },
         complete: () => {
           console.log("dpcrDataMfoes: ", this.dpcrData());
+        },
+      });
+  }
+
+  AddSubTask(data: any) {
+    this.dpcr.mutate((a) => (a.isLoadingSave = true));
+    
+    this.http
+      .post<any[]>(api + this.url.post_subtask(), data, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDpcrData();
+          this.GetDpcrDataSubtask(data.mfoId);
+
+          this.dpcrData.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.save();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.dpcrData.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
+  GetDpcrDataSubtask(mfoId:string) {
+    this.dpcrDataSubtask.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_data_subtask(this.storageDpcrId(), mfoId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+            this.dpcrDataSubtask.mutate((a) => {
+              (a.data = response),
+                (a.isLoading = false),
+                (a.error = false),
+                (a.errorStatus = null);
+            });
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.dpcrDataSubtask.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+
+        },
+        complete: () => {
+          console.log("dpcrDataSubtask: ", this.dpcrDataSubtask());
         },
       });
   }
