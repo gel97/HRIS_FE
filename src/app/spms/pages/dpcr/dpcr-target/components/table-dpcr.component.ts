@@ -58,7 +58,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   >
                 </td>
                 <td>
-                  <div class="dropdown">
+                  <div class="dropdown position-static">
                     <button
                       type="button"
                       class="btn p-0 dropdown-toggle hide-arrow"

@@ -7,22 +7,17 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
       <div class="col-xl-12">
         <div class="nav-align-top mb-4">
           <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-            <!-- <button type="button" (click)="isExpandMfoes = true"
-                                        class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
-                                        data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll">
-                                        <i class='bx bx-expand'></i>
-                                    </button> -->
-
             <li class="nav-item">
               <button
                 (click)="setMFOs(0)"
                 type="button"
-                class="nav-link active"
+                class="nav-link"
+                [ngClass]="!dpcrService.isCommonDivision() ? 'active':''"
                 role="tab"
                 data-bs-toggle="tab"
                 data-bs-target="#navs-pills-justified-home"
                 aria-controls="navs-pills-justified-home"
-                aria-selected="true"
+                aria-selected="false"
               >
                 <ng-container>
                   <i class="bx bx-grid-alt"></i> OFFICE MFO
@@ -40,11 +35,12 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 (click)="setMFOs(1)"
                 type="button"
                 class="nav-link"
+                [ngClass]="dpcrService.isCommonDivision() ? 'active':''"
                 role="tab"
                 data-bs-toggle="tab"
                 data-bs-target="#navs-pills-justified-profile"
                 aria-controls="navs-pills-justified-profile"
-                aria-selected="false"
+                aria-selected="true"
               >
                 <ng-container>
                   <i class="bx bx-grid-alt"></i> COMMON MFO
@@ -84,7 +80,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           </div>
           <div class="tab-content px-0 mt-2 pb-0">
             <div
-              class="tab-pane fade show active"
+              class="tab-pane fade"
+              [ngClass]="!dpcrService.isCommonDivision()?'show active':''"
               id="navs-pills-justified-home"
               role="tabpanel"
             >
@@ -190,6 +187,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             </div>
             <div
               class="tab-pane fade"
+              [ngClass]="dpcrService.isCommonDivision()?'show active':''"
               id="navs-pills-justified-profile"
               role="tabpanel"
             >

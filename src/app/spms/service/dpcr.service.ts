@@ -137,13 +137,12 @@ export class DpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
-          this.dpcrData.mutate((a) => {
-            (a.data = response),
-              (a.isLoading = false),
-              (a.error = false),
-              (a.errorStatus = null);
-          });
-
+            this.dpcrData.mutate((a) => {
+              (a.data = response),
+                (a.isLoading = false),
+                (a.error = false),
+                (a.errorStatus = null);
+            });
           this.errorService.error.mutate((a) => {
             (a.error = false), (a.errorStatus = null);
           });
@@ -233,28 +232,16 @@ export class DpcrService {
       });
   }
 
-  DeleteDPCRData(dpcrDataId:string){
-    this.http
-      .delete<any[]>(api + this.url.delete_dpcr_data(dpcrDataId), {
-        responseType: `json`,
-      })
-      .subscribe({
-        next: (response: any = {}) => {
-          
-          this.GetDpcrData();
+  async DeleteDPCRData(dpcrDataId: string) {
+    try {
+      let deleteData = await this.alertService.delete(this.url.delete_dpcr_data(dpcrDataId));
 
-          this.errorService.error.mutate((a) => {
-            (a.error = false), (a.errorStatus = null);
-          });
-        },
-        error: (error: any) => {
-          this.errorService.error.mutate((a) => {
-            (a.error = true), (a.errorStatus = error.status);
-          });
-
-        },
-        complete: () => {
-        },
-      });
+       if(deleteData){
+        this.GetDpcrData();
+      }else{
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 }
