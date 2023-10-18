@@ -56,14 +56,14 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 
     @Output() onSearchMFO = new EventEmitter<any>();
     @Output() isAddDpcr = new EventEmitter<boolean>();
+    @Output() handleShowDpcrData = new EventEmitter<boolean>();
 
     SearchMFO(){
       this.onSearchMFO.emit('Search MFO');
     }
 
     SetIsShowDpcrData(){
-        this.dpcrService.storageIsShowDpcrData.set(0);
-        localStorage.setItem('isShowDpcrData', '0');
+        this.handleShowDpcrData.emit(false);
     }
 
     HandleDpcr(){
