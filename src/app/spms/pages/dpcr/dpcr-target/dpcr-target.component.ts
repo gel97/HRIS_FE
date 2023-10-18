@@ -41,6 +41,7 @@ export class DpcrTargetComponent implements OnInit{
   }
 
   AddSubTask(data:any){
+    console.log(data)
     this.dpcrService.AddSubTask(data);
   }
 

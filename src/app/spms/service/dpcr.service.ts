@@ -243,7 +243,7 @@ export class DpcrService {
                 (a.error = false),
                 (a.errorStatus = null);
             });
-          }, 1000);
+          }, 500);
 
           this.errorService.error.mutate((a) => {
             (a.error = false), (a.errorStatus = null);

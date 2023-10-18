@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<app-view-subtask *ngIf="isShowSubtask" [mfoId]="dpcrMFOData.mfoId" (isShowSubtask)="isShowSubtask=$event"/>
+<app-view-subtask *ngIf="isShowSubtask" [mfoId]="dpcrMFOData.mfoId" (setDataSubTask)="setDpcrDataObj($event)" (isShowSubtask)="isShowSubtask=$event"/>
 
 <app-canvas-target-dpcr [dpcrObj]="dpcrObj" (submit)="AddDpcr()" />
 <app-modal-dpcr-data [dpcrMFOData]="dpcrMFOData" [dpcrSIData]="dpcrSIData" [error]="dpcrData.error"

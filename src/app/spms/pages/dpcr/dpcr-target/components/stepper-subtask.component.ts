@@ -19,7 +19,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           <ng-template matStepLabel>Sub-task name</ng-template>
           <mat-form-field style="width: 100%;">
             <mat-label>MFO</mat-label>
-            <input matInput [(ngModel)]="data.mfo" class="" formControlName="firstCtrl" required />
+            <input matInput [(ngModel)]="data.stMfo" class="" formControlName="firstCtrl" required />
           </mat-form-field>
           <div>
             <button mat-button matStepperNext>Next</button>
@@ -30,7 +30,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         <form [formGroup]="secondFormGroup">
           <mat-form-field style="width: 100%;">
             <mat-label>Success Indicator</mat-label>
-            <input matInput [(ngModel)]="data.Indicator" formControlName="secondCtrl" required />
+            <input matInput [(ngModel)]="data.stIndicator" formControlName="secondCtrl" required />
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
@@ -278,7 +278,6 @@ export class StepperSubtaskComponent implements OnInit {
   @Output() submitSubTask = new EventEmitter<any>();
 
   Submit() {
-    console.log(this.data)
     this.submitSubTask.emit(this.data);
   }
 
