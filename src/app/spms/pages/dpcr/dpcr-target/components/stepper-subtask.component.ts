@@ -19,7 +19,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           <ng-template matStepLabel>Sub-task name</ng-template>
           <mat-form-field style="width: 100%;">
             <mat-label>MFO</mat-label>
-            <input matInput class="" formControlName="firstCtrl" required />
+            <input matInput [(ngModel)]="data.mfo" class="" formControlName="firstCtrl" required />
           </mat-form-field>
           <div>
             <button mat-button matStepperNext>Next</button>
@@ -30,7 +30,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         <form [formGroup]="secondFormGroup">
           <mat-form-field style="width: 100%;">
             <mat-label>Success Indicator</mat-label>
-            <input matInput formControlName="secondCtrl" required />
+            <input matInput [(ngModel)]="data.Indicator" formControlName="secondCtrl" required />
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
@@ -275,10 +275,11 @@ export class StepperSubtaskComponent implements OnInit {
 
   @Input() search: any;
 
-  @Output() onSearchMFO = new EventEmitter<any>();
+  @Output() submitSubTask = new EventEmitter<any>();
 
-  SearchMFO() {
-    this.onSearchMFO.emit('Search MFO');
+  Submit() {
+    console.log(this.data)
+    this.submitSubTask.emit(this.data);
   }
 
   firstFormGroup = this._formBuilder.group({
@@ -297,10 +298,6 @@ export class StepperSubtaskComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder) {}
   ngOnInit(): void {
     this.initQtyUnit();
-  }
-
-  Submit() {
-    console.log(this.data);
   }
 
   onChangeUnit(event: Event) {

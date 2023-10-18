@@ -62,116 +62,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 ><u>{{ dpcrSIData.qtyOpcr }}</u></strong
               >
             </div>
-            <app-stepper-subtask />
-            <!-- <div class="table-responsive text-nowrap">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th [width]="10">Rating</th>
-                    <th>Quantity</th>
-                    <th>Quality</th>
-                    <th>Timeliness</th>
-                  </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-                  <tr>
-                    <td>
-                      <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
-                      <strong>5</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        [(ngModel)]="dpcrSIData.qty5"
-                        class="form-control"
-                      />
-                    </td>
-                    <td>
-                      {{ dpcrSIData.qlty5 }}
-                    </td>
-                    <td>
-                      {{ dpcrSIData.timely5 }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
-                      <strong>4</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        [(ngModel)]="dpcrSIData.qty4"
-                        class="form-control"
-                      />
-                    </td>
-                    <td>
-                      {{ dpcrSIData.qlty4 }}
-                    </td>
-                    <td>
-                      {{ dpcrSIData.timely4 }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
-                      <strong>3</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        [(ngModel)]="dpcrSIData.qty3"
-                        class="form-control"
-                      />
-                    </td>
-                    <td>
-                      {{ dpcrSIData.qlty3 }}
-                    </td>
-                    <td>
-                      {{ dpcrSIData.timely3 }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
-                      <strong>2</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        [(ngModel)]="dpcrSIData.qty2"
-                        class="form-control"
-                      />
-                    </td>
-                    <td>
-                      {{ dpcrSIData.qlty2 }}
-                    </td>
-                    <td>
-                      {{ dpcrSIData.timely2 }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
-                      <strong>1</strong>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        [(ngModel)]="dpcrSIData.qty1"
-                        class="form-control"
-                      />
-                    </td>
-                    <td>
-                      {{ dpcrSIData.qlty1 }}
-                    </td>
-                    <td>
-                      {{ dpcrSIData.timely1 }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div> -->
+            <app-stepper-subtask (submitSubTask)="SubmitSubTask($event)" />
           </div>
           <div class="modal-footer">
             <button
@@ -199,10 +90,12 @@ export class ModalSubTaskComponent {
   @Input() dpcrSIData: any;
   @Input() error: any;
 
-  @Output() submit = new EventEmitter<any>();
+  @Output() submitSubTask = new EventEmitter<any>();
 
-  Submit() {
-    this.submit.emit('submit');
+  SubmitSubTask(data:any) {
+    data.mfoId = this.dpcrMFOData.mfoId
+
+    this.submitSubTask.emit(data);
     this.handleStatus();
   }
 
