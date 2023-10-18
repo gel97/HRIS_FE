@@ -2,19 +2,25 @@ import { Injectable } from '@angular/core';
 import { PdfService } from 'src/app/spms/service/pdf.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReportActualService {
+  constructor(private reportService: PdfService) {}
 
-
-  constructor(private reportService:PdfService) { }
-
-
-  ReportActual(data:any) {
+  switchero: number = 0;
+  triggerSwitch(trig: number) {
+    this.switchero = trig;
+  }
+  title2: string | any;
+  ReportActual(data: any) {
     let title1 = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
-    let title2 = 'PERFORMANCE STANDARD (OPCR-TARGET)';
+    if (this.switchero == 1) {
+      this.title2 = 'PERFORMANCE STANDARD (OPCR-TARGET)';
+    } else {
+      this.title2 = 'PERFORMANCE STANDARD (DPCR-TARGET)';
+    }
 
-    let employeeName = 'EDWIN A. PALERO';
+    let employeeName = 'EDWIN A. PALERO, MPA, MHRM';
     let employeeOffice = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
     let employeePosition = 'P.G. Depeartment Head';
 
@@ -25,7 +31,7 @@ export class ReportActualService {
     let reviewedBy = 'JOSIE JEAN R. RABANOZ, CE, MPA, En.P.';
     let reviewedByPosition = 'Provincial Administrator';
     let approvedByPosition = 'Governor';
-    let approvedBy = 'EDWIN I. JUBAHIB';
+    let approvedBy = 'EDWIN I. JUBAHIB, MMPA';
 
     let content: any = [];
     let tableBody: any = [];
@@ -405,7 +411,7 @@ export class ReportActualService {
 
     content.push([
       {
-        margin:[0,20,0,0],
+        margin: [0, 20, 0, 0],
         text: [
           { text: 'I, ' },
           {
@@ -435,7 +441,7 @@ export class ReportActualService {
         bold: true,
         decoration: 'underline',
         alignment: 'right',
-        margin: [0, 0, 60, 0],
+        margin: [0, 0, 30, 0],
       },
       {
         text: employeePosition + ', ' + officeShort,
@@ -583,7 +589,7 @@ export class ReportActualService {
     this.reportService.reportTarget(content, {
       isPortrait: false,
       title1: title1,
-      title2: title2,
+      title2: this.title2,
     });
   }
 }
