@@ -45,9 +45,8 @@ export class OpcrTargetComponent implements OnInit {
   ngOnInit(): void {
     this.localStorage();
     this.GetOPCRs();
-    this.mfoService.GetMFOes();
     this.GetOfficeDivision();
-    this.sortExcist();
+    // this.sortExcist();
   }
 
   localStorage() {
@@ -58,6 +57,7 @@ export class OpcrTargetComponent implements OnInit {
         localStorage.setItem('isShow', '1');
         // this.mfoService.isCommon.set(0);
         this.opcrService.GetOPCRDetails();
+        this.mfoService.GetMFOes();
         this.sortExcist();
       }, 1000);
     } else {
@@ -227,8 +227,8 @@ export class OpcrTargetComponent implements OnInit {
 
   DeleteOPCRDetails(opcrDataId: string) {
     this.opcrService.DeleteOPCRDetails(opcrDataId);
-    this.sortExcist();
     this.GetMFOs();
+    this.sortExcist();
   }
 
   checkedNumeric: boolean = false;
@@ -271,12 +271,14 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrId', opcrid);
     localStorage.setItem('opcrDetails', opcrdetails);
 
-    this.opcrDetails.mutate((a: any) => (a.isLoading = true));
-    setTimeout(() => {
-      this.opcrDetails.mutate((a: any) => (a.isLoading = false));
-      this.opcrService.GetOPCRDetails();
-      this.sortExcist();
-    }, 1000);
+    // this.opcrDetails.mutate((a: any) => (a.isLoading = true));
+    // // setTimeout(() => {
+    //   this.opcrDetails.mutate((a: any) => (a.isLoading = false));
+    // this.opcrService.GetOPCRDetails();
+    // this.mfoService.GetMFOes();
+    // this.sortExcist();
+    // }, 1000);
+    this.localStorage();
   }
 
   // qtyUnit(value: number) {
@@ -287,50 +289,110 @@ export class OpcrTargetComponent implements OnInit {
     this.editopcrDetails.qtyUnit = value;
   }
 
+  newList: any = [];
+  counter: number = 0;
+  loading: boolean = false;
   sortExcist() {
-    this.mfo.mutate((a: any) => (a.isLoading = true));
-    // console.log('here start');
-
-    // setTimeout(() => {
-    //   for (let outerItem of this.mfo().data) {
-    //     for (let innerItem of outerItem.si) {
-    //       for (let opcrDetail of this.opcrDetails().data) {
-    //         for (let opcrDetailItem of opcrDetail.si) {
-    //           if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
-    //             // Find the index of the item in the array and remove it using splice
-    //             const indexToRemove = outerItem.si.indexOf(innerItem);
-    //             if (indexToRemove !== -1) {
-    //               outerItem.si.splice(indexToRemove, 1);
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    //   this.mfo.mutate((a: any) => (a.isLoading = false));
-    //   console.log('here end');
-    // }, 3000);
-
-    interval(1300)
-      .pipe(take(1))
-      .subscribe((value) => {
-        for (let outerItem of this.mfo().data) {
-          for (let innerItem of outerItem.si) {
-            for (let opcrDetail of this.opcrDetails().data) {
-              for (let opcrDetailItem of opcrDetail.si) {
-                if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
-                  // Find the index of the item in the array and remove it using splice
-                  const indexToRemove = outerItem.si.indexOf(innerItem);
-                  if (indexToRemove !== -1) {
-                    outerItem.si.splice(indexToRemove, 1);
+    // this.mfo.mutate((a: any) => (a.isLoading = true));
+    this.loading = true;
+    console.log('here start');
+    setTimeout(() => {
+      interval(3000)
+        .pipe(take(1))
+        .subscribe((value) => {
+          console.log(this.opcrDetails().data);
+          this.counter = 0;
+          for (let outerItem of this.mfo().data) {
+            for (let innerItem of outerItem.si) {
+              for (let opcrDetail of this.opcrDetails().data) {
+                for (let opcrDetailItem of opcrDetail.si) {
+                  if (innerItem.indicatorId == opcrDetailItem.indicatorId) {
+                    // Find the index of the item in the array and remove it using splice
+                    // const indexToRemove = outerItem.si.indexOf(innerItem);
+                    // if (indexToRemove !== -1) {
+                    //   outerItem.si.splice(indexToRemove, 1);
+                    // }
+                    this.counter += 1;
+                    console.log('yawa', this.counter);
+                    // break outerLoop;
                   }
                 }
               }
             }
           }
-        }
-        this.mfo.mutate((a: any) => (a.isLoading = false));
-      });
+
+          while (this.counter != 0) {
+            console.log('shet');
+            this.counter -= 1;
+            for (let outerItem of this.mfo().data) {
+              for (let innerItem of outerItem.si) {
+                for (let opcrDetail of this.opcrDetails().data) {
+                  for (let opcrDetailItem of opcrDetail.si) {
+                    if (innerItem.indicatorId == opcrDetailItem.indicatorId) {
+                      // Find the index of the item in the array and remove it using splice
+                      const indexToRemove = outerItem.si.indexOf(innerItem);
+                      if (indexToRemove !== -1) {
+                        outerItem.si.splice(indexToRemove, 1);
+                      }
+                      console.log('remove');
+                    }
+                  }
+                }
+                if (innerItem.length == 0) {
+                  console.log('no si');
+                }
+              }
+            }
+          }
+
+          if (this.counter == 0) {
+            this.mfo.mutate((a: any) => (a.isLoading = false));
+            console.log('pinis');
+          }
+
+          // if (this.counter != 0) {
+          //   console.log('shet');
+          //   this.counter -= 1;
+          // }
+
+          console.log('here end');
+          console.log('here end', this.mfo().data);
+          if (this.loading) {
+            this.loading = false;
+            console.log('pinis');
+            // for (let outerItem of this.mfo().data) {
+            //   for (let innerItem of outerItem.si) {
+            //     if (innerItem.length == 0) {
+            //       console.log('redundant');
+            //     }
+            //   }
+            // }
+          }
+        });
+
+      // this.mfo.mutate((a: any) => (a.isLoading = false));
+    }, 1);
+
+    // interval(3000)
+    //   .pipe(take(1))
+    //   .subscribe((value) => {
+    //     for (let outerItem of this.mfo().data) {
+    //       for (let innerItem of outerItem.si) {
+    //         for (let opcrDetail of this.opcrDetails().data) {
+    //           for (let opcrDetailItem of opcrDetail.si) {
+    //             if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
+    //               // Find the index of the item in the array and remove it using splice
+    //               const indexToRemove = outerItem.si.indexOf(innerItem);
+    //               if (indexToRemove !== -1) {
+    //                 outerItem.si.splice(indexToRemove, 1);
+    //               }
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //     this.mfo.mutate((a: any) => (a.isLoading = false));
+    //   });
   }
 
   onChangeYearInput(year: any) {
@@ -344,7 +406,7 @@ export class OpcrTargetComponent implements OnInit {
 
     localStorage.setItem('isShow', '0');
     localStorage.setItem('opcrId', '');
-    localStorage.setItem('opcrName', '');
+    // localStorage.setItem('opcrName', '');
     // this.mfoService.isCommon.set(0);
     this.GetOPCRs();
     this.GetMFOs();
