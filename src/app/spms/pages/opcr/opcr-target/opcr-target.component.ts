@@ -46,7 +46,6 @@ export class OpcrTargetComponent implements OnInit {
     this.localStorage();
     this.GetOPCRs();
     this.GetOfficeDivision();
-    // this.sortExcist();
   }
 
   localStorage() {
@@ -55,14 +54,12 @@ export class OpcrTargetComponent implements OnInit {
       setTimeout(() => {
         this.opcrDetails.mutate((a: any) => (a.isLoading = false));
         localStorage.setItem('isShow', '1');
-        // this.mfoService.isCommon.set(0);
         this.opcrService.GetOPCRDetails();
         this.mfoService.GetMFOes();
         this.sortExcist();
       }, 1000);
     } else {
       localStorage.setItem('isShow', '0');
-      // this.mfoService.isCommon.set(0);
       this.opcrService.storageIsShow.set(0);
       this.sortExcist();
     }
@@ -189,7 +186,6 @@ export class OpcrTargetComponent implements OnInit {
 
   trap: boolean = false;
   prompt: boolean = false;
-  // alwaysCheck: boolean = true;
   PostOPCRDetails() {
     this.mfoDetails.sharedDiv = this.sharedDivValue();
     this.mfoDetails.opcrId = localStorage.getItem('opcrId');
@@ -199,12 +195,12 @@ export class OpcrTargetComponent implements OnInit {
     ) {
       this.trap = true;
     }
-    if (this.mfoService.isCommon()) {
+    if (
+      this.mfoService.isCommon() == 1 &&
+      this.mfoDetails.qtyUnit != undefined
+    ) {
       this.trap = false;
     }
-    // if (this.mfoDetails.qtyUnit == null) {
-    //   this.trap = true;
-    // }
     if (!this.trap) {
       this.prompt = false;
       this.opcrService.AddOPCRData(this.mfoDetails);
@@ -271,50 +267,28 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrId', opcrid);
     localStorage.setItem('opcrDetails', opcrdetails);
 
-    // this.opcrDetails.mutate((a: any) => (a.isLoading = true));
-    // // setTimeout(() => {
-    //   this.opcrDetails.mutate((a: any) => (a.isLoading = false));
-    // this.opcrService.GetOPCRDetails();
-    // this.mfoService.GetMFOes();
-    // this.sortExcist();
-    // }, 1000);
     this.localStorage();
   }
-
-  // qtyUnit(value: number) {
-  //   this.mfoDetails.qtyUnit = value;
-  // }
 
   editQtyUnit(value: number) {
     this.editopcrDetails.qtyUnit = value;
   }
 
-  newList: any = [];
   counter: number = 0;
   loading: boolean = false;
   sortExcist() {
-    // this.mfo.mutate((a: any) => (a.isLoading = true));
     this.loading = true;
-    console.log('here start');
     setTimeout(() => {
       interval(3000)
         .pipe(take(1))
         .subscribe((value) => {
-          console.log(this.opcrDetails().data);
           this.counter = 0;
           for (let outerItem of this.mfo().data) {
             for (let innerItem of outerItem.si) {
               for (let opcrDetail of this.opcrDetails().data) {
                 for (let opcrDetailItem of opcrDetail.si) {
                   if (innerItem.indicatorId == opcrDetailItem.indicatorId) {
-                    // Find the index of the item in the array and remove it using splice
-                    // const indexToRemove = outerItem.si.indexOf(innerItem);
-                    // if (indexToRemove !== -1) {
-                    //   outerItem.si.splice(indexToRemove, 1);
-                    // }
                     this.counter += 1;
-                    console.log('yawa', this.counter);
-                    // break outerLoop;
                   }
                 }
               }
@@ -322,7 +296,6 @@ export class OpcrTargetComponent implements OnInit {
           }
 
           while (this.counter != 0) {
-            console.log('shet');
             this.counter -= 1;
             for (let outerItem of this.mfo().data) {
               for (let innerItem of outerItem.si) {
@@ -334,65 +307,17 @@ export class OpcrTargetComponent implements OnInit {
                       if (indexToRemove !== -1) {
                         outerItem.si.splice(indexToRemove, 1);
                       }
-                      console.log('remove');
                     }
                   }
-                }
-                if (innerItem.length == 0) {
-                  console.log('no si');
                 }
               }
             }
           }
-
           if (this.counter == 0) {
-            this.mfo.mutate((a: any) => (a.isLoading = false));
-            console.log('pinis');
-          }
-
-          // if (this.counter != 0) {
-          //   console.log('shet');
-          //   this.counter -= 1;
-          // }
-
-          console.log('here end');
-          console.log('here end', this.mfo().data);
-          if (this.loading) {
             this.loading = false;
-            console.log('pinis');
-            // for (let outerItem of this.mfo().data) {
-            //   for (let innerItem of outerItem.si) {
-            //     if (innerItem.length == 0) {
-            //       console.log('redundant');
-            //     }
-            //   }
-            // }
           }
         });
-
-      // this.mfo.mutate((a: any) => (a.isLoading = false));
-    }, 1);
-
-    // interval(3000)
-    //   .pipe(take(1))
-    //   .subscribe((value) => {
-    //     for (let outerItem of this.mfo().data) {
-    //       for (let innerItem of outerItem.si) {
-    //         for (let opcrDetail of this.opcrDetails().data) {
-    //           for (let opcrDetailItem of opcrDetail.si) {
-    //             if (innerItem.indicatorId === opcrDetailItem.indicatorId) {
-    //               // Find the index of the item in the array and remove it using splice
-    //               const indexToRemove = outerItem.si.indexOf(innerItem);
-    //               if (indexToRemove !== -1) {
-    //                 outerItem.si.splice(indexToRemove, 1);
-    //               }
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
-    //     this.mfo.mutate((a: any) => (a.isLoading = false));
-    //   });
+    }, 0);
   }
 
   onChangeYearInput(year: any) {
@@ -406,8 +331,7 @@ export class OpcrTargetComponent implements OnInit {
 
     localStorage.setItem('isShow', '0');
     localStorage.setItem('opcrId', '');
-    // localStorage.setItem('opcrName', '');
-    // this.mfoService.isCommon.set(0);
+
     this.GetOPCRs();
     this.GetMFOs();
   }

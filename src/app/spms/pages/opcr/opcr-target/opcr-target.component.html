@@ -70,18 +70,15 @@
                                     <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                                         <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                                             class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                                            <img src="../assets/img/avatars/5.png" alt="Avatar"
-                                                class="rounded-circle" />
+                                            <img src="./assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
                                         </li>
                                         <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                                             class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                                            <img src="../assets/img/avatars/6.png" alt="Avatar"
-                                                class="rounded-circle" />
+                                            <img src="./assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
                                         </li>
                                         <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                                             class="avatar avatar-xs pull-up" title="Christina Parker">
-                                            <img src="../assets/img/avatars/7.png" alt="Avatar"
-                                                class="rounded-circle" />
+                                            <img src="./assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
                                         </li>
                                     </ul>
                                 </td>
@@ -326,43 +323,48 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0">
-                                                    <br>
-                                                    <tr class="text-justify" style="color: blue; white-space: normal;">
-                                                        <div class="row">
-                                                            <div class="col-8">
-                                                                <strong><i
-                                                                        class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
-                                                            </div>
-                                                            <div class="col-4">
-                                                                <small class="badge rounded-pill float-end"
-                                                                    [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    {{displayCatergory(data.categoryId)}}
-                                                                </small>
-                                                            </div>
-                                                        </div>
-                                                    </tr>
-                                                    <tr *ngFor="let si of data.si">
-                                                        <td>
+                                                    <ng-container *ngIf="data.si.length >0">
+                                                        <br>
+                                                        <tr class="text-justify"
+                                                            style="color: blue; white-space: normal;">
                                                             <div class="row">
-                                                                <div class="col-11 text-justify"
-                                                                    style="white-space: normal;">
-                                                                    <i class='bx bx-chevron-right'></i>
-                                                                    &nbsp;
-                                                                    {{si.indicator}}
+                                                                <div class="col-8">
+                                                                    <strong><i
+                                                                            class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
                                                                 </div>
-                                                                <div class="col-1">
-                                                                    <button
-                                                                        (click)="mfoDetails = si; clearSelectedDiv()"
-                                                                        type="button" data-bs-toggle="modal"
-                                                                        data-bs-target="#modalAdd"
-                                                                        class="btn rounded-pill btn-icon btn-primary float-end">
-                                                                        <span
-                                                                            class="tf-icons bx bx bx-plus"></span></button>
+                                                                <div class="col-4">
+                                                                    <small class="badge rounded-pill float-end"
+                                                                        [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        {{displayCatergory(data.categoryId)}}
+                                                                    </small>
+                                                                    <!-- <span *ngIf="data.si.length == 0"
+                                                                        class="badge bg-label-danger">Empty</span> -->
                                                                 </div>
                                                             </div>
-                                                        </td>
-                                                    </tr>
+                                                        </tr>
+                                                        <tr *ngFor="let si of data.si">
+                                                            <td>
+                                                                <div class="row">
+                                                                    <div class="col-11 text-justify"
+                                                                        style="white-space: normal;">
+                                                                        <i class='bx bx-chevron-right'></i>
+                                                                        &nbsp;
+                                                                        {{si.indicator}}
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <button
+                                                                            (click)="mfoDetails = si; clearSelectedDiv()"
+                                                                            type="button" data-bs-toggle="modal"
+                                                                            data-bs-target="#modalAdd"
+                                                                            class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                            <span
+                                                                                class="tf-icons bx bx bx-plus"></span></button>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
                                                 </tbody>
                                             </table>
                                         </div>
