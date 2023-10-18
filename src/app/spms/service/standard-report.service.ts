@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { PdfService } from 'src/app/spms/service/pdf.service';
+import { PdfService } from './pdf.service';
+
 @Injectable({
   providedIn: 'root',
 })
-export class ReportStandardService {
+export class StandardReportService {
   constructor(private reportService: PdfService) {}
 
   ReportStandard(data: any) {
     let title1 = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
-    let title2 = 'PERFORMANCE STANDARD (OPCR)';
+    let title2 = 'PERFORMANCE STANDARD (DPCR)';
 
     let employeeName = 'EDWIN A. PALERO, MPA, MHRM';
     let employeeOffice = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
@@ -93,41 +94,41 @@ export class ReportStandardService {
               { text: a.mfo, rowSpan: a.si.length * 5 },
               { text: b.indicator, rowSpan: 5 },
               { text: '5', alignment: 'center' },
-              { text: b.standard.qty5, alignment: 'center' },
-              { text: b.standard.qlty5, alignment: 'center' },
-              { text: b.standard.timely5, alignment: 'center' },
+              { text: b.qty5, alignment: 'center' },
+              { text: b.qlty5, alignment: 'center' },
+              { text: b.timely5, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '4', alignment: 'center' },
-              { text: b.standard.qty4, alignment: 'center' },
-              { text: b.standard.qlty4, alignment: 'center' },
-              { text: b.standard.timely4, alignment: 'center' },
+              { text: b.qty4, alignment: 'center' },
+              { text: b.qlty4, alignment: 'center' },
+              { text: b.timely4, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '3', alignment: 'center' },
-              { text: b.standard.qty3, alignment: 'center' },
-              { text: b.standard.qlty3, alignment: 'center' },
-              { text: b.standard.timely3, alignment: 'center' },
+              { text: b.qty3, alignment: 'center' },
+              { text: b.qlty3, alignment: 'center' },
+              { text: b.timely3, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '2', alignment: 'center' },
-              { text: b.standard.qty2, alignment: 'center' },
-              { text: b.standard.qlty2, alignment: 'center' },
-              { text: b.standard.timely2, alignment: 'center' },
+              { text: b.qty2, alignment: 'center' },
+              { text: b.qlty2, alignment: 'center' },
+              { text: b.timely2, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '1', alignment: 'center' },
-              { text: b.standard.qty1, alignment: 'center' },
-              { text: b.standard.qlty1, alignment: 'center' },
-              { text: b.standard.timely1, alignment: 'center' },
+              { text: b.qty1, alignment: 'center' },
+              { text: b.qlty1, alignment: 'center' },
+              { text: b.timely1, alignment: 'center' },
             ]
           );
         });
@@ -156,41 +157,41 @@ export class ReportStandardService {
               { text: a.mfo, rowSpan: a.si.length * 5 },
               { text: b.indicator, rowSpan: 5 },
               { text: '5', alignment: 'center' },
-              { text: b.standard.qty5, alignment: 'center' },
-              { text: b.standard.qlty5, alignment: 'center' },
-              { text: b.standard.timely5, alignment: 'center' },
+              { text: b.qty5, alignment: 'center' },
+              { text: b.qlty5, alignment: 'center' },
+              { text: b.timely5, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '4', alignment: 'center' },
-              { text: b.standard.qty4, alignment: 'center' },
-              { text: b.standard.qlty4, alignment: 'center' },
-              { text: b.standard.timely4, alignment: 'center' },
+              { text: b.qty4, alignment: 'center' },
+              { text: b.qlty4, alignment: 'center' },
+              { text: b.timely4, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '3', alignment: 'center' },
-              { text: b.standard.qty3, alignment: 'center' },
-              { text: b.standard.qlty3, alignment: 'center' },
-              { text: b.standard.timely3, alignment: 'center' },
+              { text: b.qty3, alignment: 'center' },
+              { text: b.qlty3, alignment: 'center' },
+              { text: b.timely3, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '2', alignment: 'center' },
-              { text: b.standard.qty2, alignment: 'center' },
-              { text: b.standard.qlty2, alignment: 'center' },
-              { text: b.standard.timely2, alignment: 'center' },
+              { text: b.qty2, alignment: 'center' },
+              { text: b.qlty2, alignment: 'center' },
+              { text: b.timely2, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '1', alignment: 'center' },
-              { text: b.standard.qty1, alignment: 'center' },
-              { text: b.standard.qlty1, alignment: 'center' },
-              { text: b.standard.timely1, alignment: 'center' },
+              { text: b.qty1, alignment: 'center' },
+              { text: b.qlty1, alignment: 'center' },
+              { text: b.timely1, alignment: 'center' },
             ]
           );
         });
@@ -219,41 +220,41 @@ export class ReportStandardService {
               { text: a.mfo, rowSpan: a.si.length * 5 },
               { text: b.indicator, rowSpan: 5 },
               { text: '5', alignment: 'center' },
-              { text: b.standard.qty5, alignment: 'center' },
-              { text: b.standard.qlty5, alignment: 'center' },
-              { text: b.standard.timely5, alignment: 'center' },
+              { text: b.qty5, alignment: 'center' },
+              { text: b.qlty5, alignment: 'center' },
+              { text: b.timely5, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '4', alignment: 'center' },
-              { text: b.standard.qty4, alignment: 'center' },
-              { text: b.standard.qlty4, alignment: 'center' },
-              { text: b.standard.timely4, alignment: 'center' },
+              { text: b.qty4, alignment: 'center' },
+              { text: b.qlty4, alignment: 'center' },
+              { text: b.timely4, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '3', alignment: 'center' },
-              { text: b.standard.qty3, alignment: 'center' },
-              { text: b.standard.qlty3, alignment: 'center' },
-              { text: b.standard.timely3, alignment: 'center' },
+              { text: b.qty3, alignment: 'center' },
+              { text: b.qlty3, alignment: 'center' },
+              { text: b.timely3, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '2', alignment: 'center' },
-              { text: b.standard.qty2, alignment: 'center' },
-              { text: b.standard.qlty2, alignment: 'center' },
-              { text: b.standard.timely2, alignment: 'center' },
+              { text: b.qty2, alignment: 'center' },
+              { text: b.qlty2, alignment: 'center' },
+              { text: b.timely2, alignment: 'center' },
             ],
             [
               {},
               {},
               { text: '1', alignment: 'center' },
-              { text: b.standard.qty1, alignment: 'center' },
-              { text: b.standard.qlty1, alignment: 'center' },
-              { text: b.standard.timely1, alignment: 'center' },
+              { text: b.qty1, alignment: 'center' },
+              { text: b.qlty1, alignment: 'center' },
+              { text: b.timely1, alignment: 'center' },
             ]
           );
         });

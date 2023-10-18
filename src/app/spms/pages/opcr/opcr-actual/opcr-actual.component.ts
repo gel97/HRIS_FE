@@ -79,6 +79,7 @@ export class OpcrActualComponent implements OnInit {
   }
 
   ReportOPCR() {
+    this.reportActualService.triggerSwitch(1);
     this.reportActualService.ReportActual(this.opcrMfoes().data);
   }
 }

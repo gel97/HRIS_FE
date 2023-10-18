@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
-
+import { ReportActualService } from 'src/app/spms/service/report-actual.service';
+import { ReportStandardService } from 'src/app/spms/service/report-standard.service';
+import { StandardReportService } from 'src/app/spms/service/standard-report.service';
 @Component({
   selector: 'app-dpcr-actual',
   templateUrl: './dpcr-actual.component.html',
@@ -9,6 +11,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 export class DpcrActualComponent implements OnInit {
   dpcrService = inject(DpcrService);
   dpcrMfoes: any = this.dpcrService.dpcrData();
+  reportStandardService = inject(ReportStandardService);
+  reportActualService = inject(ReportActualService);
+  standardReportService = inject(StandardReportService);
 
   ngOnInit(): void {
     this.dpcrService.GetDpcrData();
@@ -48,5 +53,15 @@ export class DpcrActualComponent implements OnInit {
     }
 
     return catName ? catName + ' FUNCTION' : 'NO FUNCTION';
+  }
+
+  ReportDPCR() {
+    console.log(this.dpcrMfoes.data);
+    this.reportActualService.triggerSwitch(2);
+    this.reportActualService.ReportActual(this.dpcrMfoes.data);
+  }
+
+  ReportStandard() {
+    this.standardReportService.ReportStandard(this.dpcrMfoes.data);
   }
 }

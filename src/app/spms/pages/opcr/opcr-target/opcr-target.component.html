@@ -314,7 +314,7 @@
                                 </div>
                                 <br>
                                 <div class="tab-content scrollable-container"
-                                    *ngIf="mfo().isLoading != true; else isLoading">
+                                    *ngIf="loading != true && opcrDetails().isLoading != true; else isLoading">
                                     <div class="tab-pane fade show active" id="navs-pills-justified-home"
                                         role="tabpanel">
                                         <div class="table-responsive text-nowrap">
