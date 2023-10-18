@@ -25,6 +25,7 @@ export class SpmsApiService {
   get_opcrs = (year: string, officeId: string) =>
     `/tPMOpcrs/${year},${officeId}`;
   post_opcr = () => `/tPMOpcrs`;
+  put_opcr = () => `/tPMOpcrs`;
 
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
   put_opcrdata = () => `/tPMOpcrDatas`;
@@ -39,10 +40,21 @@ export class SpmsApiService {
   post_dpcr_data = () => `/tPMDpcrData`;
   put_dpcr_data = () => `/tPMDpcrData`;
   delete_dpcr_data = (dpcrDataId: string) => `/tPMDpcrData/${dpcrDataId}`;
-  get_dpcr_data_mfoes = (dpcrId: string, divisionName: string, mfoType:number) => `/tPMDpcrData/mfoes/${dpcrId}/${divisionName}/${mfoType}`;
-  get_dpcr_data_search_mfoes = (dpcrId: string, divisionName: string, mfoType:number, searchMfo:string) => `/tPMDpcrData/searchMfoes/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
+  get_dpcr_data_mfoes = (
+    dpcrId: string,
+    divisionName: string,
+    mfoType: number
+  ) => `/tPMDpcrData/mfoes/${dpcrId}/${divisionName}/${mfoType}`;
+  get_dpcr_data_search_mfoes = (
+    dpcrId: string,
+    divisionName: string,
+    mfoType: number,
+    searchMfo: string
+  ) =>
+    `/tPMDpcrData/searchMfoes/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
   get_dpcr_data = (dpcrId: string) => `/tPMDpcrData/list/${dpcrId}`;
-  get_dpcr_data_subtask = (dpcrId: string, mfoId:string) => `/tPMDpcrData/list/subtask/${dpcrId}/${mfoId}`;
+  get_dpcr_data_subtask = (dpcrId: string, mfoId: string) =>
+    `/tPMDpcrData/list/subtask/${dpcrId}/${mfoId}`;
 
   post_subtask = () => `/tPMSubTask`;
   put_subtask = () => `/tPMSubTask`;

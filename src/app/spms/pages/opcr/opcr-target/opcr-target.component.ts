@@ -34,6 +34,7 @@ export class OpcrTargetComponent implements OnInit {
   search: any = {};
   editopcrDetails: any = {};
   editMFODetails: any = {};
+  editOpcr: any = {};
   division: any = [];
   isExpandMfoes: boolean = false;
   @ViewChild('closebutton')
@@ -155,6 +156,12 @@ export class OpcrTargetComponent implements OnInit {
       this.opcr.mutate((a: any) => (a.isLoading = false));
       this.opcrService.GetOPCRs(this.getYear, this.officeId);
     }, 1000);
+  }
+
+  EditOPCR() {
+    console.log(this.editOpcr);
+    this.editOpcr.active = 1;
+    this.opcrService.EditOPCR(this.editOpcr);
   }
 
   GetMFOs() {
