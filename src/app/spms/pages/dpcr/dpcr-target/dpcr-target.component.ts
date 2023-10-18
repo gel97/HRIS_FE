@@ -56,6 +56,16 @@ export class DpcrTargetComponent implements OnInit{
     this.dpcrService.GetDpcrDataSubtask(this.dpcrMFOData.mfoId);
   }
 
+  handleShowDpcrData(value:boolean){
+  if(this.isShowSubtask){
+    this.isShowSubtask = false;
+  }
+  else if(!value){
+      this.dpcrService.storageIsShowDpcrData.set(0);
+      localStorage.setItem('isShowDpcrData', '0');
+  }
+
+  }
   setDpcrDataObj(data:any){
     console.log(data)
     this.dpcrMFOData = data.mfoData;

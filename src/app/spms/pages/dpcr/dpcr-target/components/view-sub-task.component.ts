@@ -6,58 +6,66 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
 
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
 
 @Component({
   selector: 'app-view-subtask',
   template: `
-    <div class="row" *ngIf="!dpcr.isLoading; else ShowLoading">
-      <div class="col-6">
-        <div class="card bg-primary text-white mb-3">
-          <div class="card-body p-2 ">
-            <h5 class="card-title text-white">MFO</h5>
-            <p class="card-text">{{ data.mfo }}</p>
-          </div>
+    <ng-container *ngIf="!dpcr.isLoading; else ShowLoading">
+
+    <div class="mt-2">
+      <div class="card bg-primary text-white mb-3">
+        <div class="card-body p-2 ">
+          <h5 class="card-title text-white">MFO</h5>
+          <p class="card-text">{{ dpcr.data.mfo }}</p>
         </div>
       </div>
-      <div class="col-6">
-        <div class="card bg-success text-white mb-3">
-          <div class="card-body p-2">
-            <h5 class="card-title text-white">Success Indicator</h5>
-            <p class="card-text text-white">
-              <b>{{ data.qty }}</b> {{ data.indicator }}
-            </p>
+    </div>
+    <div *ngFor="let item of dpcr.data.si">
+      <div class="mt-2">
+        <div class="row">
+          <div class="col-11">
+            <div class="card bg-success text-white mb-3">
+              <div class="card-body p-4 ">
+                <p class="card-text">{{ item.indicator }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-1">
+            <button type="button" class="btn btn-outline-success mt-3">
+              Subtask
+            </button>
           </div>
         </div>
       </div>
     </div>
+    </ng-container>
     <ng-template #ShowLoading>
-        <p>Loading...</p>
+      <p>Loading...</p>
     </ng-template>
   `,
 })
 export class ViewSubtaskComponent implements OnInit {
   dpcrService = inject(DpcrService);
   dpcr = this.dpcrService.dpcrDataSubtask();
-  data = this.dpcrService.dpcrDataSubtask().data;
+  data = this.dpcr.data;
 
   @Input() subtask: any;
   @Input() isLoading: any;
-  @Input() mfoId: string = "";
+  @Input() mfoId: string = '';
+
+  @Output() isShowSubtask = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-      this.GetData();
-  } 
-
-  async GetData(){
-   await setTimeout(async () => {
-      this.dpcrService.GetDpcrDataSubtask(this.mfoId);
-    }, 3000);
-
-    await console.log(this.dpcr)
-
+    this.GetData();
   }
 
+  GetData() {
+    this.dpcrService.GetDpcrDataSubtask(this.mfoId);
+  }
+
+  IsShowSubtask() {
+    this.isShowSubtask.emit(false);
+  }
 }

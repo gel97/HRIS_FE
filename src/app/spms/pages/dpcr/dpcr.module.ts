@@ -20,6 +20,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatRadioModule} from '@angular/material/radio';
 import { StepperSubtaskComponent } from './dpcr-target/components/stepper-subtask.component';
 import { ViewSubtaskComponent } from './dpcr-target/components/view-sub-task.component';
+import { DpcrSubtaskComponent } from './dpcr-subtask/dpcr-subtask.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ViewSubtaskComponent } from './dpcr-target/components/view-sub-task.com
     EmptyDataComponent,
     ModalSubTaskComponent,
     StepperSubtaskComponent,
-    ViewSubtaskComponent
+    ViewSubtaskComponent,
+    DpcrSubtaskComponent
   ],
   imports: [
     CommonModule,
