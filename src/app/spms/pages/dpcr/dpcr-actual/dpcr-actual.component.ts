@@ -14,10 +14,14 @@ export class DpcrActualComponent implements OnInit {
   reportStandardService = inject(ReportStandardService);
   reportActualService = inject(ReportActualService);
   standardReportService = inject(StandardReportService);
+  loading: boolean = true;
 
   ngOnInit(): void {
     this.dpcrService.GetDpcrData();
-    console.log('dpcrmfoeeeess', this.dpcrMfoes);
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   }
 
   get dpcrMfoesData(): { [key: number]: any[] } {
@@ -57,7 +61,7 @@ export class DpcrActualComponent implements OnInit {
 
   ReportDPCR() {
     console.log(this.dpcrMfoes.data);
-    this.reportActualService.triggerSwitch(2);
+    this.reportActualService.triggerSwitch(3);
     this.reportActualService.ReportActual(this.dpcrMfoes.data);
   }
 

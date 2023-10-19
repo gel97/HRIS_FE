@@ -26,6 +26,7 @@ export class SpmsApiService {
     `/tPMOpcrs/${year},${officeId}`;
   post_opcr = () => `/tPMOpcrs`;
   put_opcr = () => `/tPMOpcrs`;
+  delete_opcr = (opcrId: string) => `/tPMOpcrs/${opcrId}`;
 
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
   put_opcrdata = () => `/tPMOpcrDatas`;
@@ -54,7 +55,7 @@ export class SpmsApiService {
     `/tPMDpcrData/searchMfoes/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
   get_dpcr_data = (dpcrId: string) => `/tPMDpcrData/list/${dpcrId}`;
   get_dpcr_data_subtask = (dpcrId: string, mfoId: string) =>
-    `/tPMDpcrData/list/subtask/${dpcrId}/${mfoId}`;
+    `/tPMDpcrData/subtask/${dpcrId}/${mfoId}`;
 
   post_subtask = () => `/tPMSubTask`;
   put_subtask = () => `/tPMSubTask`;

@@ -15,7 +15,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           </thead>
           <tbody class="table-border-bottom-0">
             <ng-container *ngFor="let a of dpcrData.data; let i = index">
-              <tr>
+              <tr class="cursor-pointer" (click)="SetDataSubTask(a, {}); IsShowSubtask()">
                 <td colspan="2" *ngIf="!dpcrData.isLoading; else LoadingMfo">
                   <div class="row">
                     <div class="col-9">
@@ -44,18 +44,22 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   </div>
                 </td>
                 <ng-template #LoadingMfo>
-                  <td><ngx-skeleton-loader
-                              count="1"
-                              animation="pulse"
-                              appearance="line"
-                              [theme]="{ margin: '0px' }"
-                            ></ngx-skeleton-loader></td>
-                  <td><ngx-skeleton-loader
-                              count="1"
-                              animation="pulse"
-                              appearance="line"
-                              [theme]="{ margin: '0px' }"
-                            ></ngx-skeleton-loader></td>
+                  <td>
+                    <ngx-skeleton-loader
+                      count="1"
+                      animation="pulse"
+                      appearance="line"
+                      [theme]="{ margin: '0px' }"
+                    ></ngx-skeleton-loader>
+                  </td>
+                  <td>
+                    <ngx-skeleton-loader
+                      count="1"
+                      animation="pulse"
+                      appearance="line"
+                      [theme]="{ margin: '0px' }"
+                    ></ngx-skeleton-loader>
+                  </td>
                 </ng-template>
               </tr>
               <ng-container *ngFor="let b of a.si; let y = index">
@@ -75,22 +79,25 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         <i class="bx bx-dots-vertical-rounded"></i>
                       </button>
                       <div class="dropdown-menu">
-                      <a class="dropdown-item cursor-pointer"
+                        <a class="dropdown-item cursor-pointer"
                           ><i class="bx bx-edit-alt me-1"></i> Target</a
                         >
-                        <a class="dropdown-item cursor-pointer"
-                          (click)="SetDataSubTask(a,b)"
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          (click)="SetDataSubTask(a, b)"
                           data-bs-toggle="modal"
                           data-bs-target="#modalSubTask"
                           ><i class="bx bx-list-plus"></i> Sub-Task</a
                         >
 
-                        <a class="dropdown-item cursor-pointer"
-                          (click)="SetDataSubTask(a,b); IsShowSubtask()"
+                        <!-- <a
+                          class="dropdown-item cursor-pointer"
+                          (click)="SetDataSubTask(a, b); IsShowSubtask()"
                           ><i class="bx bx-list-plus"></i> View Sub-Task</a
-                        >
-                        
-                        <a class="dropdown-item cursor-pointer"
+                        > -->
+
+                        <a
+                          class="dropdown-item cursor-pointer"
                           (click)="DeleteDpcrDataIndicator(b.dpcrDataId)"
                           ><i class="bx bx-trash me-1"></i> Delete</a
                         >
@@ -99,18 +106,22 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   </td>
                 </tr>
                 <ng-template #LoadingIndicator>
-                  <td><ngx-skeleton-loader
-                              count="1"
-                              animation="pulse"
-                              appearance="line"
-                              [theme]="{ margin: '0px' }"
-                            ></ngx-skeleton-loader></td>
-                  <td><ngx-skeleton-loader
-                              count="1"
-                              animation="pulse"
-                              appearance="circle"
-                              [theme]="{ margin: '0px' }"
-                            ></ngx-skeleton-loader></td>
+                  <td>
+                    <ngx-skeleton-loader
+                      count="1"
+                      animation="pulse"
+                      appearance="line"
+                      [theme]="{ margin: '0px' }"
+                    ></ngx-skeleton-loader>
+                  </td>
+                  <td>
+                    <ngx-skeleton-loader
+                      count="1"
+                      animation="pulse"
+                      appearance="circle"
+                      [theme]="{ margin: '0px' }"
+                    ></ngx-skeleton-loader>
+                  </td>
                 </ng-template>
               </ng-container>
             </ng-container>
@@ -130,13 +141,13 @@ export class TableDpcrDataComponent {
   @Output() deleteDpcrDataIndicator = new EventEmitter<string>();
   @Output() setDataSubTask = new EventEmitter<any>();
 
-  DeleteDpcrDataIndicator(dpcrDataId:string){
-    console.log(dpcrDataId)
+  DeleteDpcrDataIndicator(dpcrDataId: string) {
+    console.log(dpcrDataId);
     this.deleteDpcrDataIndicator.emit(dpcrDataId);
   }
 
-  SetDataSubTask(mfoData: any, siData:any) {
-    this.setDataSubTask.emit({mfoData, siData});
+  SetDataSubTask(mfoData: any, siData: any) {
+    this.setDataSubTask.emit({ mfoData, siData });
   }
 
   SetDpcr(item: any) {

@@ -168,6 +168,34 @@ export class OpcrService {
       });
   }
 
+  DeleteOPCR(opcrId: string) {
+    this.http.delete<any[]>(api + this.url.delete_opcr(opcrId)).subscribe({
+      next: (response: any = {}) => {},
+      error: () => {
+        this.alertService.error();
+      },
+      complete: () => {
+        // this.StorageOPCRDetails(this.getId);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-start',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Deleted successfully',
+        });
+      },
+    });
+  }
+
   AddOPCR(data: any) {
     this.opcr.mutate((a) => (a.isLoading = true));
     this.http
@@ -252,7 +280,7 @@ export class OpcrService {
         next: (response: any = {}) => {
           console.log('edited', response);
           this.opcr.mutate((a) => {
-            a.isLoading = false;
+            a.isLoading = true;
             a.error = false;
           });
         },

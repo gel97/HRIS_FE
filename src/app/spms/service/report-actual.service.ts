@@ -14,10 +14,19 @@ export class ReportActualService {
   title2: string | any;
   ReportActual(data: any) {
     let title1 = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
-    if (this.switchero == 1) {
-      this.title2 = 'PERFORMANCE STANDARD (OPCR-TARGET)';
-    } else {
-      this.title2 = 'PERFORMANCE STANDARD (DPCR-TARGET)';
+
+    switch (this.switchero) {
+      case 1:
+        this.title2 = 'PERFORMANCE STANDARD (OPCR-TARGET)';
+        break;
+      case 2:
+        this.title2 = 'PERFORMANCE STANDARD (OPCR)';
+        break;
+      case 3:
+        this.title2 = 'PERFORMANCE STANDARD (DPCR-TARGET)';
+        break;
+      default:
+        break;
     }
 
     let employeeName = 'EDWIN A. PALERO, MPA, MHRM';

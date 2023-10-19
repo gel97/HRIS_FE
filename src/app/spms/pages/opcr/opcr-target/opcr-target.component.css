@@ -16,7 +16,7 @@
 }
 
 .scrollable-details{
-  max-height: 1000px; /* Set the maximum height as needed */
+  max-height: 450px; /* Set the maximum height as needed */
   overflow-y: auto; /* Enable vertical scroll when content overflows */
 }
 

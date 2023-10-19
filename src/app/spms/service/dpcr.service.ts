@@ -236,12 +236,15 @@ export class DpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
+          setTimeout(() => {
             this.dpcrDataSubtask.mutate((a) => {
               (a.data = response),
                 (a.isLoading = false),
                 (a.error = false),
                 (a.errorStatus = null);
             });
+          }, 1000);
+
           this.errorService.error.mutate((a) => {
             (a.error = false), (a.errorStatus = null);
           });

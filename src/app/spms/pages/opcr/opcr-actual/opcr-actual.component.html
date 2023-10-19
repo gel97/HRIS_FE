@@ -10,33 +10,31 @@
 
 <!-- Bordered Table -->
 <div *ngIf="!isLoading && notEmpty; else showSkeleton" class="card">
-    <div class="row px-4 pt-2">
-        <div class="col-10">
-            <div class="col-6">
-                <h1 class="card-header">OPCR <span><i
-                            class='bx bx-chevron-right'></i>&nbsp;{{opcrService.storageOpcrDetails()}}</span></h1>
-                <!-- Custom style2 Breadcrumb -->
-                <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
-                    <ol class="breadcrumb breadcrumb-style1">
-                        <li class="breadcrumb-item">
-                            <a href="javascript:void(0);"><i class='bx bx-data'></i>&nbsp;OPCR</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            <a href="javascript:void(0);"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Actual</a>
-                        </li>
-                    </ol>
-                </nav>
-                <!--/ Custom style2 Breadcrumb -->
-            </div>
+    <div class="row">
+        <div class="col-11">
+            <h1 class="card-header p-3"> </h1>
+            <nav aria-label="breadcrumb" style="padding: 25px; margin-top: -50px;">
+                <ol class="breadcrumb breadcrumb-style1 m-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:void(0);"><i class='bx bx-data'></i>&nbsp;OPCR</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a href="javascript:void(0);"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Actual</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a href="javascript:void(0);">{{opcrService.storageOpcrDetails()}}</a>
+                    </li>
+                </ol>
+            </nav>
         </div>
-        <div class="col-2">
-            <div class="dropdown float-end">
+        <div class="col-1">
+            <div class="dropdown float-end" style="margin-right: 30px"><br>
                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                     <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
-                <div class="dropdown-menu ">
+                <div class="dropdown-menu">
                     <a class="dropdown-item" (click)="ReportOPCR()">
-                        <i class='bx bx-printer'></i> OPCR</a>
+                        <i class='bx bx-printer'></i> DPCR</a>
                     <a class="dropdown-item" (click)="ReportStandard()">
                         <i class='bx bx-printer'></i> Standard</a>
                 </div>
