@@ -25,18 +25,15 @@ export class OpcrActualComponent implements OnInit {
   isLoading: boolean = false;
   notEmpty: boolean = false;
 
-
   ngOnInit(): void {
     this.opcrService.GetOPCRDetails();
 
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false;
-      this.notEmpty =  this.opcrMfoes().data.length > 0;
-
+      this.notEmpty = this.opcrMfoes().data.length > 0;
     }, 1000);
-   // console.log(this.opcrService.storage)
-
+    // console.log(this.opcrService.storage)
   }
 
   get opcrMfoesData(): { [key: number]: any[] } {
@@ -71,7 +68,7 @@ export class OpcrActualComponent implements OnInit {
         break;
     }
 
-    return catName? catName + ' FUNCTION' : 'NO FUNCTION';
+    return catName ? catName + ' FUNCTION' : 'NO FUNCTION';
   }
 
   ReportStandard() {
@@ -79,7 +76,7 @@ export class OpcrActualComponent implements OnInit {
   }
 
   ReportOPCR() {
-    this.reportActualService.triggerSwitch(1);
+    this.reportActualService.triggerSwitch(2);
     this.reportActualService.ReportActual(this.opcrMfoes().data);
   }
 }

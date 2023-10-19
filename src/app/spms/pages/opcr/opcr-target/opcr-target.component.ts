@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { OpcrService } from 'src/app/spms/service/opcr.service';
 import { MfoService } from 'src/app/spms/service/mfo.service';
 import { interval, take } from 'rxjs';
+import { ReportActualService } from 'src/app/spms/service/report-actual.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-opcr-target',
@@ -12,6 +14,7 @@ export class OpcrTargetComponent implements OnInit {
   constructor() {}
   opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
+  reportActualService = inject(ReportActualService);
 
   getYear = '2023';
   fullYear = '0';
@@ -34,6 +37,7 @@ export class OpcrTargetComponent implements OnInit {
   search: any = {};
   editopcrDetails: any = {};
   editMFODetails: any = {};
+  editOpcr: any = {};
   division: any = [];
   isExpandMfoes: boolean = false;
   @ViewChild('closebutton')
@@ -121,6 +125,27 @@ export class OpcrTargetComponent implements OnInit {
     return catName;
   }
 
+  sem(year: number) {
+    let Year = '';
+    switch (year) {
+      case 0:
+        Year = 'Full Year';
+        break;
+
+      case 1:
+        Year = '1st Sem';
+        break;
+
+      case 2:
+        Year = '2nd Sem';
+        break;
+
+      default:
+        break;
+    }
+    return Year;
+  }
+
   calculateRating() {
     this.mfoDetails.qty5 = Math.floor(
       this.mfoDetails.qty * 0.3 + this.mfoDetails.qty
@@ -154,6 +179,23 @@ export class OpcrTargetComponent implements OnInit {
     setTimeout(() => {
       this.opcr.mutate((a: any) => (a.isLoading = false));
       this.opcrService.GetOPCRs(this.getYear, this.officeId);
+    }, 1000);
+  }
+
+  EditOPCR() {
+    console.log(this.editOpcr);
+    this.editOpcr.active = 1;
+    this.opcrService.EditOPCR(this.editOpcr);
+    this.GetOPCRs();
+  }
+
+  ReportOPCR(opcrid: string, opcrdetails: string) {
+    this.opcrService.storageOpcrId.set(opcrid);
+    this.opcrService.GetOPCRDetails();
+    this.reportActualService.triggerSwitch(1);
+    setTimeout(() => {
+      this.reportActualService.triggerSwitch(1);
+      this.reportActualService.ReportActual(this.opcrDetails().data);
     }, 1000);
   }
 
@@ -222,9 +264,39 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   DeleteOPCRDetails(opcrDataId: string) {
-    this.opcrService.DeleteOPCRDetails(opcrDataId);
-    this.GetMFOs();
-    this.sortExcist();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.opcrService.DeleteOPCRDetails(opcrDataId);
+        this.GetMFOs();
+        this.sortExcist();
+      }
+    });
+  }
+
+  DeleteOPCR(opcrId: string) {
+    console.log(opcrId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.opcrService.DeleteOPCR(opcrId);
+        this.GetOPCRs();
+      }
+    });
   }
 
   checkedNumeric: boolean = false;
@@ -278,46 +350,44 @@ export class OpcrTargetComponent implements OnInit {
   loading: boolean = false;
   sortExcist() {
     this.loading = true;
-    setTimeout(() => {
-      interval(3000)
-        .pipe(take(1))
-        .subscribe((value) => {
-          this.counter = 0;
+    interval(1000)
+      .pipe(take(1))
+      .subscribe((value) => {
+        this.counter = 0;
+        for (let outerItem of this.mfo().data) {
+          for (let innerItem of outerItem.si) {
+            for (let opcrDetail of this.opcrDetails().data) {
+              for (let opcrDetailItem of opcrDetail.si) {
+                if (innerItem.indicatorId == opcrDetailItem.indicatorId) {
+                  this.counter += 1;
+                }
+              }
+            }
+          }
+        }
+
+        while (this.counter != 0) {
+          this.counter -= 1;
           for (let outerItem of this.mfo().data) {
             for (let innerItem of outerItem.si) {
               for (let opcrDetail of this.opcrDetails().data) {
                 for (let opcrDetailItem of opcrDetail.si) {
                   if (innerItem.indicatorId == opcrDetailItem.indicatorId) {
-                    this.counter += 1;
-                  }
-                }
-              }
-            }
-          }
-
-          while (this.counter != 0) {
-            this.counter -= 1;
-            for (let outerItem of this.mfo().data) {
-              for (let innerItem of outerItem.si) {
-                for (let opcrDetail of this.opcrDetails().data) {
-                  for (let opcrDetailItem of opcrDetail.si) {
-                    if (innerItem.indicatorId == opcrDetailItem.indicatorId) {
-                      // Find the index of the item in the array and remove it using splice
-                      const indexToRemove = outerItem.si.indexOf(innerItem);
-                      if (indexToRemove !== -1) {
-                        outerItem.si.splice(indexToRemove, 1);
-                      }
+                    // Find the index of the item in the array and remove it using splice
+                    const indexToRemove = outerItem.si.indexOf(innerItem);
+                    if (indexToRemove !== -1) {
+                      outerItem.si.splice(indexToRemove, 1);
                     }
                   }
                 }
               }
             }
           }
-          if (this.counter == 0) {
-            this.loading = false;
-          }
-        });
-    }, 0);
+        }
+        if (this.counter == 0) {
+          this.loading = false;
+        }
+      });
   }
 
   onChangeYearInput(year: any) {
