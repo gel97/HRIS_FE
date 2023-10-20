@@ -15,7 +15,10 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           </thead>
           <tbody class="table-border-bottom-0">
             <ng-container *ngFor="let a of dpcrData.data; let i = index">
-              <tr class="cursor-pointer" (click)="SetDataSubTask(a, {}); IsShowSubtask()">
+              <tr
+                class="cursor-pointer"
+                (click)="SetDataSubTask(a, {}, i, 0); IsShowSubtask()"
+              >
                 <td colspan="2" *ngIf="!dpcrData.isLoading; else LoadingMfo">
                   <div class="row">
                     <div class="col-9">
@@ -79,12 +82,16 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         <i class="bx bx-dots-vertical-rounded"></i>
                       </button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item cursor-pointer"
+                        <a
+                          (click)="SetDataSubTask(a, b, i, y)"
+                          class="dropdown-item cursor-pointer"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalDpcrDataEditQuantity"
                           ><i class="bx bx-edit-alt me-1"></i> Target</a
                         >
                         <a
                           class="dropdown-item cursor-pointer"
-                          (click)="SetDataSubTask(a, b)"
+                          (click)="SetDataSubTask(a, b, i, y)"
                           data-bs-toggle="modal"
                           data-bs-target="#modalSubTask"
                           ><i class="bx bx-list-plus"></i> Sub-Task</a
@@ -140,13 +147,17 @@ export class TableDpcrDataComponent {
   @Output() setDpcr = new EventEmitter<any>();
   @Output() deleteDpcrDataIndicator = new EventEmitter<string>();
   @Output() setDataSubTask = new EventEmitter<any>();
+  @Output() setIsNotAddDpcrData = new EventEmitter<boolean>();
 
   DeleteDpcrDataIndicator(dpcrDataId: string) {
     console.log(dpcrDataId);
     this.deleteDpcrDataIndicator.emit(dpcrDataId);
   }
 
-  SetDataSubTask(mfoData: any, siData: any) {
+  SetDataSubTask(mfoData: any, siData: any, indexMfo:number, indexSI:number) {
+    siData.indexMfo = indexMfo;
+    siData.indexSI = indexSI;
+
     this.setDataSubTask.emit({ mfoData, siData });
   }
 

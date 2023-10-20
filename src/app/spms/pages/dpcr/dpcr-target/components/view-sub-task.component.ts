@@ -47,7 +47,16 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         <div class="row">
           <div class="col-6" *ngFor="let data of item.st; let z = index">
           <div class="card">
-          <h3 class="card-header"><b>{{z+1}}. {{data.stMfo}}</b></h3>
+          <h3 class="card-header">
+            <div class="row">
+              <div class="col-11">
+                <b>{{z+1}}. {{data.stMfo}}</b>
+              </div>
+              <div class="col-1">
+                <i data-bs-toggle="modal" data-bs-target="#modalEditSubTask" (click)="SetEditSubtaskData(data)" class='bx bx-edit-alt text-primary btn rounded-pill btn-icon btn-outline-primary border-0 float-end'></i>
+              </div>
+            </div>
+          </h3>
           <div class="table-responsive text-nowrap">
             <table class="table table-striped table-hover">
               <thead>
@@ -139,12 +148,15 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     <ng-template #ShowLoading>
       <p>Loading...</p>
     </ng-template>
+    <app-modal-edit-sub-task [data]="subtaskData"/>
+    
   `,
 })
 export class ViewSubtaskComponent implements OnInit {
   dpcrService = inject(DpcrService);
   dpcr = this.dpcrService.dpcrDataSubtask();
   data = this.dpcr.data;
+  subtaskData:any={};
 
   @Input() subtask: any;
   @Input() isLoading: any;
@@ -155,6 +167,10 @@ export class ViewSubtaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetData();
+  }
+
+  SetEditSubtaskData(item:any){
+    this.subtaskData=item;
   }
 
   SetDataSubTask(mfoData: any, siData: any) {

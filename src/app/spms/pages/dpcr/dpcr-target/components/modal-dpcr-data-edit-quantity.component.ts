@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output, Input, inject, ViewChild } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
-@Component({
-  selector: 'app-modal-dpcr-data',
+@Component({ 
+  selector: 'app-modal-dpcr-data-edit-quantity',
   template: `
-    <!-- Modal -->
-    <div class="modal fade" id="modalDpcrData" tabindex="-1" aria-hidden="true">
+     <!-- Modal -->
+     <div class="modal fade" id="modalDpcrDataEditQuantity" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content modal-lg">
           <div class="modal-header">
@@ -175,7 +175,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               Close
             </button>
             <button type="button" (click)="Submit()" class="btn btn-primary">
-              Submit
+              Update quantity
             </button>
           </div>
         </div>
@@ -183,7 +183,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     </div>
   `,
 })
-export class ModalDpcrDataComponent {
+export class ModalDpcrDataEditQuantityComponent {
   @ViewChild('closeModal')
   closeModal!: { nativeElement: { click: () => void } };
 
@@ -191,7 +191,6 @@ export class ModalDpcrDataComponent {
 
   quantity: any = {};
 
-  @Input() dpcrMFOData: any;
   @Input() dpcrSIData: any;
   @Input() error: any;
 

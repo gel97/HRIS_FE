@@ -19,6 +19,7 @@ export class DpcrTargetComponent implements OnInit{
   dpcrSIData:any ={};
 
   isAddDpcr:boolean = false;
+  isAddDpcrData:boolean = false;
   isShowSubtask:boolean = false;
 
   ngOnInit(): void {
@@ -40,10 +41,10 @@ export class DpcrTargetComponent implements OnInit{
     this.dpcrService.AddDpcrData(this.dpcrSIData);
   }
 
-  AddSubTask(data:any){
-    console.log(data)
-    this.dpcrService.AddSubTask(data);
+  EditDpcrData(){
+    this.dpcrService.EditDpcrData(this.dpcrSIData);
   }
+
 
   GetDPCRData(){
     this.dpcrService.GetDpcrData();
@@ -51,6 +52,11 @@ export class DpcrTargetComponent implements OnInit{
 
   DeleteDPCRData(dpcrDataId:string){
     this.dpcrService.DeleteDPCRData(dpcrDataId);
+  }
+
+  AddSubTask(data:any){
+    console.log(data)
+    this.dpcrService.AddSubTask(data);
   }
 
   GetDPCRDataSubtask(){
@@ -68,7 +74,6 @@ export class DpcrTargetComponent implements OnInit{
 
   }
   setDpcrDataObj(data:any){
-    console.log(data)
     this.dpcrMFOData = data.mfoData;
     this.dpcrSIData = data.siData;
   }
