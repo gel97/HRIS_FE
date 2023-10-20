@@ -80,7 +80,7 @@ export class OpcrService {
           this.opcrDetails.mutate((a: any) => (a.isLoading = false));
         },
         error: () => {
-          this.alertService.error();
+          // this.alertService.error();
         },
         complete: () => {},
       });
