@@ -14,6 +14,10 @@ import { Component } from '@angular/core';
       <label><strong>No Data Found!</strong></label
       >&nbsp;
     </span>
+    <span style="display: flex;justify-content: center;align-items: center;">
+      <ng-content></ng-content>
+    </span>
+    
   `,
 })
 export class EmptyDataComponent {}
