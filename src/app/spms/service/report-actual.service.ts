@@ -23,7 +23,7 @@ export class ReportActualService {
         this.title2 = 'PERFORMANCE STANDARD (OPCR)';
         break;
       case 3:
-        this.title2 = 'PERFORMANCE STANDARD (DPCR-TARGET)';
+        this.title2 = 'PERFORMANCE STANDARD (DPCR)';
         break;
       default:
         break;
