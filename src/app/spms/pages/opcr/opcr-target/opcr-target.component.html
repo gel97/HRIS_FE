@@ -292,19 +292,29 @@
                         <img src="assets/img/document.png" alt="" width="200" height="200"
                             style="display: block; margin: 0 auto" />
                         <span style="
-          display: flex;
-          justify-content: center;
-          align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
         ">
-                            <label><strong>No Data Found!</strong></label>&nbsp;
+                            <div>
+                                <label style="margin-bottom: 10px;"><strong>No Data Found!</strong></label>
+                            </div>
+                            <div *ngIf="!isExpandMfoes">
+                                <button (click)="isExpandMfoes = true" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll" type="button"
+                                    class="btn btn-primary">MFOES</button>
+                            </div>
                         </span>
                     </div>
                 </div>
             </div>
         </div>
         <div *ngIf="!isExpandMfoes" class="col-xl-1">
-            <button type="button" (click)="isExpandMfoes = true" class="btn rounded-pill btn-icon btn-info mx-2"
-                data-bs-toggle="offcanvas" data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll">
+            <button *ngIf="opcrDetails().data.length !=0" type="button" (click)="isExpandMfoes = true"
+                class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll">
                 <i class='bx bx-expand'></i>
             </button>
         </div>
@@ -734,7 +744,7 @@
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasMfoes"
     aria-labelledby="offcanvasScrollLabel" style="z-index: 10;">
     <div class="offcanvas-header">
-        <h1 id="offcanvasScrollLabel" class="offcanvas-title">MFOes</h1>
+        <h1 id="offcanvasScrollLabel" class="offcanvas-title">MFOES</h1>
         <button (click)="isExpandMfoes = false" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
             aria-label="Close"></button>
     </div>
