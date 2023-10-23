@@ -20,7 +20,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-            <div class="form-floating px-2 col-6">
+            <div class="form-floating px-2 col-4">
               <input
                 type="number"
                 class="form-control"
@@ -33,7 +33,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               />
               <label for="quantity">Quantity</label>
             </div>
-            <div class="form-floating px-2 col-6">
+            <div class="form-floating px-2 col-5">
               <input
                 type="number"
                 class="form-control"
@@ -44,6 +44,18 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 disabled
               />
               <label for="quantityOpcr">OPCR Quantity Remaining</label>
+            </div>
+            <div class="form-floating px-2 col-3">
+            <input
+                type="number"
+                class="form-control"
+                id="qtyOpcr"
+                placeholder="Quantity"
+                [value]="dpcrSIData.qtyOpcr"
+                aria-describedby="qtyOpcr"
+                disabled
+              />
+              <label for="qtyOpcr">OPCR Quantity</label>
             </div>
             <div
               *ngIf="dpcrSIData.qty > (dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted)"

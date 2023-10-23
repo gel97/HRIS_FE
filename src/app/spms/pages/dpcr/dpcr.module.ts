@@ -23,6 +23,7 @@ import { ViewSubtaskComponent } from './dpcr-target/components/view-sub-task.com
 import { DpcrSubtaskComponent } from './dpcr-subtask/dpcr-subtask.component';
 import { ModalEditSubTaskComponent } from './dpcr-target/components/modal-edit-sub-task.component';
 import { ModalDpcrDataEditQuantityComponent } from './dpcr-target/components/modal-dpcr-data-edit-quantity.component';
+import { CanvasTargetDpcrMfoesComponent } from './dpcr-target/components/canvas-target-mfoes.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -39,7 +40,8 @@ import { ModalDpcrDataEditQuantityComponent } from './dpcr-target/components/mod
     ViewSubtaskComponent,
     DpcrSubtaskComponent,
     ModalEditSubTaskComponent,
-    ModalDpcrDataEditQuantityComponent
+    ModalDpcrDataEditQuantityComponent,
+    CanvasTargetDpcrMfoesComponent
   ],
   imports: [
     CommonModule,

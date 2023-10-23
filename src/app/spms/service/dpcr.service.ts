@@ -126,9 +126,10 @@ export class DpcrService {
         error: (error: any) => {
           if(error.status == 409){
             console.log(error)
-            this.alertService.customError(`Quantity ${dpcrData.qty} must not be greater than ${error.error.qtyRemaining}`);
-            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr = error.error.qtyOpcr;
-            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyCommitted = error.error.qtyCommitted;
+            this.alertService.customError(`Quantity ${dpcrData.qty} must not be greater than ${error.error.qtyRemainingCurrent}`);
+            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr = error.error.qtyOpcrCurrent;
+            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyRemaining = error.error.qtyRemainingCurrent;
+            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyCommitted = error.error.qtyCommittedCurrent;
 
           }else{
             this.alertService.error();
@@ -182,17 +183,20 @@ export class DpcrService {
       .subscribe({
         next: (response: any = {}) => {
           console.log(response);
-          this.dpcrData().data[dpcrData.indexSI].si[dpcrData.indexSI].qtyOpcr = response.qtyOpcr;
-          this.dpcrData().data[dpcrData.indexSI].si[dpcrData.indexSI].qtyCommitted = response.qtyCommitted;
-  
+          this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr = response.qtyOpcr;
+          this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyCommitted = response.qtyCommitted;
+          this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyRemaining = response.qtyRemaining;
           this.alertService.save();
+          console.log(this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI]);
+
         },
         error: (error: any) => {
           if(error.status == 409){
             console.log(error)
             this.alertService.customError(`Quantity ${dpcrData.qty} must not be greater than ${error.error.qtyRemaining}`);
-            this.dpcrData().data[dpcrData.indexSI].si[dpcrData.indexSI].qtyOpcr = error.error.qtyOpcr;
-            this.dpcrData().data[dpcrData.indexSI].si[dpcrData.indexSI].qtyCommitted = error.error.qtyCommitted;
+            this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr = error.error.qtyOpcr;
+            this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyCommitted = error.error.qtyCommitted;
+            this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyRemaining = error.error.qtyRemaining;
           }else{
             this.alertService.error();
           }

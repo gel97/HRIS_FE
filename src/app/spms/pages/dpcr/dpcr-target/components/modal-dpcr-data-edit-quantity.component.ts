@@ -20,40 +20,53 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-            <div class="form-floating px-2 col-6">
+            <div class="form-floating px-2 col-4">
               <input
                 type="number"
                 class="form-control"
                 id="quantity"
                 [(ngModel)]="dpcrSIData.qty"
-                [max]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
-                (ngModelChange)="calculateRating()"
+                [min]="0"
+                [max]="dpcrSIData.qtyRemaining + dpcrSIData.qty"
+                (ngModelChange)="calculateRating($event)"
                 placeholder="Quantity"
                 aria-describedby="quantity"
               />
               <label for="quantity">Quantity</label>
             </div>
-            <div class="form-floating px-2 col-6">
+            <div class="form-floating px-2 col-5">
               <input
                 type="number"
                 class="form-control"
                 id="quantityOpcr"
                 placeholder="Quantity"
-                [value]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
+                [value]="dpcrSIData.qtyRemaining"
                 aria-describedby="quantityOpcr"
                 disabled
               />
               <label for="quantityOpcr">OPCR Quantity Remaining</label>
             </div>
+            <div class="form-floating px-2 col-3">
+            <input
+                type="number"
+                class="form-control"
+                id="qtyOpcr"
+                placeholder="Quantity"
+                [value]="dpcrSIData.qtyOpcr"
+                aria-describedby="qtyOpcr"
+                disabled
+              />
+              <label for="qtyOpcr">OPCR Quantity</label>
+            </div>
             <div
-              *ngIf="dpcrSIData.qty > (dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted)"
+              *ngIf="(this.dpcrSIData.qty - this.dpcrSIData.qtyCommitted) > dpcrSIData.qtyRemaining"
               class="alert alert-danger mt-2"
               role="alert"
             >
               <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
-              than
+              than remaining quantity 
               <strong
-                ><u>{{ dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted }}</u></strong
+                ><u>{{ dpcrSIData.qtyRemaining }}</u></strong
               >
             </div>
             <div class="table-responsive text-nowrap">
@@ -209,7 +222,8 @@ export class ModalDpcrDataEditQuantityComponent {
     }, 500);
   }
 
-  calculateRating() {
+  calculateRating(event:any) {
+    this.dpcrSIData.qtyRemaining = (this.dpcrSIData.qtyOpcr - this.dpcrSIData.qtyCommitted) - (this.dpcrSIData.qty - this.dpcrSIData.qtyCommitted);
     this.dpcrSIData.qty5 = Math.floor(
       this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
     );

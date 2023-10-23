@@ -4,7 +4,14 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   selector: 'app-table-dpcr-data',
   template: `
     <div class="card">
+      <div class="row">
+      <div class="col-10">
       <h5 class="card-header">DIVISION MFOES</h5>
+      </div>
+      <div class="col-2">
+        <button *ngIf="!isShowCanvasOpcrMfoes" (click)="IsShowCanvasOpcrMfoes()" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDpcrMfoes" class="btn btn-primary m-2 float-end">OPCR MFOES</button>
+      </div>
+      </div>
       <div class="table-responsive text-nowrap">
         <table class="table table-hover table-striped">
           <thead>
@@ -142,12 +149,13 @@ export class TableDpcrDataComponent {
   dpcrService = inject(DpcrService);
 
   @Input() dpcrData: any;
+  @Input() isShowCanvasOpcrMfoes: any;
 
   @Output() isShowSubtask = new EventEmitter<boolean>();
   @Output() setDpcr = new EventEmitter<any>();
   @Output() deleteDpcrDataIndicator = new EventEmitter<string>();
   @Output() setDataSubTask = new EventEmitter<any>();
-  @Output() setIsNotAddDpcrData = new EventEmitter<boolean>();
+  @Output() showCanvasOpcrMfoes = new EventEmitter<boolean>();
 
   DeleteDpcrDataIndicator(dpcrDataId: string) {
     console.log(dpcrDataId);
@@ -157,6 +165,7 @@ export class TableDpcrDataComponent {
   SetDataSubTask(mfoData: any, siData: any, indexMfo:number, indexSI:number) {
     siData.indexMfo = indexMfo;
     siData.indexSI = indexSI;
+    siData.qtyRemaining = siData.qtyOpcr - siData.qtyCommitted;
 
     this.setDataSubTask.emit({ mfoData, siData });
   }
@@ -168,6 +177,10 @@ export class TableDpcrDataComponent {
 
   IsShowSubtask() {
     this.isShowSubtask.emit(true);
+  }
+
+  IsShowCanvasOpcrMfoes(){
+    this.showCanvasOpcrMfoes.emit(true);
   }
 
   displayCatergory(cat: number) {

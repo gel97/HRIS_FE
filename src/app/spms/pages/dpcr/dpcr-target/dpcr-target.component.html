@@ -9,23 +9,25 @@
 </div>
 
 <div class="row my-4" *ngIf="dpcrService.storageIsShowDpcrData() && !isShowSubtask">
-    <div class="col-6">
+    <div [ngClass]="isShowCanvasOpcrMfoes?'col-6':'col-12'">
         <app-table-dpcr-data 
             *ngIf="dpcrData.data.length > 0"
             [dpcrData]="dpcrData"
             (setDataSubTask)="setDpcrDataObj($event)"
             (isShowSubtask)="isShowSubtask=$event"
+            (showCanvasOpcrMfoes)="isShowCanvasOpcrMfoes=$event"
+            [isShowCanvasOpcrMfoes]="isShowCanvasOpcrMfoes"
             (deleteDpcrDataIndicator)="DeleteDPCRData($event)" 
             />
 
         <app-empty-data *ngIf="dpcrData.data.length == 0 && !dpcrData.isLoading"/>
     </div>
-    <div class="col-6">
+    <!-- <div class="col-6">
         <app-table-dpcr-data-mfoes 
             [dpcrDataMfoes]="dpcrDataMfoes" 
             (setDpcrDataObj)="setDpcrDataObj($event)" 
         />
-    </div>
+    </div> -->
 </div>
 
 <app-view-subtask *ngIf="isShowSubtask" [mfoId]="dpcrMFOData.mfoId" (setDataSubTask)="setDpcrDataObj($event)" (isShowSubtask)="isShowSubtask=$event"/>
@@ -42,3 +44,9 @@
 <app-modal-dpcr-data-edit-quantity [dpcrSIData]="dpcrSIData" (submit)="EditDpcrData()"/>
 
 <app-modal-sub-task [dpcrMFOData]="dpcrMFOData" [dpcrSIData]="dpcrSIData" (submitSubTask)="AddSubTask($event)"/>
+
+<app-canvas-target-dpcr-mfoes 
+[dpcrDataMfoes]="dpcrDataMfoes"
+(hideCanvasOpcrMfoes)="isShowCanvasOpcrMfoes=$event"
+(setDpcrDataObj)="setDpcrDataObj($event)" 
+/>

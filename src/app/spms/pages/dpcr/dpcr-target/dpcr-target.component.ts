@@ -21,6 +21,7 @@ export class DpcrTargetComponent implements OnInit{
   isAddDpcr:boolean = false;
   isAddDpcrData:boolean = false;
   isShowSubtask:boolean = false;
+  isShowCanvasOpcrMfoes:boolean = false;
 
   ngOnInit(): void {
     this.dpcrService.GetDpcr();
