@@ -113,7 +113,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                           </ng-template>
                         </td>
                       </tr>
-                      <tr *ngFor="let b of a.si">
+                      <tr *ngFor="let b of a.si; let j = index">
                         <td>
                           <div
                             *ngIf="
@@ -156,7 +156,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                               else LoadingBtn
                             "
                             type="button"
-                            (click)="SetDpcrDataObj(a,b)"
+                            (click)="SetDpcrDataObj(a,b, i, j)"
                             data-bs-toggle="modal"
                             data-bs-target="#modalDpcrData"
                             class="btn rounded-pill btn-icon btn-primary float-end"
@@ -219,7 +219,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                           </ng-template>
                         </td>
                       </tr>
-                      <tr *ngFor="let b of a.si">
+                      <tr *ngFor="let b of a.si; let j = index">
                         <td>
                           <div
                             *ngIf="
@@ -262,7 +262,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                               else LoadingBtn
                             "
                             type="button"
-                            (click)="SetDpcrDataObj(a,b)"
+                            (click)="SetDpcrDataObj(a,b,i,j)"
                             data-bs-toggle="modal"
                             data-bs-target="#modalDpcrData"
                             class="btn rounded-pill btn-icon btn-primary float-end"
@@ -316,7 +316,10 @@ export class TableDpcrDataMfoesComponent {
     this.dpcrService.GetDpcrDataSearchMfoes(this.search);
   }
 
-  SetDpcrDataObj(mfoData:any,siData:any){
+  SetDpcrDataObj(mfoData:any,siData:any, indexMfo:number, indexSI:number){
+    siData.indexMfo = indexMfo;
+    siData.indexSI = indexSI;
+
     this.setDpcrDataObj.emit({mfoData,siData});
   }
 

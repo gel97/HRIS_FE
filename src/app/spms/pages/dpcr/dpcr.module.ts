@@ -21,6 +21,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { StepperSubtaskComponent } from './dpcr-target/components/stepper-subtask.component';
 import { ViewSubtaskComponent } from './dpcr-target/components/view-sub-task.component';
 import { DpcrSubtaskComponent } from './dpcr-subtask/dpcr-subtask.component';
+import { ModalEditSubTaskComponent } from './dpcr-target/components/modal-edit-sub-task.component';
+import { ModalDpcrDataEditQuantityComponent } from './dpcr-target/components/modal-dpcr-data-edit-quantity.component';
+import { CanvasTargetDpcrMfoesComponent } from './dpcr-target/components/canvas-target-mfoes.component';
 import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actual-skeleton.component';
 
 @NgModule({
@@ -38,6 +41,9 @@ import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actua
     StepperSubtaskComponent,
     ViewSubtaskComponent,
     DpcrSubtaskComponent,
+    ModalEditSubTaskComponent,
+    ModalDpcrDataEditQuantityComponent,
+    CanvasTargetDpcrMfoesComponent,
     DpcrActualSkeletonComponent,
   ],
   imports: [

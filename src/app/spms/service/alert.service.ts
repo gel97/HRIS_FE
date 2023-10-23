@@ -109,4 +109,24 @@ export class AlertService {
       title: 'Error! Something went wrong.'
     })
   }
+
+  customError(data:any){
+    let errorMessage = data;
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-start',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'error',
+      title: errorMessage
+    })
+  }
 }

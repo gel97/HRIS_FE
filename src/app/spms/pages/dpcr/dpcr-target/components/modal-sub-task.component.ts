@@ -93,8 +93,8 @@ export class ModalSubTaskComponent {
   @Output() submitSubTask = new EventEmitter<any>();
 
   SubmitSubTask(data:any) {
-    data.mfoId = this.dpcrMFOData.mfoId
-
+    data.mfoId = this.dpcrMFOData.mfoId;
+    data.indicatorId = this.dpcrSIData.indicatorId;
     this.submitSubTask.emit(data);
     this.handleStatus();
   }

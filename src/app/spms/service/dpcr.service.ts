@@ -107,7 +107,7 @@ export class DpcrService {
 
   AddDpcrData(dpcrData: any) {
     this.dpcr.mutate((a) => (a.isLoadingSave = true));
-
+    console.log(dpcrData)
     dpcrData.dpcrId = this.storageDpcrId();
     
     this.http
@@ -124,7 +124,16 @@ export class DpcrService {
           this.alertService.save();
         },
         error: (error: any) => {
-          this.alertService.error();
+          if(error.status == 409){
+            console.log(error)
+            this.alertService.customError(`Quantity ${dpcrData.qty} must not be greater than ${error.error.qtyRemainingCurrent}`);
+            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr = error.error.qtyOpcrCurrent;
+            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyRemaining = error.error.qtyRemainingCurrent;
+            this.dpcrDataMfoes().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyCommitted = error.error.qtyCommittedCurrent;
+
+          }else{
+            this.alertService.error();
+          }
           this.dpcrData.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
@@ -164,6 +173,38 @@ export class DpcrService {
           console.log("dpcrData: ", this.dpcrData());
           this.GetDpcrDataMfoes();
         },
+      });
+  }
+
+  EditDpcrData(dpcrData: any) {
+    console.log(dpcrData);
+    this.http
+      .put<any[]>(api + this.url.put_dpcr_data(), dpcrData, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          console.log(response);
+          this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr = response.qtyOpcr;
+          this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyCommitted = response.qtyCommitted;
+          this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyRemaining = response.qtyRemaining;
+          this.alertService.save();
+          console.log(this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI]);
+
+        },
+        error: (error: any) => {
+          if(error.status == 409){
+            console.log(error)
+            this.alertService.customError(`Quantity ${dpcrData.qty} must not be greater than ${error.error.qtyRemaining}`);
+            this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr = error.error.qtyOpcr;
+            this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyCommitted = error.error.qtyCommitted;
+            this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyRemaining = error.error.qtyRemaining;
+          }else{
+            this.alertService.error();
+          }
+          this.dpcrData.mutate((a) => {
+            a.error = true;
+          });
+        },
+        complete: () => {},
       });
   }
 
@@ -228,6 +269,23 @@ export class DpcrService {
       });
   }
 
+  EditSubTask(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_subtask(), data, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.alertService.save();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.dpcrData.mutate((a) => {
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
   GetDpcrDataSubtask(mfoId:string) {
     this.dpcrDataSubtask.mutate((a) => (a.isLoading = true));
     this.http
@@ -243,7 +301,7 @@ export class DpcrService {
                 (a.error = false),
                 (a.errorStatus = null);
             });
-          }, 1000);
+          }, 500);
 
           this.errorService.error.mutate((a) => {
             (a.error = false), (a.errorStatus = null);

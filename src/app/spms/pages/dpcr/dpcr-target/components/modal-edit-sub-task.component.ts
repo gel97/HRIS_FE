@@ -4,86 +4,101 @@ import {
   Output,
   Input,
   inject,
-  OnInit,
+  ViewChild,
 } from '@angular/core';
+import { DpcrService } from 'src/app/spms/service/dpcr.service';
 import { FormBuilder, Validators } from '@angular/forms';
 
-import { DpcrService } from 'src/app/spms/service/dpcr.service';
-
 @Component({
-  selector: 'app-stepper-subtask',
+  selector: 'app-modal-edit-sub-task',
   template: `
-    <mat-stepper [linear]="isLinear" #stepper>
-      <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-          <ng-template matStepLabel>Sub-task name</ng-template>
-          <mat-form-field style="width: 100%;">
-            <mat-label>MFO</mat-label>
-            <input matInput [(ngModel)]="data.stMfo" class="" formControlName="firstCtrl" required />
-          </mat-form-field>
-          <div>
-            <button mat-button matStepperNext>Next</button>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalEditSubTask"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-lg"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalScrollableTitle"><b>EDIT SUBTASK</b></h5>
+            <button
+              #closeModal
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="secondFormGroup" label="Success Indicator">
-        <form [formGroup]="secondFormGroup">
-          <mat-form-field style="width: 100%;">
-            <mat-label>Success Indicator</mat-label>
-            <input matInput [(ngModel)]="data.stIndicator" formControlName="secondCtrl" required />
-          </mat-form-field>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="thirdFormGroup" label="Standard">
-        <form [formGroup]="thirdFormGroup">
-          <div class="row">
-            <div class="col-4">
-              <mat-form-field style="width: 100%;">
-                <mat-label>Quantity</mat-label>
+          <div class="modal-body">
+            <form [formGroup]="formGroup">
+              <mat-form-field class="m-0" style="width: 100%;">
+                <mat-label>MFO</mat-label>
                 <input
-                  type="number"
                   matInput
-                  formControlName="thirdCtrl"
-                  [(ngModel)]="data.qty"
-                  (ngModelChange)="calculateRating()"
+                  [(ngModel)]="data.stMfo"
+                  formControlName="stMfo"
                   required
                 />
               </mat-form-field>
-            </div>
-            <div class="col-4">
-              <div class="form-check mt-3">
+              <mat-form-field class="m-0" style="width: 100%;">
+                <mat-label>Success Indicator</mat-label>
                 <input
-                  name="default-radio-1"
-                  class="form-check-input"
-                  type="radio"
-                  value="0"
-                  id="defaultRadio1"
-                  [checked]="data.qtyUnit === 0 ? true : false"
-                  (change)="onChangeUnit($event)"
+                  matInput
+                  [(ngModel)]="data.stIndicator"
+                  formControlName="stIndicator"
+                  required
                 />
-                <label class="form-check-label" for="defaultRadio1">
-                  Numeric
-                </label>
+              </mat-form-field>
+              <div class="row">
+                <div class="col-6">
+                  <mat-form-field class="m-0" style="width: 100%;">
+                    <mat-label>Quantity</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      [(ngModel)]="data.qty"
+                      formControlName="qty"
+                      required
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <div class="form-check mt-3">
+                    <input
+                      name="default-radio-1"
+                      class="form-check-input"
+                      type="radio"
+                      value="0"
+                      id="defaultRadio1"
+                      (change)="onChangeUnit($event)"
+                      [checked]="data.qtyUnit === 0 ? true : false"
+                    />
+                    <label class="form-check-label" for="defaultRadio1">
+                      Numeric
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      name="default-radio-1"
+                      class="form-check-input"
+                      type="radio"
+                      value="1"
+                      id="defaultRadio2"
+                      (change)="onChangeUnit($event)"
+                      [checked]="data.qtyUnit === 1 ? true : false"
+                    />
+                    <label class="form-check-label" for="defaultRadio2">
+                      Percentage
+                    </label>
+                  </div>
+                </div>
               </div>
-              <div class="form-check">
-                <input
-                  name="default-radio-1"
-                  class="form-check-input"
-                  type="radio"
-                  value="1"
-                  id="defaultRadio2"
-                  [checked]="data.qtyUnit === 1 ? true : false"
-                  (change)="onChangeUnit($event)"
-                />
-                <label class="form-check-label" for="defaultRadio2">
-                  Percentage
-                </label>
-              </div>
-            </div>
+            </form>
           </div>
           <div class="table-responsive text-nowrap">
             <table class="table table-striped">
@@ -106,7 +121,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="number"
                       [(ngModel)]="data.qty5"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -114,7 +128,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.qlty5"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -122,7 +135,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.timely5"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                 </tr>
@@ -136,7 +148,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="number"
                       [(ngModel)]="data.qty4"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -144,7 +155,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.qlty4"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -152,7 +162,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.timely4"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                 </tr>
@@ -166,7 +175,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="number"
                       [(ngModel)]="data.qty3"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -174,7 +182,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.qlty3"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -182,7 +189,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.timely3"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                 </tr>
@@ -196,7 +202,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="number"
                       [(ngModel)]="data.qty2"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -204,7 +209,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.qlty2"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -212,7 +216,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.timely2"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                 </tr>
@@ -226,7 +229,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="number"
                       [(ngModel)]="data.qty1"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -234,7 +236,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.qlty1"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                   <td>
@@ -242,61 +243,52 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       type="text"
                       [(ngModel)]="data.timely1"
                       class="form-control"
-                      [ngModelOptions]="{ standalone: true }"
                     />
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" (click)="EditSubtask()" class="btn btn-primary">Save changes</button>
+
           </div>
-        </form>
-      </mat-step>
-      <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <button type="button" (click)="Submit()" class="btn btn-primary">
-          Submit
-        </button>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
         </div>
-      </mat-step>
-    </mat-stepper>
+      </div>
+    </div>
   `,
 })
-export class StepperSubtaskComponent implements OnInit {
+export class ModalEditSubTaskComponent {
+  @ViewChild('closeModal')
+  closeModal!: { nativeElement: { click: () => void } };
+
   dpcrService = inject(DpcrService);
+  formBuilder = inject(FormBuilder);
 
-  data: any = {};
+  quantity: any = {};
 
-  @Input() search: any;
+  @Input() error: any;
+  @Input() data: any;
 
   @Output() submitSubTask = new EventEmitter<any>();
 
-  Submit() {
-    this.submitSubTask.emit(this.data);
-  }
-
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
+  formGroup = this.formBuilder.group({
+    stMfo: ['', Validators.required],
+    stIndicator: ['', Validators.required],
+    qty: ['', Validators.required],
   });
 
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
-
-  thirdFormGroup = this._formBuilder.group({
-    thirdCtrl: ['', Validators.required],
-  });
-  isLinear = true;
-
-  constructor(private _formBuilder: FormBuilder) {}
-  ngOnInit(): void {
-    this.initQtyUnit();
+  EditSubtask() {
+    this.dpcrService.EditSubTask(this.data);
+    this.handleStatus();
   }
 
   onChangeUnit(event: Event) {
@@ -304,18 +296,23 @@ export class StepperSubtaskComponent implements OnInit {
     this.data.qtyUnit = target.value;
   }
 
-  initQtyUnit() {
-    if (this.data.qtyUnit >= 0) {
-    } else {
-      this.data.qtyUnit = 0;
-    }
+  handleStatus() {
+    setTimeout(() => {
+      if (!this.error) {
+        this.closeModal.nativeElement.click();
+      }
+    }, 500);
   }
 
   calculateRating() {
-    this.data.qty5 = Math.floor(this.data.qty * 1.3);
-    this.data.qty4 = Math.floor(this.data.qty * 1.15);
-    this.data.qty3 = Math.floor(this.data.qty);
-    this.data.qty2 = Math.floor(this.data.qty / 2 + 1);
-    this.data.qty1 = Math.floor(this.data.qty / 2);
+    //   this.dpcrSIData.qty5 = Math.floor(
+    //     this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
+    //   );
+    //   this.dpcrSIData.qty4 = Math.floor(
+    //     this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty
+    //   );
+    //   this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
+    //   this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
+    //   this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
   }
 }
