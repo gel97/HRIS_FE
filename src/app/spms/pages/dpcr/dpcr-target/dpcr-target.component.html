@@ -20,7 +20,9 @@
             (deleteDpcrDataIndicator)="DeleteDPCRData($event)" 
             />
 
-        <app-empty-data *ngIf="dpcrData.data.length == 0 && !dpcrData.isLoading"/>
+        <app-empty-data *ngIf="dpcrData.data.length == 0 && !dpcrData.isLoading">
+            <button *ngIf="!isShowCanvasOpcrMfoes" (click)="isShowCanvasOpcrMfoes = true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDpcrMfoes" class="btn btn-primary text-center m-2">OPCR MFOES</button>
+        </app-empty-data>
     </div>
     <!-- <div class="col-6">
         <app-table-dpcr-data-mfoes 
