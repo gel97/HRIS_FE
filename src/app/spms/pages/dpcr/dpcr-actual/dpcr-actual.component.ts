@@ -24,6 +24,10 @@ export class DpcrActualComponent implements OnInit {
     }, 1000);
   }
 
+  checkDpcrMfoesDataEmpty() {
+    return Object.keys(this.dpcrMfoesData).length == 0;
+  }
+
   get dpcrMfoesData(): { [key: number]: any[] } {
     const groupedData: { [key: number]: any[] } = this.dpcrMfoes.data.reduce(
       (acc: any, data: any) => {
