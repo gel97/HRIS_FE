@@ -52,10 +52,16 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 </td>
                 <td>
                   <span
-                    *ngIf="item.active"
+                    *ngIf="item.active; else Inactive"
                     class="badge bg-label-success me-1"
                     >active</span
                   >
+                  <ng-template #Inactive>
+                  <span 
+                    class="badge bg-label-danger me-1"
+                    >inactive</span
+                  >
+                  </ng-template>
                 </td>
                 <td>
                   <div class="dropdown position-static">
@@ -67,14 +73,21 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       <i class="bx bx-dots-vertical-rounded"></i>
                     </button>
                     <div class="dropdown-menu">
+                      <a 
+                        *ngIf="!item.active"
+                        class="dropdown-item cursor-pointer"
+                        (click)="SetDpcrActive(item)"
+                        ><i class="bx bxs-flag-alt me-1 "></i> Final</a
+                      >
                       <a
-                        class="dropdown-item"
+                        class="dropdown-item cursor-pointer"
                         (click)="SetDpcr(item); HandleDpcr()"
                         data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasDpcr"
                         ><i class="bx bx-edit-alt me-1"></i> Edit</a
                       >
-                      <a class="dropdown-item"
+                      <a class="dropdown-item cursor-pointer"
+                      (click)="DeleteDpcr(item.dpcrId)"
                         ><i class="bx bx-trash me-1"></i> Delete</a
                       >
                     </div>
@@ -96,10 +109,15 @@ export class TableDpcrComponent {
   @Output() isAddDpcr = new EventEmitter<boolean>();
   @Output() setDpcr = new EventEmitter<any>();
   @Output() getDpcrData = new EventEmitter<string>();
+  @Output() setDpcrActive = new EventEmitter<any>();
+  @Output() deleteDpcr = new EventEmitter<string>();
 
   SetDpcr(item:any) {
-    console.log(item)
     this.setDpcr.emit(item);
+  }
+
+  SetDpcrActive(item:any) {
+    this.setDpcrActive.emit(item);
   }
 
   SetIsShowDpcrData(item:any){
@@ -114,6 +132,10 @@ export class TableDpcrComponent {
 
     this.getDpcrData.emit("Get DPCR Data");
 
+  }
+
+  DeleteDpcr(dpcrId:string){
+    this.deleteDpcr.emit(dpcrId);
   }
 
   HandleDpcr() {

@@ -62,6 +62,7 @@ import { FormBuilder, Validators } from '@angular/forms';
                       matInput
                       type="number"
                       [(ngModel)]="data.qty"
+                      (ngModelChange)="calculateRating()"
                       formControlName="qty"
                       required
                     />
@@ -305,14 +306,10 @@ export class ModalEditSubTaskComponent {
   }
 
   calculateRating() {
-    //   this.dpcrSIData.qty5 = Math.floor(
-    //     this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
-    //   );
-    //   this.dpcrSIData.qty4 = Math.floor(
-    //     this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty
-    //   );
-    //   this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
-    //   this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
-    //   this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
+    this.data.qty5 = Math.floor(this.data.qty * 1.3);
+    this.data.qty4 = Math.floor(this.data.qty * 1.15);
+    this.data.qty3 = Math.floor(this.data.qty);
+    this.data.qty2 = Math.floor(this.data.qty / 2 + 1);
+    this.data.qty1 = Math.floor(this.data.qty / 2);
   }
 }

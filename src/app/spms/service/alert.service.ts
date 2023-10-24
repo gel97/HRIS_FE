@@ -129,4 +129,45 @@ export class AlertService {
       title: errorMessage
     })
   }
+
+  async customUpdate(data: any): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: data.message,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
+      }).then((result) => {
+        console.log(result)
+        if (result.isConfirmed) {
+          this.http
+            .put<any[]>(api + data.url, { responseType: `json` })
+            .subscribe({
+              next: (response: any = {}) => {
+                Swal.fire(
+                  'Saved!',
+                  data.success,
+                  'success'
+                );
+                resolve(true); 
+              },
+              error: (error: any) => { 
+                Swal.fire(
+                  'Oops!',
+                  'Error.',
+                  'error'
+                );
+                resolve(false);
+              },
+              complete: () => {},
+            });
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
 }

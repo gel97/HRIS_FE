@@ -38,6 +38,7 @@ export class SpmsApiService {
 
   post_dpcr = () => `/tPMDpcr`;
   put_dpcr = () => `/tPMDpcr`;
+  put_dpcr_setactive = (dpcrId:string) => `/tPMDpcr/setactive/${dpcrId}`;
   delete_dpcr = (dpcrId: string) => `/tPMDpcr/${dpcrId}`;
   get_dpcr = (divisionId: string) => `/tPMDpcr/list/${divisionId}`;
 

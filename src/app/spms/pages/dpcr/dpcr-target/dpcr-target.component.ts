@@ -36,6 +36,14 @@ export class DpcrTargetComponent implements OnInit{
     }
   }
 
+  EditDpcr(){
+    this.dpcrService.EditDpcr(this.dpcrObj);
+  }
+
+  DeleteDpcr(dpcrId:string){
+    this.dpcrService.DeleteDpcr(dpcrId);
+  }
+
   AddDpcrData(){
     console.log(this.dpcrSIData);
     this.dpcrSIData.isSubTask = 0;
@@ -56,12 +64,15 @@ export class DpcrTargetComponent implements OnInit{
   }
 
   AddSubTask(data:any){
-    console.log(data)
     this.dpcrService.AddSubTask(data);
   }
 
   GetDPCRDataSubtask(){
     this.dpcrService.GetDpcrDataSubtask(this.dpcrMFOData.mfoId);
+  }
+
+  SetDpcrActive(data:any){
+    this.dpcrService.SetDpcrActive(data);
   }
 
   handleShowDpcrData(value:boolean){
@@ -75,6 +86,7 @@ export class DpcrTargetComponent implements OnInit{
 
   }
   setDpcrDataObj(data:any){
+    console.log("dpcr :", data)
     this.dpcrMFOData = data.mfoData;
     this.dpcrSIData = data.siData;
   }
