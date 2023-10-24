@@ -9,6 +9,7 @@ export class SidebarComponent {
   sample: number = 0;
   sample1: number = 0;
   sample2: number = 0;
+  sample3: number = 0;
 
   toggleSubMenu(menuNumber: number): void {
     this.sample = this.sample === menuNumber ? 0 : menuNumber;
@@ -19,5 +20,9 @@ export class SidebarComponent {
   }
   toggleSubMenu2(menuNumber: number): void {
     this.sample2 = this.sample2 === menuNumber ? 0 : menuNumber;
+  }
+
+  toggleSubMenu3(menuNumber: number): void {
+    this.sample3 = this.sample3 === menuNumber ? 0 : menuNumber;
   }
 }

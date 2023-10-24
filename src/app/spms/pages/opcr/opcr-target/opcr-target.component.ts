@@ -16,7 +16,10 @@ export class OpcrTargetComponent implements OnInit {
   mfoService = inject(MfoService);
   reportActualService = inject(ReportActualService);
 
-  getYear = '2023';
+  // getYear = '2023';
+  getYear = new Date().getFullYear().toString();
+  // years: number[] = [2023, 2022, 2021];
+  years: number[] = [];
   fullYear = '0';
   officeId = 'OFFPHRMONZ3WT7D';
   isCommon = 0;
@@ -50,6 +53,13 @@ export class OpcrTargetComponent implements OnInit {
     this.localStorage();
     this.GetOPCRs();
     this.GetOfficeDivision();
+    this.opcrYear();
+  }
+
+  opcrYear() {
+    for (let i = new Date().getFullYear(); i >= 2020; i--) {
+      this.years.push(i);
+    }
   }
 
   localStorage() {

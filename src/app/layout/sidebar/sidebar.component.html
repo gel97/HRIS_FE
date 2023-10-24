@@ -127,6 +127,27 @@
                 </li>
             </ul>
         </li>
+        <li class="menu-item" [ngClass]="sample3==1?'open':''" routerLinkActive="active">
+            <a routerLink="user" class="menu-link menu-toggle" (click)="toggleSubMenu3(1)">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Layouts">IPCR</div>
+            </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item" routerLinkActive="active">
+                    <a routerLink="spms/ipcr/target" class="menu-link">
+                        <div data-i18n="Without menu">Target</div>
+                    </a>
+                </li>
+            </ul>
+            <ul class="menu-sub">
+                <li class="menu-item" routerLinkActive="active">
+                    <a routerLink="spms/ipcr/actual" class="menu-link">
+                        <div data-i18n="Without menu">Actual</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </aside>
 <!-- / Menu -->
