@@ -105,6 +105,41 @@ export class DpcrService {
       });
   }
 
+  EditDpcr(dpcr: any) {
+    console.log(dpcr);
+    this.http
+      .put<any[]>(api + this.url.put_dpcr(), dpcr, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDpcr();
+           this.alertService.save();
+        },
+        error: (error: any) => {   
+          this.alertService.error();         
+          this.dpcrData.mutate((a) => {
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
+  async SetDpcrActive(dpcr: any) {
+    try {
+      dpcr.success = 'This dpcr has been set to final';
+      dpcr.message = 'You want to set this dpcr to final';
+      dpcr.url = this.url.put_dpcr_setactive(dpcr.dpcrId);
+      let setData = await this.alertService.customUpdate(dpcr);
+
+       if(setData){
+        this.GetDpcr();
+      }else{
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   AddDpcrData(dpcrData: any) {
     this.dpcr.mutate((a) => (a.isLoadingSave = true));
     console.log(dpcrData)
@@ -356,6 +391,19 @@ export class DpcrService {
           console.log("dpcrDataSearchMfoes: ", this.dpcrData());
         },
       });
+  }
+
+  async DeleteDpcr(dpcrId: string) {
+    try {
+      let deleteData = await this.alertService.delete(this.url.delete_dpcr(dpcrId));
+
+       if(deleteData){
+        this.GetDpcr();
+      }else{
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   async DeleteDPCRData(dpcrDataId: string) {
