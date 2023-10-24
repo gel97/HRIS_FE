@@ -77,9 +77,22 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <td>
                     <i class="bx bx-chevron-right"></i
                     ><strong>{{ b.qty }}</strong
-                    >&nbsp;{{ b.indicator }}
+                    >&nbsp;{{ b.indicator }} &nbsp;
+                    <small
+                        *ngIf="b.subtaskCount > 0"
+                        class="badge rounded-pill float-end bg-label-info"                  
+                        aria-expanded="false"
+                      >
+                        subtask
+                        <span
+                          class="badge rounded-pill badge-center h-px-20 w-px-20 bg-info"
+                        >
+                          {{ b.subtaskCount }}
+                        </span>
+                      </small> &nbsp;
                   </td>
                   <td>
+
                     <div class="dropdown position-static">
                       <button
                         type="button"
