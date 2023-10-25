@@ -11,6 +11,8 @@ export class IpcrTargetComponent implements OnInit {
   sem = '1';
   divisionId = 'DIVADMIJAI162';
   userId = 'useripcrid123';
+  years: number[] = [];
+  post_ipcr: any = {};
   ipcrDetails: any = {};
   ipcrSTDetails: any = {};
 
@@ -32,7 +34,7 @@ export class IpcrTargetComponent implements OnInit {
   ngOnInit(): void {
     this.ipcrService.GetIPCRs(this.getYear, this.divisionId, this.userId);
     // this.ipcrService.ViewGetDPCR_IPCR();
-    console.log(this.dpcr_ipcr);
+    this.ipcrYear();
     this.localStorage();
   }
 
@@ -64,7 +66,6 @@ export class IpcrTargetComponent implements OnInit {
     this.ipcrDetails.qty = this.quantity;
     this.ipcrDetails.ipcrId = localStorage.getItem('ipcrId');
     this.ipcrService.AddIPCRData(this.ipcrDetails);
-    console.log('ipcrdetails', this.ipcrDetails);
   }
 
   PostIPCRSTDetails() {
@@ -75,13 +76,19 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   DeleteIPCRDetails(value: any) {
-    console.log('delete data', value);
     this.ipcrService.DeleteIPCRDetails(value);
   }
 
   DeleteIPCRSTDetails(value: any) {
-    console.log('delete data', value);
     this.ipcrService.DeleteIPCRSTDetails(value);
+  }
+
+  PostIpcr() {
+    this.post_ipcr.year = this.getYear;
+    this.post_ipcr.semester = this.sem;
+    this.post_ipcr.divisionId = this.divisionId;
+    this.post_ipcr.userId = this.userId;
+    this.ipcrService.AddIPCR(this.post_ipcr);
   }
 
   removeLocalStorage() {
@@ -121,6 +128,45 @@ export class IpcrTargetComponent implements OnInit {
     return catName;
   }
 
+  semester(year: number) {
+    let Year = '';
+    switch (year) {
+      case 0:
+        Year = 'Full Year';
+        break;
+
+      case 1:
+        Year = '1st Sem';
+        break;
+
+      case 2:
+        Year = '2nd Sem';
+        break;
+
+      default:
+        break;
+    }
+    return Year;
+  }
+
+  // onChangeSemInput(sem: any) {
+  //   this.post_ipcr.semester = sem;
+  // }
+
+  // onYearChangeInput(year: any) {
+  //   this.post_ipcr.year = year;
+  // }
+
+  onChangeYear(year: any) {
+    this.ipcrService.GetIPCRs(year, this.divisionId, this.userId);
+  }
+
+  ipcrYear() {
+    for (let i = new Date().getFullYear(); i >= 2020; i--) {
+      this.years.push(i);
+    }
+  }
+
   calculateRating() {
     this.ipcrDetails.qty5 = Math.floor(this.quantity * 0.3 + this.quantity);
     this.ipcrDetails.qty4 = Math.floor(this.quantity * 0.15 + this.quantity);
@@ -150,109 +196,44 @@ export class IpcrTargetComponent implements OnInit {
   counter_mfo: number = 0;
   sortExcist() {
     setTimeout(() => {
-      console.log('ipcrdetails', this.get_ipcrDetails.data);
-      console.log('dpcr_ipcrData', this.dpcr_ipcr.data);
       for (let a of this.dpcr_ipcr.data) {
         for (let b_dpcr_ipcr of a.si) {
           for (let x of this.get_ipcrDetails.data) {
             for (let y_ipcrDetails of x.si) {
               if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
                 if (b_dpcr_ipcr.isSubTask == 0) {
-                  console.log('here not subtask');
                   this.counter += 1;
                 } else {
                   for (let j of b_dpcr_ipcr.st) {
                     for (let k of y_ipcrDetails.st) {
                       if (j.subTaskId == k.subTaskId) {
                         this.counter += 1;
-                        console.log('here st subtask');
                       }
                     }
                   }
-                  // if (b_dpcr_ipcr.st.length == 0) {
-                  //   this.counter += 1;
-                  // }
                 }
               }
-              // console.log('subtask', b.isSubTask);
-              // if (b.isSubTask == 0) {
-              //   this.counter += 1;
-              //   console.log('here 0 ');
-              // } else {
-              //   console.log('here 1');
-              // }
-              // else {
-              //   for (let x of innerItem.st) {
-              //     for (let y of opcrDetailItem.st) {
-              //       if (x.indicatorId == y.subTaskId) {
-              //         this.counter += 1;
-              //         console.log('here subtask');
-              //       }
-              //     }
-              //   }
-              // }
-              // if (
-              //   innerItem.indicatorId == opcrDetailItem.indicatorId &&
-              //   opcrDetailItem.st.length == 0
-              // ) {
-              //   console.log('here not subtask');
-              //   this.counter += 1;
-              // } else {
-              //   for (let x of innerItem.st) {
-              //     for (let y of opcrDetailItem.st) {
-              //       if (x.indicatorId == y.subTaskId) {
-              //         console.log('here subtask');
-              //         this.counter += 1;
-              //       }
-              //     }
-              //   }
-              // }
-              // if (
-              //   innerItem.indicatorId == opcrDetailItem.indicatorId &&
-              //   opcrDetailItem.isSubTask != 0
-              // ) {
-              //   console.log('here mfo subtask');
-              //   this.counter += 1;
-              // }
             }
           }
         }
       }
-      console.log('counter', this.counter);
 
       while (this.counter != 0) {
         this.counter -= 1;
-
-        // for (let outerItem of this.dpcr_ipcr.data) {
-        //   for (let innerItem of outerItem.si) {
-        //     for (let opcrDetail of this.get_ipcrDetails.data) {
-        //       for (let opcrDetailItem of opcrDetail.si) {
-
         for (let a of this.dpcr_ipcr.data) {
           for (let b_dpcr_ipcr of a.si) {
             for (let x of this.get_ipcrDetails.data) {
               for (let y_ipcrDetails of x.si) {
                 if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
                   if (b_dpcr_ipcr.isSubTask == 0) {
-                    // console.log('here not subtask');
-                    // this.counter += 1;
                     const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
                     if (indexToRemove !== -1) {
                       a.si.splice(indexToRemove, 1);
                     }
                   } else {
-                    // if (b_dpcr_ipcr.st.length == 0) {
-                    //   // this.counter += 1;
-                    //   const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
-                    //   if (indexToRemove !== -1) {
-                    //     a.si.splice(indexToRemove, 1);
-                    //   }
-                    // }
                     for (let j of b_dpcr_ipcr.st) {
                       for (let k of y_ipcrDetails.st) {
                         if (j.subTaskId == k.subTaskId) {
-                          // this.counter += 1;
-                          // console.log('here st subtask');
                           const indexToRemove = b_dpcr_ipcr.st.indexOf(j);
                           if (indexToRemove !== -1) {
                             b_dpcr_ipcr.st.splice(indexToRemove, 1);
@@ -261,7 +242,6 @@ export class IpcrTargetComponent implements OnInit {
                       }
                     }
                     if (b_dpcr_ipcr.st.length == 0) {
-                      console.log('empty mfo');
                       const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
                       if (indexToRemove !== -1) {
                         a.si.splice(indexToRemove, 1);
@@ -269,48 +249,19 @@ export class IpcrTargetComponent implements OnInit {
                     }
                   }
                 }
-
-                // if (
-                //   innerItem.indicatorId == opcrDetailItem.indicatorId &&
-                //   opcrDetailItem.st.length == 0
-                // ) {
-                //   // Find the index of the item in the array and remove it using splice
-                //   const indexToRemove = outerItem.si.indexOf(innerItem);
-                //   if (indexToRemove !== -1) {
-                //     outerItem.si.splice(indexToRemove, 1);
-                //   }
-                // } else if (
-                //   innerItem.indicatorId == opcrDetailItem.indicatorId &&
-                //   opcrDetailItem.st.length != 0
-                // ) {
-                //   for (let x of innerItem.st) {
-                //     for (let y of opcrDetailItem.st) {
-                //       if (x.subTaskId == y.indicatorId) {
-                //         // this.counter += 1;
-                //         const indexToRemove = innerItem.st.indexOf(x);
-                //         if (indexToRemove !== -1) {
-                //           innerItem.st.splice(indexToRemove, 1);
-                //         }
-                //       }
-                //     }
-                //   }
-                // }
               }
             }
           }
         }
-        console.log('counter_mfo', this.counter_mfo);
       }
     }, 1000);
   }
 
   removeMFO() {
     setTimeout(() => {
-      console.log('ipcrdetails_mfoszxc', this.get_ipcrDetails.data);
       for (let a of this.get_ipcrDetails.data) {
         for (let a_si of a.si) {
           if (a_si.isSubTask == 1 && a_si.st.length == 0) {
-            console.log('mfo removed');
             // const indexToRemove = a.si.indexOf(a_si);
             // if (indexToRemove !== -1) {
             //   a.si.splice(indexToRemove, 1);

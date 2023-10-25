@@ -39,10 +39,10 @@ export class IpcrService {
     isLoading: false,
   });
 
-  GetIPCRs(year: string, divisionId: string, ipcrId: string) {
+  GetIPCRs(year: string, divisionId: string, userId: string) {
     this.ipcr.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_ipcrs(year, divisionId, ipcrId), {
+      .get<any[]>(api + this.url.get_ipcrs(year, divisionId, userId), {
         responseType: `json`,
       })
       .subscribe({
@@ -111,6 +111,23 @@ export class IpcrService {
           this.alertService.error();
         },
         complete: () => {},
+      });
+  }
+
+  AddIPCR(data: any) {
+    // data.divisionId = this.divisionId;
+    this.http
+      .post<any[]>(api + this.url.post_ipcr(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.save();
+        },
       });
   }
 
