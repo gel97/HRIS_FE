@@ -9,7 +9,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   readonly APIUrl_login = 'https://davnorsystems.gov.ph/hrisAPI/api/Auth';
-  // readonly APIUrl_HRIS = 'https://localhost:44395/api/auth/login';
+  //readonly APIUrl_HRIS = 'https://localhost:44395/api/auth/login';
   readonly APIUrl_HRIS =
     'https://davaodelnorte.ph/AppData/hrisv3api/api/auth/login';
   private userPayload: any;
@@ -34,6 +34,7 @@ export class AuthService {
     localStorage.setItem('officeName', data.officeNameShort);
     localStorage.setItem('divisionName', data.divisionName);
     localStorage.setItem('officeNameLong', data.officeName);
+    localStorage.setItem('positionTitle', data.positionTitle);
     localStorage.setItem('userId', data.eic);
   }
 

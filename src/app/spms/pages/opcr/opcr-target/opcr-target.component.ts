@@ -187,7 +187,7 @@ export class OpcrTargetComponent implements OnInit {
     this.opcr.mutate((a: any) => (a.isLoading = true));
     setTimeout(() => {
       this.opcr.mutate((a: any) => (a.isLoading = false));
-      this.opcrService.GetOPCRs(this.getYear, this.officeId?? "");
+      this.opcrService.GetOPCRs(this.getYear, this.officeId ?? '');
     }, 1000);
   }
 
@@ -226,7 +226,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   GetOfficeDivision() {
-    this.opcrService.GetOfficeDivision(this.officeId?? "");
+    this.opcrService.GetOfficeDivision(this.officeId ?? '');
     setTimeout(() => {
       this.displayDivision('');
     }, 1000);
@@ -336,14 +336,14 @@ export class OpcrTargetComponent implements OnInit {
     let catName = '';
     switch (cat) {
       case 1:
-        catName = 'Active';
+        catName = 'Pre-Final';
         break;
       case 2:
         catName = 'Final';
 
         break;
       case 0:
-        catName = 'Inactive';
+        catName = 'Draft';
         break;
       default:
         break;
@@ -357,7 +357,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
-    this.opcrService.GetOPCRs(year, this.officeId?? "");
+    this.opcrService.GetOPCRs(year, this.officeId ?? '');
   }
 
   EditOPCRData() {
