@@ -1,0 +1,15 @@
+.pointer {
+    cursor: pointer;
+}
+
+.offcanvas-end {
+    width: 40%;
+    border-left: 1px solid rgba(67, 89, 113, 0.2);
+    border-left-width: 5px;
+    border-left-style: solid;
+    border-left-color: rgba(67, 89, 113, 0.2);
+  }
+
+  .thick-border {
+    border: 2px solid lightgray; /* You can adjust the thickness and color as needed */
+  }  

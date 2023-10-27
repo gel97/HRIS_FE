@@ -42,10 +42,11 @@
             <div>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
                     (ngModelChange)="onChangeYear($event)">
-                    <option value="2024">2024</option>
-                    <option value="2023" selected>2023</option>
+                    <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                    <!-- <option value="2024">2024</option>
+                    <option value="2023">2023</option>
                     <option value="2022">2022</option>
-                    <option value="2021">2021</option>
+                    <option value="2021">2021</option> -->
                 </select>
             </div>
             <br>
@@ -164,7 +165,6 @@
                                     </div>
                                     <div class="col-4">
                                         <div class="btn-group float-end">
-
                                             <small class="badge rounded-pill float-end pointer"
                                                 [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -344,7 +344,7 @@
             <div>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="fullYear"
                     (ngModelChange)="onChangeYearInput($event)">
-                    <option value="0" selected>Full Year</option>
+                    <option value="0">Full Year</option>
                     <option value="1">1st Sem</option>
                     <option value="2">2nd Sem</option>
                 </select>

@@ -5,6 +5,8 @@ import { OfficeComponent } from './pages/mfo/office/office.component';
 import { OpcrActualComponent } from './pages/opcr/opcr-actual/opcr-actual.component';
 import { OpcrTargetComponent } from './pages/opcr/opcr-target/opcr-target.component';
 import { SpmsComponent } from './spms.component';
+import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
+import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
 
 const routes: Routes = [
   {
@@ -13,8 +15,8 @@ const routes: Routes = [
     children: [
       {
         path: 'mfo',
-        loadChildren: () => import('./pages/mfo/mfo.module')
-        .then(m => m.MfoModule),
+        loadChildren: () =>
+          import('./pages/mfo/mfo.module').then((m) => m.MfoModule),
       },
       {
         path: 'opcr/target',
@@ -25,10 +27,18 @@ const routes: Routes = [
         component: OpcrActualComponent,
       },
       {
-        path:'dpcr',
-        loadChildren: () => import('./pages/dpcr/dpcr.module')
-        .then(m => m.DpcrModule),
-      }
+        path: 'ipcr/target',
+        component: IpcrTargetComponent,
+      },
+      {
+        path: 'ipcr/actual',
+        component: IpcrActualComponent,
+      },
+      {
+        path: 'dpcr',
+        loadChildren: () =>
+          import('./pages/dpcr/dpcr.module').then((m) => m.DpcrModule),
+      },
     ],
   },
 ];

@@ -23,6 +23,8 @@ import {
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton.component';
 import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components/opcr-target-skeleton.component';
+import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
+import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components
     LinearLoadingComponent,
     OpcrActualSkeletonComponent,
     OpcrTargetSkeletonComponent,
+    IpcrTargetComponent,
+    IpcrActualComponent,
   ],
   imports: [
     CommonModule,

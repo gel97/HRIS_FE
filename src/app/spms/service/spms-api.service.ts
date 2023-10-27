@@ -28,6 +28,14 @@ export class SpmsApiService {
   put_opcr = () => `/tPMOpcrs`;
   delete_opcr = (opcrId: string) => `/tPMOpcrs/${opcrId}`;
 
+  get_ipcrs = (year: string, divisionId: string, ipcrId: string) =>
+    `/tPMIpcrs/${year}/${divisionId}/${ipcrId}`;
+  view_get_dpcr_ipcr = (divisionId: string, isCommon: number) =>
+    `/vPMDpcr_Ipcr/${divisionId}/${isCommon}`;
+
+  get_ipcrdetails = (ipcrId: string) => `/vPMIpcrDatas/${ipcrId}`;
+  post_ipcrData = () => `/tPMIpcrDatas`;
+
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
   put_opcrdata = () => `/tPMOpcrDatas`;
   post_opcrdata = () => `/tPMOpcrDatas`;
@@ -35,7 +43,7 @@ export class SpmsApiService {
 
   post_dpcr = () => `/tPMDpcr`;
   put_dpcr = () => `/tPMDpcr`;
-  put_dpcr_setactive = (dpcrId:string) => `/tPMDpcr/setactive/${dpcrId}`;
+  put_dpcr_setactive = (dpcrId: string) => `/tPMDpcr/setactive/${dpcrId}`;
   delete_dpcr = (dpcrId: string) => `/tPMDpcr/${dpcrId}`;
   get_dpcr = (divisionId: string) => `/tPMDpcr/list/${divisionId}`;
 
