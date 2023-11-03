@@ -6,11 +6,15 @@ import { MainComponent } from './main/main.component';
 import { SchedulerComponent } from './main/components/scheduler.component';
 import { DxSchedulerModule } from 'devextreme-angular/ui/scheduler';
 import { DxPopupModule, DxScrollViewModule, DxSelectBoxModule } from "devextreme-angular";
-
+import { TableOtsComponent } from './main/components/table-ots.component';
+import { TableMfoesComponent } from './main/components/table-mfoes.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 @NgModule({
   declarations: [ 
     MainComponent,
-    SchedulerComponent
+    SchedulerComponent,
+    TableOtsComponent,
+    TableMfoesComponent,
   ],
   imports: [
     CommonModule,
@@ -20,7 +24,8 @@ import { DxPopupModule, DxScrollViewModule, DxSelectBoxModule } from "devextreme
     DxSchedulerModule,
     DxPopupModule,
     DxScrollViewModule,
-    DxSelectBoxModule
+    DxSelectBoxModule,
+    NgxSkeletonLoaderModule
   ]
 })
 export class OtsModule { }

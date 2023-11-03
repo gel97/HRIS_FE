@@ -93,39 +93,8 @@ if (!/localhost/.test(document.location.host)) {
             ></button>
           </div>
           <div class="modal-body row">
-            <div class="col-4">
-              <div class="demo-inline-spacing mt-3">
-                <div class="list-group">
-                  <a
-                    href="javascript:void(0);"
-                    class="list-group-item list-group-item-action active"
-                    >Select accomplished MFOes</a
-                  >
-                  <a
-                    href="javascript:void(0);"
-                    class="list-group-item list-group-item-action"
-                    >Soufflé pastry pie ice</a
-                  >
-                  <a
-                    href="javascript:void(0);"
-                    class="list-group-item list-group-item-action disabled"
-                    >Tart tiramisu cake</a
-                  >
-                  <a
-                    href="javascript:void(0);"
-                    class="list-group-item list-group-item-action"
-                    >Bonbon toffee muffin</a
-                  >
-                  <a
-                    href="javascript:void(0);"
-                    class="list-group-item list-group-item-action"
-                    >Dragée tootsie roll</a
-                  >
-                </div>
-              </div>
-            </div>
             <div class="col-8">
-              <div class="demo-inline-spacing mt-3">
+            <div class="demo-inline-spacing mt-3">
                 <div class="list-group list-group-flush">
                   <ng-container *ngFor="let item of ots.data">
                     <a
@@ -135,6 +104,37 @@ if (!/localhost/.test(document.location.host)) {
                     >
                   </ng-container>
                 </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="demo-inline-spacing mt-3">
+                  <div class="list-group">
+                    <a
+                      href="javascript:void(0);"
+                      class="list-group-item list-group-item-action active"
+                      >MFO</a
+                    >
+                    <a
+                      href="javascript:void(0);"
+                      class="list-group-item list-group-item-action"
+                      >Soufflé pastry pie ice</a
+                    >
+                    <a
+                      href="javascript:void(0);"
+                      class="list-group-item list-group-item-action disabled"
+                      >Tart tiramisu cake</a
+                    >
+                    <a
+                      href="javascript:void(0);"
+                      class="list-group-item list-group-item-action"
+                      >Bonbon toffee muffin</a
+                    >
+                    <a
+                      href="javascript:void(0);"
+                      class="list-group-item list-group-item-action"
+                      >Dragée tootsie roll</a
+                    >
+                  </div>
               </div>
             </div>
           </div>

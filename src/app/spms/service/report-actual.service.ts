@@ -33,9 +33,9 @@ export class ReportActualService {
     let employeeOffice = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
     let employeePosition = 'P.G. Depeartment Head';
 
-    let period = 'JULY to DECEMBER';
+    let period = localStorage.getItem('reportPeriod');
     let officeShort = 'PHRMO';
-    let date = 'July 10, 2024';
+    let date = localStorage.getItem('reportDate');
 
     let reviewedBy = 'JOSIE JEAN R. RABANOZ, CE, MPA, En.P.';
     let reviewedByPosition = 'Provincial Administrator';

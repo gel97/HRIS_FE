@@ -4,7 +4,7 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
 import { interval, take } from 'rxjs';
 import { ReportActualService } from 'src/app/spms/service/report-actual.service';
 import Swal from 'sweetalert2';
-
+import { MonthRangeService } from 'src/app/spms/service/month-range.service';
 @Component({
   selector: 'app-opcr-target',
   templateUrl: './opcr-target.component.html',
@@ -15,6 +15,7 @@ export class OpcrTargetComponent implements OnInit {
   opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
   reportActualService = inject(ReportActualService);
+  monthRangeService = inject(MonthRangeService);
 
   // getYear = '2023';
   getYear = new Date().getFullYear().toString();
@@ -199,10 +200,18 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
   }
 
-  ReportOPCR(opcrid: string, opcrdetails: string) {
-    this.opcrService.storageOpcrId.set(opcrid);
+  ReportOPCR(data:any) {
+    this.opcrService.storageOpcrId.set(data.opcrId);
     this.opcrService.GetOPCRDetails();
     this.reportActualService.triggerSwitch(1);
+
+    this.monthRangeService.setMonthRange({
+      type: "opcr",
+      isActual: false,
+      year: parseInt(data.year),
+      semester: data.semester,
+    })
+
     setTimeout(() => {
       this.reportActualService.triggerSwitch(1);
       this.reportActualService.ReportActual(this.opcrDetails().data);
@@ -340,14 +349,22 @@ export class OpcrTargetComponent implements OnInit {
     }, 1000);
   }
 
-  OPCRDetails(opcrid: string, opcrdetails: string) {
+  OPCRDetails(data: any) {
+    console.log(data);
     this.opcrService.storageIsShow.set(1);
-    this.opcrService.storageOpcrId.set(opcrid);
-    this.opcrService.storageOpcrDetails.set(opcrdetails);
+    this.opcrService.storageOpcrId.set(data.opcrId);
+    this.opcrService.storageOpcrDetails.set(data.details);
 
     localStorage.setItem('isShow', '1');
-    localStorage.setItem('opcrId', opcrid);
-    localStorage.setItem('opcrDetails', opcrdetails);
+    localStorage.setItem('opcrId', data.opcrId);
+    localStorage.setItem('opcrDetails', data.details);
+
+    this.monthRangeService.setMonthRange({
+      type: "opcr",
+      isActual: false,
+      year: parseInt(data.year),
+      semester: data.semester,
+    })
 
     this.localStorage();
   }

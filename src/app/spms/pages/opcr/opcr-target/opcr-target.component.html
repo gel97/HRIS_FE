@@ -68,7 +68,7 @@
                         <tbody *ngFor="let data of opcr().data; let i = index">
                             <tr>
                                 <td class="pointer">
-                                    <a (click)="OPCRDetails(data.opcrId, opcrName = data.details)">
+                                    <a (click)="OPCRDetails(data)">
                                         <strong>{{ data.details }}</strong>
                                     </a>
                                 </td>
@@ -113,7 +113,7 @@
                                         <div class="dropdown-menu">
                                             <a (click)="editOpcr = data;EditOPCR()" class="dropdown-item"><i
                                                     class='bx bxs-flag-alt me-1'></i>Final</a>
-                                            <a (click)="ReportOPCR(data.opcrId, opcrName = data.details)"
+                                            <a (click)="ReportOPCR(data)"
                                                 class="dropdown-item"><i class="bx bx-printer me-1"></i>
                                                 Print OPCR</a>
                                             <a (click)="DeleteOPCR(data.opcrId)" class="dropdown-item"><i
