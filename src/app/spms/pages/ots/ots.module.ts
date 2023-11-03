@@ -9,12 +9,14 @@ import { DxPopupModule, DxScrollViewModule, DxSelectBoxModule } from "devextreme
 import { TableOtsComponent } from './main/components/table-ots.component';
 import { TableMfoesComponent } from './main/components/table-mfoes.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { TableMonthComponent } from './main/components/table-month.component';
 @NgModule({
   declarations: [ 
     MainComponent,
     SchedulerComponent,
     TableOtsComponent,
     TableMfoesComponent,
+    TableMonthComponent
   ],
   imports: [
     CommonModule,
