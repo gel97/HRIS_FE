@@ -18,12 +18,12 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         <div class="col-2"></div>
       </div>
       <div class="table-responsive text-nowrap">
-        <table class="table table-hover table-bordered">
+        <table class="table table-bordered">
           <thead>
             <tr>
               <th [width]="10">Day</th>
               <th ></th>
-              <th [width]="10">Actions</th>
+              <th [width]="10" colspan="2">Actions</th>
             </tr>
           </thead>
           <tbody class="table-border-bottom-0">
@@ -43,7 +43,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               </tr>
               <tr>
                 <td>a</td>
-                <td>b</td>
+                <td [width]="10">b</td>
+                <td [width]="10" rowspan="3"><button class="btn btn-primary">ots</button></td>
               </tr>
               <tr>
                 <td>c</td>
