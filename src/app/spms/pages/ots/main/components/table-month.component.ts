@@ -6,7 +6,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { DpcrService } from 'src/app/spms/service/dpcr.service';
+import { OtsService } from 'src/app/spms/service/ots.service';
 @Component({
   selector: 'app-table-month',
   template: `
@@ -42,13 +42,17 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 </td>
               </tr>
               <tr>
-                <td>a</td>
-                <td [width]="10">b</td>
-                <td [width]="10" rowspan="3"><button class="btn btn-primary">ots</button></td>
+                <td> Sample task #2 </td>
+                <td [width]="10"><i class='bx bxs-edit'></i></td>
+                <td [width]="10" rowspan="3">
+                  <button (click)="SetDate(item)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalOts">
+                    ots
+                  </button>
+                </td>
               </tr>
               <tr>
-                <td>c</td>
-                <td>d</td>
+                <td>Sample task #1</td>
+                <td><i class='bx bxs-edit'></i></td>
               </tr>
             </ng-container>
           </tbody>
@@ -58,7 +62,11 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   `,
 })
 export class TableMonthComponent implements OnInit {
-  currentMonthData: { day: number; month: string; dayOfWeek: string }[] = [];
+  currentMonthData: { day: number; month: string; dayOfWeek: string, date:any }[] = [];
+
+  otsService = inject(OtsService);
+
+  @Output() date = new EventEmitter<any>();
 
   ngOnInit() {
     const currentDate = new Date();
@@ -76,12 +84,23 @@ export class TableMonthComponent implements OnInit {
         day
       );
       const dayOfWeek = this.getDayOfWeek(date);
-      this.currentMonthData.push({ day, month: currentMonth, dayOfWeek });
+      date.setHours(16, 0, 0, 0);
+      const formattedDate = date.toISOString().slice(0, 16);
+
+      console.log("date ", formattedDate)
+      this.currentMonthData.push({ day, month: currentMonth, dayOfWeek,  date: formattedDate });
     }
   }
 
   getDayOfWeek(date: Date): string {
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return daysOfWeek[date.getDay()];
+  }
+
+  SetDate(item:any){
+    this.otsService.otsMfoes.mutate( a=> a.startDate = item.date);
+    this.otsService.otsMfoes.mutate( a=> a.endDate = item.date);
+    console.log(this.otsService.otsMfoes())
+
   }
 }

@@ -5,7 +5,7 @@ import { api } from 'src/app/connection';
 import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
 import DataSource from 'devextreme/data/data_source';
-
+import { ErrorService } from './error.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -16,13 +16,22 @@ export class OtsService {
   constructor(
     private http: HttpClient,
     private url: SpmsApiService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private errorService: ErrorService
   ) {}
 
   ots = signal<any>({
     data: [],
     error: false,
     isLoading: false,
+  });
+
+  otsMfoes = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+    startDate: '',
+    endDate: ''
   });
 
   otsData:any=[];
@@ -87,6 +96,39 @@ export class OtsService {
         complete: () => {
           this.GetOts();
           this.alertService.save();
+        },
+      });
+  }
+
+    
+  GetOtsMfoe() {
+    this.otsMfoes.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_data(), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.otsMfoes.mutate((a) => {
+            (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.otsMfoes.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          console.log("otsMfoes: ", this.otsMfoes());
         },
       });
   }

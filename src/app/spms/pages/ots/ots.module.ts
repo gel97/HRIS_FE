@@ -10,13 +10,15 @@ import { TableOtsComponent } from './main/components/table-ots.component';
 import { TableMfoesComponent } from './main/components/table-mfoes.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TableMonthComponent } from './main/components/table-month.component';
+import { ModalOtsComponent } from './main/components/modal-ots.component';
 @NgModule({
   declarations: [ 
     MainComponent,
     SchedulerComponent,
     TableOtsComponent,
     TableMfoesComponent,
-    TableMonthComponent
+    TableMonthComponent,
+    ModalOtsComponent
   ],
   imports: [
     CommonModule,
