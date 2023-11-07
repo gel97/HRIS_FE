@@ -52,7 +52,6 @@
                 <thead>
                     <tr>
                         <th>Details</th>
-                        <th>User</th>
                         <th>Year</th>
                         <th>Sem</th>
                         <th>Date Created</th>
@@ -64,27 +63,10 @@
                         <td class="pointer"><a (click)="IPCRDetails(data.ipcrId, data.details)">
                                 <strong>{{data.details}}</strong>
                             </a></td>
+                        <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
                         <td>
-                            <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                    class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                                    <img src="./assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                                </li>
-                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                    class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                                    <img src="./assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                                </li>
-                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                    class="avatar avatar-xs pull-up" title="Christina Parker">
-                                    <img src="./assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                                </li>
-                            </ul>
-                        </td>
-                        <td>
-                            {{data.year}}
-                        </td>
-                        <td>
-                            {{data.semester}}
+                            <span class="badge"
+                                [ngClass]="data.semester == '0' ? 'bg-label-success': data.semester == '1' ? 'bg-label-primary': data.semester == '2' ? 'bg-label-info': ''">{{semester(data.semester)}}</span>
                         </td>
                         <td>
                             {{data.transDT | date:'MMM. dd, yyyy' }}

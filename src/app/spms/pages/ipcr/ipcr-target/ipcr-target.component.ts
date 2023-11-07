@@ -128,6 +128,27 @@ export class IpcrTargetComponent implements OnInit {
     return catName;
   }
 
+  semester(year: number) {
+    let Year = '';
+    switch (year) {
+      case 0:
+        Year = 'Full Year';
+        break;
+
+      case 1:
+        Year = '1st Sem';
+        break;
+
+      case 2:
+        Year = '2nd Sem';
+        break;
+
+      default:
+        break;
+    }
+    return Year;
+  }
+
   // onChangeSemInput(sem: any) {
   //   this.post_ipcr.semester = sem;
   // }
