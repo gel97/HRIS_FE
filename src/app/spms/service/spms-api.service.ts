@@ -34,7 +34,12 @@ export class SpmsApiService {
     `/vPMDpcr_Ipcr/${divisionId}/${isCommon}`;
 
   get_ipcrdetails = (ipcrId: string) => `/vPMIpcrDatas/${ipcrId}`;
+  get_ipcrdetails_wSub = (ipcrId: string) => `/tPMIpcrDatas/list/${ipcrId}`;
   post_ipcrData = () => `/tPMIpcrDatas`;
+  post_ipcrSubData = () => `/tPMIpcrDataSubTasks`;
+  delete_ipcrdata = (ipcrDataId: string) => `/tPMIpcrDatas/${ipcrDataId}`;
+  delete_ipcrdata_st = (ipcrSubtaskId: string) =>
+    `/tPMIpcrDataSubTasks/${ipcrSubtaskId}`;
 
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
   put_opcrdata = () => `/tPMOpcrDatas`;

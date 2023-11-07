@@ -57,10 +57,28 @@ export class IpcrService {
       });
   }
 
+  // GetIPCRDetails() {
+  //   this.ipcrDetails.mutate((a) => (a.isLoading = true));
+  //   this.http
+  //     .get<any[]>(api + this.url.get_ipcrdetails(this.storageIpcrId()), {
+  //       responseType: `json`,
+  //     })
+  //     .subscribe({
+  //       next: (response: any = {}) => {
+  //         this.ipcrDetails.mutate((a) => (a.data = response));
+  //         this.ipcrDetails.mutate((a) => (a.isLoading = false));
+  //       },
+  //       error: () => {
+  //         this.alertService.error();
+  //       },
+  //       complete: () => {},
+  //     });
+  // }
+
   GetIPCRDetails() {
     this.ipcrDetails.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_ipcrdetails(this.storageIpcrId()), {
+      .get<any[]>(api + this.url.get_ipcrdetails_wSub(this.storageIpcrId()), {
         responseType: `json`,
       })
       .subscribe({
@@ -108,6 +126,97 @@ export class IpcrService {
         },
         complete: () => {
           this.alertService.save();
+        },
+      });
+  }
+
+  AddIPCRSubData(data: any) {
+    this.http
+      .post<any[]>(api + this.url.post_ipcrSubData(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.save();
+        },
+      });
+  }
+
+  DeleteIPCRDetails(ipcrDataId: string) {
+    this.http
+      .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          // this.StorageOPCRDetails(this.getId);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-start',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Deleted successfully',
+          });
+        },
+      });
+  }
+
+  DeleteMFO(ipcrDataId: string) {
+    this.http
+      .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          // this.StorageOPCRDetails(this.getId);
+          this.GetIPCRDetails();
+        },
+      });
+  }
+
+  DeleteIPCRSTDetails(ipcrSubtaskId: string) {
+    this.http
+      .delete<any[]>(api + this.url.delete_ipcrdata_st(ipcrSubtaskId))
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          // this.StorageOPCRDetails(this.getId);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-start',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Deleted successfully',
+          });
         },
       });
   }

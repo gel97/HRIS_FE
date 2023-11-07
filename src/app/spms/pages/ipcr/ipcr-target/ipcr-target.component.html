@@ -116,94 +116,199 @@
             <div class="p-0">
                 <div class="">
                     <div class="card mb-2 shadow-sm" *ngFor="let data of get_ipcrDetails.data ; let parent = index ">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8">
-                                    <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
-                                </div>
-                                <div class="col-4">
-                                    <div class="btn-group float-end">
-                                        <small class="badge rounded-pill float-end pointer"
-                                            [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            {{displayCatergory(data.categoryId) }}
-                                        </small>
+                        <ng-container *ngIf="data.si.length>0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="btn-group float-end">
+                                            <small class="badge rounded-pill float-end pointer"
+                                                [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{displayCatergory(data.categoryId) }}
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md mb-4 mb-md-0">
-                                    <div class="accordion mt-3" id="accordionExample">
-                                        <div class="card accordion-item bg-lightest thick-border"
-                                            *ngFor="let si of data.si; let i =index">
-                                            <h2 class="accordion-header" id="heading{{parent}}{{i}}">
-                                                <button type="button" class="accordion-button collapsed"
-                                                    data-bs-toggle="collapse"
-                                                    [attr.data-bs-target]="'#accordion' + parent + i"
-                                                    aria-expanded="false"
-                                                    [attr.aria-controls]="'accordion' + parent + i">
-                                                    <i class='bx bx-label'></i>
-                                                    <strong style="color: #697A8D;">&nbsp;<span
-                                                            style="color: black;">{{si.qty}}</span>&nbsp;{{si.indicator}}</strong>
-                                                </button>
-                                            </h2>
-                                            <div id="accordion{{parent}}{{i}}" class="accordion-collapse collapse"
-                                                [attr.aria-labelledby]="'heading' + parent + i"
-                                                data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <!-- Bordered Table -->
-                                                    <div class="table-responsive text-nowrap">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>RATING</th>
-                                                                    <th>QUANTITY</th>
-                                                                    <th>QUALITY</th>
-                                                                    <th>TIMELINESS</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>{{'5'}}</td>
-                                                                    <td>{{si.qty5}}</td>
-                                                                    <td>{{si.qlty5}}</td>
-                                                                    <td>{{si.timely5}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'4'}}</td>
-                                                                    <td>{{si.qty4}}</td>
-                                                                    <td>{{si.qlty4}}</td>
-                                                                    <td>{{si.timely4}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'3'}}</td>
-                                                                    <td>{{si.qty3}}</td>
-                                                                    <td>{{si.qlty3}}</td>
-                                                                    <td>{{si.timely3}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'2'}}</td>
-                                                                    <td>{{si.qty2}}</td>
-                                                                    <td>{{si.qlty2}}</td>
-                                                                    <td>{{si.timely2}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>{{'1'}}</td>
-                                                                    <td>{{si.qty1}}</td>
-                                                                    <td>{{si.qlty1}}</td>
-                                                                    <td>{{si.timely1}}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                <div class="row">
+                                    <div class="col-md mb-4 mb-md-0">
+                                        <div class="accordion mt-3" id="accordionExample">
+                                            <div class="card accordion-item bg-lightest thick-border"
+                                                *ngFor="let si of data.si; let i =index">
+                                                <ng-container *ngIf="si.isSubTask == 0 ; else subTaskData">
+                                                    <h2 class="accordion-header" id="heading{{parent}}{{i}}">
+                                                        <button type="button" class="accordion-button collapsed"
+                                                            data-bs-toggle="collapse"
+                                                            [attr.data-bs-target]="'#accordion' + parent + i"
+                                                            aria-expanded="false"
+                                                            [attr.aria-controls]="'accordion' + parent + i">
+                                                            <i class='bx bx-label'></i>
+                                                            <strong style="color: #697A8D;">&nbsp;<span
+                                                                    style="color: black;">{{si.qty}}</span>&nbsp;{{si.indicator}}</strong>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="accordion{{parent}}{{i}}"
+                                                        class="accordion-collapse collapse"
+                                                        [attr.aria-labelledby]="'heading' + parent + i"
+                                                        data-bs-parent="#accordionExample">
+                                                        <div class="accordion-body">
+                                                            <!-- Bordered Table -->
+                                                            <div class="table-responsive text-nowrap">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>RATING</th>
+                                                                            <th>QUANTITY</th>
+                                                                            <th>QUALITY</th>
+                                                                            <th>TIMELINESS</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>{{'5'}}</td>
+                                                                            <td>{{si.qty5}}</td>
+                                                                            <td>{{si.qlty5}}</td>
+                                                                            <td>{{si.timely5}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{'4'}}</td>
+                                                                            <td>{{si.qty4}}</td>
+                                                                            <td>{{si.qlty4}}</td>
+                                                                            <td>{{si.timely4}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{'3'}}</td>
+                                                                            <td>{{si.qty3}}</td>
+                                                                            <td>{{si.qlty3}}</td>
+                                                                            <td>{{si.timely3}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{'2'}}</td>
+                                                                            <td>{{si.qty2}}</td>
+                                                                            <td>{{si.qlty2}}</td>
+                                                                            <td>{{si.timely2}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{'1'}}</td>
+                                                                            <td>{{si.qty1}}</td>
+                                                                            <td>{{si.qlty1}}</td>
+                                                                            <td>{{si.timely1}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <!--/ Bordered Table -->
+                                                        </div>
                                                     </div>
-                                                    <!--/ Bordered Table -->
-                                                </div>
+                                                    <div>
+                                                        <button (click)="DeleteIPCRDetails(si.ipcrDataId)" type="button"
+                                                            class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
+                                                            <span class="tf-icons bx bx-trash"></span>
+                                                        </button>
+                                                        <button type="button"
+                                                            class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
+                                                            <span class="tf-icons bx bx-pencil"></span>
+                                                        </button>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-template #subTaskData>
+                                                    <!-- <h1>{{si.indicator}}</h1> -->
+
+                                                    <div *ngFor="let st of si.st; let z =index">
+                                                        <h2 class="accordion-header" id="heading{{parent}}{{i}}{{z}}">
+                                                            <button type="button" class="accordion-button collapsed"
+                                                                data-bs-toggle="collapse"
+                                                                [attr.data-bs-target]="'#accordion' + parent + i + z"
+                                                                aria-expanded="false"
+                                                                [attr.aria-controls]="'accordion' + parent + i + z">
+                                                                <strong style="color: black;">{{z + 1}}. &nbsp;</strong>
+                                                                <strong style="color: #697A8D;">{{st.stMfo}}
+                                                                    &nbsp;</strong>
+                                                                <span class="badge bg-dark">SUBTASK MFO</span>
+                                                            </button>
+                                                            <div style="margin-left: 33px; font-size: smaller;">
+                                                                <i class='bx bx-subdirectory-right'></i><span
+                                                                    style="color: black;">{{st.qty}}</span>
+                                                                <i>{{st.stIndicator}}</i> &nbsp;
+                                                                <span class="badge rounded-pill bg-label-dark">SUBTASK
+                                                                    INDICATOR</span>
+                                                            </div>
+                                                        </h2>
+                                                        <div id="accordion{{parent}}{{i}}{{z}}"
+                                                            class="accordion-collapse collapse"
+                                                            [attr.aria-labelledby]="'heading' + parent + i + z"
+                                                            data-bs-parent="#accordionExample">
+                                                            <div class="accordion-body">
+                                                                <!-- Bordered Table -->
+                                                                <div class="table-responsive text-nowrap">
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>RATING</th>
+                                                                                <th>QUANTITY</th>
+                                                                                <th>QUALITY</th>
+                                                                                <th>TIMELINESS</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>{{'5'}}</td>
+                                                                                <td>{{st.qty5}}</td>
+                                                                                <td>{{st.qlty5}}</td>
+                                                                                <td>{{st.timely5}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'4'}}</td>
+                                                                                <td>{{st.qty4}}</td>
+                                                                                <td>{{st.qlty4}}</td>
+                                                                                <td>{{st.timely4}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'3'}}</td>
+                                                                                <td>{{st.qty3}}</td>
+                                                                                <td>{{st.qlty3}}</td>
+                                                                                <td>{{st.timely3}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'2'}}</td>
+                                                                                <td>{{st.qty2}}</td>
+                                                                                <td>{{st.qlty2}}</td>
+                                                                                <td>{{st.timely2}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>{{'1'}}</td>
+                                                                                <td>{{st.qty1}}</td>
+                                                                                <td>{{st.qlty1}}</td>
+                                                                                <td>{{st.timely1}}</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <!--/ Bordered Table -->
+                                                            </div>
+                                                        </div>
+                                                        <div>
+
+                                                            <button (click)="DeleteIPCRSTDetails(st.ipcrSubtaskId)"
+                                                                type="button"
+                                                                class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
+                                                                <span class="tf-icons bx bx-trash"></span>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
+                                                                <span class="tf-icons bx bx-pencil"></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </ng-container>
                     </div>
                 </div>
             </div>
@@ -319,6 +424,7 @@
                                 </div>
                             </tr>
                             <ng-container *ngFor="let si of data.si">
+                                <!-- <ng-container *ngIf="si.st.length > 0"> -->
                                 <tr>
                                     <td>
                                         <div class="row">
@@ -327,7 +433,8 @@
                                                 &nbsp;
                                                 {{si.indicator}}
                                             </div>
-                                            <div *ngIf="si.st.length==0" class="col-1" style="margin-left: 20px;">
+                                            <div *ngIf="si.st.length==0 && si.isSubTask == 0" class="col-1"
+                                                style="margin-left: 20px;">
                                                 <button (click)="ipcrDetails = si; dpcrQuantity = ipcrDetails.qty"
                                                     type="button" data-bs-toggle="modal" data-bs-target="#modalAdd"
                                                     class="btn rounded-pill btn-icon btn-primary float-end">
@@ -337,6 +444,9 @@
                                     </td>
                                 </tr>
                                 <ng-container *ngFor="let st of si.st; let y = index">
+                                    <!-- <ng-container *ngIf="st.length != 0">
+    
+                                        </ng-container> -->
                                     <tr>
                                         <td>
                                             <div style="margin-left: 5px;">
@@ -357,7 +467,7 @@
                                                 </div>
                                                 <div class="col-1">
                                                     <button
-                                                        (click)="ipcrSTDetails = st; dpcrSTQuantity = ipcrSTDetails.qty; ipcrSTDetails.dpcrDataId= st.subTaskId"
+                                                        (click)="ipcrSTDetails = st; dpcrSTQuantity = ipcrSTDetails.qty"
                                                         type="button" data-bs-toggle="modal"
                                                         data-bs-target="#modalAddSubtask"
                                                         class="btn rounded-pill btn-icon btn-primary float-end">
@@ -367,6 +477,7 @@
                                         </td>
                                     </tr>
                                 </ng-container>
+                                <!-- </ng-container> -->
                             </ng-container>
                         </ng-container>
                     </tbody>
