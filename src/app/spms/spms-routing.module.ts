@@ -35,10 +35,15 @@ const routes: Routes = [
         component: IpcrActualComponent,
       },
       {
-        path: 'dpcr',
-        loadChildren: () =>
-          import('./pages/dpcr/dpcr.module').then((m) => m.DpcrModule),
+        path:'dpcr',
+        loadChildren: () => import('./pages/dpcr/dpcr.module')
+        .then(m => m.DpcrModule),
       },
+      {
+        path:'ots',
+        loadChildren: () => import('./pages/ots/ots.module')
+        .then(m => m.OtsModule),
+      }
     ],
   },
 ];

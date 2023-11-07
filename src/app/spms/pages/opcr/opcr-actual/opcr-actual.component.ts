@@ -3,6 +3,7 @@ import { PdfService } from 'src/app/spms/service/pdf.service';
 import { OpcrService } from 'src/app/spms/service/opcr.service';
 import { ReportStandardService } from 'src/app/spms/service/report-standard.service';
 import { ReportActualService } from 'src/app/spms/service/report-actual.service';
+import { MonthRangeService } from 'src/app/spms/service/month-range.service';
 @Component({
   selector: 'app-opcr-actual',
   templateUrl: './opcr-actual.component.html',
@@ -13,6 +14,7 @@ export class OpcrActualComponent implements OnInit {
   opcrService = inject(OpcrService);
   reportStandardService = inject(ReportStandardService);
   reportActualService = inject(ReportActualService);
+  monthRangeService = inject(MonthRangeService);
 
   count = signal(0);
 
@@ -76,6 +78,7 @@ export class OpcrActualComponent implements OnInit {
   }
 
   ReportOPCR() {
+    this.monthRangeService.setSemesterActual();
     this.reportActualService.triggerSwitch(2);
     this.reportActualService.ReportActual(this.opcrMfoes().data);
   }

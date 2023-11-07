@@ -25,7 +25,7 @@ import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components
 import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components/opcr-target-skeleton.component';
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
-
+import { OtsComponent } from './pages/ots/ots.component';
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -39,6 +39,7 @@ import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.compon
     OpcrTargetSkeletonComponent,
     IpcrTargetComponent,
     IpcrActualComponent,
+    OtsComponent
   ],
   imports: [
     CommonModule,

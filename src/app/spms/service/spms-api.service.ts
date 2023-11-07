@@ -75,5 +75,10 @@ export class SpmsApiService {
   put_subtask = () => `/tPMSubTask`;
   delete_subtask = (subTaskId: string) => `/tPMSubTask/${subTaskId}`;
 
+  post_ots = () => `/tPMOts`;
+  get_ots = () => `/tPMOts`;
+
   get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
+
+  get_ipcr_data = () => `/tPMIpcrDatas/list/ipcr123`;
 }
