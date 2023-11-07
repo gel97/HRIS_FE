@@ -28,8 +28,9 @@ export class SpmsApiService {
   put_opcr = () => `/tPMOpcrs`;
   delete_opcr = (opcrId: string) => `/tPMOpcrs/${opcrId}`;
 
-  get_ipcrs = (year: string, divisionId: string, ipcrId: string) =>
-    `/tPMIpcrs/${year}/${divisionId}/${ipcrId}`;
+  get_ipcrs = (year: string, divisionId: string, userId: string) =>
+    `/tPMIpcrs/${year}/${divisionId}/${userId}`;
+  post_ipcr = () => `/tPMIpcrs`;
   view_get_dpcr_ipcr = (divisionId: string, isCommon: number) =>
     `/vPMDpcr_Ipcr/${divisionId}/${isCommon}`;
 

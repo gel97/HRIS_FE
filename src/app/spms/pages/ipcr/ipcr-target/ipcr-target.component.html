@@ -36,11 +36,13 @@
     </div>
     <div *ngIf="isShow() == 0" class="card-body">
         <div>
-            <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear">
-                <option value="2024">2024</option>
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
+                (ngModelChange)="onChangeYear($event)">
+                <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                <!-- <option value="2024">2024</option>
                 <option value="2023">2023</option>
                 <option value="2022">2022</option>
-                <option value="2021">2021</option>
+                <option value="2021">2021</option> -->
             </select>
         </div>
         <br>
@@ -333,8 +335,8 @@
         <div class="col-md-12">
             <div class="">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="floatingInput" placeholder=""
-                        aria-describedby="floatingInputHelp" />
+                    <input [(ngModel)]="post_ipcr.details" type="text" class="form-control" id="floatingInput"
+                        placeholder="" aria-describedby="floatingInputHelp" />
                     <label for="floatingInput">IPCR</label>
                     <div id="floatingInputHelp" class="form-text">
                         Input IPCR
@@ -353,7 +355,7 @@
                 Select Period
             </div>
         </div><br>
-        <button type="button" class="btn btn-primary mb-2 d-grid w-100">Save</button>
+        <button (click)="PostIpcr()" type="button" class="btn btn-primary mb-2 d-grid w-100">Save</button>
         <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
             Cancel
         </button>
