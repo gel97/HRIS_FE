@@ -9,6 +9,7 @@ import { TableMfoComponent } from './office/components/table-mfo.component';
 import { CanvasSIComponent } from './office/components/canvas-si.component';
 import { CanvasMFOComponent } from './office/components/canvas-mfo.component';
 import { SearchMFOComponent } from './office/components/search-mfo.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 @NgModule({
   declarations: [
     OfficeComponent,
@@ -22,7 +23,8 @@ import { SearchMFOComponent } from './office/components/search-mfo.component';
   imports: [
     CommonModule,
     FormsModule,
-    MfoRoutingModule
+    MfoRoutingModule,
+    NgxSkeletonLoaderModule
   ]
 })
 export class MfoModule { }
