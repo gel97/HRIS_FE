@@ -38,14 +38,14 @@
             </div>
         </div>
         <div *ngIf="isShow() == 0" class="card-body">
+
             <div>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
                     (ngModelChange)="onChangeYear($event)">
-                    <option *ngFor="let year of years" [value]="year">{{year}}</option>
-                    <!-- <option value="2024">2024</option>
-                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2023" selected>2023</option>
                     <option value="2022">2022</option>
-                    <option value="2021">2021</option> -->
+                    <option value="2021">2021</option>
                 </select>
             </div>
             <br>
@@ -56,6 +56,7 @@
                         <thead>
                             <tr>
                                 <th>Details</th>
+                                <!-- <th>User</th> -->
                                 <th>Year</th>
                                 <th>Sem</th>
                                 <th>Date Created</th>
@@ -70,6 +71,22 @@
                                         <strong>{{ data.details }}</strong>
                                     </a>
                                 </td>
+                                <!-- <td>
+                                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                            class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                                            <img src="./assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                                        </li>
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                            class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                                            <img src="./assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                                        </li>
+                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                            class="avatar avatar-xs pull-up" title="Christina Parker">
+                                            <img src="./assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                                        </li>
+                                    </ul>
+                                </td> -->
                                 <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
                                 <td>
                                     <span class="badge"
@@ -95,8 +112,8 @@
                                         <div class="dropdown-menu">
                                             <a (click)="editOpcr = data;EditOPCR()" class="dropdown-item"><i
                                                     class='bx bxs-flag-alt me-1'></i>Final</a>
-                                            <a (click)="ReportOPCR(data)" class="dropdown-item"><i
-                                                    class="bx bx-printer me-1"></i>
+                                            <a (click)="ReportOPCR(data)"
+                                                class="dropdown-item"><i class="bx bx-printer me-1"></i>
                                                 Print OPCR</a>
                                             <a (click)="DeleteOPCR(data.opcrId)" class="dropdown-item"><i
                                                     class="bx bx-trash me-1"></i>
@@ -147,6 +164,7 @@
                                     </div>
                                     <div class="col-4">
                                         <div class="btn-group float-end">
+
                                             <small class="badge rounded-pill float-end pointer"
                                                 [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -326,7 +344,7 @@
             <div>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="fullYear"
                     (ngModelChange)="onChangeYearInput($event)">
-                    <option value="0">Full Year</option>
+                    <option value="0" selected>Full Year</option>
                     <option value="1">1st Sem</option>
                     <option value="2">2nd Sem</option>
                 </select>
@@ -737,46 +755,44 @@
         <button (click)="isExpandMfoes = false" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
             aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body pt-0">
+    <div class="offcanvas-body">
         <div class="col-12">
-            <div class="sticky-top bg-white">
-                <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-                    <li class="nav-item">
-                        <button (click)="setMFOs(0)" type="button" class="nav-link"
-                            [ngClass]="!mfoService.isCommon()? 'active': ''" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home"
-                            aria-selected="true">
-                            <i class='bx bx-grid-alt'></i> OFFICE MFO
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
-                            [ngClass]="mfoService.isCommon()? 'active': ''" data-bs-toggle="tab"
-                            data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile"
-                            aria-selected="false">
-                            <i class='bx bx-grid-alt'></i>COMMON MFO
-                        </button>
-                    </li>
-                </ul>
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <div class="spinner-border spinner-border-sm text-primary" role="status"
-                            *ngIf="isSearchLoading(); else showIcon">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <ng-template #showIcon>
-                            <i class="tf-icons bx bx-search"></i>
-                        </ng-template>
-                    </span>
-                    <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
-                        placeholder="Search..." />
-                </div>
+            <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                <li class="nav-item">
+                    <button (click)="setMFOs(0)" type="button" class="nav-link"
+                        [ngClass]="!mfoService.isCommon()? 'active': ''" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home"
+                        aria-selected="true">
+                        <i class='bx bx-grid-alt'></i> OFFICE MFO
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
+                        [ngClass]="mfoService.isCommon()? 'active': ''" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile"
+                        aria-selected="false">
+                        <i class='bx bx-grid-alt'></i>COMMON MFO
+                    </button>
+                </li>
+            </ul>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"
+                        *ngIf="isSearchLoading(); else showIcon">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <ng-template #showIcon>
+                        <i class="tf-icons bx bx-search"></i>
+                    </ng-template>
+                </span>
+                <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
+                    placeholder="Search..." />
             </div>
             <br>
             <ng-container *ngIf="mfo().data.length != 0 else noDataMfo">
                 <div class="" *ngIf="loading != true; else isLoadingMfoes">
                     <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
-                        <div class="">
+                        <div class="table-responsive text-nowrap">
                             <table class="table">
                                 <thead class="table-light">
                                     <tr>
@@ -821,6 +837,7 @@
                                     </ng-container>
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
