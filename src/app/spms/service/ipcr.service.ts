@@ -1,9 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SpmsApiService } from './spms-api.service';
 import { api } from 'src/app/connection';
 import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
+import { IpcrTargetComponent } from '../pages/ipcr/ipcr-target/ipcr-target.component';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,8 @@ export class IpcrService {
     private url: SpmsApiService,
     private alertService: AlertService
   ) {}
+
+  // ipcrTargetService = inject(IpcrTargetComponent);
 
   storageIsShow = signal<any>(localStorage.getItem('isShow_ipcr'));
   storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
@@ -121,7 +124,9 @@ export class IpcrService {
         responseType: `json`,
       })
       .subscribe({
-        next: (response: any = {}) => {},
+        next: (response: any = {}) => {
+          this.GetIPCRs(data.year, data.divisionId, data.userId);
+        },
         error: (error: any) => {
           this.alertService.error();
         },
@@ -137,7 +142,11 @@ export class IpcrService {
         responseType: `json`,
       })
       .subscribe({
-        next: (response: any = {}) => {},
+        next: (response: any = {}) => {
+          this.GetIPCRDetails();
+          this.ViewGetDPCR_IPCR();
+          this.sortExcist();
+        },
         error: (error: any) => {
           this.alertService.error();
         },
@@ -145,6 +154,70 @@ export class IpcrService {
           this.alertService.save();
         },
       });
+  }
+
+  counter: number = 0;
+  sortExcist() {
+    setTimeout(() => {
+      for (let a of this.dpcr_ipcr().data) {
+        for (let b_dpcr_ipcr of a.si) {
+          for (let x of this.ipcrDetails().data) {
+            for (let y_ipcrDetails of x.si) {
+              if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
+                if (b_dpcr_ipcr.isSubTask == 0) {
+                  this.counter += 1;
+                } else {
+                  for (let j of b_dpcr_ipcr.st) {
+                    for (let k of y_ipcrDetails.st) {
+                      if (j.subTaskId == k.subTaskId) {
+                        this.counter += 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      while (this.counter != 0) {
+        this.counter -= 1;
+        for (let a of this.dpcr_ipcr().data) {
+          for (let b_dpcr_ipcr of a.si) {
+            for (let x of this.ipcrDetails().data) {
+              for (let y_ipcrDetails of x.si) {
+                if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
+                  if (b_dpcr_ipcr.isSubTask == 0) {
+                    const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
+                    if (indexToRemove !== -1) {
+                      a.si.splice(indexToRemove, 1);
+                    }
+                  } else {
+                    for (let j of b_dpcr_ipcr.st) {
+                      for (let k of y_ipcrDetails.st) {
+                        if (j.subTaskId == k.subTaskId) {
+                          const indexToRemove = b_dpcr_ipcr.st.indexOf(j);
+                          if (indexToRemove !== -1) {
+                            b_dpcr_ipcr.st.splice(indexToRemove, 1);
+                          }
+                        }
+                      }
+                    }
+                    if (b_dpcr_ipcr.st.length == 0) {
+                      const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
+                      if (indexToRemove !== -1) {
+                        a.si.splice(indexToRemove, 1);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 1000);
   }
 
   AddIPCRSubData(data: any) {
@@ -167,7 +240,11 @@ export class IpcrService {
     this.http
       .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
       .subscribe({
-        next: (response: any = {}) => {},
+        next: (response: any = {}) => {
+          this.GetIPCRDetails();
+          this.ViewGetDPCR_IPCR();
+          this.sortExcist();
+        },
         error: () => {
           this.alertService.error();
         },

@@ -525,13 +525,16 @@
                     Close
                 </button>
                 <button (click)="PostOPCRDetails()" type="button" class="btn btn-primary">
-                    <ng-container *ngIf="opcrData().isLoading != true; else isLoading">
+                    <!-- <ng-container *ngIf="opcrData().isLoading != true; else isLoading">
                         <span>Save Details</span>
                     </ng-container>
                     <ng-template #isLoading>
                         <div class="spinner-border spinner-border-sm" role="status">
                         </div> &nbsp;<span>Loading...</span>
-                    </ng-template>
+                    </ng-template> -->
+                    <ng-container *ngIf="opcrData().isLoading != true">
+                        <span>Save Details</span>
+                    </ng-container>
                 </button>
             </div>
         </div>
@@ -709,13 +712,17 @@
                 <!-- <button data-bs-dismiss="modal" (click)="EditOPCRData()" type="button" class="btn btn-primary">Save
                         changes</button> -->
                 <button (click)="EditOPCRData()" type="button" class="btn btn-primary">
-                    <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
+                    <!-- <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
                         <span>Save Details</span>
                     </ng-container>
                     <ng-template #isLoading>
                         <div class="spinner-border spinner-border-sm" role="status">
                         </div> &nbsp;<span>Loading...</span>
-                    </ng-template>
+                    </ng-template> -->
+                    <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
+                        <span>Save Details</span>
+                    </ng-container>
+
                 </button>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { IpcrService } from 'src/app/spms/service/ipcr.service';
 
 @Component({
@@ -30,9 +30,16 @@ export class IpcrTargetComponent implements OnInit {
   dpcrSTQuantity: number | any;
   quantity: number | any;
   quantityST: number | any;
+  loading: boolean = false;
+
+  @ViewChild('closebutton')
+  closebutton!: { nativeElement: { click: () => void } };
+
+  @ViewChild('closebuttonST')
+  closebuttonST!: { nativeElement: { click: () => void } };
 
   ngOnInit(): void {
-    this.ipcrService.GetIPCRs(this.getYear, this.divisionId, this.userId);
+    // this.ipcrService.GetIPCRs(this.getYear, this.divisionId, this.userId);
     // this.ipcrService.ViewGetDPCR_IPCR();
     this.ipcrYear();
     this.localStorage();
@@ -46,6 +53,7 @@ export class IpcrTargetComponent implements OnInit {
       this.sortExcist();
       this.removeMFO();
     } else {
+      this.ipcrService.GetIPCRs(this.getYear, this.divisionId, this.userId);
       this.ipcrService.storageIsShow.set(0);
     }
   }
@@ -66,6 +74,10 @@ export class IpcrTargetComponent implements OnInit {
     this.ipcrDetails.qty = this.quantity;
     this.ipcrDetails.ipcrId = localStorage.getItem('ipcrId');
     this.ipcrService.AddIPCRData(this.ipcrDetails);
+    this.closebutton.nativeElement.click();
+    //this.localStorage();
+    //this.sortExcist();
+    // this.removeMFO();
   }
 
   PostIPCRSTDetails() {
@@ -73,6 +85,7 @@ export class IpcrTargetComponent implements OnInit {
     this.ipcrSTDetails.ipcrId = localStorage.getItem('ipcrId');
     this.ipcrService.AddIPCRData(this.ipcrSTDetails);
     this.ipcrService.AddIPCRSubData(this.ipcrSTDetails);
+    this.closebuttonST.nativeElement.click();
   }
 
   DeleteIPCRDetails(value: any) {
