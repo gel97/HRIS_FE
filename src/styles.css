@@ -10,3 +10,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-form-field {
     margin-top: 16px;
   }
+
+.bg-custom-gray {
+  background-color: #EEEEEE
+}
+
+.bg-custom-light-violet {
+  background-color: #D0A2F7
+}
+
+.bg-custom-subtask-si {
+  background-color: #F1EAFF
+}

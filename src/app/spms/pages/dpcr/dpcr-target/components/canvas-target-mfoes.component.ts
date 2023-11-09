@@ -22,7 +22,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 border-left-color: rgba(67, 89, 113, 0.2);
                 z-index: 900;
                 "
-
           data-bs-scroll="true"
           data-bs-backdrop="false"
           tabindex="-1"
@@ -30,7 +29,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           aria-labelledby="offcanvasDpcrLabel"
         >
           <div class="offcanvas-header">
-            <h1 id="offcanvasEndLabel" class="offcanvas-title">OPCR MFOES</h1>
+            <h1 id="offcanvasEndLabel" class="offcanvas-title">
+              OPCR MAJOR FINAL OUTPUT
+            </h1>
             <button
               (click)="HideCanvasOpcrMfoes()"
               type="button"
@@ -42,79 +43,83 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           <div class="offcanvas-body mx-0 py-0 flex-grow-0">
             <div class="col-xl-12">
               <div class="nav-align-top mb-4">
-                <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-                  <li class="nav-item">
-                    <button
-                      (click)="setMFOs(0)"
-                      type="button"
-                      class="nav-link"
-                      [ngClass]="
-                        !dpcrService.isCommonDivision() ? 'active' : ''
-                      "
-                      role="tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#navs-pills-justified-home"
-                      aria-controls="navs-pills-justified-home"
-                      aria-selected="false"
-                    >
-                      <ng-container>
-                        <i class="bx bx-grid-alt"></i> OFFICE MFO
-                        <span
-                          *ngIf="!dpcrService.isCommonDivision()"
-                          class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
-                        >
-                          {{ dpcrDataMfoes.data.length }}
-                        </span>
-                      </ng-container>
-                    </button>
-                  </li>
-                  <li class="nav-item">
-                    <button
-                      (click)="setMFOs(1)"
-                      type="button"
-                      class="nav-link"
-                      [ngClass]="dpcrService.isCommonDivision() ? 'active' : ''"
-                      role="tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#navs-pills-justified-profile"
-                      aria-controls="navs-pills-justified-profile"
-                      aria-selected="true"
-                    >
-                      <ng-container>
-                        <i class="bx bx-grid-alt"></i> COMMON MFO
-                        <span
-                          *ngIf="dpcrService.isCommonDivision()"
-                          class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
-                        >
-                          {{ dpcrDataMfoes.data.length }}
-                        </span>
-                      </ng-container>
-                    </button>
-                  </li>
-                </ul>
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <div
-                      class="spinner-border spinner-border-sm text-primary"
-                      role="status"
-                      *ngIf="dpcrDataMfoes.isSearchLoading; else showIcon"
-                    >
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <ng-template #showIcon>
-                      <i class="tf-icons bx bx-search"></i>
-                    </ng-template>
-                  </span>
-                  <input
-                    type="text"
-                    type="search"
-                    [(ngModel)]="search"
-                    (ngModelChange)="SearchMFO()"
-                    placeholder="Search MFO ..."
-                    id="html5-search-input"
-                    class="form-control"
-                    placeholder="Search MFO ..."
-                  />
+                <div class="sticky-top bg-white">
+                  <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                    <li class="nav-item">
+                      <button
+                        (click)="setMFOs(0)"
+                        type="button"
+                        class="nav-link"
+                        [ngClass]="
+                          !dpcrService.isCommonDivision() ? 'active' : ''
+                        "
+                        role="tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-justified-home"
+                        aria-controls="navs-pills-justified-home"
+                        aria-selected="false"
+                      >
+                        <ng-container>
+                          <i class="bx bx-grid-alt"></i> OFFICE MFO
+                          <span
+                            *ngIf="!dpcrService.isCommonDivision()"
+                            class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
+                          >
+                            {{ dpcrDataMfoes.data.length }}
+                          </span>
+                        </ng-container>
+                      </button>
+                    </li>
+                    <li class="nav-item">
+                      <button
+                        (click)="setMFOs(1)"
+                        type="button"
+                        class="nav-link"
+                        [ngClass]="
+                          dpcrService.isCommonDivision() ? 'active' : ''
+                        "
+                        role="tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-justified-profile"
+                        aria-controls="navs-pills-justified-profile"
+                        aria-selected="true"
+                      >
+                        <ng-container>
+                          <i class="bx bx-grid-alt"></i> COMMON MFO
+                          <span
+                            *ngIf="dpcrService.isCommonDivision()"
+                            class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
+                          >
+                            {{ dpcrDataMfoes.data.length }}
+                          </span>
+                        </ng-container>
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <div
+                        class="spinner-border spinner-border-sm text-primary"
+                        role="status"
+                        *ngIf="dpcrDataMfoes.isSearchLoading; else showIcon"
+                      >
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <ng-template #showIcon>
+                        <i class="tf-icons bx bx-search"></i>
+                      </ng-template>
+                    </span>
+                    <input
+                      type="text"
+                      type="search"
+                      [(ngModel)]="search"
+                      (ngModelChange)="SearchMFO()"
+                      placeholder="Search MFO ..."
+                      id="html5-search-input"
+                      class="form-control"
+                      placeholder="Search MFO ..."
+                    />
+                  </div>
                 </div>
                 <div class="tab-content px-0 mt-2 pb-0">
                   <div
@@ -125,7 +130,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     id="navs-pills-justified-home"
                     role="tabpanel"
                   >
-                    <div class="table-responsive text-nowrap">
+                    <div>
                       <table class="table table-hover table-striped">
                         <tbody class="table-border-bottom-0">
                           <ng-container
@@ -233,7 +238,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     id="navs-pills-justified-profile"
                     role="tabpanel"
                   >
-                    <div class="table-responsive text-nowrap">
+                    <div>
                       <table class="table table-hover table-striped">
                         <tbody class="table-border-bottom-0">
                           <ng-container
