@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, Input  } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-table-mfo',
@@ -24,7 +25,7 @@ import { Component, EventEmitter, Output, Input  } from '@angular/core';
         </ng-container>
         <tbody class="table-border-bottom-0">
           <ng-container *ngFor="let a of mfo.data; let i = index">
-            <tr [ngClass]="a.si.length === 0 ? 'bg-custom-gray' : ''">
+            <tr [ngClass]="a.si.length === 0 ? 'bg-custom-gray' : ''" [@rowState]="a">
               <td
                 style="max-width: 5px;"
                 (click)="
@@ -285,6 +286,17 @@ import { Component, EventEmitter, Output, Input  } from '@angular/core';
       </table>
     </div>
   `,
+  animations: [
+    trigger('rowState', [
+      state('void', style({ opacity: 0 })),
+      transition(':enter', [
+        animate('0.5s', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('0.1s', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class TableMfoComponent {
   @Input() mfo: any;

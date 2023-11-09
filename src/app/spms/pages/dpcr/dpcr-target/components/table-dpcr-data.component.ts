@@ -1,19 +1,29 @@
 import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
 @Component({
   selector: 'app-table-dpcr-data',
   template: `
     <div class="card">
       <div class="row">
-      <div class="col-10">
-      <h5 class="card-header">DIVISION MFOES</h5>
-      </div>
-      <div class="col-2">
-        <button *ngIf="!isShowCanvasOpcrMfoes" (click)="IsShowCanvasOpcrMfoes()" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDpcrMfoes" class="btn btn-primary m-2 float-end">OPCR MFOES</button>
-      </div>
+        <div class="col-10">
+          <h5 class="card-header">DIVISION MFO</h5>
+        </div>
+        <div class="col-2">
+          <button
+            *ngIf="!isShowCanvasOpcrMfoes"
+            (click)="IsShowCanvasOpcrMfoes()"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasDpcrMfoes"
+            class="btn btn-primary m-2 float-end"
+          >
+            OPCR MFO
+          </button>
+        </div>
       </div>
       <div class="table-responsive text-nowrap">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover">
           <thead>
             <tr>
               <th>MFO</th>
@@ -24,7 +34,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             <ng-container *ngFor="let a of dpcrData.data; let i = index">
               <tr
                 class="cursor-pointer"
-                (click)="SetDataSubTask(a, {}, i, 0); IsShowSubtask()"
+                [@rowState]="a"
               >
                 <td colspan="2" *ngIf="!dpcrData.isLoading; else LoadingMfo">
                   <div class="row">
@@ -73,26 +83,30 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 </ng-template>
               </tr>
               <ng-container *ngFor="let b of a.si; let y = index">
-                <tr *ngIf="!dpcrData.isLoading; else LoadingIndicator">
-                  <td>
+                <tr
+                  *ngIf="!dpcrData.isLoading; else LoadingIndicator"
+                  class="cursor-pointer"
+                >
+                  <td (click)="setIndex(i,y)">
                     <i class="bx bx-chevron-right"></i
-                    ><strong>{{ b.qty }}</strong
+                    ><strong
+                      ><u>{{ b.qty }}</u></strong
                     >&nbsp;{{ b.indicator }} &nbsp;
                     <small
-                        *ngIf="b.subtaskCount > 0"
-                        class="badge rounded-pill float-end bg-label-info"                  
-                        aria-expanded="false"
+                      *ngIf="b.subtaskCount > 0"
+                      class="badge rounded-pill float-end bg-label-info"
+                      aria-expanded="false"
+                    >
+                      subtask
+                      <span
+                        class="badge rounded-pill badge-center h-px-20 w-px-20 bg-info"
                       >
-                        subtask
-                        <span
-                          class="badge rounded-pill badge-center h-px-20 w-px-20 bg-info"
-                        >
-                          {{ b.subtaskCount }}
-                        </span>
-                      </small> &nbsp;
+                        {{ b.subtaskCount }}
+                      </span>
+                    </small>
+                    &nbsp;
                   </td>
                   <td>
-
                     <div class="dropdown position-static">
                       <button
                         type="button"
@@ -150,13 +164,59 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     ></ngx-skeleton-loader>
                   </td>
                 </ng-template>
+                <ng-container *ngIf="currentSiIndex === y && currentMfoIndex === i">
+                  <ng-container *ngFor="let c of b.st">
+                    <tr class="bg-info text-white" [@rowState]="c">
+                      <td>
+                        <i class="m-2 bx bx-radio-circle"></i>{{ c.stMfo }}
+                      </td>
+                      <td><i data-bs-toggle="modal"
+                    data-bs-target="#modalEditSubTask"
+                    (click)="subtaskData = c" class="bx bxs-edit text-white cursor-pointer"></i></td>
+                    </tr>
+                    <tr class="bg-label-info" [@rowState]="c">
+                      <td>
+                        &nbsp; <i class="m-2 bx bx-subdirectory-right"></i
+                        ><strong
+                          ><u>{{ c.qty }}</u></strong
+                        >
+                        {{ c.stIndicator }}
+                      </td>
+                      <td></td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
               </ng-container>
             </ng-container>
           </tbody>
         </table>
       </div>
     </div>
+    <app-modal-edit-sub-task [data]="subtaskData" />
+
   `,
+    // animations: [
+    //   trigger('rowState', [
+    //     state('void', style({ opacity: 0, transform: 'translateX(-100%)' })),
+    //     transition(':enter', [
+    //       animate('0.5s', style({ opacity: 1, transform: 'translateX(0)' }))
+    //     ]),
+    //     transition(':leave', [
+    //       animate('0.5s', style({ opacity: 0, transform: 'translateX(-100%)' }))
+    //     ])
+    //   ])
+    // ]
+    animations: [
+      trigger('rowState', [
+        state('void', style({ opacity: 0 })),
+        transition(':enter', [
+          animate('0.5s', style({ opacity: 1 }))
+        ]),
+        transition(':leave', [
+          animate('0.1s', style({ opacity: 0 }))
+        ])
+      ])
+    ]
 })
 export class TableDpcrDataComponent {
   dpcrService = inject(DpcrService);
@@ -170,12 +230,16 @@ export class TableDpcrDataComponent {
   @Output() setDataSubTask = new EventEmitter<any>();
   @Output() showCanvasOpcrMfoes = new EventEmitter<boolean>();
 
+  currentMfoIndex: any;
+  currentSiIndex: any;
+  subtaskData: any = {};
+
   DeleteDpcrDataIndicator(dpcrDataId: string) {
     console.log(dpcrDataId);
     this.deleteDpcrDataIndicator.emit(dpcrDataId);
   }
 
-  SetDataSubTask(mfoData: any, siData: any, indexMfo:number, indexSI:number) {
+  SetDataSubTask(mfoData: any, siData: any, indexMfo: number, indexSI: number) {
     siData.indexMfo = indexMfo;
     siData.indexSI = indexSI;
     siData.qtyRemaining = siData.qtyOpcr - siData.qtyCommitted;
@@ -192,10 +256,23 @@ export class TableDpcrDataComponent {
     this.isShowSubtask.emit(true);
   }
 
-  IsShowCanvasOpcrMfoes(){
+  IsShowCanvasOpcrMfoes() {
     this.showCanvasOpcrMfoes.emit(true);
   }
 
+  setIndex(i:number,y:number){
+
+    if(this.currentSiIndex === y && this.currentMfoIndex === i){
+      this.currentSiIndex = null;
+      this.currentMfoIndex = null;
+
+    }else{
+      this.currentSiIndex = y;
+      this.currentMfoIndex = i;
+
+    }
+
+  }
   displayCatergory(cat: number) {
     let catName = '';
     switch (cat) {
