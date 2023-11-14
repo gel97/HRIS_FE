@@ -25,7 +25,7 @@ import { ModalEditSubTaskComponent } from './dpcr-target/components/modal-edit-s
 import { ModalDpcrDataEditQuantityComponent } from './dpcr-target/components/modal-dpcr-data-edit-quantity.component';
 import { CanvasTargetDpcrMfoesComponent } from './dpcr-target/components/canvas-target-mfoes.component';
 import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actual-skeleton.component';
-
+import { ModalEditSubTaskCmfoComponent } from './dpcr-target/components/modal-edit-sub-task-cmfo.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -45,6 +45,7 @@ import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actua
     ModalDpcrDataEditQuantityComponent,
     CanvasTargetDpcrMfoesComponent,
     DpcrActualSkeletonComponent,
+    ModalEditSubTaskCmfoComponent
   ],
   imports: [
     CommonModule,

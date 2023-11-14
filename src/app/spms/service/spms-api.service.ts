@@ -73,6 +73,7 @@ export class SpmsApiService {
     `/tPMDpcrData/subtask/${dpcrId}/${mfoId}`;
 
   post_subtask = () => `/tPMSubTask`;
+  post_subtask_add_common_mfo = () => `/tPMSubTask/add/common_mfo`;
   put_subtask = () => `/tPMSubTask`;
   delete_subtask = (subTaskId: string) => `/tPMSubTask/${subTaskId}`;
 
