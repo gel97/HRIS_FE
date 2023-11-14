@@ -276,6 +276,34 @@ export class DpcrService {
       });
   }
 
+  AddSubTaskCommonMfo(data: any) {
+    this.dpcr.mutate((a) => (a.isLoadingSave = true));
+    
+    this.http
+      .post<any[]>(api + this.url.post_subtask_add_common_mfo(), data, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDpcrData();
+          this.GetDpcrDataSubtask(data.mfoId);
+
+          this.dpcrData.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.save();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.dpcrData.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
   AddSubTask(data: any) {
     this.dpcr.mutate((a) => (a.isLoadingSave = true));
     
@@ -409,6 +437,19 @@ export class DpcrService {
   async DeleteDPCRData(dpcrDataId: string) {
     try {
       let deleteData = await this.alertService.delete(this.url.delete_dpcr_data(dpcrDataId));
+
+       if(deleteData){
+        this.GetDpcrData();
+      }else{
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  async DeleteSubtask(subTaskId: string) {
+    try {
+      let deleteData = await this.alertService.delete(this.url.delete_subtask(subTaskId));
 
        if(deleteData){
         this.GetDpcrData();

@@ -98,7 +98,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                 </ng-template>
               </td>
               <td>
-                <div class="dropdown" *ngIf="!mfo.isLoading; else LoadingActions">
+                <div class="dropdown position-static" *ngIf="!mfo.isLoading; else LoadingActions">
                   <button
                     type="button"
                     class="btn p-0 dropdown-toggle hide-arrow"

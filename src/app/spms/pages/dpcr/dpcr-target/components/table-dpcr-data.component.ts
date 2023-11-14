@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-table-dpcr-data',
@@ -32,10 +38,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
           </thead>
           <tbody class="table-border-bottom-0">
             <ng-container *ngFor="let a of dpcrData.data; let i = index">
-              <tr
-                class="cursor-pointer"
-                [@rowState]="a"
-              >
+              <tr class="cursor-pointer" [@rowState]="a">
                 <td colspan="2" *ngIf="!dpcrData.isLoading; else LoadingMfo">
                   <div class="row">
                     <div class="col-9">
@@ -87,7 +90,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                   *ngIf="!dpcrData.isLoading; else LoadingIndicator"
                   class="cursor-pointer"
                 >
-                  <td (click)="setIndex(i,y)">
+                  <td (click)="setIndex(i, y)">
                     <i class="bx bx-chevron-right"></i
                     ><strong
                       ><u>{{ b.qty }}</u></strong
@@ -101,7 +104,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                       <span
                         class="badge rounded-pill badge-center h-px-20 w-px-20 bg-info"
                       >
-                        {{ b.subtaskCount }}
+                        {{ b.subtaskCount + b.subtaskCountCmfo }}
                       </span>
                     </small>
                     &nbsp;
@@ -164,15 +167,15 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                     ></ngx-skeleton-loader>
                   </td>
                 </ng-template>
-                <ng-container *ngIf="currentSiIndex === y && currentMfoIndex === i">
+                <ng-container
+                  *ngIf="currentSiIndex === y && currentMfoIndex === i"
+                >
                   <ng-container *ngFor="let c of b.st">
                     <tr class="bg-info text-white" [@rowState]="c">
                       <td>
                         <i class="m-2 bx bx-radio-circle"></i>{{ c.stMfo }}
                       </td>
-                      <td><i data-bs-toggle="modal"
-                    data-bs-target="#modalEditSubTask"
-                    (click)="subtaskData = c" class="bx bxs-edit text-white cursor-pointer"></i></td>
+                      <td></td>
                     </tr>
                     <tr class="bg-label-info" [@rowState]="c">
                       <td>
@@ -182,8 +185,109 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                         >
                         {{ c.stIndicator }}
                       </td>
-                      <td></td>
+                      <td>                     
+                        <div class="dropdown position-static">
+                            <button
+                              type="button"
+                              class="btn p-0 dropdown-toggle hide-arrow "
+                              data-bs-toggle="dropdown"
+                            >
+                              <i
+                                class="bx bx-dots-vertical-rounded text-label"
+                              ></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a
+                                class="dropdown-item cursor-pointer"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditSubTask"
+                                (click)="subtaskData = c"
+                              >
+                                <i
+                                  class="bx bxs-edit text-label cursor-pointer"
+                                ></i>
+                                Edit Sub-Task
+                              </a>
+                              <a
+                                class="dropdown-item cursor-pointer"
+                                (click)="DeleteSubtask(c.subTaskId)"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
+                            </div>
+                          </div>
+                        
+                      </td>
                     </tr>
+                  </ng-container>
+                  <ng-container *ngFor="let d of b.stCmfo">
+                    <tr class="bg-info text-white" [@rowState]="d">
+                      <td>
+                        <i class="m-2 bx bx-radio-circle"></i>{{ d.mfo }}
+                        <label
+                          class="btn rounded-pill btn-outline-info text-white border-white float-end"
+                          for="btnradio1"
+                        >
+                          Common MFO
+                        </label>
+                      </td>
+                      <td></td>
+                      <!-- <td><i data-bs-toggle="modal"
+                    data-bs-target="#modalEditSubTask"
+                    (click)="subtaskData = c" class="bx bxs-edit text-white cursor-pointer"></i></td>
+                     -->
+                    </tr>
+                    <ng-container *ngFor="let e of d.si">
+                      <tr class="bg-label-info" [@rowState]="e">
+                        <td>
+                          &nbsp; <i class="m-2 bx bx-subdirectory-right"></i
+                          ><strong
+                            ><u>{{ e.qty }}</u></strong
+                          >
+                          {{ e.indicator }}
+                        </td>
+                        <td>
+                          <!-- <i
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEditSubTaskCmfo"
+                            (click)="subtaskData = e; subtaskData.mfo = d.mfo; subtaskData.indicator = e.indicator; "
+                            class="bx bxs-edit text-label cursor-pointer"
+                          ></i> -->
+                          <div class="dropdown position-static">
+                            <button
+                              type="button"
+                              class="btn p-0 dropdown-toggle hide-arrow "
+                              data-bs-toggle="dropdown"
+                            >
+                              <i
+                                class="bx bx-dots-vertical-rounded text-label"
+                              ></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a
+                                class="dropdown-item cursor-pointer"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditSubTaskCmfo"
+                                (click)="
+                                  subtaskData = e;
+                                  subtaskData.mfo = d.mfo;
+                                  subtaskData.indicator = e.indicator
+                                "
+                              >
+                                <i
+                                  class="bx bxs-edit text-label cursor-pointer"
+                                ></i>
+                                Edit Sub-Task
+                              </a>
+                              <a
+                                class="dropdown-item cursor-pointer"
+                                (click)="DeleteSubtask(e.indicatorId)"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
                   </ng-container>
                 </ng-container>
               </ng-container>
@@ -193,30 +297,26 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       </div>
     </div>
     <app-modal-edit-sub-task [data]="subtaskData" />
-
+    <app-modal-edit-sub-task-cmfo [data]="subtaskData" />
   `,
-    // animations: [
-    //   trigger('rowState', [
-    //     state('void', style({ opacity: 0, transform: 'translateX(-100%)' })),
-    //     transition(':enter', [
-    //       animate('0.5s', style({ opacity: 1, transform: 'translateX(0)' }))
-    //     ]),
-    //     transition(':leave', [
-    //       animate('0.5s', style({ opacity: 0, transform: 'translateX(-100%)' }))
-    //     ])
-    //   ])
-    // ]
-    animations: [
-      trigger('rowState', [
-        state('void', style({ opacity: 0 })),
-        transition(':enter', [
-          animate('0.5s', style({ opacity: 1 }))
-        ]),
-        transition(':leave', [
-          animate('0.1s', style({ opacity: 0 }))
-        ])
-      ])
-    ]
+  // animations: [
+  //   trigger('rowState', [
+  //     state('void', style({ opacity: 0, transform: 'translateX(-100%)' })),
+  //     transition(':enter', [
+  //       animate('0.5s', style({ opacity: 1, transform: 'translateX(0)' }))
+  //     ]),
+  //     transition(':leave', [
+  //       animate('0.5s', style({ opacity: 0, transform: 'translateX(-100%)' }))
+  //     ])
+  //   ])
+  // ]
+  animations: [
+    trigger('rowState', [
+      state('void', style({ opacity: 0 })),
+      transition(':enter', [animate('0.5s', style({ opacity: 1 }))]),
+      transition(':leave', [animate('0.1s', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class TableDpcrDataComponent {
   dpcrService = inject(DpcrService);
@@ -227,6 +327,7 @@ export class TableDpcrDataComponent {
   @Output() isShowSubtask = new EventEmitter<boolean>();
   @Output() setDpcr = new EventEmitter<any>();
   @Output() deleteDpcrDataIndicator = new EventEmitter<string>();
+  @Output() deleteSubtask = new EventEmitter<string>();
   @Output() setDataSubTask = new EventEmitter<any>();
   @Output() showCanvasOpcrMfoes = new EventEmitter<boolean>();
 
@@ -235,8 +336,11 @@ export class TableDpcrDataComponent {
   subtaskData: any = {};
 
   DeleteDpcrDataIndicator(dpcrDataId: string) {
-    console.log(dpcrDataId);
     this.deleteDpcrDataIndicator.emit(dpcrDataId);
+  }
+
+  DeleteSubtask(id:string){
+    this.deleteSubtask.emit(id);
   }
 
   SetDataSubTask(mfoData: any, siData: any, indexMfo: number, indexSI: number) {
@@ -260,18 +364,18 @@ export class TableDpcrDataComponent {
     this.showCanvasOpcrMfoes.emit(true);
   }
 
-  setIndex(i:number,y:number){
+  testData() {
+    console.log(this.subtaskData);
+  }
 
-    if(this.currentSiIndex === y && this.currentMfoIndex === i){
+  setIndex(i: number, y: number) {
+    if (this.currentSiIndex === y && this.currentMfoIndex === i) {
       this.currentSiIndex = null;
       this.currentMfoIndex = null;
-
-    }else{
+    } else {
       this.currentSiIndex = y;
       this.currentMfoIndex = i;
-
     }
-
   }
   displayCatergory(cat: number) {
     let catName = '';
