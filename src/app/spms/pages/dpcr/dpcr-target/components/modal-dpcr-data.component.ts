@@ -5,8 +5,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   template: `
     <!-- Modal -->
     <div class="modal fade" id="modalDpcrData" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content modal-lg">
+      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalScrollableTitle">
               {{ dpcrSIData.indicator }}
@@ -43,7 +43,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 aria-describedby="quantityOpcr"
                 disabled
               />
-              <label for="quantityOpcr">OPCR Quantity Remaining</label>
+              <label for="quantityOpcr">Remaining Quantity</label>
             </div>
             <div class="form-floating px-2 col-3">
             <input
@@ -55,7 +55,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 aria-describedby="qtyOpcr"
                 disabled
               />
-              <label for="qtyOpcr">OPCR Quantity</label>
+              <label for="qtyOpcr">Total Quantity</label>
             </div>
             <div
               *ngIf="dpcrSIData.qty > (dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted)"
@@ -68,7 +68,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 ><u>{{ dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted }}</u></strong
               >
             </div>
-            <div class="table-responsive text-nowrap">
+            <div class="table-responsive text-wrap">
               <table class="table table-striped">
                 <thead>
                   <tr>

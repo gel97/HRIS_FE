@@ -25,6 +25,7 @@
             (showCanvasOpcrMfoes)="isShowCanvasOpcrMfoes=$event"
             [isShowCanvasOpcrMfoes]="isShowCanvasOpcrMfoes"
             (deleteDpcrDataIndicator)="DeleteDPCRData($event)" 
+            (deleteSubtask)="DeleteSubtask($event)" 
         />
 
         <app-empty-data *ngIf="dpcrData.data.length == 0 && !dpcrData.isLoading">

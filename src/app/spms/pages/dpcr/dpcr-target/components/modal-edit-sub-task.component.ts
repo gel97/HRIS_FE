@@ -25,7 +25,9 @@ import { FormBuilder, Validators } from '@angular/forms';
       >
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalScrollableTitle"><b>EDIT SUBTASK</b></h5>
+            <h5 class="modal-title" id="modalScrollableTitle">
+              <b>EDIT SUBTASK</b>
+            </h5>
             <button
               #closeModal
               type="button"
@@ -106,7 +108,7 @@ import { FormBuilder, Validators } from '@angular/forms';
               <thead>
                 <tr>
                   <th [width]="10">Rating</th>
-                  <th>Quantity</th>
+                  <th [width]="150">Quantity</th>
                   <th>Quality</th>
                   <th>Timeliness</th>
                 </tr>
@@ -259,8 +261,13 @@ import { FormBuilder, Validators } from '@angular/forms';
             >
               Close
             </button>
-            <button type="button" (click)="EditSubtask()" class="btn btn-primary">Save changes</button>
-
+            <button
+              type="button"
+              (click)="EditSubtask()"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
