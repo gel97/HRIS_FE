@@ -30,17 +30,26 @@ export class IpcrService {
     isLoading: false,
   });
 
+  ipcr_rem = signal<number>(0);
+  ipcrST_rem = signal<number>(0);
+  // ipcr_rem: number | any;
+
   ipcrDetails = signal<any>({
     data: [],
     error: false,
     isLoading: false,
+    completeLoading: false,
   });
 
   dpcr_ipcr = signal<any>({
     data: [],
     error: false,
     isLoading: false,
+    isLoadingSave: false,
+    isNoData: false,
   });
+
+  loading: boolean = false;
 
   GetIPCRs(year: string, divisionId: string, userId: string) {
     this.ipcr.mutate((a) => (a.isLoading = true));
@@ -80,6 +89,7 @@ export class IpcrService {
 
   GetIPCRDetails() {
     this.ipcrDetails.mutate((a) => (a.isLoading = true));
+    // this.ipcrDetails.mutate((a) => (a.completeLoading = true));
     this.http
       .get<any[]>(api + this.url.get_ipcrdetails_wSub(this.storageIpcrId()), {
         responseType: `json`,
@@ -88,6 +98,46 @@ export class IpcrService {
         next: (response: any = {}) => {
           this.ipcrDetails.mutate((a) => (a.data = response));
           this.ipcrDetails.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          // this.ipcrDetails.mutate((a) => (a.completeLoading = false));
+          // this.tagRemove = false;
+          // console.log('shet complete');
+        },
+      });
+  }
+
+  // rem
+  GetIPCRDetailsRemaining(data: any) {
+    this.ipcrDetails.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcrdetails_remaining(data), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.ipcr_rem.set(response);
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {},
+      });
+  }
+
+  //remST
+  GetIPCRDetailsRemainingST(data: any) {
+    this.ipcrDetails.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcrdetails_remainingST(data), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.ipcrST_rem.set(response);
         },
         error: () => {
           this.alertService.error();
@@ -137,6 +187,7 @@ export class IpcrService {
   }
 
   AddIPCRData(data: any) {
+    // this.loading = true;
     this.http
       .post<any[]>(api + this.url.post_ipcrData(), data, {
         responseType: `json`,
@@ -146,19 +197,58 @@ export class IpcrService {
           this.GetIPCRDetails();
           this.ViewGetDPCR_IPCR();
           this.sortExcist();
+          //this.siChecker();
         },
         error: (error: any) => {
           this.alertService.error();
         },
         complete: () => {
+          // this.loading = false;
           this.alertService.save();
+        },
+      });
+  }
+
+  PutIPCRData(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcrData(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
+        },
+        complete: () => {
+          // this.closebutton.nativeElement.click();
+          this.alertService.update();
+        },
+      });
+  }
+
+  PutIPCRSubData(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcrSubData(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
+        },
+        complete: () => {
+          // this.closebutton.nativeElement.click();
+          this.alertService.update();
         },
       });
   }
 
   counter: number = 0;
   sortExcist() {
+    this.loading = true;
+    this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = true));
     setTimeout(() => {
+      this.loading = true;
       for (let a of this.dpcr_ipcr().data) {
         for (let b_dpcr_ipcr of a.si) {
           for (let x of this.ipcrDetails().data) {
@@ -217,6 +307,53 @@ export class IpcrService {
           }
         }
       }
+      if (this.counter == 0) {
+        this.loading = false;
+        this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
+        this.siChecker();
+        this.removeMFO();
+        // console.log('Data', this.dpcr_ipcr().data);
+        // for (let a of this.dpcr_ipcr().data) {
+        //   for (let a_si of a.si) {
+        //     if (a_si.length > 0) {
+        //       this.dpcr_ipcr.mutate((a) => (a.isNoData = true));
+        //     }
+        //   }
+        // }
+      }
+    }, 1000);
+  }
+
+  siChecker() {
+    setTimeout(() => {
+      this.dpcr_ipcr.mutate((a) => (a.isNoData = false));
+      for (let a of this.dpcr_ipcr().data) {
+        if (a.si.length > 0) {
+          // this.noSIDataboolean = true;
+          this.dpcr_ipcr.mutate((a) => (a.isNoData = true));
+        }
+      }
+    }, 1000);
+  }
+
+  tagRemove: boolean = false;
+  removeMFO() {
+    setTimeout(() => {
+      for (let a of this.ipcrDetails().data) {
+        for (let a_si of a.si) {
+          if (a_si.isSubTask == 1 && a_si.st.length == 0) {
+            // const indexToRemove = a.si.indexOf(a_si);
+            // if (indexToRemove !== -1) {
+            //   a.si.splice(indexToRemove, 1);
+            // }
+            this.tagRemove = true;
+            this.DeleteMFO(a_si.ipcrDataId);
+          }
+        }
+      }
+      if (!this.tagRemove) {
+        this.ipcrDetails.mutate((a) => (a.completeLoading = false));
+      }
     }, 1000);
   }
 
@@ -226,7 +363,11 @@ export class IpcrService {
         responseType: `json`,
       })
       .subscribe({
-        next: (response: any = {}) => {},
+        next: (response: any = {}) => {
+          this.GetIPCRDetails();
+          this.ViewGetDPCR_IPCR();
+          this.sortExcist();
+        },
         error: (error: any) => {
           this.alertService.error();
         },
@@ -236,7 +377,37 @@ export class IpcrService {
       });
   }
 
+  DeleteIPCR(data: any = {}) {
+    this.http.delete<any[]>(api + this.url.delete_ipcr(data.ipcrId)).subscribe({
+      next: (response: any = {}) => {
+        this.GetIPCRs(data.year, data.divisionId, data.userId);
+      },
+      error: () => {
+        this.alertService.error();
+      },
+      complete: () => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-start',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Deleted successfully',
+        });
+      },
+    });
+  }
+
   DeleteIPCRDetails(ipcrDataId: string) {
+    // this.ipcrDetails.mutate((a) => (a.completeLoading = true));
     this.http
       .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
       .subscribe({
@@ -274,7 +445,10 @@ export class IpcrService {
     this.http
       .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
       .subscribe({
-        next: (response: any = {}) => {},
+        next: (response: any = {}) => {
+          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
+          this.tagRemove = false;
+        },
         error: () => {
           this.alertService.error();
         },
@@ -286,10 +460,15 @@ export class IpcrService {
   }
 
   DeleteIPCRSTDetails(ipcrSubtaskId: string) {
+    this.ipcrDetails.mutate((a) => (a.completeLoading = true));
     this.http
       .delete<any[]>(api + this.url.delete_ipcrdata_st(ipcrSubtaskId))
       .subscribe({
-        next: (response: any = {}) => {},
+        next: (response: any = {}) => {
+          this.GetIPCRDetails();
+          this.ViewGetDPCR_IPCR();
+          this.sortExcist();
+        },
         error: () => {
           this.alertService.error();
         },
