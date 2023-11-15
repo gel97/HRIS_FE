@@ -112,8 +112,8 @@
                                         <div class="dropdown-menu">
                                             <a (click)="editOpcr = data;EditOPCR()" class="dropdown-item"><i
                                                     class='bx bxs-flag-alt me-1'></i>Final</a>
-                                            <a (click)="ReportOPCR(data)"
-                                                class="dropdown-item"><i class="bx bx-printer me-1"></i>
+                                            <a (click)="ReportOPCR(data)" class="dropdown-item"><i
+                                                    class="bx bx-printer me-1"></i>
                                                 Print OPCR</a>
                                             <a (click)="DeleteOPCR(data.opcrId)" class="dropdown-item"><i
                                                     class="bx bx-trash me-1"></i>
@@ -543,13 +543,14 @@
                     Close
                 </button>
                 <button (click)="PostOPCRDetails()" type="button" class="btn btn-primary">
-                    <ng-container *ngIf="opcrData().isLoading != true; else isLoading">
+                    <!-- <ng-container *ngIf="opcrData().isLoading != true; else isLoading">
                         <span>Save Details</span>
                     </ng-container>
                     <ng-template #isLoading>
                         <div class="spinner-border spinner-border-sm" role="status">
                         </div> &nbsp;<span>Loading...</span>
-                    </ng-template>
+                    </ng-template> -->
+                    <span>Save Details</span>
                 </button>
             </div>
         </div>
@@ -727,13 +728,14 @@
                 <!-- <button data-bs-dismiss="modal" (click)="EditOPCRData()" type="button" class="btn btn-primary">Save
                         changes</button> -->
                 <button (click)="EditOPCRData()" type="button" class="btn btn-primary">
-                    <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
+                    <!-- <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
                         <span>Save Details</span>
                     </ng-container>
                     <ng-template #isLoading>
                         <div class="spinner-border spinner-border-sm" role="status">
                         </div> &nbsp;<span>Loading...</span>
-                    </ng-template>
+                    </ng-template> -->
+                    <span>Save Details</span>
                 </button>
             </div>
         </div>
@@ -748,38 +750,40 @@
         <button (click)="isExpandMfoes = false" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
             aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas-body pt-0">
         <div class="col-12">
-            <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-                <li class="nav-item">
-                    <button (click)="setMFOs(0)" type="button" class="nav-link"
-                        [ngClass]="!mfoService.isCommon()? 'active': ''" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home"
-                        aria-selected="true">
-                        <i class='bx bx-grid-alt'></i> OFFICE MFO
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
-                        [ngClass]="mfoService.isCommon()? 'active': ''" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile"
-                        aria-selected="false">
-                        <i class='bx bx-grid-alt'></i>COMMON MFO
-                    </button>
-                </li>
-            </ul>
-            <div class="input-group">
-                <span class="input-group-text">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status"
-                        *ngIf="isSearchLoading(); else showIcon">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <ng-template #showIcon>
-                        <i class="tf-icons bx bx-search"></i>
-                    </ng-template>
-                </span>
-                <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
-                    placeholder="Search..." />
+            <div class="sticky-top bg-white">
+                <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                    <li class="nav-item">
+                        <button (click)="setMFOs(0)" type="button" class="nav-link"
+                            [ngClass]="!mfoService.isCommon()? 'active': ''" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home"
+                            aria-selected="true">
+                            <i class='bx bx-grid-alt'></i> OFFICE MFO
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
+                            [ngClass]="mfoService.isCommon()? 'active': ''" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile"
+                            aria-selected="false">
+                            <i class='bx bx-grid-alt'></i>COMMON MFO
+                        </button>
+                    </li>
+                </ul>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <div class="spinner-border spinner-border-sm text-primary" role="status"
+                            *ngIf="isSearchLoading(); else showIcon">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <ng-template #showIcon>
+                            <i class="tf-icons bx bx-search"></i>
+                        </ng-template>
+                    </span>
+                    <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
+                        placeholder="Search..." />
+                </div>
             </div>
             <br>
             <ng-container *ngIf="mfo().data.length != 0 else noDataMfo">
@@ -842,7 +846,7 @@
             </ng-template>
         </div>
         <ng-template #isLoadingMfoes>
-            <app-opcr-target-skeleton></app-opcr-target-skeleton>
+            <app-ipcr-target-skeleton></app-ipcr-target-skeleton>
         </ng-template>
     </div>
 </div>
