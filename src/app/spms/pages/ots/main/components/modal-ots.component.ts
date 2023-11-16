@@ -247,30 +247,17 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <div class="mb-2">
                     <label
                       for="html5-datetime-local-input"
-                      class="col-md-2 col-form-label"
-                      >Start Date</label
+                      class="col-md-4 col-form-label"
+                      >Date Accomplished</label
                     >
                     <input
                       class="form-control"
                       type="datetime-local"
-                      [(ngModel)]="otsMfoes.startDate"
+                      [(ngModel)]="otsMfoes.dateDone"
                       id="html5-datetime-local-input"
                       min="2023-11-1T08:00 | date:'yyyy-MM-ddTHH:mm'"
                     />
-                  </div>
-                  <div class="mb-2">
-                    <label
-                      for="html5-datetime-local-input"
-                      class="col-md-2 col-form-label"
-                      >End Date</label
-                    >
-                    <input
-                      class="form-control"
-                      type="datetime-local"
-                      [(ngModel)]="otsMfoes.endDate"
-                      id="html5-datetime-local-input"
-                    />
-                  </div>
+                  </div>                 
                 </div>
               </div>
             </div>
