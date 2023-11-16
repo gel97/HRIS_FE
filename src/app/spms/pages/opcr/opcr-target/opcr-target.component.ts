@@ -200,17 +200,24 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
   }
 
-  ReportOPCR(data:any) {
+  EditOPCRFinal() {
+    console.log(this.editOpcr);
+    this.editOpcr.active = 2;
+    this.opcrService.EditOPCR(this.editOpcr);
+    this.GetOPCRs();
+  }
+
+  ReportOPCR(data: any) {
     this.opcrService.storageOpcrId.set(data.opcrId);
     this.opcrService.GetOPCRDetails();
     this.reportActualService.triggerSwitch(1);
 
     this.monthRangeService.setMonthRange({
-      type: "opcr",
+      type: 'opcr',
       isActual: false,
       year: parseInt(data.year),
       semester: data.semester,
-    })
+    });
 
     setTimeout(() => {
       this.reportActualService.triggerSwitch(1);
@@ -330,6 +337,30 @@ export class OpcrTargetComponent implements OnInit {
     }
   }
 
+  displayStatus(cat: any) {
+    let catName = '';
+    switch (cat) {
+      case 1:
+        catName = 'Active';
+        break;
+      case 2:
+        catName = 'Final';
+
+        break;
+      case 0:
+        catName = 'Inactive';
+        break;
+      default:
+        break;
+    }
+
+    if (cat == null) {
+      catName = 'No Function';
+    }
+
+    return catName;
+  }
+
   onChangeYear(year: any) {
     this.opcrService.GetOPCRs(year, this.officeId);
   }
@@ -360,11 +391,11 @@ export class OpcrTargetComponent implements OnInit {
     localStorage.setItem('opcrDetails', data.details);
 
     this.monthRangeService.setMonthRange({
-      type: "opcr",
+      type: 'opcr',
       isActual: false,
       year: parseInt(data.year),
       semester: data.semester,
-    })
+    });
 
     this.localStorage();
   }
