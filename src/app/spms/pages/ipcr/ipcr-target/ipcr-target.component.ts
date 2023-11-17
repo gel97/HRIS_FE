@@ -265,6 +265,10 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   calculateRating() {
+    // this.add_qtyRemaining =
+    //   this.dpcrQuantity -
+    //   (this.ipcrService.ipcr_rem() - this.dpcrSTQuantity + this.quantity);
+    // console.log(this.add_qtyRemaining);
     this.ipcrDetails.qty5 = Math.floor(this.quantity * 0.3 + this.quantity);
     this.ipcrDetails.qty4 = Math.floor(this.quantity * 0.15 + this.quantity);
     this.ipcrDetails.qty3 = Math.floor(this.quantity);
@@ -315,8 +319,16 @@ export class IpcrTargetComponent implements OnInit {
     }
   }
 
+  add_qtyRemaining: number | any;
   prompt: boolean = false;
   trapRemaining() {
+    console.log('dpcrquantity', this.dpcrQuantity);
+    console.log('totalipcr_rem', this.ipcrService.ipcr_rem());
+    console.log('dpcrquantity', this.dpcrQuantity);
+    console.log('quantity', this.quantity);
+    this.add_qtyRemaining =
+      this.dpcrQuantity - this.quantity - this.ipcrService.ipcr_rem();
+
     if (
       this.quantity > this.dpcrQuantity - this.ipcrService.ipcr_rem() ||
       this.quantity < 0
@@ -327,8 +339,11 @@ export class IpcrTargetComponent implements OnInit {
     }
   }
 
+  add_qtyRemainingST: number | any;
   promptST: boolean = false;
   trapRemainingST() {
+    this.add_qtyRemainingST =
+      this.dpcrSTQuantity - this.quantityST - this.ipcrService.ipcrST_rem();
     if (
       this.quantityST > this.dpcrSTQuantity - this.ipcrService.ipcrST_rem() ||
       this.quantityST < 0
