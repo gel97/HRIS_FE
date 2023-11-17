@@ -615,8 +615,8 @@ height: 100%;
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Remaining</label>
                             <!-- [value]="(dpcrQuantity-ipcrService.ipcr_rem())" -->
-                            <input disabled [value]="dpcrQuantity-ipcrService.ipcr_rem()" type="number"
-                                class="form-control" id="basic-default-fullname" placeholder="" />
+                            <input disabled [value]="dpcrQuantity-ipcrService.ipcr_rem()" [(ngModel)]="add_qtyRemaining"
+                                type="number" class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>
@@ -777,8 +777,9 @@ height: 100%;
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Subtask
                                 Remaining</label>
-                            <input disabled [value]="dpcrSTQuantity - ipcrService.ipcrST_rem()" type="number"
-                                class="form-control" id="basic-default-fullname" placeholder="" />
+                            <input disabled [value]="dpcrSTQuantity - ipcrService.ipcrST_rem()"
+                                [(ngModel)]="add_qtyRemainingST" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Total Subtask Quantity</label>
