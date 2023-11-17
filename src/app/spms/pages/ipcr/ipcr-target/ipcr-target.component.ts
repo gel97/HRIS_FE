@@ -58,14 +58,16 @@ export class IpcrTargetComponent implements OnInit {
     if (this.ipcrService.storageIsShow() == 1) {
       this.ipcrService.GetIPCRDetails();
       this.ipcrService.ViewGetDPCR_IPCR();
+      setTimeout(() => {
+        // this.sortExcist();
+        this.ipcrService.sortExcist();
+        // this.removeMFO();
+        this.ipcrService.removeMFO();
+        // this.siChecker();
 
-      // this.sortExcist();
-      this.ipcrService.sortExcist();
-      // this.removeMFO();
-      this.ipcrService.removeMFO();
-      // this.siChecker();
-
-      this.ipcrService.siChecker();
+        this.ipcrService.siChecker();
+        console.log('dpcr_ipcr', this.dpcr_ipcr);
+      }, 1000);
     } else {
       this.ipcrService.GetIPCRs(this.getYear, this.divisionId, this.userId);
       this.ipcrService.storageIsShow.set(0);
@@ -84,17 +86,23 @@ export class IpcrTargetComponent implements OnInit {
     this.localStorage();
   }
 
+  buttonTrap: boolean = false;
   PostIPCRDetails() {
-    // kulang ug remaining quantity sa na add sa tanan user
-    if (!this.prompt) {
+    console.log('rem', this.dpcrQuantity);
+    console.log('total', this.ipcrService.ipcr_rem());
+    if (this.dpcrQuantity - this.ipcrService.ipcr_rem() == 0) {
+      this.buttonTrap = true;
+      this.prompt = true;
+    } else {
+      this.buttonTrap = false;
+      this.prompt = false;
+    }
+    console.log('boolean button', this.buttonTrap);
+    if (!this.prompt && !this.buttonTrap) {
       this.ipcrDetails.qty = this.quantity;
-      // this.ipcrDetails.qty_rem = this.dpcrQuantity - this.quantity;
       this.ipcrDetails.ipcrId = localStorage.getItem('ipcrId');
       this.ipcrService.AddIPCRData(this.ipcrDetails);
       this.closebutton.nativeElement.click();
-      //this.localStorage();
-      //this.sortExcist();
-      // this.removeMFO();
     }
   }
 
@@ -120,8 +128,19 @@ export class IpcrTargetComponent implements OnInit {
     }
   }
 
+  buttonTrapST: boolean = false;
   PostIPCRSTDetails() {
-    if (!this.promptST) {
+    console.log('rem', this.dpcrSTQuantity);
+    console.log('total', this.ipcrService.ipcr_rem());
+    if (this.dpcrSTQuantity - this.ipcrService.ipcrST_rem() == 0) {
+      this.buttonTrapST = true;
+      this.promptST = true;
+    } else {
+      this.buttonTrapST = false;
+      this.promptST = false;
+    }
+    console.log('boolean button', this.buttonTrapST);
+    if (!this.promptST && !this.buttonTrapST) {
       this.ipcrSTDetails.qty = this.quantityST;
       this.ipcrSTDetails.ipcrId = localStorage.getItem('ipcrId');
       this.ipcrService.AddIPCRData(this.ipcrSTDetails);
@@ -240,6 +259,10 @@ export class IpcrTargetComponent implements OnInit {
   //   this.quantity_rem = rem;
   //   console.log('rem', this.quantity_rem);
   // }
+
+  trapRemainingQuantity(data: any) {
+    console.log('overallQuantity', data);
+  }
 
   calculateRating() {
     this.ipcrDetails.qty5 = Math.floor(this.quantity * 0.3 + this.quantity);
