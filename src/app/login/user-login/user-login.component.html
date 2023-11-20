@@ -1,7 +1,4 @@
-<!-- style="background: url(assets/img/hr_background.jpg)" no-repeat center center fixed; background-size: cover; -->
-
 <body>
-
     <div class="bg-img">
         <!-- Content -->
         <div class="container-xxl">
@@ -78,23 +75,21 @@
                                     <label for="email" class="form-label">Email or Username</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i class="bx bxs-user"></i></span>
-                                        <input type="text" class="form-control" id="email" name="email-username"
-                                            placeholder="Enter your email or username" autofocus />
+                                        <input [(ngModel)]="login.username" type="text" class="form-control" id="email"
+                                            name="email-username" placeholder="Enter your email or username"
+                                            autofocus />
                                     </div>
                                 </div>
                                 <div class="mb-3 form-password-toggle">
                                     <div class="d-flex justify-content-between">
                                         <label class="form-label" for="password">Password</label>
-                                        <!-- <a href="auth-forgot-password-basic.html">
-                                                    <small>Forgot Password?</small>
-                                                </a> -->
                                     </div>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text"><i class="bx bxs-key"></i></span>
-                                        <input type="password" id="password" class="form-control" name="password"
+                                        <input [(ngModel)]="login.password" type="password" id="password"
+                                            class="form-control" name="password"
                                             placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                             aria-describedby="password" />
-                                        <!-- <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span> -->
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -104,24 +99,16 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
+                                    <button (click)="Login()" class="btn btn-primary d-grid w-100"
+                                        type="submit">Login</button>
                                 </div>
                             </form>
-
-                            <!-- <p class="text-center">
-                                        <span>New on our platform?</span>
-                                        <a href="auth-register-basic.html">
-                                            <span>Create an account</span>
-                                        </a>
-                                    </p> -->
                         </div>
                     </div>
-
                     <!-- /Register -->
                 </div>
             </div>
         </div>
-
         <!-- / Content -->
     </div>
 </body>
