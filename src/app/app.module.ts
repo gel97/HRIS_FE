@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorComponent } from './spms/components/error/error.component';
 import { FormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { UserLoginComponent } from './login/user-login/user-login.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
     FooterComponent,
     MainlayoutComponent,
     ErrorComponent,
+    UserLoginComponent,
   ],
   imports: [
     BrowserModule,

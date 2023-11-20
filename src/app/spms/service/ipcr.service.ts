@@ -407,38 +407,55 @@ export class IpcrService {
   }
 
   DeleteIPCRDetails(ipcrDataId: string) {
-    // this.ipcrDetails.mutate((a) => (a.completeLoading = true));
-    this.http
-      .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
-      .subscribe({
-        next: (response: any = {}) => {
-          this.GetIPCRDetails();
-          this.ViewGetDPCR_IPCR();
-          this.sortExcist();
-        },
-        error: () => {
-          this.alertService.error();
-        },
-        complete: () => {
-          // this.StorageOPCRDetails(this.getId);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-start',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // this.ipcrDetails.mutate((a) => (a.completeLoading = true));
+        this.http
+          .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
+          .subscribe({
+            next: (response: any = {}) => {
+              this.GetIPCRDetails();
+              this.ViewGetDPCR_IPCR();
+              this.sortExcist();
+            },
+            error: () => {
+              this.alertService.error();
+            },
+            complete: () => {
+              // this.StorageOPCRDetails(this.getId);
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-start',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer);
+                  toast.addEventListener('mouseleave', Swal.resumeTimer);
+                },
+              });
+
+              Toast.fire({
+                icon: 'success',
+                title: 'Deleted successfully',
+              });
             },
           });
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Deleted successfully',
-          });
-        },
-      });
+        // Swal.fire({
+        //   title: 'Deleted!',
+        //   text: 'Your file has been deleted.',
+        //   icon: 'success',
+        // });
+      }
+    });
   }
 
   DeleteMFO(ipcrDataId: string) {
@@ -460,37 +477,54 @@ export class IpcrService {
   }
 
   DeleteIPCRSTDetails(ipcrSubtaskId: string) {
-    this.ipcrDetails.mutate((a) => (a.completeLoading = true));
-    this.http
-      .delete<any[]>(api + this.url.delete_ipcrdata_st(ipcrSubtaskId))
-      .subscribe({
-        next: (response: any = {}) => {
-          this.GetIPCRDetails();
-          this.ViewGetDPCR_IPCR();
-          this.sortExcist();
-        },
-        error: () => {
-          this.alertService.error();
-        },
-        complete: () => {
-          // this.StorageOPCRDetails(this.getId);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-start',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.ipcrDetails.mutate((a) => (a.completeLoading = true));
+        this.http
+          .delete<any[]>(api + this.url.delete_ipcrdata_st(ipcrSubtaskId))
+          .subscribe({
+            next: (response: any = {}) => {
+              this.GetIPCRDetails();
+              this.ViewGetDPCR_IPCR();
+              this.sortExcist();
+            },
+            error: () => {
+              this.alertService.error();
+            },
+            complete: () => {
+              // this.StorageOPCRDetails(this.getId);
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-start',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer);
+                  toast.addEventListener('mouseleave', Swal.resumeTimer);
+                },
+              });
+
+              Toast.fire({
+                icon: 'success',
+                title: 'Deleted successfully',
+              });
             },
           });
-
-          Toast.fire({
-            icon: 'success',
-            title: 'Deleted successfully',
-          });
-        },
-      });
+        // Swal.fire({
+        //   title: 'Deleted!',
+        //   text: 'Your file has been deleted.',
+        //   icon: 'success',
+        // });
+      }
+    });
   }
 }
