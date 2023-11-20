@@ -3,8 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserComponent } from './components/user/user.component';
+import { UserLoginComponent } from './login/user-login/user-login.component';
 
 const routes: Routes = [
+  {
+    path: 'user-login',
+    component: UserLoginComponent,
+  },
   {
     path: '',
     component: MainlayoutComponent,
@@ -16,8 +21,8 @@ const routes: Routes = [
       },
       {
         path: 'spms',
-        loadChildren: () => import('./spms/spms.module')
-        .then(m => m.SpmsModule),
+        loadChildren: () =>
+          import('./spms/spms.module').then((m) => m.SpmsModule),
       },
       {
         path: 'dashboard',
