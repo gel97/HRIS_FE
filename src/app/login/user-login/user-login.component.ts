@@ -60,26 +60,43 @@ export class UserLoginComponent implements OnInit {
             this.UserStore.setDivisionIdFromStore(tokenPayload.divisionId);
             this.Router.navigate(['']);
           },
-          error: (error: any) => {},
+          error: (error: any) => {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
+
+            Toast.fire({
+              icon: 'error',
+              title: 'Incorrect Username or Password',
+            });
+          },
           complete: () => {
             this.loading = true;
-          },
-        });
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-          },
-        });
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
 
-        Toast.fire({
-          icon: 'success',
-          title: 'Signed in successfully',
+            Toast.fire({
+              icon: 'success',
+              title: 'Signed in successfully',
+            });
+          },
         });
       },
     });
