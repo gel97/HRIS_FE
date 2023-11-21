@@ -4,8 +4,8 @@
         <app-table-mfoes/>
     </div> -->
     <div class="col-12">
-        <app-table-ots/>
+        <app-table-ots [ots]="ots"/>
     </div>
 </div>
 
-<app-modal-ots [otsMfoes]="otsMfoes" />
+<app-modal-ots [otsMfoes]="otsMfoes" (submit)="AddOts($event)" />

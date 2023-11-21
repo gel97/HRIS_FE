@@ -31,7 +31,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-            <div class="col-6">
+            <div [ngClass]="ots.mfo === undefined? 'col-12':'col-6'">
               <strong>LIST OF MFO</strong>
               <div class="table-responsive text-nowrap mt-2">
                 <table class="table table-bordered">
@@ -79,7 +79,17 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                   ipcrDataId: b.ipcrDataId,
                                   ipcrId: b.ipcrId,
                                   isSubTask: b.isSubTask,
-                                  opcrDataId: b.opcrDataId
+                                  opcrDataId: b.opcrDataId,
+                                  qlty5: b.qlty5,
+                                  qlty4: b.qlty4,
+                                  qlty3: b.qlty3,
+                                  qlty2: b.qlty2,
+                                  qlty1: b.qlty1,
+                                  timely5: b.timely5,
+                                  timely4: b.timely4,
+                                  timely3: b.timely3,
+                                  timely2: b.timely2,
+                                  timely1: b.timely1,
                                 })
                               "
                               class="btn btn-primary"
@@ -94,7 +104,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 </table>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-6" *ngIf="ots.mfo !== undefined">
               <strong>OTS FORM</strong>
               <div class="card mb-4">
                 <div class="card-body">
@@ -145,6 +155,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.qltyR == 5 ? 'active' : ''"
+                        [disabled]="!ots.qlty5"
                       >
                         5
                       </button>
@@ -155,6 +166,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.qltyR == 4 ? 'active' : ''"
+                        [disabled]="!ots.qlty4"
                       >
                         4
                       </button>
@@ -165,6 +177,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.qltyR == 3 ? 'active' : ''"
+                        [disabled]="!ots.qlty3"
                       >
                         3
                       </button>
@@ -175,6 +188,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.qltyR == 2 ? 'active' : ''"
+                        [disabled]="!ots.qlty2"
                       >
                         2
                       </button>
@@ -185,6 +199,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.qltyR == 1 ? 'active' : ''"
+                        [disabled]="!ots.qlty1"
                       >
                         1
                       </button>
@@ -198,6 +213,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.timelyR == 5 ? 'active' : ''"
+                        [disabled]="!ots.timely5"
                       >
                         5
                       </button>
@@ -208,6 +224,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.timelyR == 4 ? 'active' : ''"
+                        [disabled]="!ots.timely4"
                       >
                         4
                       </button>
@@ -218,6 +235,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.timelyR == 3 ? 'active' : ''"
+                        [disabled]="!ots.timely3"
                       >
                         3
                       </button>
@@ -228,6 +246,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.timelyR == 2 ? 'active' : ''"
+                        [disabled]="!ots.timely2"
                       >
                         2
                       </button>
@@ -238,6 +257,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="btn rounded-pill btn-icon btn-outline-primary"
                         [ngClass]="ots.timelyR == 1 ? 'active' : ''"
+                        [disabled]="!ots.timely1"
                       >
                         1
                       </button>
@@ -298,16 +318,19 @@ export class ModalOtsComponent implements OnInit {
     this.initialDate();
   }
   Submit() {
-    // this.submit.emit('submit');
-    // this.handleStatus();
+    
     this.ots.startDate = this.otsMfoes.startDate;
     this.ots.endDate = this.otsMfoes.endDate;
+    this.ots.dateDone = this.otsMfoes.dateDone;
 
+    this.submit.emit(this.ots);
+    this.handleStatus();
     console.log(this.ots);
   }
 
   setOtsData(mfoData: any) {
     this.ots = mfoData;
+    console.log(this.ots);
   }
 
   setQuality(rating: number) {

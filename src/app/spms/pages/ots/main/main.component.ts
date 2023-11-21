@@ -7,11 +7,17 @@ import { OtsService } from 'src/app/spms/service/ots.service';
 })
 export class MainComponent implements OnInit{
   otsService = inject(OtsService);
-  data = this.otsService.ots();
+  ots = this.otsService.ots();
   otsMfoes = this.otsService.otsMfoes();
   
   ngOnInit(): void {
     this.otsService.GetOts();
     this.otsService.GetOtsMfoe();
+    console.log(this.ots)
+  }
+
+
+  AddOts(data:any){
+    this.otsService.AddOts(data);
   }
 }
