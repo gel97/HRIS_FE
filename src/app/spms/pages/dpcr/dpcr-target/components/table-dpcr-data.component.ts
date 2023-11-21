@@ -96,7 +96,7 @@ import {
                       ><u>{{ b.qty }}</u></strong
                     >&nbsp;{{ b.indicator }} &nbsp;
                     <small
-                      *ngIf="b.subtaskCount > 0"
+                      *ngIf="b.subtaskCount > 0 || b.subtaskCountCmfo"
                       class="badge rounded-pill float-end bg-label-info"
                       aria-expanded="false"
                     >

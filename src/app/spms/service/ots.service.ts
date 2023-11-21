@@ -36,6 +36,7 @@ export class OtsService {
 
   otsData:any=[];
   dataSource: DataSource | any;
+  storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
 
    GetOts() {
     this.ots.mutate((a) => (a.isLoading = true));
@@ -104,7 +105,7 @@ export class OtsService {
   GetOtsMfoe() {
     this.otsMfoes.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_ipcr_data(), {
+      .get<any[]>(api + this.url.get_ipcr_data(this.storageIpcrId()), {
         responseType: `json`,
       })
       .subscribe({

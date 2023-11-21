@@ -89,5 +89,5 @@ export class SpmsApiService {
 
   get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
 
-  get_ipcr_data = () => `/tPMIpcrDatas/list/IPCR2311071638B430B840D`;
+  get_ipcr_data = (ipcrId: string) => `/tPMIpcrDatas/list/${ipcrId}`;
 }
