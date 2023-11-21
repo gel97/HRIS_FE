@@ -1,0 +1,30 @@
+.bg-img{
+    background: url('src/assets/img/wallpaperflare.com_wallpaper.jpg');
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+  }
+
+/* Default styles for larger screens */
+.login-wrapper {
+    margin-top: 5%; /* Adjust the margin based on the overall screen height */
+    margin-left: 65%; /* Adjust the left margin based on the overall screen width */
+    height: 450px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .login-wrapper {
+        margin-left: 5%; /* Adjust the left margin for smaller screens */
+    }
+    .bg-img {
+        background-size: contain; 
+        background-size: 420%;
+    }
+    /* Adjust the background size for smaller screens */
+}
+
+/* Additional media queries as needed for other screen sizes */
+
+

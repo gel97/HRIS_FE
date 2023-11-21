@@ -337,7 +337,8 @@ height: 100%;
                             <div *ngIf="!isExpand">
                                 <button *ngIf="ipcrService.ipcrDetails().data.length <= 0" (click)="isExpand = true"
                                     data-bs-toggle="offcanvas" data-bs-target="#offcanvasDPCR_IPCR"
-                                    aria-controls="offcanvasScroll" type="button" class="btn btn-primary">MAJOR FINAL OUTPUT</button>
+                                    aria-controls="offcanvasScroll" type="button" class="btn btn-primary">MAJOR FINAL
+                                    OUTPUT</button>
                             </div>
                         </span>
                     </div>
@@ -435,9 +436,10 @@ height: 100%;
             </div> -->
             <br>
             <div class="">
-                <ng-container *ngIf="dpcr_ipcr.data.length >0 || dpcr_ipcr.isNoData; else noData">
+                <ng-container *ngIf="dpcr_ipcr.data.length >0 && dpcr_ipcr.isNoData; else noData">
                     <!-- <ng-container *ngIf=" dpcr_ipcr.isNoData; else nosidata"> -->
                     <ng-container *ngIf="dpcr_ipcr.isLoadingSave != true ; else isLoading">
+                        <!-- <ng-container *ngIf="dpcr_ipcr.isNoData; else nosidata"> -->
                         <table class="table">
                             <thead class="table-light">
                                 <tr>
@@ -445,6 +447,7 @@ height: 100%;
                                     </th>
                                 </tr>
                             </thead>
+                            <!-- <ng-container *ngIf="dpcr_ipcr.data.si.length >0; else noSIInput"> -->
                             <tbody *ngFor="let data of dpcr_ipcr.data" class="table-border-bottom-0">
                                 <ng-container *ngIf="data.si.length >0">
                                     <tr class="text-justify" style="color: blue; white-space: normal;">
@@ -486,8 +489,8 @@ height: 100%;
                                         </tr>
                                         <ng-container *ngFor="let st of si.st; let y = index">
                                             <!-- <ng-container *ngIf="st.length != 0">
-                    
-                                                        </ng-container> -->
+
+                            </ng-container> -->
                                             <tr>
                                                 <td>
                                                     <div style="margin-left: 5px;">
@@ -521,13 +524,14 @@ height: 100%;
                                         </ng-container>
                                         <ng-container *ngFor="let stC of si.stCmfo; let y = index">
                                             <!-- <ng-container *ngIf="st.length != 0">
-                    
-                                                        </ng-container> -->
+
+                            </ng-container> -->
                                             <tr>
                                                 <td>
                                                     <div style="margin-left: 5px;">
-                                                        <strong>{{si.st.length + y+1}}. &nbsp; {{stC.mfo}} &nbsp;</strong> <span
-                                                            class="badge bg-dark">SUBTASK MFO</span>
+                                                        <strong>{{si.st.length + y+1}}. &nbsp; {{stC.mfo}}
+                                                            &nbsp;</strong> <span class="badge bg-dark">SUBTASK
+                                                            MFO</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -549,31 +553,34 @@ height: 100%;
                                                                     type="button" data-bs-toggle="modal"
                                                                     data-bs-target="#modalAddSubtask"
                                                                     class="btn rounded-pill btn-icon btn-primary float-end">
-                                                                    <span class="tf-icons bx bx bx-plus"></span></button>
+                                                                    <span
+                                                                        class="tf-icons bx bx bx-plus"></span></button>
                                                             </div>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            </ng-container>                                          
+                                            </ng-container>
                                         </ng-container>
                                         <!-- </ng-container> -->
                                     </ng-container>
                                 </ng-container>
                             </tbody>
+                            <!-- </ng-container> -->
                             <ng-template #noSIInput>
                                 <div class="text-center" style="margin-top: 30px;">
                                     <label><strong>No Data Found!</strong></label>
                                 </div>
                             </ng-template>
                         </table>
+                        <!-- </ng-container> -->
                     </ng-container>
                     <ng-template #isLoading><app-ipcr-target-skeleton></app-ipcr-target-skeleton></ng-template>
                 </ng-container>
-                <!-- <ng-template #nosidata>
-                        <div class="text-center" style="margin-top: 30px;">
-                            <label><strong>No Data Found!</strong></label>
-                        </div>
-                    </ng-template> -->
+                <ng-template #nosidata>
+                    <div class="text-center" style="margin-top: 30px;">
+                        <label><strong>No Data Found!</strong></label>
+                    </div>
+                </ng-template>
                 <!-- </ng-container> -->
                 <ng-template #noData>
                     <div class="text-center" style="margin-top: 30px;">
@@ -608,8 +615,8 @@ height: 100%;
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Remaining</label>
                             <!-- [value]="(dpcrQuantity-ipcrService.ipcr_rem())" -->
-                            <input disabled [value]="dpcrQuantity-ipcrService.ipcr_rem()" type="number"
-                                class="form-control" id="basic-default-fullname" placeholder="" />
+                            <input disabled [value]="dpcrQuantity-ipcrService.ipcr_rem()" [(ngModel)]="add_qtyRemaining"
+                                type="number" class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>
@@ -770,8 +777,9 @@ height: 100%;
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Subtask
                                 Remaining</label>
-                            <input disabled [value]="dpcrSTQuantity - ipcrService.ipcrST_rem()" type="number"
-                                class="form-control" id="basic-default-fullname" placeholder="" />
+                            <input disabled [value]="dpcrSTQuantity - ipcrService.ipcrST_rem()"
+                                [(ngModel)]="add_qtyRemainingST" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Total Subtask Quantity</label>
