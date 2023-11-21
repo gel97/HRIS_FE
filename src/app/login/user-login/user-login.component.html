@@ -99,8 +99,28 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <button (click)="Login()" class="btn btn-primary d-grid w-100"
-                                        type="submit">Login</button>
+                                    <ng-container>
+                                        <button (click)="Login()"
+                                            class="btn btn-primary d-grid w-100 align-items-center justify-content-center"
+                                            type="submit"><ng-container
+                                                *ngIf="!loading;else isLoad">Login</ng-container></button>
+                                    </ng-container>
+                                    <ng-template #isLoad>
+                                        <div class="py-1.5">
+                                            <div class="spinner-border spinner-border-sm text-white" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                        <!-- <button
+                                            class="btn btn-primary align-items-center justify-content-center d-grid w-100 py-3"
+                                            type="submit">
+                                            <div class="spinner-border spinner-border-sm text-white" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </button> -->
+                                        <!-- <button (click)="Login()" class="btn btn-primary d-grid w-100"
+                                            type="submit">Login</button> -->
+                                    </ng-template>
                                 </div>
                             </form>
                         </div>

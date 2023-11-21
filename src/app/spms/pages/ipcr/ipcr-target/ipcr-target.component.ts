@@ -9,7 +9,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
 export class IpcrTargetComponent implements OnInit {
   getYear = '2023';
   sem = '1';
-  divisionId = 'DIVADMIJAI162';
+  divisionId:string | null = localStorage.getItem('divisionId');
   userId = 'useripcrid123';
   years: number[] = [];
   post_ipcr: any = {};
@@ -69,7 +69,7 @@ export class IpcrTargetComponent implements OnInit {
         console.log('dpcr_ipcr', this.dpcr_ipcr);
       }, 1000);
     } else {
-      this.ipcrService.GetIPCRs(this.getYear, this.divisionId, this.userId);
+      this.ipcrService.GetIPCRs(this.getYear, this.divisionId ?? '', this.userId);
       this.ipcrService.storageIsShow.set(0);
     }
   }
@@ -246,7 +246,7 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
-    this.ipcrService.GetIPCRs(year, this.divisionId, this.userId);
+    this.ipcrService.GetIPCRs(year, this.divisionId?? '', this.userId);
   }
 
   ipcrYear() {

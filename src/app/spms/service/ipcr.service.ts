@@ -22,7 +22,7 @@ export class IpcrService {
   storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
   storageIpcrData = signal<any>(localStorage.getItem('ipcrData'));
   isCommon = signal<number>(0);
-  divisionId = 'DIVADMIJAI162';
+  divisionId:string | null = localStorage.getItem('divisionId');
 
   ipcr = signal<any>({
     data: [],
@@ -150,7 +150,7 @@ export class IpcrService {
     this.dpcr_ipcr.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(
-        api + this.url.view_get_dpcr_ipcr(this.divisionId, this.isCommon()),
+        api + this.url.view_get_dpcr_ipcr(this.divisionId ?? '', this.isCommon()),
         {
           responseType: `json`,
         }

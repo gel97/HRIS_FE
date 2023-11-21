@@ -4,6 +4,7 @@ import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserComponent } from './components/user/user.component';
 import { UserLoginComponent } from './login/user-login/user-login.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
         component: UserComponent,
       },
     ],
+    canActivate: [AuthGuard],
   },
 ];
 

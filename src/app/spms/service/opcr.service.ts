@@ -24,7 +24,7 @@ export class OpcrService {
   getId: string | any = localStorage.getItem('opcrId');
 
   getYear = '2023';
-  officeId = 'OFFPHRMONZ3WT7D';
+  officeId: string | null = localStorage.getItem('officeId');
 
   opcr = signal<any>({
     data: [],
