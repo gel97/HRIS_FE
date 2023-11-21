@@ -22,7 +22,7 @@ export class OpcrTargetComponent implements OnInit {
   // years: number[] = [2023, 2022, 2021];
   years: number[] = [];
   fullYear = '0';
-  officeId = 'OFFPHRMONZ3WT7D';
+  officeId: string | null = localStorage.getItem('officeId');
   isCommon = 0;
   opcr: any = this.opcrService.opcr;
   isShow: number | any = this.opcrService.storageIsShow;
@@ -189,7 +189,7 @@ export class OpcrTargetComponent implements OnInit {
     this.opcr.mutate((a: any) => (a.isLoading = true));
     setTimeout(() => {
       this.opcr.mutate((a: any) => (a.isLoading = false));
-      this.opcrService.GetOPCRs(this.getYear, this.officeId);
+      this.opcrService.GetOPCRs(this.getYear, this.officeId?? "");
     }, 1000);
   }
 
@@ -230,7 +230,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   GetOfficeDivision() {
-    this.opcrService.GetOfficeDivision(this.officeId);
+    this.opcrService.GetOfficeDivision(this.officeId?? "");
     setTimeout(() => {
       this.displayDivision('');
     }, 1000);
@@ -362,7 +362,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
-    this.opcrService.GetOPCRs(year, this.officeId);
+    this.opcrService.GetOPCRs(year, this.officeId?? "");
   }
 
   EditOPCRData() {

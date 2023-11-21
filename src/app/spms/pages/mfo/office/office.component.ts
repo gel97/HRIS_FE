@@ -13,7 +13,7 @@ export class OfficeComponent implements OnInit {
   closebuttonMFO!: { nativeElement: { click: () => void } };
   @ViewChild('closebuttonSI')
   closebuttonSI!: { nativeElement: { click: () => void } };
-  
+
   mfoService = inject(MfoService);
   errorService = inject(ErrorService);
   alertService = inject(AlertService);
@@ -23,8 +23,8 @@ export class OfficeComponent implements OnInit {
   isCommon: any = this.mfoService.isCommon;
   error: any = this.errorService.error;
 
-  officeId = 'OFFPHRMONZ3WT7D';
-  
+  officeId = localStorage.getItem('officeId');
+
   expandedRow: any;
   expandedRowChild: any;
 
@@ -41,7 +41,7 @@ export class OfficeComponent implements OnInit {
   }
 
   AddMfo() {
-    if (this.mfoData.MFO !== undefined || this.mfoData.MFO !== '') {  
+    if (this.mfoData.MFO !== undefined || this.mfoData.MFO !== '') {
       this.mfoService.AddMfo(this.mfoData);
     }
   }
@@ -76,18 +76,18 @@ export class OfficeComponent implements OnInit {
     }
   }
 
-  DeleteSI(indicatorId:any){
+  DeleteSI(indicatorId: any) {
     this.mfoService.DeleteSI(indicatorId);
   }
 
-  setSiData(data:any) {
+  setSiData(data: any) {
     this.mfoData = data.mfo;
     this.siData = data.si;
     if (data.si.standard !== null) {
       this.standard = data.si.standard;
     }
   }
-  
+
   CheckMfoIfExist() {
     this.mfoService
       .CheckMfoIfExist(this.mfoData)
