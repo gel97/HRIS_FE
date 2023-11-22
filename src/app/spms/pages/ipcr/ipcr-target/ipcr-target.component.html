@@ -436,119 +436,83 @@ height: 100%;
             </div> -->
             <br>
             <div class="">
-                <ng-container *ngIf="dpcr_ipcr.data.length >0 && dpcr_ipcr.isNoData; else noData">
+                <ng-container>
                     <!-- <ng-container *ngIf=" dpcr_ipcr.isNoData; else nosidata"> -->
-                    <ng-container *ngIf="dpcr_ipcr.isLoadingSave != true ; else isLoading">
-                        <!-- <ng-container *ngIf="dpcr_ipcr.isNoData; else nosidata"> -->
-                        <table class="table">
-                            <thead class="table-light">
-                                <tr>
-                                    <th style="width: 100px; color: blue;">Indicator
-                                    </th>
-                                </tr>
-                            </thead>
-                            <!-- <ng-container *ngIf="dpcr_ipcr.data.si.length >0; else noSIInput"> -->
-                            <tbody *ngFor="let data of dpcr_ipcr.data" class="table-border-bottom-0">
-                                <ng-container *ngIf="data.si.length >0">
-                                    <tr class="text-justify" style="color: blue; white-space: normal;">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
-                                            </div>
-                                            <div class="col-4">
-                                                <small class="badge rounded-pill float-end"
-                                                    [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    {{displayCatergory(data.categoryId)}}
-                                                </small>
-                                            </div>
-                                        </div>
+                    <ng-container *ngIf="dpcr_ipcr.isLoadingSave != true; else isLoading">
+                        <ng-container *ngIf="dpcr_ipcr.data.length >0 && dpcr_ipcr.isNoData; else noData">
+                            <!-- <ng-container *ngIf="dpcr_ipcr.isNoData; else nosidata"> -->
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 100px; color: blue;">Indicator
+                                        </th>
                                     </tr>
-                                    <ng-container *ngFor="let si of data.si">
-                                        <!-- <ng-container *ngIf="si.st.length > 0"> -->
-                                        <tr>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-10 text-justify" style="white-space: normal;">
-                                                        <i class='bx bx-chevron-right'></i>
-                                                        &nbsp;
-                                                        {{si.indicator}}
-                                                    </div>
-                                                    <div *ngIf="si.st.length==0 && si.isSubTask == 0" class="col-1"
-                                                        style="margin-left: 20px;">
-                                                        <button
-                                                            (click)="ipcrDetails = si; dpcrQuantity = ipcrDetails.qty"
-                                                            (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId);prompt = false ; quantity = ''"
-                                                            type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#modalAdd"
-                                                            class="btn rounded-pill btn-icon btn-primary float-end">
-                                                            <span class="tf-icons bx bx bx-plus"></span></button>
-                                                    </div>
+                                </thead>
+                                <!-- <ng-container *ngIf="dpcr_ipcr.data.si.length >0; else noSIInput"> -->
+                                <tbody *ngFor="let data of dpcr_ipcr.data" class="table-border-bottom-0">
+                                    <ng-container *ngIf="data.si.length >0">
+                                        <tr class="text-justify" style="color: blue; white-space: normal;">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
                                                 </div>
-                                            </td>
+                                                <div class="col-4">
+                                                    <small class="badge rounded-pill float-end"
+                                                        [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {{displayCatergory(data.categoryId)}}
+                                                    </small>
+                                                </div>
+                                            </div>
                                         </tr>
-                                        <ng-container *ngFor="let st of si.st; let y = index">
-                                            <!-- <ng-container *ngIf="st.length != 0">
-
-                            </ng-container> -->
-                                            <tr>
-                                                <td>
-                                                    <div style="margin-left: 5px;">
-                                                        <strong>{{y+1}}. &nbsp; {{st.stMfo}} &nbsp;</strong> <span
-                                                            class="badge bg-dark">SUBTASK MFO</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <ng-container *ngFor="let si of data.si">
+                                            <!-- <ng-container *ngIf="si.st.length > 0"> -->
                                             <tr>
                                                 <td>
                                                     <div class="row">
-                                                        <div class="col-10" style="margin-left: 20px;">
-                                                            <i class='bx bx-subdirectory-right'></i> &nbsp;
-                                                            <i>{{st.stIndicator}}</i>
+                                                        <div class="col-10 text-justify" style="white-space: normal;">
+                                                            <i class='bx bx-chevron-right'></i>
                                                             &nbsp;
-                                                            <span class="badge rounded-pill bg-label-dark">SUBTASK
-                                                                INDICATOR</span>
+                                                            {{si.indicator}}
                                                         </div>
-                                                        <div class="col-1">
+                                                        <div *ngIf="si.st.length==0 && si.isSubTask == 0" class="col-1"
+                                                            style="margin-left: 20px;">
                                                             <button
-                                                                (click)="ipcrSTDetails = st; dpcrSTQuantity = ipcrSTDetails.qty"
-                                                                (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
+                                                                (click)="ipcrDetails = si; dpcrQuantity = ipcrDetails.qty"
+                                                                (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId);prompt = false ; quantity = ''"
                                                                 type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#modalAddSubtask"
+                                                                data-bs-target="#modalAdd"
                                                                 class="btn rounded-pill btn-icon btn-primary float-end">
                                                                 <span class="tf-icons bx bx bx-plus"></span></button>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
-                                        </ng-container>
-                                        <ng-container *ngFor="let stC of si.stCmfo; let y = index">
-                                            <!-- <ng-container *ngIf="st.length != 0">
+                                            <ng-container *ngFor="let st of si.st; let y = index">
+                                                <!-- <ng-container *ngIf="st.length != 0">
 
                             </ng-container> -->
-                                            <tr>
-                                                <td>
-                                                    <div style="margin-left: 5px;">
-                                                        <strong>{{si.st.length + y+1}}. &nbsp; {{stC.mfo}}
-                                                            &nbsp;</strong> <span class="badge bg-dark">SUBTASK
-                                                            MFO</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <ng-container *ngFor="let siStC of stC.si">
+                                                <tr>
+                                                    <td>
+                                                        <div style="margin-left: 5px;">
+                                                            <strong>{{y+1}}. &nbsp; {{st.stMfo}} &nbsp;</strong> <span
+                                                                class="badge bg-dark">SUBTASK MFO</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                                 <tr>
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-10" style="margin-left: 20px;">
                                                                 <i class='bx bx-subdirectory-right'></i> &nbsp;
-                                                                <i>{{siStC.indicator}}</i>
+                                                                <i>{{st.stIndicator}}</i>
                                                                 &nbsp;
                                                                 <span class="badge rounded-pill bg-label-dark">SUBTASK
                                                                     INDICATOR</span>
                                                             </div>
                                                             <div class="col-1">
                                                                 <button
-                                                                    (click)="ipcrSTDetails = siStC; ipcrSTDetails.stIndicator = siStC.indicator; dpcrSTQuantity = siStC.qty"
+                                                                    (click)="ipcrSTDetails = st; dpcrSTQuantity = ipcrSTDetails.qty"
                                                                     (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
                                                                     type="button" data-bs-toggle="modal"
                                                                     data-bs-target="#modalAddSubtask"
@@ -560,19 +524,59 @@ height: 100%;
                                                     </td>
                                                 </tr>
                                             </ng-container>
+                                            <ng-container *ngFor="let stC of si.stCmfo; let y = index">
+                                                <!-- <ng-container *ngIf="st.length != 0">
+
+                            </ng-container> -->
+                                                <tr>
+                                                    <td>
+                                                        <div style="margin-left: 5px;">
+                                                            <strong>{{si.st.length + y+1}}. &nbsp; {{stC.mfo}}
+                                                                &nbsp;</strong> <span class="badge bg-dark">SUBTASK
+                                                                MFO</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <ng-container *ngFor="let siStC of stC.si">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-10" style="margin-left: 20px;">
+                                                                    <i class='bx bx-subdirectory-right'></i> &nbsp;
+                                                                    <i>{{siStC.indicator}}</i>
+                                                                    &nbsp;
+                                                                    <span
+                                                                        class="badge rounded-pill bg-label-dark">SUBTASK
+                                                                        INDICATOR</span>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <button
+                                                                        (click)="ipcrSTDetails = siStC; ipcrSTDetails.stIndicator = siStC.indicator; dpcrSTQuantity = siStC.qty"
+                                                                        (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
+                                                                        type="button" data-bs-toggle="modal"
+                                                                        data-bs-target="#modalAddSubtask"
+                                                                        class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                        <span
+                                                                            class="tf-icons bx bx bx-plus"></span></button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                            <!-- </ng-container> -->
                                         </ng-container>
-                                        <!-- </ng-container> -->
                                     </ng-container>
-                                </ng-container>
-                            </tbody>
+                                </tbody>
+                                <!-- </ng-container> -->
+                                <ng-template #noSIInput>
+                                    <div class="text-center" style="margin-top: 30px;">
+                                        <label><strong>No Data Found!</strong></label>
+                                    </div>
+                                </ng-template>
+                            </table>
                             <!-- </ng-container> -->
-                            <ng-template #noSIInput>
-                                <div class="text-center" style="margin-top: 30px;">
-                                    <label><strong>No Data Found!</strong></label>
-                                </div>
-                            </ng-template>
-                        </table>
-                        <!-- </ng-container> -->
+                        </ng-container>
                     </ng-container>
                     <ng-template #isLoading><app-ipcr-target-skeleton></app-ipcr-target-skeleton></ng-template>
                 </ng-container>
