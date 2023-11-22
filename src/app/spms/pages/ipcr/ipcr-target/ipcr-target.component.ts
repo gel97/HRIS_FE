@@ -9,8 +9,8 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
 export class IpcrTargetComponent implements OnInit {
   getYear = '2023';
   sem = '1';
-  divisionId:string | null = localStorage.getItem('divisionId');
-  userId = 'useripcrid123';
+  divisionId: string | null = localStorage.getItem('divisionId');
+  userId: string | null = localStorage.getItem('userId');
   years: number[] = [];
   post_ipcr: any = {};
   ipcrDetails: any = {};
@@ -69,7 +69,11 @@ export class IpcrTargetComponent implements OnInit {
         console.log('dpcr_ipcr', this.dpcr_ipcr);
       }, 1000);
     } else {
-      this.ipcrService.GetIPCRs(this.getYear, this.divisionId ?? '', this.userId);
+      this.ipcrService.GetIPCRs(
+        this.getYear,
+        this.divisionId ?? '',
+        this.userId ?? ''
+      );
       this.ipcrService.storageIsShow.set(0);
     }
   }
@@ -107,10 +111,13 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   GetIPCRDetailsRemaining(data: any) {
+    this.add_qtyRemaining = this.dpcrQuantity - this.ipcrService.ipcr_rem();
     this.ipcrService.GetIPCRDetailsRemaining(data);
   }
 
   GetIPCRDetailsRemainingST(data: any) {
+    this.add_qtyRemainingST =
+      this.dpcrSTQuantity - this.ipcrService.ipcrST_rem();
     this.ipcrService.GetIPCRDetailsRemainingST(data);
   }
 
@@ -246,7 +253,7 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
-    this.ipcrService.GetIPCRs(year, this.divisionId?? '', this.userId);
+    this.ipcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
   }
 
   ipcrYear() {
@@ -319,6 +326,7 @@ export class IpcrTargetComponent implements OnInit {
     }
   }
 
+  //continue remaining dpcr quantity gikan sa pag delete
   add_qtyRemaining: number | any;
   prompt: boolean = false;
   trapRemaining() {

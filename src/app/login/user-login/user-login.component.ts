@@ -31,6 +31,7 @@ export class UserLoginComponent implements OnInit {
         this.Router.navigate(['']);
       },
       error: (error: any) => {
+        this.loading = false;
         const Toast = Swal.mixin({
           toast: true,
           position: 'top-end',
@@ -61,6 +62,7 @@ export class UserLoginComponent implements OnInit {
             this.Router.navigate(['']);
           },
           error: (error: any) => {
+            this.loading = false;
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
@@ -79,7 +81,7 @@ export class UserLoginComponent implements OnInit {
             });
           },
           complete: () => {
-            this.loading = true;
+            this.loading = false;
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',

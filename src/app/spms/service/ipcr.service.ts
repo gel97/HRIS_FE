@@ -22,7 +22,7 @@ export class IpcrService {
   storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
   storageIpcrData = signal<any>(localStorage.getItem('ipcrData'));
   isCommon = signal<number>(0);
-  divisionId:string | null = localStorage.getItem('divisionId');
+  divisionId: string | null = localStorage.getItem('divisionId');
 
   ipcr = signal<any>({
     data: [],
@@ -148,9 +148,11 @@ export class IpcrService {
 
   ViewGetDPCR_IPCR() {
     this.dpcr_ipcr.mutate((a) => (a.isLoading = true));
+    this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = true));
     this.http
       .get<any[]>(
-        api + this.url.view_get_dpcr_ipcr(this.divisionId ?? '', this.isCommon()),
+        api +
+          this.url.view_get_dpcr_ipcr(this.divisionId ?? '', this.isCommon()),
         {
           responseType: `json`,
         }
@@ -158,7 +160,6 @@ export class IpcrService {
       .subscribe({
         next: (response: any = {}) => {
           this.dpcr_ipcr.mutate((a) => (a.data = response));
-          this.dpcr_ipcr.mutate((a) => (a.isLoading = false));
         },
         error: () => {
           this.alertService.error();
@@ -430,6 +431,7 @@ export class IpcrService {
               this.alertService.error();
             },
             complete: () => {
+              this.ipcr_rem.set(0);
               // this.StorageOPCRDetails(this.getId);
               const Toast = Swal.mixin({
                 toast: true,
@@ -500,6 +502,7 @@ export class IpcrService {
               this.alertService.error();
             },
             complete: () => {
+              this.ipcrST_rem.set(0);
               // this.StorageOPCRDetails(this.getId);
               const Toast = Swal.mixin({
                 toast: true,
