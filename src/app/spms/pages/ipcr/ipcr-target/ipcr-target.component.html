@@ -39,10 +39,6 @@
             <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
                 (ngModelChange)="onChangeYear($event)">
                 <option *ngFor="let year of years" [value]="year">{{year}}</option>
-                <!-- <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option> -->
             </select>
         </div>
         <br>
@@ -209,7 +205,7 @@ height: 100%;
                                                                 <span class="tf-icons bx bx-trash"></span>
                                                             </button>
                                                             <button (click)="ipcrDetails = si"
-                                                                (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId); returnQty = ipcrDetails.qty"
+                                                                (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId); returnQty = ipcrDetails.qty; promptEdit = false"
                                                                 type="button" data-bs-toggle="modal"
                                                                 data-bs-target="#modalEdit"
                                                                 class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
@@ -218,8 +214,6 @@ height: 100%;
                                                         </div>
                                                     </ng-container>
                                                     <ng-template #subTaskData>
-                                                        <!-- <h1>{{si.indicator}}</h1> -->
-
                                                         <div *ngFor="let st of si.st; let z =index">
                                                             <h2 class="accordion-header"
                                                                 id="heading{{parent}}{{i}}{{z}}">
@@ -304,7 +298,7 @@ height: 100%;
                                                                     <span class="tf-icons bx bx-trash"></span>
                                                                 </button>
                                                                 <button type="button" (click)="ipcrSTDetails = st"
-                                                                    (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId); returnQtyST = ipcrSTDetails.qty"
+                                                                    (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId); returnQtyST = ipcrSTDetails.qty; promptEditST = false"
                                                                     type="button" data-bs-toggle="modal"
                                                                     data-bs-target="#modalEditSubtask"
                                                                     class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
@@ -377,17 +371,6 @@ height: 100%;
                 </div>
             </div><br>
         </div>
-        <!-- <div class="col-md-12">
-            <div>
-                <select class="form-select" aria-label="Default select example" [(ngModel)]="sem">
-                    <option value="1">1st Sem</option>
-                    <option value="2">2nd Sem</option>
-                </select>
-            </div>
-            <div id="floatingInputHelp" class="form-text">
-                Select Period
-            </div>
-        </div> -->
         <br>
         <button (click)="PostIpcr()" type="button" class="btn btn-primary mb-2 d-grid w-100">Save</button>
         <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
@@ -422,25 +405,11 @@ height: 100%;
                     </button>
                 </li>
             </ul>
-            <!-- <div class="input-group">
-                <span class="input-group-text">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status"
-                        *ngIf="isSearchLoading(); else showIcon">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <ng-template #showIcon>
-                        <i class="tf-icons bx bx-search"></i>
-                    </ng-template>
-                </span>
-                <input type="text" class="form-control" placeholder="Search..." />
-            </div> -->
             <br>
             <div class="">
                 <ng-container>
-                    <!-- <ng-container *ngIf=" dpcr_ipcr.isNoData; else nosidata"> -->
                     <ng-container *ngIf="dpcr_ipcr.isLoadingSave != true; else isLoading">
                         <ng-container *ngIf="dpcr_ipcr.data.length >0 && dpcr_ipcr.isNoData; else noData">
-                            <!-- <ng-container *ngIf="dpcr_ipcr.isNoData; else nosidata"> -->
                             <table class="table">
                                 <thead class="table-light">
                                     <tr>
@@ -448,7 +417,6 @@ height: 100%;
                                         </th>
                                     </tr>
                                 </thead>
-                                <!-- <ng-container *ngIf="dpcr_ipcr.data.si.length >0; else noSIInput"> -->
                                 <tbody *ngFor="let data of dpcr_ipcr.data" class="table-border-bottom-0">
                                     <ng-container *ngIf="data.si.length >0">
                                         <tr class="text-justify" style="color: blue; white-space: normal;">
@@ -466,7 +434,6 @@ height: 100%;
                                             </div>
                                         </tr>
                                         <ng-container *ngFor="let si of data.si">
-                                            <!-- <ng-container *ngIf="si.st.length > 0"> -->
                                             <tr>
                                                 <td>
                                                     <div class="row">
@@ -489,9 +456,6 @@ height: 100%;
                                                 </td>
                                             </tr>
                                             <ng-container *ngFor="let st of si.st; let y = index">
-                                                <!-- <ng-container *ngIf="st.length != 0">
-
-                            </ng-container> -->
                                                 <tr>
                                                     <td>
                                                         <div style="margin-left: 5px;">
@@ -525,9 +489,6 @@ height: 100%;
                                                 </tr>
                                             </ng-container>
                                             <ng-container *ngFor="let stC of si.stCmfo; let y = index">
-                                                <!-- <ng-container *ngIf="st.length != 0">
-
-                            </ng-container> -->
                                                 <tr>
                                                     <td>
                                                         <div style="margin-left: 5px;">
@@ -564,18 +525,15 @@ height: 100%;
                                                     </tr>
                                                 </ng-container>
                                             </ng-container>
-                                            <!-- </ng-container> -->
                                         </ng-container>
                                     </ng-container>
                                 </tbody>
-                                <!-- </ng-container> -->
                                 <ng-template #noSIInput>
                                     <div class="text-center" style="margin-top: 30px;">
                                         <label><strong>No Data Found!</strong></label>
                                     </div>
                                 </ng-template>
                             </table>
-                            <!-- </ng-container> -->
                         </ng-container>
                     </ng-container>
                     <ng-template #isLoading><app-ipcr-target-skeleton></app-ipcr-target-skeleton></ng-template>
@@ -585,7 +543,6 @@ height: 100%;
                         <label><strong>No Data Found!</strong></label>
                     </div>
                 </ng-template>
-                <!-- </ng-container> -->
                 <ng-template #noData>
                     <div class="text-center" style="margin-top: 30px;">
                         <label><strong>No Data Found!</strong></label>
@@ -602,7 +559,6 @@ height: 100%;
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="modalCenterTitle">
-                    <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{ipcrDetails.indicator}}
                 </h1>
                 <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
@@ -616,14 +572,14 @@ height: 100%;
                             <input [(ngModel)]="quantity" (ngModelChange)="calculateRating()" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" /><br>
                         </div>
-                        <div class="col-4">
+                        <div *ngIf="ipcrDetails.qtyUnit == 0" class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Remaining</label>
-                            <!-- [value]="(dpcrQuantity-ipcrService.ipcr_rem())" -->
                             <input disabled [value]="dpcrQuantity-ipcrService.ipcr_rem()" [(ngModel)]="add_qtyRemaining"
                                 type="number" class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label> &nbsp;
+                            <span class="badge rounded-pill bg-success">{{quantityLabeler(ipcrDetails.qtyUnit)}}</span>
                             <input disabled [(ngModel)]="dpcrQuantity" type="number" class="form-control"
                                 id="basic-default-fullname" placeholder="" />
                         </div>
@@ -764,7 +720,6 @@ height: 100%;
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="modalCenterTitle">
-                    <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{ipcrSTDetails.stIndicator}}
                 </h1>
                 <button #closebuttonST type="button" class="btn-close" data-bs-dismiss="modal"
@@ -778,7 +733,7 @@ height: 100%;
                             <input [(ngModel)]="quantityST" (ngModelChange)="calculateRatingST()" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
-                        <div class="col-4">
+                        <div *ngIf="ipcrSTDetails.qtyUnit == 0" class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Subtask
                                 Remaining</label>
                             <input disabled [value]="dpcrSTQuantity - ipcrService.ipcrST_rem()"
@@ -786,7 +741,9 @@ height: 100%;
                                 id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label" for="basic-default-fullname">DPCR Total Subtask Quantity</label>
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Subtask</label> &nbsp;
+                            <span
+                                class="badge rounded-pill bg-success">{{quantityLabeler(ipcrSTDetails.qtyUnit)}}</span>
                             <input disabled [(ngModel)]="dpcrSTQuantity" type="number" class="form-control"
                                 id="basic-default-fullname" placeholder="" />
                         </div>
@@ -927,7 +884,6 @@ height: 100%;
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="modalCenterTitle">
-                    <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{ipcrDetails.indicator}}
                 </h1>
                 <button #closebuttonEdit type="button" class="btn-close" data-bs-dismiss="modal"
@@ -941,7 +897,7 @@ height: 100%;
                             <input [(ngModel)]="ipcrDetails.qty" (ngModelChange)="calculateRatingEdit()" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
-                        <div class="col-4">
+                        <div *ngIf="ipcrDetails.qtyUnit == 0" class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Remaining</label>
                             <input disabled [value]="ipcrDetails.totalIpcrQuantity-ipcrService.ipcr_rem()"
                                 [(ngModel)]="qtyRemaining" type="number" class="form-control"
@@ -1083,14 +1039,12 @@ height: 100%;
     </div>
 </div>
 
-<!-- to be continue -->
 <!-- Modal Edit Subtask-->
 <div class="modal fade" id="modalEditSubtask" tabindex="-1" aria-hidden="true" style="z-index: 5000;">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="modalCenterTitle">
-                    <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{ipcrSTDetails.stIndicator}}
                 </h1>
                 <button #closebuttonEditST type="button" class="btn-close" data-bs-dismiss="modal"
@@ -1104,7 +1058,7 @@ height: 100%;
                             <input [(ngModel)]="ipcrSTDetails.qty" (ngModelChange)="calculateRatingSTEdit()"
                                 type="number" class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
-                        <div class="col-4">
+                        <div *ngIf="ipcrSTDetails.qtyUnit == 0" class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Subtask
                                 Remaining</label>
                             <input disabled [value]="ipcrSTDetails.totalIpcrQuantityST - ipcrService.ipcrST_rem()"
