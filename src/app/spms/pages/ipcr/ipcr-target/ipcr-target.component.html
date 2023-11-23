@@ -616,7 +616,7 @@ height: 100%;
                             <input [(ngModel)]="quantity" (ngModelChange)="calculateRating()" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" /><br>
                         </div>
-                        <div class="col-4">
+                        <div *ngIf="ipcrDetails.qtyUnit == 0" class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Quantity Remaining</label>
                             <!-- [value]="(dpcrQuantity-ipcrService.ipcr_rem())" -->
                             <input disabled [value]="dpcrQuantity-ipcrService.ipcr_rem()" [(ngModel)]="add_qtyRemaining"

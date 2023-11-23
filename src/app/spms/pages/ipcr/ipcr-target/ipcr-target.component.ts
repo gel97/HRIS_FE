@@ -90,19 +90,27 @@ export class IpcrTargetComponent implements OnInit {
     this.localStorage();
   }
 
+  // continue Edit percentage
   buttonTrap: boolean = false;
   PostIPCRDetails() {
     console.log('rem', this.dpcrQuantity);
     console.log('total', this.ipcrService.ipcr_rem());
-    if (this.dpcrQuantity - this.ipcrService.ipcr_rem() == 0) {
-      this.buttonTrap = true;
+    console.log('shet', this.add_qtyRemaining);
+    if (
+      this.dpcrQuantity - this.ipcrService.ipcr_rem() == 0 &&
+      this.ipcrDetails.qtyUnit == 0
+    ) {
       this.prompt = true;
+    }
+    if (this.prompt) {
+      this.buttonTrap = true;
+      // this.prompt = true;
     } else {
       this.buttonTrap = false;
-      this.prompt = false;
+      // this.prompt = false;
     }
     console.log('boolean button', this.buttonTrap);
-    if (!this.prompt && !this.buttonTrap) {
+    if (!this.buttonTrap) {
       this.ipcrDetails.qty = this.quantity;
       this.ipcrDetails.ipcrId = localStorage.getItem('ipcrId');
       this.ipcrService.AddIPCRData(this.ipcrDetails);
@@ -330,20 +338,28 @@ export class IpcrTargetComponent implements OnInit {
   add_qtyRemaining: number | any;
   prompt: boolean = false;
   trapRemaining() {
-    console.log('dpcrquantity', this.dpcrQuantity);
-    console.log('totalipcr_rem', this.ipcrService.ipcr_rem());
-    console.log('dpcrquantity', this.dpcrQuantity);
-    console.log('quantity', this.quantity);
-    this.add_qtyRemaining =
-      this.dpcrQuantity - this.quantity - this.ipcrService.ipcr_rem();
+    if (this.ipcrDetails.qtyUnit == 0) {
+      console.log('dpcrquantity', this.dpcrQuantity);
+      console.log('totalipcr_rem', this.ipcrService.ipcr_rem());
+      console.log('dpcrquantity', this.dpcrQuantity);
+      console.log('quantity', this.quantity);
+      this.add_qtyRemaining =
+        this.dpcrQuantity - this.quantity - this.ipcrService.ipcr_rem();
 
-    if (
-      this.quantity > this.dpcrQuantity - this.ipcrService.ipcr_rem() ||
-      this.quantity < 0
-    ) {
-      this.prompt = true;
+      if (
+        this.quantity > this.dpcrQuantity - this.ipcrService.ipcr_rem() ||
+        this.quantity < 0
+      ) {
+        this.prompt = true;
+      } else {
+        this.prompt = false;
+      }
     } else {
-      this.prompt = false;
+      if (this.quantity > this.dpcrQuantity) {
+        this.prompt = true;
+      } else {
+        this.prompt = false;
+      }
     }
   }
 

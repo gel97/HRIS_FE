@@ -32,8 +32,8 @@ export class DpcrService {
   });
 
   officeId: string | null = localStorage.getItem('officeId');
-  divisionId:string |null = localStorage.getItem('divisionId');
-  divisionName = signal<any>('ADMIN');
+  divisionId: string | null = localStorage.getItem('divisionId');
+  divisionName: string | null = localStorage.getItem('divisionName');
   isCommonDivision = signal<number>(0);
   searchDivisionMfo = signal<any>('');
 
@@ -52,7 +52,7 @@ export class DpcrService {
   GetDpcr() {
     this.dpcr.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_dpcr(this.divisionId ?? ""), {
+      .get<any[]>(api + this.url.get_dpcr(this.divisionId ?? ''), {
         responseType: `json`,
       })
       .subscribe({
@@ -279,7 +279,7 @@ export class DpcrService {
         api +
           this.url.get_dpcr_data_mfoes(
             this.storageDpcrId(),
-            this.divisionName(),
+            this.divisionName ?? '',
             this.isCommonDivision()
           ),
         {
@@ -433,7 +433,7 @@ export class DpcrService {
         api +
           this.url.get_dpcr_data_search_mfoes(
             this.storageDpcrId(),
-            this.divisionName(),
+            this.divisionName ?? '',
             this.isCommonDivision(),
             mfo
           ),
