@@ -15,13 +15,11 @@ export class UserStoreService {
   }
   public setOfficeIdFromStore(officeId: string) {
     this.officeId$.next(officeId);
-    // localStorage.setItem('officeId', officeId);
   }
   public getDivisionIdFromStore() {
     return this.divisionId$.asObservable();
   }
   public setDivisionIdFromStore(divisionId: string) {
     this.divisionId$.next(divisionId);
-    // localStorage.setItem('divisionId', divisionId);
   }
 }

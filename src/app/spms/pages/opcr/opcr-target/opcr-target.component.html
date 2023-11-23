@@ -43,10 +43,6 @@
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
                     (ngModelChange)="onChangeYear($event)">
                     <option *ngFor="let year of years" [value]="year">{{year}}</option>
-                    <!-- <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option> -->
                 </select>
             </div>
             <br>
@@ -57,7 +53,6 @@
                         <thead>
                             <tr>
                                 <th>Details</th>
-                                <!-- <th>User</th> -->
                                 <th>Year</th>
                                 <th>Sem</th>
                                 <th>Date Created</th>
@@ -72,22 +67,6 @@
                                         <strong>{{ data.details }}</strong>
                                     </a>
                                 </td>
-                                <!-- <td>
-                                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                            class="avatar avatar-xs pull-up" title="Lilian Fuller">
-                                            <img src="./assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
-                                        </li>
-                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                            class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                                            <img src="./assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                                        </li>
-                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                                            class="avatar avatar-xs pull-up" title="Christina Parker">
-                                            <img src="./assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                                        </li>
-                                    </ul>
-                                </td> -->
                                 <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
                                 <td>
                                     <span class="badge"
@@ -101,14 +80,6 @@
                                             [ngClass]="data.active == '1' ? 'badge rounded-pill bg-label-success': data.active == '2' ? 'badge rounded-pill bg-label-primary': data.active == '0' ? 'badge rounded-pill bg-label-danger': ''">
                                             {{displayStatus(data.active)}}</span></td>
                                 </ng-container>
-                                <!-- <ng-container *ngIf="data.active == 1; else notActive ">
-                                    <td>
-                                        <span class="badge rounded-pill bg-label-success">ACTIVE</span>
-                                    </td>
-                                </ng-container>
-                                <ng-template #notActive>
-                                    <td> <span class="badge rounded-pill bg-label-danger">INACTIVE</span></td>
-                                </ng-template> -->
                                 <td>
                                     <div class="dropdown position-static pointer">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -156,12 +127,9 @@
 
 <!-- OPCR Details-->
 <div class="container-fluid flex-grow-1 py-4" *ngIf="isShow() ==1">
-    <!-- Basic Layout -->
     <div class="row p-0">
-        <!-- class="col-xl-6 p-0" -->
         <div [ngClass]="isExpandMfoes? 'col-xl-6 p-0':'col-xl-11 p-0'">
             <div class=" p-0">
-                <!-- scrollable-details sa baba na class -->
                 <div class="">
                     <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
                         <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index ">
@@ -287,11 +255,6 @@
                         </div>
                     </ng-container>
                     <ng-template #isLoading>
-                        <!-- <div class="center-container">
-                            <div class="spinner-border spinner-border-lg text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div> -->
                         <app-opcr-target-skeleton></app-opcr-target-skeleton>
                     </ng-template>
 
@@ -374,7 +337,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="modalCenterTitle">
-                    <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{mfoDetails.indicator}}
                 </h1>
                 <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
@@ -388,17 +350,6 @@
                             <input [(ngModel)]="mfoDetails.qty" (ngModelChange)="calculateRating()" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                             <div class="col-md">
-                                <!-- <small class="text-light fw-semibold d-block">Inline Radio</small> -->
-                                <!-- <div class="form-check form-check-inline mt-3">
-                                    <input (click)="qtyUnit(0)" class="form-check-input" type="radio"
-                                        name="inlineRadioOptions" id="inlineRadio1" value="option1" />
-                                    <label class="form-check-label" for="inlineRadio1">Numeric</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input (click)="qtyUnit(1)" class="form-check-input" type="radio"
-                                        name="inlineRadioOptions" id="inlineRadio2" value="option2" />
-                                    <label class="form-check-label" for="inlineRadio2">Percentage</label>
-                                </div> -->
                                 <div class="form-check form-check-inline mt-3">
                                     <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1"
                                         class="form-check-input" type="radio" value="0" id="defaultRadio2" checked />
@@ -449,7 +400,6 @@
                                     <td>{{'5'}}</td>
                                     <td>
                                         <span *ngIf="mfoDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty5}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="mfoDetails.qty5" type="number" class="form-control"
                                                     id="floatingInput" placeholder=""
@@ -468,7 +418,6 @@
                                     <td>{{'4'}}</td>
                                     <td>
                                         <span *ngIf="mfoDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty4}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="mfoDetails.qty4" type="number" class="form-control"
                                                     id="floatingInput" placeholder=""
@@ -487,7 +436,6 @@
                                     <td>{{'3'}}</td>
                                     <td>
                                         <span *ngIf="mfoDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty3}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="mfoDetails.qty3" type="number" class="form-control"
                                                     id="floatingInput" placeholder=""
@@ -506,7 +454,6 @@
                                     <td>{{'2'}}</td>
                                     <td>
                                         <span *ngIf="mfoDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty2}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="mfoDetails.qty2" type="number" class="form-control"
                                                     id="floatingInput" placeholder=""
@@ -525,7 +472,6 @@
                                     <td>{{'1'}}</td>
                                     <td>
                                         <span *ngIf="mfoDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty1}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="mfoDetails.qty1" type="number" class="form-control"
                                                     id="floatingInput" placeholder=""
@@ -551,13 +497,6 @@
                     Close
                 </button>
                 <button (click)="PostOPCRDetails()" type="button" class="btn btn-primary">
-                    <!-- <ng-container *ngIf="opcrData().isLoading != true; else isLoading">
-                        <span>Save Details</span>
-                    </ng-container>
-                    <ng-template #isLoading>
-                        <div class="spinner-border spinner-border-sm" role="status">
-                        </div> &nbsp;<span>Loading...</span>
-                    </ng-template> -->
                     <span>Save Details</span>
                 </button>
             </div>
@@ -571,7 +510,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title" id="modalCenterTitle">
-                    <!-- <strong>{{mfoDetails.target}}</strong>&nbsp; -->
                     {{editopcrDetails.indicator}}
                 </h1>
                 <button #closebuttonEdit type="button" class="btn-close" data-bs-dismiss="modal"
@@ -585,7 +523,6 @@
                             <input [(ngModel)]="editopcrDetails.qty" (ngModelChange)="editcalculateRating()"
                                 type="number" class="form-control" id="basic-default-fullname" placeholder="" />
                             <div class="col-md">
-                                <!-- <small class="text-light fw-semibold d-block">Inline Radio</small> -->
                                 <div class="form-check form-check-inline mt-3">
                                     <input (click)="editQtyUnit(0)" [checked]="checkedNumeric" class="form-check-input"
                                         type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
@@ -632,7 +569,6 @@
                                     <td>{{'5'}}</td>
                                     <td>
                                         <span *ngIf="editopcrDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty5}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="editopcrDetails.standard.qty5" type="number"
                                                     class="form-control" id="floatingInput" placeholder=""
@@ -651,7 +587,6 @@
                                     <td>{{'4'}}</td>
                                     <td>
                                         <span *ngIf="editopcrDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty4}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="editopcrDetails.standard.qty4" type="number"
                                                     class="form-control" id="floatingInput" placeholder=""
@@ -670,7 +605,6 @@
                                     <td>{{'3'}}</td>
                                     <td>
                                         <span *ngIf="editopcrDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty3}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="editopcrDetails.standard.qty3" type="number"
                                                     class="form-control" id="floatingInput" placeholder=""
@@ -689,7 +623,6 @@
                                     <td>{{'2'}}</td>
                                     <td>
                                         <span *ngIf="editopcrDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty2}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="editopcrDetails.standard.qty2" type="number"
                                                     class="form-control" id="floatingInput" placeholder=""
@@ -708,7 +641,6 @@
                                     <td>{{'1'}}</td>
                                     <td>
                                         <span *ngIf="editopcrDetails.standard">
-                                            <!-- {{mfoDetails.standard.qty1}} -->
                                             <div class="form-floating">
                                                 <input [(ngModel)]="editopcrDetails.standard.qty1" type="number"
                                                     class="form-control" id="floatingInput" placeholder=""
@@ -733,16 +665,7 @@
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <!-- <button data-bs-dismiss="modal" (click)="EditOPCRData()" type="button" class="btn btn-primary">Save
-                        changes</button> -->
                 <button (click)="EditOPCRData()" type="button" class="btn btn-primary">
-                    <!-- <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
-                        <span>Save Details</span>
-                    </ng-container>
-                    <ng-template #isLoading>
-                        <div class="spinner-border spinner-border-sm" role="status">
-                        </div> &nbsp;<span>Loading...</span>
-                    </ng-template> -->
                     <span>Save Details</span>
                 </button>
             </div>

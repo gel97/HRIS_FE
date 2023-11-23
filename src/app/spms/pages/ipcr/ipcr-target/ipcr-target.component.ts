@@ -48,8 +48,6 @@ export class IpcrTargetComponent implements OnInit {
   closebuttonEditST!: { nativeElement: { click: () => void } };
 
   ngOnInit(): void {
-    // this.ipcrService.GetIPCRs(this.getYear, this.divisionId, this.userId);
-    // this.ipcrService.ViewGetDPCR_IPCR();
     this.ipcrYear();
     this.localStorage();
   }
@@ -59,14 +57,10 @@ export class IpcrTargetComponent implements OnInit {
       this.ipcrService.GetIPCRDetails();
       this.ipcrService.ViewGetDPCR_IPCR();
       setTimeout(() => {
-        // this.sortExcist();
         this.ipcrService.sortExcist();
-        // this.removeMFO();
         this.ipcrService.removeMFO();
-        // this.siChecker();
 
         this.ipcrService.siChecker();
-        console.log('dpcr_ipcr', this.dpcr_ipcr);
       }, 1000);
     } else {
       this.ipcrService.GetIPCRs(
@@ -93,9 +87,6 @@ export class IpcrTargetComponent implements OnInit {
   // continue Edit percentage
   buttonTrap: boolean = false;
   PostIPCRDetails() {
-    console.log('rem', this.dpcrQuantity);
-    console.log('total', this.ipcrService.ipcr_rem());
-    console.log('shet', this.add_qtyRemaining);
     if (
       this.dpcrQuantity - this.ipcrService.ipcr_rem() == 0 &&
       this.ipcrDetails.qtyUnit == 0
@@ -104,12 +95,9 @@ export class IpcrTargetComponent implements OnInit {
     }
     if (this.prompt) {
       this.buttonTrap = true;
-      // this.prompt = true;
     } else {
       this.buttonTrap = false;
-      // this.prompt = false;
     }
-    console.log('boolean button', this.buttonTrap);
     if (!this.buttonTrap) {
       this.ipcrDetails.qty = this.quantity;
       this.ipcrDetails.ipcrId = localStorage.getItem('ipcrId');
@@ -145,17 +133,18 @@ export class IpcrTargetComponent implements OnInit {
 
   buttonTrapST: boolean = false;
   PostIPCRSTDetails() {
-    console.log('rem', this.dpcrSTQuantity);
-    console.log('total', this.ipcrService.ipcr_rem());
-    if (this.dpcrSTQuantity - this.ipcrService.ipcrST_rem() == 0) {
+    if (
+      this.dpcrSTQuantity - this.ipcrService.ipcrST_rem() == 0 &&
+      this.ipcrSTDetails.qtyUnit == 0
+    ) {
       this.buttonTrapST = true;
-      this.promptST = true;
+    }
+    if (this.promptST) {
+      this.buttonTrapST = true;
     } else {
       this.buttonTrapST = false;
-      this.promptST = false;
     }
-    console.log('boolean button', this.buttonTrapST);
-    if (!this.promptST && !this.buttonTrapST) {
+    if (!this.buttonTrapST) {
       this.ipcrSTDetails.qty = this.quantityST;
       this.ipcrSTDetails.ipcrId = localStorage.getItem('ipcrId');
       this.ipcrService.AddIPCRData(this.ipcrSTDetails);
@@ -241,13 +230,20 @@ export class IpcrTargetComponent implements OnInit {
     return Year;
   }
 
-  // onChangeSemInput(sem: any) {
-  //   this.post_ipcr.semester = sem;
-  // }
+  quantityLabeler(qtyUnit: number) {
+    let unitLabeler;
+    switch (qtyUnit) {
+      case 0:
+        unitLabeler = 'Numeric';
+        break;
 
-  // onYearChangeInput(year: any) {
-  //   this.post_ipcr.year = year;
-  // }
+      case 1:
+        unitLabeler = 'Percentage';
+        break;
+    }
+
+    return unitLabeler;
+  }
 
   noSIDataboolean: boolean = false;
   siChecker() {
@@ -270,25 +266,11 @@ export class IpcrTargetComponent implements OnInit {
     }
   }
 
-  // remaining(rem: number) {
-  //   this.quantity_rem = rem;
-  //   console.log('rem', this.quantity_rem);
-  // }
-
   trapRemainingQuantity(data: any) {
     console.log('overallQuantity', data);
   }
 
   calculateRating() {
-    // this.add_qtyRemaining =
-    //   this.dpcrQuantity -
-    //   (this.ipcrService.ipcr_rem() - this.dpcrSTQuantity + this.quantity);
-    // console.log(this.add_qtyRemaining);
-    this.ipcrDetails.qty5 = Math.floor(this.quantity * 0.3 + this.quantity);
-    this.ipcrDetails.qty4 = Math.floor(this.quantity * 0.15 + this.quantity);
-    this.ipcrDetails.qty3 = Math.floor(this.quantity);
-    this.ipcrDetails.qty2 = Math.floor(this.quantity / 2 + 1);
-    this.ipcrDetails.qty1 = Math.floor(this.quantity / 2);
     this.trapRemaining();
   }
 
@@ -296,41 +278,35 @@ export class IpcrTargetComponent implements OnInit {
   promptEdit: boolean = false;
   returnQty: number | any;
   calculateRatingEdit() {
-    // this.qtyRemaining =
-    //   this.ipcrDetails.totalIpcrQuantity -
-    //   this.ipcrDetails.totalIpcrQuantity -
-    //   this.ipcrService.ipcr_rem() -
-    //   (this.ipcrDetails.qty -
-    //     this.ipcrDetails.totalIpcrQuantity -
-    //     this.ipcrService.ipcr_rem()) -
-    //   1;
+    if (this.ipcrDetails.qtyUnit == 0) {
+      this.qtyRemaining =
+        this.ipcrDetails.totalIpcrQuantity -
+        (this.ipcrService.ipcr_rem() - this.returnQty + this.ipcrDetails.qty);
 
-    this.qtyRemaining =
-      this.ipcrDetails.totalIpcrQuantity -
-      (this.ipcrService.ipcr_rem() - this.returnQty + this.ipcrDetails.qty);
+      this.ipcrDetails.qty5 = Math.floor(
+        this.ipcrDetails.qty * 0.3 + this.ipcrDetails.qty
+      );
+      this.ipcrDetails.qty4 = Math.floor(
+        this.ipcrDetails.qty * 0.15 + this.ipcrDetails.qty
+      );
+      this.ipcrDetails.qty3 = Math.floor(this.ipcrDetails.qty);
+      this.ipcrDetails.qty2 = Math.floor(this.ipcrDetails.qty / 2 + 1);
+      this.ipcrDetails.qty1 = Math.floor(this.ipcrDetails.qty / 2);
 
-    // if (
-    //   this.ipcrDetails.totalIpcrQuantity <
-    //   this.ipcrService.ipcr_rem() - this.returnQty + this.ipcrDetails.qty
-    // ) {
-    //   console.log('sheeeeesh');
-    // } else {
-    //   console.log('wala ning lapas');
-    // }
-    this.ipcrDetails.qty5 = Math.floor(
-      this.ipcrDetails.qty * 0.3 + this.ipcrDetails.qty
-    );
-    this.ipcrDetails.qty4 = Math.floor(
-      this.ipcrDetails.qty * 0.15 + this.ipcrDetails.qty
-    );
-    this.ipcrDetails.qty3 = Math.floor(this.ipcrDetails.qty);
-    this.ipcrDetails.qty2 = Math.floor(this.ipcrDetails.qty / 2 + 1);
-    this.ipcrDetails.qty1 = Math.floor(this.ipcrDetails.qty / 2);
-
-    if (this.qtyRemaining < 0 || this.ipcrDetails.qty < 0) {
-      this.promptEdit = true;
+      if (this.qtyRemaining < 0 || this.ipcrDetails.qty < 0) {
+        this.promptEdit = true;
+      } else {
+        this.promptEdit = false;
+      }
     } else {
-      this.promptEdit = false;
+      if (
+        this.ipcrDetails.qty > this.ipcrDetails.totalIpcrQuantity ||
+        this.ipcrDetails.qty < 0
+      ) {
+        this.promptEdit = true;
+      } else {
+        this.promptEdit = false;
+      }
     }
   }
 
@@ -339,13 +315,14 @@ export class IpcrTargetComponent implements OnInit {
   prompt: boolean = false;
   trapRemaining() {
     if (this.ipcrDetails.qtyUnit == 0) {
-      console.log('dpcrquantity', this.dpcrQuantity);
-      console.log('totalipcr_rem', this.ipcrService.ipcr_rem());
-      console.log('dpcrquantity', this.dpcrQuantity);
-      console.log('quantity', this.quantity);
       this.add_qtyRemaining =
         this.dpcrQuantity - this.quantity - this.ipcrService.ipcr_rem();
 
+      this.ipcrDetails.qty5 = Math.floor(this.quantity * 0.3 + this.quantity);
+      this.ipcrDetails.qty4 = Math.floor(this.quantity * 0.15 + this.quantity);
+      this.ipcrDetails.qty3 = Math.floor(this.quantity);
+      this.ipcrDetails.qty2 = Math.floor(this.quantity / 2 + 1);
+      this.ipcrDetails.qty1 = Math.floor(this.quantity / 2);
       if (
         this.quantity > this.dpcrQuantity - this.ipcrService.ipcr_rem() ||
         this.quantity < 0
@@ -355,7 +332,7 @@ export class IpcrTargetComponent implements OnInit {
         this.prompt = false;
       }
     } else {
-      if (this.quantity > this.dpcrQuantity) {
+      if (this.quantity > this.dpcrQuantity || this.quantity < 0) {
         this.prompt = true;
       } else {
         this.prompt = false;
@@ -366,28 +343,37 @@ export class IpcrTargetComponent implements OnInit {
   add_qtyRemainingST: number | any;
   promptST: boolean = false;
   trapRemainingST() {
-    this.add_qtyRemainingST =
-      this.dpcrSTQuantity - this.quantityST - this.ipcrService.ipcrST_rem();
-    if (
-      this.quantityST > this.dpcrSTQuantity - this.ipcrService.ipcrST_rem() ||
-      this.quantityST < 0
-    ) {
-      this.promptST = true;
+    if (this.ipcrSTDetails.qtyUnit == 0) {
+      this.add_qtyRemainingST =
+        this.dpcrSTQuantity - this.quantityST - this.ipcrService.ipcrST_rem();
+
+      this.ipcrSTDetails.qty5 = Math.floor(
+        this.quantityST * 0.3 + this.quantityST
+      );
+      this.ipcrSTDetails.qty4 = Math.floor(
+        this.quantityST * 0.15 + this.quantityST
+      );
+      this.ipcrSTDetails.qty3 = Math.floor(this.quantityST);
+      this.ipcrSTDetails.qty2 = Math.floor(this.quantityST / 2 + 1);
+      this.ipcrSTDetails.qty1 = Math.floor(this.quantityST / 2);
+      if (
+        this.quantityST > this.dpcrSTQuantity - this.ipcrService.ipcrST_rem() ||
+        this.quantityST < 0
+      ) {
+        this.promptST = true;
+      } else {
+        this.promptST = false;
+      }
     } else {
-      this.promptST = false;
+      if (this.quantityST > this.dpcrSTQuantity || this.quantityST < 0) {
+        this.promptST = true;
+      } else {
+        this.promptST = false;
+      }
     }
   }
 
   calculateRatingST() {
-    this.ipcrSTDetails.qty5 = Math.floor(
-      this.quantityST * 0.3 + this.quantityST
-    );
-    this.ipcrSTDetails.qty4 = Math.floor(
-      this.quantityST * 0.15 + this.quantityST
-    );
-    this.ipcrSTDetails.qty3 = Math.floor(this.quantityST);
-    this.ipcrSTDetails.qty2 = Math.floor(this.quantityST / 2 + 1);
-    this.ipcrSTDetails.qty1 = Math.floor(this.quantityST / 2);
     this.trapRemainingST();
   }
 
@@ -395,25 +381,36 @@ export class IpcrTargetComponent implements OnInit {
   promptEditST: boolean = false;
   returnQtyST: number | any;
   calculateRatingSTEdit() {
-    this.qtyRemainingST =
-      this.ipcrSTDetails.totalIpcrQuantityST -
-      (this.ipcrService.ipcrST_rem() -
-        this.returnQtyST +
-        this.ipcrSTDetails.qty);
-    this.ipcrSTDetails.qty5 = Math.floor(
-      this.ipcrSTDetails.qty * 0.3 + this.ipcrSTDetails.qty
-    );
-    this.ipcrSTDetails.qty4 = Math.floor(
-      this.ipcrSTDetails.qty * 0.15 + this.ipcrSTDetails.qty
-    );
-    this.ipcrSTDetails.qty3 = Math.floor(this.ipcrSTDetails.qty);
-    this.ipcrSTDetails.qty2 = Math.floor(this.ipcrSTDetails.qty / 2 + 1);
-    this.ipcrSTDetails.qty1 = Math.floor(this.ipcrSTDetails.qty / 2);
+    if (this.ipcrSTDetails.qtyUnit == 0) {
+      this.qtyRemainingST =
+        this.ipcrSTDetails.totalIpcrQuantityST -
+        (this.ipcrService.ipcrST_rem() -
+          this.returnQtyST +
+          this.ipcrSTDetails.qty);
+      this.ipcrSTDetails.qty5 = Math.floor(
+        this.ipcrSTDetails.qty * 0.3 + this.ipcrSTDetails.qty
+      );
+      this.ipcrSTDetails.qty4 = Math.floor(
+        this.ipcrSTDetails.qty * 0.15 + this.ipcrSTDetails.qty
+      );
+      this.ipcrSTDetails.qty3 = Math.floor(this.ipcrSTDetails.qty);
+      this.ipcrSTDetails.qty2 = Math.floor(this.ipcrSTDetails.qty / 2 + 1);
+      this.ipcrSTDetails.qty1 = Math.floor(this.ipcrSTDetails.qty / 2);
 
-    if (this.qtyRemainingST < 0 || this.ipcrSTDetails.qty < 0) {
-      this.promptEditST = true;
+      if (this.qtyRemainingST < 0 || this.ipcrSTDetails.qty < 0) {
+        this.promptEditST = true;
+      } else {
+        this.promptEditST = false;
+      }
     } else {
-      this.promptEditST = false;
+      if (
+        this.ipcrSTDetails.qty > this.ipcrSTDetails.totalIpcrQuantityST ||
+        this.ipcrSTDetails.qty < 0
+      ) {
+        this.promptEditST = true;
+      } else {
+        this.promptEditST = false;
+      }
     }
   }
 
@@ -492,10 +489,6 @@ export class IpcrTargetComponent implements OnInit {
       for (let a of this.get_ipcrDetails.data) {
         for (let a_si of a.si) {
           if (a_si.isSubTask == 1 && a_si.st.length == 0) {
-            // const indexToRemove = a.si.indexOf(a_si);
-            // if (indexToRemove !== -1) {
-            //   a.si.splice(indexToRemove, 1);
-            // }
             this.ipcrService.DeleteMFO(a_si.ipcrDataId);
           }
         }
