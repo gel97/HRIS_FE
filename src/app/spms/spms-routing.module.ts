@@ -43,6 +43,11 @@ const routes: Routes = [
         path:'ots',
         loadChildren: () => import('./pages/ots/ots.module')
         .then(m => m.OtsModule),
+      },
+      {
+        path:'utility',
+        loadChildren: () => import('./pages/utility/utility.module')
+        .then(m => m.UtilityModule),
       }
     ],
   },
