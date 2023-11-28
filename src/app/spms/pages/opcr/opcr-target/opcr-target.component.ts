@@ -17,12 +17,10 @@ export class OpcrTargetComponent implements OnInit {
   reportActualService = inject(ReportActualService);
   monthRangeService = inject(MonthRangeService);
 
-  // getYear = '2023';
   getYear = new Date().getFullYear().toString();
-  // years: number[] = [2023, 2022, 2021];
   years: number[] = [];
   fullYear = '0';
-  officeId = 'OFFPHRMONZ3WT7D';
+  officeId: string | null = localStorage.getItem('officeId');
   isCommon = 0;
   opcr: any = this.opcrService.opcr;
   isShow: number | any = this.opcrService.storageIsShow;
@@ -189,19 +187,17 @@ export class OpcrTargetComponent implements OnInit {
     this.opcr.mutate((a: any) => (a.isLoading = true));
     setTimeout(() => {
       this.opcr.mutate((a: any) => (a.isLoading = false));
-      this.opcrService.GetOPCRs(this.getYear, this.officeId);
+      this.opcrService.GetOPCRs(this.getYear, this.officeId?? "");
     }, 1000);
   }
 
   EditOPCR() {
-    console.log(this.editOpcr);
     this.editOpcr.active = 1;
     this.opcrService.EditOPCR(this.editOpcr);
     this.GetOPCRs();
   }
 
   EditOPCRFinal() {
-    console.log(this.editOpcr);
     this.editOpcr.active = 2;
     this.opcrService.EditOPCR(this.editOpcr);
     this.GetOPCRs();
@@ -230,7 +226,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   GetOfficeDivision() {
-    this.opcrService.GetOfficeDivision(this.officeId);
+    this.opcrService.GetOfficeDivision(this.officeId?? "");
     setTimeout(() => {
       this.displayDivision('');
     }, 1000);
@@ -308,7 +304,6 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   DeleteOPCR(opcrId: string) {
-    console.log(opcrId);
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -362,7 +357,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
-    this.opcrService.GetOPCRs(year, this.officeId);
+    this.opcrService.GetOPCRs(year, this.officeId?? "");
   }
 
   EditOPCRData() {
@@ -381,7 +376,6 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   OPCRDetails(data: any) {
-    console.log(data);
     this.opcrService.storageIsShow.set(1);
     this.opcrService.storageOpcrId.set(data.opcrId);
     this.opcrService.storageOpcrDetails.set(data.details);

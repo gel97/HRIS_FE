@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class MfoService {
-
   mfo = signal<any>({
     data: [],
     error: false,
@@ -19,7 +18,7 @@ export class MfoService {
   });
 
   isCommon = signal<number>(0);
-  officeId = signal<string>('OFFPHRMONZ3WT7D');
+  officeId: string | null = localStorage.getItem('officeId');
 
   isSearchLoading = signal<boolean>(false);
 
@@ -33,9 +32,12 @@ export class MfoService {
   GetMFOes() {
     this.mfo.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_mfoes(this.officeId(), this.isCommon()), {
-        responseType: `json`,
-      })
+      .get<any[]>(
+        api + this.url.get_mfoes(this.officeId ?? '', this.isCommon()),
+        {
+          responseType: `json`,
+        }
+      )
       .subscribe({
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
@@ -58,9 +60,7 @@ export class MfoService {
 
           console.log(this.mfo());
         },
-        complete: () => {
-          
-        },
+        complete: () => {},
       });
   }
 
@@ -68,7 +68,7 @@ export class MfoService {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
     mfo.isCommon = this.isCommon();
-    mfo.officeId = this.officeId();
+    mfo.officeId = this.officeId;
 
     this.http
       .post<any[]>(api + this.url.post_mfo(), mfo, { responseType: `json` })
@@ -94,7 +94,7 @@ export class MfoService {
       });
   }
 
-   EditMfo(mfo: any) {
+  EditMfo(mfo: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
     this.http
@@ -113,7 +113,6 @@ export class MfoService {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
-
           });
         },
         complete: () => {},
@@ -122,21 +121,23 @@ export class MfoService {
 
   async DeleteMfo(mfoId: string) {
     try {
-      let deleteData = await this.alertService.delete(this.url.delete_mfo(mfoId));
+      let deleteData = await this.alertService.delete(
+        this.url.delete_mfo(mfoId)
+      );
 
-       if(deleteData){
+      if (deleteData) {
         this.GetMFOes();
-      }else{
+      } else {
         //console.log("cancel")
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   }
 
   AddSI(si: any, standard: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
-    si.officeId = this.officeId();
+    si.officeId = this.officeId;
 
     this.http
       .post<any[]>(api + this.url.post_success_indicator(), si, {
@@ -170,7 +171,7 @@ export class MfoService {
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
-            a.error = false
+            a.error = false;
           });
           this.GetMFOes();
 
@@ -180,7 +181,7 @@ export class MfoService {
           this.alertService.error();
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
-            a.error = true
+            a.error = true;
           });
         },
         complete: () => {},
@@ -190,7 +191,7 @@ export class MfoService {
   EditSI(si: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
-    si.officeId = this.officeId();
+    si.officeId = this.officeId;
 
     this.http
       .put<any[]>(api + this.url.put_success_indicator(), si, {
@@ -210,7 +211,6 @@ export class MfoService {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
-
           });
         },
         complete: () => {},
@@ -244,18 +244,18 @@ export class MfoService {
 
   async DeleteSI(indicatorId: string) {
     try {
-      let deleteData = await this.alertService.delete(this.url.delete_success_indicator(indicatorId));
+      let deleteData = await this.alertService.delete(
+        this.url.delete_success_indicator(indicatorId)
+      );
 
-       if(deleteData){
+      if (deleteData) {
         this.GetMFOes();
-      }else{
+      } else {
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   }
-  
-
 
   CheckMfoIfExist(payload: any): Observable<boolean> {
     return this.http
@@ -273,7 +273,7 @@ export class MfoService {
     this.isSearchLoading.set(true);
 
     payload.isCommon = this.isCommon();
-    payload.officeId = this.officeId();
+    payload.officeId = this.officeId;
 
     return this.http
       .post<any[]>(api + this.url.post_mfo_search_office(), payload, {

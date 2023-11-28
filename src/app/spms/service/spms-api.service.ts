@@ -98,5 +98,5 @@ export class SpmsApiService {
   delete_utility_user_role = (transId: string) => `/tPMUserRole/${transId}`;
   get_user_profile_picture =  (EIC: string) => `/vPMEmployee/profile_picture?EIC=${EIC}`;
 
-  get_ipcr_data = () => `/tPMIpcrDatas/list/IPCR2311071638B430B840D`;
+  get_ipcr_data = (ipcrId: string) => `/tPMIpcrDatas/list/${ipcrId}`;
 }
