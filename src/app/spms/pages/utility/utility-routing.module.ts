@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { UtilityComponent } from './utility.component';
 import { UserDivisionComponent } from './user-division/user-division.component';
+import { UtilityFocalComponent } from './utility-focal/utility-focal.component';
+
 const routes: Routes = [
   {
     path:'',
@@ -11,6 +13,10 @@ const routes: Routes = [
       {
         path: 'user-division',
         component: UserDivisionComponent,
+      },
+      {
+        path: 'utility-focal',
+        component: UtilityFocalComponent,
       },
     ]
   }

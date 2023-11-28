@@ -1,0 +1,443 @@
+<div class="row">
+  <div class="container-xxl flex-grow-1 container-p-y">
+            
+            
+    <h4 class="py-3 mb-2">Roles List</h4>
+    
+    <p>A role provided access to predefined menus and features so that depending on <br> assigned role an administrator can have access to what user needs.</p>
+    <!-- Role cards -->
+    <div class="row g-4" *ngIf="addRoleDisplay==1">
+      <div class="col-xl-4 col-lg-6 col-md-6" *ngFor="let i of this.role">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <h3 class="fw-normal">Total {{i.user.length}} users</h3>
+              <ul class="list-unstyled d-flex align-items-center avatar-group mb-0" >
+                <li *ngFor="let u of i.user;let e = index"  data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-sm pull-up" aria-label="Kim Karlos" data-bs-original-title="Kim Karlos">
+                  <img class="rounded-circle"*ngIf="e<=5" [src]="u.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/5.png'" alt="Avatar">
+                </li>
+              </ul>
+            </div>
+            <div class="d-flex justify-content-between align-items-end">
+              <div class="role-heading">
+                <h4 class="mb-1">{{i.roleName}}</h4>
+                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#addRoleModal" class="role-edit-modal"><small>Edit Role</small></a>
+              </div>
+              <a href="javascript:void(0);" class="text-muted"><i class="bx bx-copy"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      <div class="col-xl-4 col-lg-6 col-md-6">
+        <div class="card h-100">
+          <div class="row h-100">
+            <div class="col-sm-5">
+              <div class="d-flex align-items-end h-100 justify-content-center mt-sm-0 mt-3">
+                <!-- <i class="bx bxs-user-detail" style="font-size: 10rem;"></i> -->
+                <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/illustrations/sitting-girl-with-laptop-light.png" class="img-fluid" alt="Image" width="120" data-app-light-img="illustrations/sitting-girl-with-laptop-light.png" data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png">
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <div class="card-body text-sm-end text-center ps-sm-0">
+                <button (click)="addRoleDisplay=2" class="btn btn-primary mb-3 text-nowrap add-new-role">Add New Role</button>
+                <p class="mb-0">Add role, if it does not exist</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+
+        <div class="card">
+          <div class="table-responsive text-nowrap">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th style="width: 10px;"></th>
+                  <th>NAME</th>
+                  <th>ROLE</th>
+                  <th style="width: 10px;">Action</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+                <tr *ngFor="let i of employee_role;">
+                  <td>
+                    <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Lilian Fuller">
+                        <img  [src]="i.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/5.png'" alt="Avatar" class="rounded-circle">
+                      </li>
+                    </ul>
+                  </td>
+                  <td>{{i.fullNameFirst}}</td>
+                  <td><span *ngFor="let r of i.role;let e =index" class="badge m-1" [ngClass]="e%2==0?'bg-label-dark':'bg-label-success'">{{r.roleName.toUpperCase()}} <i class="bx bx-x-circle cursor-pointer" style="color: red;" matTooltip="Remove" [matTooltipPosition]="'above'" (click)="delete_user_role(r.transId)"></i></span></td>
+                  <td>
+                    <i class="bx bx-edit-alt" (click)="userEIC=i.eic;userMenus();addRoleDisplay=2"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Role cards -->
+    <div class="row"  *ngIf="addRoleDisplay==2">
+      <div class="col"></div>
+      <div class="col-8">
+        <div class="card">
+          <div class="card-header">
+  
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col"></div>
+              <div class="col-lg-8">
+                <div class="row">
+                  <div class="text-center mb-4">
+                    <h3 class="role-title">Add New Role</h3>
+                    <p>Set role permissions</p>
+                  </div>
+                  <div class="col-lg-12">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                      <mat-label>EMPLOYEE</mat-label>
+                      <mat-select [(ngModel)]="userEIC"  (ngModelChange)="userMenus()" >
+                          <mat-option>
+                              <ngx-mat-select-search [(ngModel)]="SearchName" (ngModelChange)="searchFilter()" placeholderLabel="Search..."  noEntriesFoundLabel="'no match found'"></ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option *ngFor="let i of empListfitler()" value="{{i.eic}}"> {{i.lastName}}, {{i.firstName}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <h4>Role Permissions</h4>
+                    <!-- Permission table -->
+                    <div class="table-responsive">
+                      <table class="table table-flush-spacing">
+                        <tbody>
+                          <tr>
+                            <td class="text-nowrap fw-medium">Administrator Access <i class="bx bx-info-circle bx-xs" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Allows a full access to the system" data-bs-original-title="Allows a full access to the system"></i></td>
+                            <td style="width: 20%;">
+                              <div class="form-check">
+                                <mat-checkbox class="example-margin"
+                                              [checked]="allComplete"
+                                              
+                                              [indeterminate]="check_Complete()"
+                                              (change)="select_All_Role($event.checked)">
+                                              Select All
+                                </mat-checkbox>
+                              </div>
+                            </td>
+                            <td style="width: 20%;"></td>
+                          </tr>
+                          <tr *ngFor="let i of role_list;let e = index">
+                            <td class="text-nowrap fw-medium">{{i.roleName.toUpperCase()}}</td>
+                            <td>
+                              <div class="d-flex">
+                                <div class="form-check me-3 me-lg-5">
+                                  <mat-checkbox 
+                                  [(ngModel)]="i.isCheck"
+                                  (ngModelChange)="update_All_Check()">
+                                    Access
+                                  </mat-checkbox>
+                                  <!-- <input class="form-check-input" type="checkbox" id="{{e}}{{i.roleId}}" [checked]="i.isCheck">
+                                  <label class="form-check-label" for="{{e}}{{i.roleId}}">
+                                    Access
+                                  </label> -->
+                                </div>
+                              
+                                <!-- 
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="userManagementCreate">
+                                  <label class="form-check-label" for="userManagementCreate">
+                                    Create
+                                  </label>
+                                </div> -->
+                              </div>
+                            </td>
+                            <td class="text-left" style="text-align: left;">
+                              <mat-progress-bar mode="query" *ngIf="i.isProgress"></mat-progress-bar>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- Permission table -->
+                  </div>
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary me-sm-3 me-1" (click)="addUserMenu()">Submit</button>
+                    <button type="reset" class="btn btn-label-secondary" (click)="addRoleDisplay=1">Cancel</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col"></div>
+
+    </div>
+    <!-- Add Role Modal -->
+    <div class="modal fade" id="addRoleModal" tabindex="-1" aria-modal="true" role="dialog">
+      <div class="modal-dialog modal-lg modal-simple modal-dialog-centered modal-add-new-role">
+        <div class="modal-content p-3 p-md-5">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center mb-4">
+              <h3 class="role-title">Add New Role</h3>
+              <p>Set role permissions</p>
+            </div>
+            <!-- Add role form -->
+            <div id="addRoleForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework" >
+              <div class="col-12 mb-4 fv-plugins-icon-container">
+                
+                
+              <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div></div>
+              <div class="col-12">
+                <h4>Role Permissions</h4>
+                <!-- Permission table -->
+                <div class="table-responsive">
+                  <table class="table table-flush-spacing">
+                    <tbody>
+                      <tr>
+                        <td class="text-nowrap fw-medium">Administrator Access <i class="bx bx-info-circle bx-xs" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Allows a full access to the system" data-bs-original-title="Allows a full access to the system"></i></td>
+                        <td>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
+                            <label class="form-check-label" for="selectAll">
+                              Select All
+                            </label>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let i of role_list;let e = index">
+                        <td class="text-nowrap fw-medium">{{i.roleName}}</td>
+                        <td>
+                          <div class="d-flex">
+                            <div class="form-check me-3 me-lg-5">
+                              <input class="form-check-input" type="checkbox" id="{{e}}{{i.roleId}}">
+                              <label class="form-check-label" for="{{e}}{{i.roleId}}">
+                                Read
+                              </label>
+                            </div>
+                            <!-- <div class="form-check me-3 me-lg-5">
+                              <input class="form-check-input" type="checkbox" id="userManagementWrite">
+                              <label class="form-check-label" for="userManagementWrite">
+                                Write
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="userManagementCreate">
+                              <label class="form-check-label" for="userManagementCreate">
+                                Create
+                              </label>
+                            </div> -->
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Permission table -->
+              </div>
+              <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+              </div>
+            <input type="hidden">
+          </div>
+            <!--/ Add role form -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / Add Role Modal -->
+              </div>
+</div>
+<div class="row hide">
+    <div class="col">
+      <div class="row">
+        <div class="col mb-4">
+          <div class="card">
+              <div class="card-header">
+                  <h1>FOCAL SETTINGS</h1>
+              </div>
+              <div class="card-body">
+                      <div class="col-lg-12">
+                          
+                      </div>
+                      <div class="col">
+                          <div class="example-container">
+                              <div
+                                cdkDropList
+                                #todoList="cdkDropList"
+                                [cdkDropListData]="role_list"
+                                [cdkDropListConnectedTo]="[doneList]"
+                                class="example-list"
+                                (cdkDropListDropped)="drop($event)">
+                                <div class="example-box bg-lighter" *ngFor="let i of role_list" cdkDrag>
+                                   {{i.roleName.toUpperCase()}}  <i class="menu-icon tf-icons bx bx-folder-open" ></i> 
+                                  </div>
+                              </div>
+                            </div>
+                      </div>
+                  
+                  <!-- <div class="col-lg-12">
+               
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                          <mat-label>Role</mat-label>
+                          <mat-select name="accountInfo.sex" >
+                            <mat-option *ngFor="let i of role_list" [value]="i.roleId"> {{i.roleName}}</mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                  </div> -->
+                  
+                  
+              </div>
+          </div>
+        </div>
+        <div class="col  mb-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h1>USER ROLE</h1>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="example-container">
+                                <div
+                                  cdkDropList
+                                  #doneList="cdkDropList"
+                                  [cdkDropListData]="user_role"
+                                  [cdkDropListConnectedTo]="[todoList]"
+                                  class="example-list"
+                                  (cdkDropListDropped)="drop($event)">
+                                  <div class="example-box border border-primary" *ngFor="let i of user_role" cdkDrag>  
+                                    {{i.roleName.toUpperCase()}} 
+                                    <span>
+                                      <i (click)="addUserMenu()" class="menu-icon tf-icons bx bx-plus-circle" matTooltip="Save" [matTooltipPosition]="'above'" style="cursor: pointer;"></i> 
+                                      <i class="menu-icon tf-icons bx bx-x-circle"  matTooltip="Remove" [matTooltipPosition]="'above'" style="cursor: pointer;"></i> 
+                                    </span>
+                                </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button mat-fab extended color="primary" (click)="updateUserRole()"  data-bs-toggle="modal" data-bs-target="#viewAttachment" matTooltip="Update"  matTooltipPosition="above"  class="text-center">
+                                <mat-icon>
+                                    <span class="material-symbols-outlined">
+                                        add_circle
+                                    </span>
+                                </mat-icon>
+                                Update
+                              </button>
+                        </div>
+                    </div>
+            
+                    
+                </div>
+            </div>
+        </div>
+      </div>
+     
+    </div>
+    <div class="col-lg-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+            <h1>USER MENU</h1>
+        </div>
+        <div class="card-body">
+            <div class="accordion stick-top accordion-bordered course-content-fixed" id="courseContent">
+                <div class="accordion-item shadow-none border border-bottom-0 mb-0" *ngFor="let menu of user_menu;let i = index">
+                  <div class="accordion-header" id="headingOne" >
+                    <button type="button" class="accordion-button bg-lighter rounded-0 open" data-bs-toggle="collapse" data-bs-target="#chapterOne" aria-expanded="false" aria-controls="chapterOne">
+                      <span class="d-flex flex-column">
+                        <span class="h5 mb-1"> {{menu.menuName}}</span>
+                        <!-- <span class="fw-normal">2 / 5 | 4.4 min</span> -->
+                      </span>
+                    </button>
+                  </div>
+                  <div id="chapterOne" class="accordion-collapse open" data-bs-parent="#courseContent" style="">
+                    <div class="accordion-body py-3 border-top">
+                      <div class="form-check d-flex align-items-center mb-3" *ngFor="let sub_menu of menu.subMenu">
+                        <input class="form-check-input" type="checkbox" id="defaultCheck1" checked="">
+                        <label for="defaultCheck1" class="form-check-label ms-3">
+                          <span class="mb-0 h6">{{sub_menu.subMenuName}}</span>
+                          <!-- <span class="text-muted d-block">2.4 min</span> -->
+                        </label>
+                      </div>
+                    
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="accordion-item shadow-none border border-bottom-0 mb-0">
+                  <div class="accordion-header" id="headingTwo">
+                    <button type="button" class="bg-lighter rounded-0 accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chapterTwo" aria-expanded="false" aria-controls="chapterTwo">
+                      <span class="d-flex flex-column">
+                        <span class="h5 mb-1">Web Design for Web Developers</span>
+                        <span class="fw-normal">1 / 4 | 4.4 min</span>
+                      </span>
+                    </button>
+                  </div>
+                  <div id="chapterTwo" class="accordion-collapse collapse" data-bs-parent="#courseContent" style="">
+                    <div class="accordion-body py-3 border-top">
+                      <div class="form-check d-flex align-items-center mb-3">
+                        <input class="form-check-input" type="checkbox" id="defCheck1" checked="">
+                        <label for="defCheck1" class="form-check-label ms-3">
+                          <span class="mb-0 h6">1. How to use Pages in Figma</span>
+                          <span class="text-muted d-block">8:31 min</span>
+                        </label>
+                      </div>
+                      <div class="form-check d-flex align-items-center mb-3">
+                        <input class="form-check-input" type="checkbox" id="defCheck2">
+                        <label for="defCheck2" class="form-check-label ms-3">
+                          <span class="mb-0 h6">2. What is Lo Fi Wireframe</span>
+                          <span class="text-muted d-block">2 min</span>
+                        </label>
+                      </div>
+                      <div class="form-check d-flex align-items-center mb-3">
+                        <input class="form-check-input" type="checkbox" id="defCheck3">
+                        <label for="defCheck3" class="form-check-label ms-3">
+                          <span class="mb-0 h6">3. How to use color in Figma</span>
+                          <span class="text-muted d-block">5.9 min</span>
+                        </label>
+                      </div>
+                      <div class="form-check d-flex align-items-center">
+                        <input class="form-check-input" type="checkbox" id="defCheck4">
+                        <label for="defCheck4" class="form-check-label ms-3">
+                          <span class="mb-0 h6">4. Frames vs Groups in Figma</span>
+                          <span class="text-muted d-block">3.6 min</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+          
+              </div>
+            <div class="table-responsive text-nowrap hide">
+                <table class="table table-borderless table-hover table-striped">
+                    <tbody class="table-border-bottom-0" *ngFor="let menu of user_menu">
+                        <tr>
+                            <th colspan="2">
+                                {{menu.menuName}}
+                            </th>
+                        </tr>
+                        <tr *ngFor="let sub_menu of menu.subMenu">
+                            <td></td>
+                            <td>
+                                {{sub_menu.subMenuName}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    </div>
+</div>

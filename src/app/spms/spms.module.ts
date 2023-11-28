@@ -11,6 +11,7 @@ import { SpmsComponent } from './spms.component';
 import { SpinnerComponent } from './components/spinner.component';
 import { LinearLoadingComponent } from './components/linear-loading/linear-loading.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { UtilityComponent } from './pages/utility/utility.component';
 
 import {
   CdkDrag,
@@ -27,7 +28,6 @@ import { IpcrTargetSkeletonComponent } from './pages/ipcr/ipcr-target/components
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
 import { OtsComponent } from './pages/ots/ots.component';
-import { UtilityComponent } from './pages/utility/utility.component';
 @NgModule({
   declarations: [
     SpmsComponent,
