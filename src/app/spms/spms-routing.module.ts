@@ -7,7 +7,6 @@ import { OpcrTargetComponent } from './pages/opcr/opcr-target/opcr-target.compon
 import { SpmsComponent } from './spms.component';
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -43,7 +42,12 @@ const routes: Routes = [
         path:'ots',
         loadChildren: () => import('./pages/ots/ots.module')
         .then(m => m.OtsModule),
-      }
+      },
+      {
+        path:'utility',
+        loadChildren: () => import('./pages/utility/utility.module')
+        .then(m => m.UtilityModule),
+      },
     ],
   },
 ];

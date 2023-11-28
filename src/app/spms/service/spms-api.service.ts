@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AnyRecord } from 'dns';
 import { api } from 'src/app/connection';
 @Injectable({
   providedIn: 'root',
@@ -87,7 +88,15 @@ export class SpmsApiService {
   post_ots = () => `/tPMOts`;
   get_ots = () => `/tPMOts`;
 
-  get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
+  get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
+  post_officedivision = () => `/tPMOfficeDivisions`;
 
   get_ipcr_data = (ipcrId: string) => `/tPMIpcrDatas/list/${ipcrId}`;
+
+  post_employee_no_division = () => `/vPMEmployee/employee/no_division`;
+  post_employee_division = () => `/vPMEmployee/employee/division/list`;
+  post_employee_add_division = () => `/vPMEmployee/employee/add/division`;
+  put_employee_update_division = () => `/vPMEmployee/employee/update/division`;
+  delete_employee_division = (EIC:string) => `/vPMEmployee/employee/remove/division/${EIC}`;
+
 }
