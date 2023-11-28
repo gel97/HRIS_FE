@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { AnyRecord } from 'dns';
 import { api } from 'src/app/connection';
 @Injectable({
   providedIn: 'root',
 })
 export class SpmsApiService {
   constructor() {}
+  get_employee_list = () =>'/vPMEmployee';
+
   get_mfoes = (officeId: string, type: number) =>
     `/tPMMFOes/${officeId}/${type}`;
   post_mfo_search_office = () => `/tPMMFOes/Search`;
@@ -87,7 +90,22 @@ export class SpmsApiService {
   post_ots = () => `/tPMOts`;
   get_ots = () => `/tPMOts`;
 
-  get_officedivision = (officeId: string) => `/tPMOfficeDivisions/${officeId}`;
+  get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
+  post_officedivision = () => `/tPMOfficeDivisions`;
+
+  get_utility_role = () =>'/tPMRole';
+  post_utility_employee_role = (officeId:string) =>`/vPMEmployee/employee_role?officeId=${officeId}`;
+  get_utility_user_role = (EIC: string) =>`/tPMUserRole/user_role/${EIC}`;
+  post_utility_user_role = () =>`/tPMUserRole`;
+  delete_utility_user_role = (transId: string) => `/tPMUserRole/${transId}`;
+  get_user_profile_picture =  (EIC: string) => `/vPMEmployee/profile_picture?EIC=${EIC}`;
 
   get_ipcr_data = (ipcrId: string) => `/tPMIpcrDatas/list/${ipcrId}`;
+
+  post_employee_no_division = () => `/vPMEmployee/employee/no_division`;
+  post_employee_division = () => `/vPMEmployee/employee/division/list`;
+  post_employee_add_division = () => `/vPMEmployee/employee/add/division`;
+  put_employee_update_division = () => `/vPMEmployee/employee/update/division`;
+  delete_employee_division = (EIC:string) => `/vPMEmployee/employee/remove/division/${EIC}`;
+
 }
