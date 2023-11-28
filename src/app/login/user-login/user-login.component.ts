@@ -27,7 +27,7 @@ export class UserLoginComponent implements OnInit {
     this.loading = true;
     this.Auth.login(this.login).subscribe({
       next: (data: any) => {
-        (this.eic = data.eic), console.log('EIC', data.eic);
+        this.eic = data.eic;
         this.Router.navigate(['']);
       },
       error: (error: any) => {

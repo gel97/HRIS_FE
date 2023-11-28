@@ -16,8 +16,6 @@ export class IpcrService {
     private alertService: AlertService
   ) {}
 
-  // ipcrTargetService = inject(IpcrTargetComponent);
-
   storageIsShow = signal<any>(localStorage.getItem('isShow_ipcr'));
   storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
   storageIpcrData = signal<any>(localStorage.getItem('ipcrData'));
@@ -32,7 +30,6 @@ export class IpcrService {
 
   ipcr_rem = signal<number>(0);
   ipcrST_rem = signal<number>(0);
-  // ipcr_rem: number | any;
 
   ipcrDetails = signal<any>({
     data: [],
@@ -69,27 +66,8 @@ export class IpcrService {
       });
   }
 
-  // GetIPCRDetails() {
-  //   this.ipcrDetails.mutate((a) => (a.isLoading = true));
-  //   this.http
-  //     .get<any[]>(api + this.url.get_ipcrdetails(this.storageIpcrId()), {
-  //       responseType: `json`,
-  //     })
-  //     .subscribe({
-  //       next: (response: any = {}) => {
-  //         this.ipcrDetails.mutate((a) => (a.data = response));
-  //         this.ipcrDetails.mutate((a) => (a.isLoading = false));
-  //       },
-  //       error: () => {
-  //         this.alertService.error();
-  //       },
-  //       complete: () => {},
-  //     });
-  // }
-
   GetIPCRDetails() {
     this.ipcrDetails.mutate((a) => (a.isLoading = true));
-    // this.ipcrDetails.mutate((a) => (a.completeLoading = true));
     this.http
       .get<any[]>(api + this.url.get_ipcrdetails_wSub(this.storageIpcrId()), {
         responseType: `json`,
@@ -102,11 +80,7 @@ export class IpcrService {
         error: () => {
           this.alertService.error();
         },
-        complete: () => {
-          // this.ipcrDetails.mutate((a) => (a.completeLoading = false));
-          // this.tagRemove = false;
-          // console.log('shet complete');
-        },
+        complete: () => {},
       });
   }
 
@@ -169,7 +143,6 @@ export class IpcrService {
   }
 
   AddIPCR(data: any) {
-    // data.divisionId = this.divisionId;
     this.http
       .post<any[]>(api + this.url.post_ipcr(), data, {
         responseType: `json`,
@@ -188,7 +161,6 @@ export class IpcrService {
   }
 
   AddIPCRData(data: any) {
-    // this.loading = true;
     this.http
       .post<any[]>(api + this.url.post_ipcrData(), data, {
         responseType: `json`,
@@ -198,13 +170,11 @@ export class IpcrService {
           this.GetIPCRDetails();
           this.ViewGetDPCR_IPCR();
           this.sortExcist();
-          //this.siChecker();
         },
         error: (error: any) => {
           this.alertService.error();
         },
         complete: () => {
-          // this.loading = false;
           this.alertService.save();
         },
       });
@@ -221,7 +191,6 @@ export class IpcrService {
           this.ipcrDetails.mutate((a) => (a.completeLoading = false));
         },
         complete: () => {
-          // this.closebutton.nativeElement.click();
           this.alertService.update();
         },
       });
@@ -238,7 +207,6 @@ export class IpcrService {
           this.ipcrDetails.mutate((a) => (a.completeLoading = false));
         },
         complete: () => {
-          // this.closebutton.nativeElement.click();
           this.alertService.update();
         },
       });
@@ -313,14 +281,6 @@ export class IpcrService {
         this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
         this.siChecker();
         this.removeMFO();
-        // console.log('Data', this.dpcr_ipcr().data);
-        // for (let a of this.dpcr_ipcr().data) {
-        //   for (let a_si of a.si) {
-        //     if (a_si.length > 0) {
-        //       this.dpcr_ipcr.mutate((a) => (a.isNoData = true));
-        //     }
-        //   }
-        // }
       }
     }, 1000);
   }
@@ -330,7 +290,6 @@ export class IpcrService {
       this.dpcr_ipcr.mutate((a) => (a.isNoData = false));
       for (let a of this.dpcr_ipcr().data) {
         if (a.si.length > 0) {
-          // this.noSIDataboolean = true;
           this.dpcr_ipcr.mutate((a) => (a.isNoData = true));
         }
       }
@@ -343,10 +302,6 @@ export class IpcrService {
       for (let a of this.ipcrDetails().data) {
         for (let a_si of a.si) {
           if (a_si.isSubTask == 1 && a_si.st.length == 0) {
-            // const indexToRemove = a.si.indexOf(a_si);
-            // if (indexToRemove !== -1) {
-            //   a.si.splice(indexToRemove, 1);
-            // }
             this.tagRemove = true;
             this.DeleteMFO(a_si.ipcrDataId);
           }
@@ -418,7 +373,6 @@ export class IpcrService {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        // this.ipcrDetails.mutate((a) => (a.completeLoading = true));
         this.http
           .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
           .subscribe({
@@ -432,7 +386,6 @@ export class IpcrService {
             },
             complete: () => {
               this.ipcr_rem.set(0);
-              // this.StorageOPCRDetails(this.getId);
               const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-start',
@@ -451,11 +404,6 @@ export class IpcrService {
               });
             },
           });
-        // Swal.fire({
-        //   title: 'Deleted!',
-        //   text: 'Your file has been deleted.',
-        //   icon: 'success',
-        // });
       }
     });
   }
@@ -472,7 +420,6 @@ export class IpcrService {
           this.alertService.error();
         },
         complete: () => {
-          // this.StorageOPCRDetails(this.getId);
           this.GetIPCRDetails();
         },
       });
@@ -503,7 +450,6 @@ export class IpcrService {
             },
             complete: () => {
               this.ipcrST_rem.set(0);
-              // this.StorageOPCRDetails(this.getId);
               const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-start',
@@ -522,11 +468,6 @@ export class IpcrService {
               });
             },
           });
-        // Swal.fire({
-        //   title: 'Deleted!',
-        //   text: 'Your file has been deleted.',
-        //   icon: 'success',
-        // });
       }
     });
   }
