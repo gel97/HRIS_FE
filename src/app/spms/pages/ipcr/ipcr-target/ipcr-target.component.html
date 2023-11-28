@@ -380,7 +380,7 @@ height: 100%;
 </div>
 
 <!-- DPCR IPCR Add -->
-<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+<div class="offcanvas offcanvas-end offcanvas-end-modified" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
     id="offcanvasDPCR_IPCR" aria-labelledby="offcanvasScrollLabel" style="z-index: 10;">
     <div class="offcanvas-header">
         <h1 id="offcanvasScrollLabel" class="offcanvas-title">DPCR MAJOR FINAL OUTPUT</h1>
@@ -578,7 +578,7 @@ height: 100%;
                                 type="number" class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label> &nbsp;
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>&nbsp;
                             <span class="badge rounded-pill bg-success">{{quantityLabeler(ipcrDetails.qtyUnit)}}</span>
                             <input disabled [(ngModel)]="dpcrQuantity" type="number" class="form-control"
                                 id="basic-default-fullname" placeholder="" />
@@ -741,7 +741,7 @@ height: 100%;
                                 id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label" for="basic-default-fullname">DPCR Total Subtask</label> &nbsp;
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Subtask</label>&nbsp;
                             <span
                                 class="badge rounded-pill bg-success">{{quantityLabeler(ipcrSTDetails.qtyUnit)}}</span>
                             <input disabled [(ngModel)]="dpcrSTQuantity" type="number" class="form-control"
@@ -904,7 +904,8 @@ height: 100%;
                                 id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>&nbsp;
+                            <span class="badge rounded-pill bg-success">{{quantityLabeler(ipcrDetails.qtyUnit)}}</span>
                             <input disabled [(ngModel)]="ipcrDetails.totalIpcrQuantity" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
@@ -1066,7 +1067,9 @@ height: 100%;
                                 id="basic-default-fullname" placeholder="" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label" for="basic-default-fullname">DPCR Subtask Quantity</label>
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Subtask</label>&nbsp;
+                            <span
+                                class="badge rounded-pill bg-success">{{quantityLabeler(ipcrSTDetails.qtyUnit)}}</span>
                             <input disabled [(ngModel)]="ipcrSTDetails.totalIpcrQuantityST" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
