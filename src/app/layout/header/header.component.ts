@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
-import { UserStoreService } from 'src/app/service/user-store.service';
+import { UtlityService } from 'src/app/spms/service/utility.service';
 
 @Component({
   selector: 'app-header',
@@ -8,30 +8,32 @@ import { UserStoreService } from 'src/app/service/user-store.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor(private Auth: AuthService, private UserStore: UserStoreService) {}
+  constructor(
+    private Auth: AuthService,
+    private ProfilePicture: UtlityService
+  ) {}
 
   public fullName: string | any;
   public officeName: string | any;
+  public profilePicture: any = {};
 
   ngOnInit(): void {
-    // this.storeCredentials();
     this.fullName = localStorage.getItem('fullName');
     this.officeName = localStorage.getItem('officeName');
+    this.get_profile_picture();
   }
 
-  // storeCredentials() {
-  //   this.UserStore.getOfficeIdFromStore().subscribe((val) => {
-  //     let officeId = this.Auth.getOfficeIdFromToken();
-  //     // this.officeId = val || officeId;
-  //     localStorage.setItem('officeId', officeId);
-  //   });
-
-  //   this.UserStore.getDivisionIdFromStore().subscribe((val) => {
-  //     let divisionId = this.Auth.getDivisionIdFromToken();
-  //     // this.divisionId = val || divisionId;
-  //     localStorage.setItem('divisionId', divisionId);
-  //   });
-  // }
+  get_profile_picture() {
+    this.ProfilePicture.get_profile_picture(
+      localStorage.getItem('userId')
+    ).subscribe({
+      next: (data: any) => {
+        this.profilePicture = data;
+      },
+      error: (error: any) => {},
+      complete: () => {},
+    });
+  }
 
   Logout() {
     this.Auth.signout();
