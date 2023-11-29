@@ -141,10 +141,6 @@ export class UtilityFocalComponent implements OnInit{
       alert('error')
     }
     );
-
-
- 
-
   }
   updateUserRole(){
     console.log(this.user_role)
@@ -174,23 +170,28 @@ export class UtilityFocalComponent implements OnInit{
     this.allComplete = this.role_list != null && this.role_list.every((t:any) => t.isCheck);
   }
   addUserMenu(){
-    if (!this.userEIC ) this.alertService.customError('Please Select User')
-    if (this.role_list.filter((i:any) => i.isCheck).length <= 0) this.alertService.customError('Please Select Role')
+    if (!this.userEIC ) {this.alertService.customError('Please Select User') 
+    return;}
+    if (this.role_list.filter((i:any) => i.isCheck).length <= 0) {this.alertService.customError('Please Select Role')
+    return;}
     for (let i of this.role_list) {
       if (i.isCheck) {
        i.isProgress=true;
        i.EIC=this.userEIC;  
-       this._utilService.add_user_menu(i).subscribe(request=>{
-        i.isProgress=false;
-        this.alertService.save();
-        this.initData();
-        this.userMenus();
-
-       },err=>{
-        this.alertService.error();
-       });
       }
     }
+    this._utilService.add_user_menu(this.role_list,this.userEIC).subscribe(request=>{
+      this.alertService.save();
+      this.initData();
+      this.userMenus();
+      for (let i of this.role_list) {
+        if (i.isCheck) {
+         i.isProgress=false;
+        }
+      }
+     },err=>{
+      this.alertService.error();
+     });
   }
   delete_user_role(transId:any){
     this._utilService.delete_user_role(transId).subscribe(request=>{

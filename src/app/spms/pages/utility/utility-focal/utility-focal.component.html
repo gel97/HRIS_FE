@@ -1,9 +1,6 @@
 <div class="row">
   <div class="container-xxl flex-grow-1 container-p-y">
-            
-            
     <h4 class="py-3 mb-2">Roles List</h4>
-    
     <p>A role provided access to predefined menus and features so that depending on <br> assigned role an administrator can have access to what user needs.</p>
     <!-- Role cards -->
     <div class="row g-4" *ngIf="addRoleDisplay==1">
@@ -14,7 +11,7 @@
               <h3 class="fw-normal">Total {{i.user.length}} users</h3>
               <ul class="list-unstyled d-flex align-items-center avatar-group mb-0" >
                 <li *ngFor="let u of i.user;let e = index"  data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-sm pull-up" aria-label="Kim Karlos" data-bs-original-title="Kim Karlos">
-                  <img class="rounded-circle"*ngIf="e<=5" [src]="u.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/5.png'" alt="Avatar">
+                  <img class="rounded-circle"*ngIf="e<=5" [src]="u.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/user_picture.png'" alt="Avatar">
                 </li>
               </ul>
             </div>
@@ -65,14 +62,14 @@
                   <td>
                     <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                       <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Lilian Fuller">
-                        <img  [src]="i.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/5.png'" alt="Avatar" class="rounded-circle">
+                        <img  [src]="i.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/user_picture.png'" alt="Avatar" class="rounded-circle">
                       </li>
                     </ul>
                   </td>
                   <td>{{i.fullNameFirst}}</td>
                   <td><span *ngFor="let r of i.role;let e =index" class="badge m-1" [ngClass]="e%2==0?'bg-label-dark':'bg-label-success'">{{r.roleName.toUpperCase()}} <i class="bx bx-x-circle cursor-pointer" style="color: red;" matTooltip="Remove" [matTooltipPosition]="'above'" (click)="delete_user_role(r.transId)"></i></span></td>
                   <td>
-                    <i class="bx bx-edit-alt" (click)="userEIC=i.eic;userMenus();addRoleDisplay=2"></i>
+                    <i class="bx bx-edit-alt cursor-pointer" (click)="userEIC=i.eic;userMenus();addRoleDisplay=2" matTooltip="Edit" [matTooltipPosition]="'above'"></i>
                   </td>
                 </tr>
               </tbody>
