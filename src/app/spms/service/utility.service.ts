@@ -25,8 +25,8 @@ export class UtlityService  {
   get_user_role(EIC:string):Observable<any[]>{
     return this.http.get<any[]>(api+this.url.get_utility_user_role(EIC),{ responseType: `json`});
   }
-  add_user_menu(menu:any={}){
-    return this.http.post(api+this.url.post_utility_user_role(),menu,{ responseType: `json`});
+  add_user_menu(menu:any={},EIC:string){
+    return this.http.post(api+this.url.post_utility_user_role(EIC),menu,{ responseType: `json`});
   }
   delete_user_role(transId:any){
     return this.http.delete(api+this.url.delete_utility_user_role(transId),{ responseType: `json`});

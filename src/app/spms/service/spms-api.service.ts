@@ -94,7 +94,7 @@ export class SpmsApiService {
   get_utility_role = () =>'/tPMRole';
   post_utility_employee_role = (officeId:string) =>`/vPMEmployee/employee_role?officeId=${officeId}`;
   get_utility_user_role = (EIC: string) =>`/tPMUserRole/user_role/${EIC}`;
-  post_utility_user_role = () =>`/tPMUserRole`;
+  post_utility_user_role = (EIC:string) =>`/tPMUserRole?EIC=${EIC}`;
   delete_utility_user_role = (transId: string) => `/tPMUserRole/${transId}`;
   get_user_profile_picture =  (EIC: string) => `/vPMEmployee/profile_picture?EIC=${EIC}`;
 
