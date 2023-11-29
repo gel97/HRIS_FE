@@ -9,6 +9,7 @@ import {
 import { Observable, catchError, throwError } from 'rxjs';
 import { AuthService } from './service/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -29,7 +30,22 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((err: any) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
-            alert('session expired, please login again');
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
+
+            Toast.fire({
+              icon: 'error',
+              title: 'Session expired, please login again',
+            });
             this.Auth.signout();
             this.Router.navigate(['user-login']);
           }

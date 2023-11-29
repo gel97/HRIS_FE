@@ -52,11 +52,9 @@ export class UserLoginComponent implements OnInit {
       complete: () => {
         this.Auth.loginHRIS(this.eic).subscribe({
           next: (data: any) => {
-            console.log(data);
             this.Auth.storeDetails(data);
             this.Auth.storeToken(data.token);
             let tokenPayload = this.Auth.decodedToken();
-            console.log('tokenpayload', tokenPayload);
             this.UserStore.setOfficeIdFromStore(tokenPayload.officeId);
             this.UserStore.setDivisionIdFromStore(tokenPayload.divisionId);
             this.Router.navigate(['']);

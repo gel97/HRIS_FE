@@ -30,7 +30,6 @@ export class AuthService {
   }
 
   storeDetails(data: any = {}) {
-    console.log('autservice', data);
     localStorage.setItem('fullName', data.fullNameFirst);
     localStorage.setItem('officeName', data.officeNameShort);
     localStorage.setItem('divisionName', data.divisionName);
