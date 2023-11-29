@@ -14,7 +14,7 @@ import { ErrorComponent } from './spms/components/error/error.component';
 import { FormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { UserLoginComponent } from './login/user-login/user-login.component';
-
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
 import { DatePipe } from '@angular/common';
@@ -37,6 +37,7 @@ import { DatePipe } from '@angular/common';
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    NgxSkeletonLoaderModule
   ],
   providers: [
     DatePipe,
