@@ -2,3 +2,6 @@
 export const api: string = 'https://localhost:7114/api';
 //export const api: string = 'https://davaodelnorte.ph/AppData/hrisv3api/api';
 
+// export const api: string = 'https://localhost:7114/api';
+//export const api: string = 'https://davaodelnorte.ph/AppData/hrisv3api/api';
+//export const api: string = 'https://localhost:44395/api';

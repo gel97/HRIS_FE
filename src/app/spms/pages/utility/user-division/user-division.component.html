@@ -1,0 +1,17 @@
+<app-table-office-division/>
+<div class="row">
+    <div class="col-6">
+        <app-table-employee-no-div 
+            [employee]="empNoDiv" 
+            [officeDivision]="officeDivision" 
+            (addEmployeeDivision)="AddEmployeeDivision($event)"
+        />
+    </div>
+    <div class="col-6">
+        <app-table-employee-div 
+            [employee]="empDiv" 
+            [officeDivision]="officeDivision"
+            (updateEmployeeDivision)="UpdateEmployeeDivision($event)"
+        />
+    </div>
+</div>

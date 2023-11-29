@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UtilityFocalComponent } from './utility-focal/utility-focal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilityRoutingModule } from './utility-routing.module';
-import { FormsModule } from '@angular/forms';
-
+import { UserDivisionComponent } from './user-division/user-division.component';
+import { TableEmployeeNoDivComponent } from './user-division/components/table-employee-no-div.component';
+import { TableEmployeeDivComponent } from './user-division/components/table-employee-div.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { TableOfficeDivisionComponent } from './user-division/components/table-office-division.component';
+import { UtilityFocalComponent } from './utility-focal/utility-focal.component';
 import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -30,14 +33,20 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
+    UserDivisionComponent,
+    TableEmployeeNoDivComponent,
+    TableEmployeeDivComponent,
+    TableOfficeDivisionComponent,
     UtilityFocalComponent
-  ],
 
+  ],
   imports: [
     CommonModule,
     FormsModule,
-    NgxSkeletonLoaderModule,
+    ReactiveFormsModule,
     UtilityRoutingModule,
+    NgxSkeletonLoaderModule,
+    MatPaginatorModule,
     MatButtonModule,
     MatStepperModule,
     MatFormFieldModule,
@@ -50,7 +59,6 @@ import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
     MatTableModule,
     MatCheckboxModule,
     MatIconModule,
-    MatPaginatorModule,
     MatSortModule,
     MatExpansionModule,
     MatTooltipModule,
@@ -63,7 +71,6 @@ import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
     NgxMatSelectSearchModule,
     CdkDropList,
     CdkDrag
-    
   ]
 })
 export class UtilityModule { }

@@ -1,15 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { MenuService } from 'src/app/service/menu.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
+  menuService = inject(MenuService);
+  menu = this.menuService.menu();
   sample: number = 0;
   sample1: number = 0;
   sample2: number = 0;
   sample3: number = 0;
+
+  ngOnInit(): void {
+    this.getSPMSMenu();
+  }
+
+  getSPMSMenu(){
+    this.menuService.GetMenu()
+  }
+
+  selectedMenu:string = '';
+
+  toogle(menuName:string){
+    this.selectedMenu = this.selectedMenu === menuName ? "" : menuName;
+  }
 
   toggleSubMenu(menuNumber: number): void {
     this.sample = this.sample === menuNumber ? 0 : menuNumber;
