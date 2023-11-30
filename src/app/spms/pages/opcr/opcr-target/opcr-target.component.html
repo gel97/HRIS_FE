@@ -27,7 +27,7 @@
                     </span>
                 </a>
             </div>
-            <div *ngIf="isShow() == 0" class="col-4">
+            <div *ngIf="isShow() == 0 && opcr().data.length == 0" class="col-4">
                 <div class="pt-4" style="margin-right:5px;">
                     <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
@@ -88,7 +88,7 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a *ngIf="data.active != 1" (click)="editOpcr = data;EditOPCR()"
-                                                class="dropdown-item"><i class='bx bx-paperclip me-1'></i>Draft</a>
+                                                class="dropdown-item"><i class='bx bx-paperclip me-1'></i>Pre-Final</a>
                                             <a *ngIf="data.active == 1" (click)="editOpcr = data;EditOPCRFinal()"
                                                 class="dropdown-item"><i class='bx bxs-flag-alt me-1'></i>Final</a>
                                             <a (click)="ReportOPCR(data)" class="dropdown-item"><i
