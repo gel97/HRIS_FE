@@ -12,7 +12,10 @@ export class ReportActualService {
     this.switchero = trig;
   }
   title2: string | any;
+  employeeName: string | any;
+  employeePosition: string | any;
   ReportActual(data: any) {
+    console.log('actual report', data);
     let title1 = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
 
     switch (this.switchero) {
@@ -25,14 +28,23 @@ export class ReportActualService {
       case 3:
         this.title2 = 'PERFORMANCE STANDARD (DPCR)';
         break;
+      case 4:
+        this.title2 = 'PERFORMANCE STANDARD (IPCR-TARGET)';
+        break;
       default:
         break;
     }
-
-    let employeeName = 'EDWIN A. PALERO, MPA, MHRM';
+    if (this.switchero != 4) {
+      this.employeeName = 'EDWIN A. PALERO, MPA, MHRM';
+      this.employeePosition = 'P.G. Depeartment Head';
+    } else {
+      this.employeeName = localStorage.getItem('fullName');
+      this.employeePosition = localStorage.getItem('positionTitle');
+    }
+    let employeeName = this.employeeName;
     let employeeOffice = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
-    let employeePosition = 'P.G. Depeartment Head';
 
+    let employeePosition = this.employeePosition;
     let period = localStorage.getItem('reportPeriod');
     let officeShort = 'PHRMO';
     let date = localStorage.getItem('reportDate');

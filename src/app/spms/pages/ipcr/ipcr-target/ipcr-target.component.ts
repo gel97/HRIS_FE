@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { IpcrService } from 'src/app/spms/service/ipcr.service';
 import { ReportActualService } from 'src/app/spms/service/report-actual.service';
+import { MonthRangeService } from 'src/app/spms/service/month-range.service';
 @Component({
   selector: 'app-ipcr-target',
   templateUrl: './ipcr-target.component.html',
@@ -18,6 +19,7 @@ export class IpcrTargetComponent implements OnInit {
 
   reportActualService = inject(ReportActualService);
   ipcrService = inject(IpcrService);
+  monthRangeService = inject(MonthRangeService);
   ipcr = this.ipcrService.ipcr();
   get_ipcrDetails = this.ipcrService.ipcrDetails();
   dpcr_ipcr = this.ipcrService.dpcr_ipcr();
@@ -53,21 +55,23 @@ export class IpcrTargetComponent implements OnInit {
     this.localStorage();
   }
 
-  printData:any = [];
-  printIpcr(){
+  printData: any = [];
+  printIpcr(data: any = {}) {
+    this.ipcrService.storageIpcrId.set(data.ipcrId);
+    this.ipcrService.GetIPCRDetails();
     this.printData = [];
-    this.get_ipcrDetails.data.map((mfoItem:any, i:any)=>{
-      mfoItem.si.map((siItem:any, y:any)=>{
-        if(!siItem.isSubTask){
-          this.printData.push(mfoItem);
-        }
-        else{
-          siItem.st.map((stItem:any, x:any)=>{
-            this.printData.push({
-              categoryId: mfoItem.categoryId,
-              mfo: stItem.stMfo,
-              mfoId: stItem.ipcrSubtaskId,
-              si:[
+    setTimeout(() => {
+      this.get_ipcrDetails.data.map((mfoItem: any, i: any) => {
+        mfoItem.si.map((siItem: any, y: any) => {
+          if (!siItem.isSubTask) {
+            this.printData.push(mfoItem);
+          } else {
+            siItem.st.map((stItem: any, x: any) => {
+              this.printData.push({
+                categoryId: mfoItem.categoryId,
+                mfo: stItem.stMfo,
+                mfoId: stItem.ipcrSubtaskId,
+                si: [
                   {
                     indicatorId: siItem.indicatorId,
                     indicator: stItem.stIndicator,
@@ -87,17 +91,24 @@ export class IpcrTargetComponent implements OnInit {
                     timely3: stItem.timely3,
                     timely4: stItem.timely4,
                     timely5: stItem.timely5,
-                  }
-              ]
+                  },
+                ],
+              });
             });
-          })
-        }
-        
-      })
-    })
-
-    this.reportActualService.ReportActual(this.printData);
-
+          }
+        });
+      });
+    }, 1000);
+    setTimeout(() => {
+      this.monthRangeService.setMonthRange({
+        type: 'ipcr',
+        isActual: false,
+        year: data.year,
+        semester: data.semester,
+      });
+      this.reportActualService.triggerSwitch(4);
+      this.reportActualService.ReportActual(this.printData);
+    }, 1000);
   }
 
   localStorage() {
@@ -315,7 +326,6 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   trapRemainingQuantity(data: any) {
-    console.log('overallQuantity', data);
   }
 
   calculateRating() {

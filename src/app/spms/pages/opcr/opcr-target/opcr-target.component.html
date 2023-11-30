@@ -27,7 +27,7 @@
                     </span>
                 </a>
             </div>
-            <div *ngIf="isShow() == 0" class="col-4">
+            <div *ngIf="isShow() == 0 && opcr().data.length == 0" class="col-4">
                 <div class="pt-4" style="margin-right:5px;">
                     <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
