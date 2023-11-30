@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { IpcrService } from 'src/app/spms/service/ipcr.service';
-
+import { ReportActualService } from 'src/app/spms/service/report-actual.service';
 @Component({
   selector: 'app-ipcr-target',
   templateUrl: './ipcr-target.component.html',
@@ -16,6 +16,7 @@ export class IpcrTargetComponent implements OnInit {
   ipcrDetails: any = {};
   ipcrSTDetails: any = {};
 
+  reportActualService = inject(ReportActualService);
   ipcrService = inject(IpcrService);
   ipcr = this.ipcrService.ipcr();
   get_ipcrDetails = this.ipcrService.ipcrDetails();
@@ -50,6 +51,53 @@ export class IpcrTargetComponent implements OnInit {
   ngOnInit(): void {
     this.ipcrYear();
     this.localStorage();
+  }
+
+  printData:any = [];
+  printIpcr(){
+    this.printData = [];
+    this.get_ipcrDetails.data.map((mfoItem:any, i:any)=>{
+      mfoItem.si.map((siItem:any, y:any)=>{
+        if(!siItem.isSubTask){
+          this.printData.push(mfoItem);
+        }
+        else{
+          siItem.st.map((stItem:any, x:any)=>{
+            this.printData.push({
+              categoryId: mfoItem.categoryId,
+              mfo: stItem.stMfo,
+              mfoId: stItem.ipcrSubtaskId,
+              si:[
+                  {
+                    indicatorId: siItem.indicatorId,
+                    indicator: stItem.stIndicator,
+                    qlty1: stItem.qlty1,
+                    qlty2: stItem.qlty2,
+                    qlty3: stItem.qlty3,
+                    qlty4: stItem.qlty4,
+                    qlty5: stItem.qlty5,
+                    qty: stItem.qty,
+                    qty1: stItem.qty1,
+                    qty2: stItem.qty2,
+                    qty3: stItem.qty3,
+                    qty4: stItem.qty4,
+                    qty5: stItem.qty5,
+                    timely1: stItem.timely1,
+                    timely2: stItem.timely2,
+                    timely3: stItem.timely3,
+                    timely4: stItem.timely4,
+                    timely5: stItem.timely5,
+                  }
+              ]
+            });
+          })
+        }
+        
+      })
+    })
+
+    this.reportActualService.ReportActual(this.printData);
+
   }
 
   localStorage() {
