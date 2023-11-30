@@ -24,7 +24,7 @@ export class OfficeComponent implements OnInit {
   error: any = this.errorService.error;
 
   officeId = localStorage.getItem('officeId');
-
+  hrFocal:string = "OFFPHRMONZ3WT7D";
   expandedRow: any;
   expandedRowChild: any;
 
