@@ -152,11 +152,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </tr>
                       <ng-container *ngFor="let b of a.si; let j = index">
                         <tr
-                          (click)="
-                            currentSIindex === j
-                              ? (currentSIindex = null)
-                              : (currentSIindex = j)
-                          "
+                          (click)="handClickSI(i,j)"
                         >
                           <td>
                             <div
@@ -215,7 +211,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                             </ng-template>
                           </td>
                         </tr>
-                        <ng-container *ngIf="currentSIindex === j">
+                        <ng-container *ngIf="currentSIindex === j && currentMfoindex === i">
                           <tr
                             *ngIf="
                               !dpcrDataMfoes.isSearchLoading &&
@@ -388,6 +384,7 @@ export class ModalSubTaskComponent {
   quantity: any = {};
   newSubtask: boolean = true;
   search: any = '';
+  currentMfoindex: any;
   currentSIindex: any;
 
   cmfo: any = {};
@@ -398,12 +395,28 @@ export class ModalSubTaskComponent {
 
   @Output() submitSubTask = new EventEmitter<any>();
 
+  handClickSI(i:number, j:number){
+    if(this.currentMfoindex === i && this.currentSIindex === j){
+      this.resetIndex();
+    }
+    else{
+      this.currentMfoindex = i;
+      this.currentSIindex = j;
+    }
+  }
+
+  resetIndex(){
+    this.currentMfoindex = null;
+    this.currentSIindex = null;
+  }
+
   SubmitSubTask(data: any) {
     data.dpcrDataId = this.dpcrSIData.dpcrDataId;
     data.mfoId = this.dpcrMFOData.mfoId;
     data.indicatorId = this.dpcrSIData.indicatorId;
     this.submitSubTask.emit(data);
     this.handleStatus();
+    this.resetIndex();
   }
 
   addCmfo(data: any) {
@@ -422,6 +435,7 @@ export class ModalSubTaskComponent {
   }
 
   SearchMFO() {
+    this.resetIndex();
     if (this.search === '' || this.search === null) {
       this.search = null;
     }
