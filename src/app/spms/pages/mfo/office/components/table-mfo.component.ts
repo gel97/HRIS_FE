@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output, Input  } from '@angular/core';
+import { Component, EventEmitter, Output, Input, inject  } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-
+import { MfoService } from 'src/app/spms/service/mfo.service';
 @Component({
   selector: 'app-table-mfo',
   template: `
@@ -11,7 +11,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
             <td [width]="10"></td>
             <th [width]="10">#</th>
             <th>MFO</th>
-            <th [width]="10">Actions</th>
+            <th [width]="10" *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId">Actions</th>
           </tr>
         </thead>
         <ng-container *ngIf="mfo.isLoading && mfo.data.length === 0">
@@ -75,6 +75,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                     </div>
                     <div class="col-3">
                       <button
+                        *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId"
                         (click)="SetMfoData(a); ClearSIData(); IsAdd(true)"
                         data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasSI"
@@ -97,7 +98,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                   ></ngx-skeleton-loader>
                 </ng-template>
               </td>
-              <td>
+              <td *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId">
                 <div class="dropdown position-static" *ngIf="!mfo.isLoading; else LoadingActions">
                   <button
                     type="button"
@@ -164,7 +165,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
                           {{ b.indicator }}
                         </div>
                       </div>
-                      <div class="col-6">
+                      <div class="col-6" *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId">
                         <div class="float-end">
                           <button
                             (click)="SetSIData(a, b); IsAdd(false)"
@@ -299,6 +300,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   ]
 })
 export class TableMfoComponent {
+  mfoService = inject(MfoService);
   @Input() mfo: any;
 
   @Output() setIsCommon = new EventEmitter<any>();
@@ -312,7 +314,11 @@ export class TableMfoComponent {
 
   @Output() clearSIData = new EventEmitter<any>();
 
+  hrFocal:string = "OFFPHRMONZ3WT7D";
+  officeId = localStorage.getItem('officeId');
+  isCommon = this.mfoService.isCommon();
   expandedRow: any;
+
   expandedRowChild: any;
 
   SetMfoData(item: any) {
