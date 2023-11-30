@@ -106,6 +106,17 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
+                  <div class="col-lg-12" *ngIf="isAssignOffice">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                      <mat-label>OFFICE</mat-label>
+                      <mat-select [(ngModel)]="focalData.officeId">
+                          <mat-option>
+                              <ngx-mat-select-search [(ngModel)]="SearchOffice" (ngModelChange)="searchOffice()" placeholderLabel="Search..."  noEntriesFoundLabel="'no match found'"></ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option *ngFor="let i of offices" value="{{i.officeId}}"> {{i.officeNameShort}} </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
                   <div class="col-12 mb-3">
                     <h4>Role Permissions</h4>
                     <!-- Permission table -->
