@@ -33,7 +33,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           <div class="modal-body row">
             <div [ngClass]="ots.mfo === undefined? 'col-12':'col-6'">
               <strong>LIST OF MFO</strong>
-              <div class="table-responsive text-nowrap mt-2">
+              <div class="table-responsive mt-2">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
@@ -290,7 +290,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             >
               Close
             </button>
-            <button type="button" (click)="Submit()" class="btn btn-primary">
+            <button *ngIf="ots.mfo !== undefined" type="button" (click)="Submit()" class="btn btn-primary">
               Submit OTS
             </button>
           </div>
