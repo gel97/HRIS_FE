@@ -34,6 +34,12 @@ export class UtlityService  {
   get_profile_picture(EIC:any){
     return this.http.get(api+this.url.get_user_profile_picture(EIC),{ responseType: `json`});
   }
+  get_office(){
+    return this.http.get<any[]>(api+this.url.get_office(),{ responseType: `json`});
+  }
+  assign_office_focal(data:any){
+    return this.http.post(api+this.url.post_employee_assign_office_focal(),data,{ responseType: `json`});
+  }
   
   // ngOnDestroy() {
   //   this.destroy.next(true);
