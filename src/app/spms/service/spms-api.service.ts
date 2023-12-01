@@ -108,4 +108,6 @@ export class SpmsApiService {
   put_employee_update_division = () => `/vPMEmployee/employee/update/division`;
   delete_employee_division = (EIC:string) => `/vPMEmployee/employee/remove/division/${EIC}`;
 
+  get_office = () => `/tPMOffice`;
+  post_employee_assign_office_focal = () => `/vPMEmployee/employee/assign/office/focal`;
 }

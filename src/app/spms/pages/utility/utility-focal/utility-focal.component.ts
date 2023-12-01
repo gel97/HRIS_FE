@@ -40,12 +40,53 @@ export class UtilityFocalComponent implements OnInit{
   user_role_list:any=[];
   user_menu:any=[];
   SearchName:any='';
+  SearchOffice:any='';
+  isAssignOffice:boolean = false;
+
   addRoleDisplay:any=1;
   allComplete:any;
+  offices:any = [];
+  staticOffices:any = [];
+
+  focalData:any={};
+
   ngOnInit(){
     this.initData();
-    
+    this.get_offices();
   }
+
+  get_offices(){
+    this._utilService.get_office().subscribe((response:any) =>{
+      this.offices = (<any>response);
+      this.staticOffices = (<any>response);
+    },err=>{
+      alert('error')
+    });
+  }
+
+  assign_office_focal(){
+    this.focalData.userEIC = this.userEIC;
+    this._utilService.assign_office_focal(this.focalData).subscribe(request=>{
+     },err=>{
+      this.alertService.error();
+     });
+  }
+
+  searchOffice(){
+    if (!this.SearchOffice) {
+      this.offices = this.staticOffices;
+      return;
+    }
+    let data = this.offices.filter((obj:any=[]) => {
+      return obj.officeNameShort.toLowerCase().indexOf(this.SearchOffice)> -1;
+    });
+    this.offices = data;
+  }
+
+  searchByEIC(eicValue: string): any {
+    return this.employee_list.find((employee:any) => employee.EIC === eicValue);
+  }
+
   initData(){
     this._utilService.gettPMRole().subscribe((response:any) =>{
       this.role = (<any>response);
@@ -76,7 +117,7 @@ export class UtilityFocalComponent implements OnInit{
        alert('error')
     }
     );
-  }
+  } 
   total_user(){
     for (let i of  this.employee_role) {
       for (let e of i.role) {
@@ -141,6 +182,18 @@ export class UtilityFocalComponent implements OnInit{
       alert('error')
     }
     );
+
+    let data:any = this.employee_list.find((employee:any) => employee.eic === this.userEIC);
+    if(data.officeId === null){
+      this.isAssignOffice = true;
+    }else{
+      this.isAssignOffice = false;
+    }
+  // console.log("data", data)
+
+  //   console.log("userEIC", this.userEIC)
+  //   console.log("employee_list", this.employee_list)
+
   }
   updateUserRole(){
     console.log(this.user_role)
@@ -180,6 +233,7 @@ export class UtilityFocalComponent implements OnInit{
        i.EIC=this.userEIC;  
       }
     }
+    this.assign_office_focal();
     this._utilService.add_user_menu(this.role_list,this.userEIC).subscribe(request=>{
       this.alertService.save();
       this.initData();
