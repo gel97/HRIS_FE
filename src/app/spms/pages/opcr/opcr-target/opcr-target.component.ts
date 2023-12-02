@@ -188,7 +188,7 @@ export class OpcrTargetComponent implements OnInit {
     setTimeout(() => {
       this.opcr.mutate((a: any) => (a.isLoading = false));
       this.opcrService.GetOPCRs(this.getYear, this.officeId ?? '');
-    }, 0);
+    }, 1000);
   }
 
   EditOPCR() {
