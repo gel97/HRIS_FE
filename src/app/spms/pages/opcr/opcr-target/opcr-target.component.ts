@@ -336,7 +336,7 @@ export class OpcrTargetComponent implements OnInit {
     let catName = '';
     switch (cat) {
       case 1:
-        catName = 'Pre-Final';
+        catName = 'Open';
         break;
       case 2:
         catName = 'Final';

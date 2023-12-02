@@ -55,6 +55,7 @@ export class AuthService {
   signout() {
     localStorage.clear();
     this.Router.navigate(['user-login']);
+    
   }
 
   getOfficeIdFromToken() {
