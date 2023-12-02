@@ -98,8 +98,6 @@ export class IpcrTargetComponent implements OnInit {
           }
         });
       });
-    }, 1000);
-    setTimeout(() => {
       this.monthRangeService.setMonthRange({
         type: 'ipcr',
         isActual: false,
@@ -117,10 +115,10 @@ export class IpcrTargetComponent implements OnInit {
       this.ipcrService.ViewGetDPCR_IPCR();
       setTimeout(() => {
         this.ipcrService.sortExcist();
-        this.ipcrService.removeMFO();
+        // this.ipcrService.removeMFO();
 
-        this.ipcrService.siChecker();
-      }, 1000);
+        // this.ipcrService.siChecker();
+      }, 0);
     } else {
       this.ipcrService.GetIPCRs(
         this.getYear,
@@ -304,16 +302,16 @@ export class IpcrTargetComponent implements OnInit {
     return unitLabeler;
   }
 
-  noSIDataboolean: boolean = false;
-  siChecker() {
-    setTimeout(() => {
-      for (let a of this.dpcr_ipcr.data) {
-        if (a.si.length > 0) {
-          this.noSIDataboolean = true;
-        }
-      }
-    }, 1000);
-  }
+  // noSIDataboolean: boolean = false;
+  // siChecker() {
+  //   setTimeout(() => {
+  //     for (let a of this.dpcr_ipcr.data) {
+  //       if (a.si.length > 0) {
+  //         this.noSIDataboolean = true;
+  //       }
+  //     }
+  //   }, 1000);
+  // }
 
   onChangeYear(year: any) {
     this.ipcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
@@ -325,8 +323,7 @@ export class IpcrTargetComponent implements OnInit {
     }
   }
 
-  trapRemainingQuantity(data: any) {
-  }
+  // trapRemainingQuantity(data: any) {}
 
   calculateRating() {
     this.trapRemaining();
@@ -477,80 +474,80 @@ export class IpcrTargetComponent implements OnInit {
     this.localStorage();
   }
 
-  counter: number = 0;
-  counter_mfo: number = 0;
-  sortExcist() {
-    setTimeout(() => {
-      for (let a of this.dpcr_ipcr.data) {
-        for (let b_dpcr_ipcr of a.si) {
-          for (let x of this.get_ipcrDetails.data) {
-            for (let y_ipcrDetails of x.si) {
-              if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
-                if (b_dpcr_ipcr.isSubTask == 0) {
-                  this.counter += 1;
-                } else {
-                  for (let j of b_dpcr_ipcr.st) {
-                    for (let k of y_ipcrDetails.st) {
-                      if (j.subTaskId == k.subTaskId) {
-                        this.counter += 1;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+  // counter: number = 0;
+  // counter_mfo: number = 0;
+  // sortExcist() {
+  //   setTimeout(() => {
+  //     for (let a of this.dpcr_ipcr.data) {
+  //       for (let b_dpcr_ipcr of a.si) {
+  //         for (let x of this.get_ipcrDetails.data) {
+  //           for (let y_ipcrDetails of x.si) {
+  //             if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
+  //               if (b_dpcr_ipcr.isSubTask == 0) {
+  //                 this.counter += 1;
+  //               } else {
+  //                 for (let j of b_dpcr_ipcr.st) {
+  //                   for (let k of y_ipcrDetails.st) {
+  //                     if (j.subTaskId == k.subTaskId) {
+  //                       this.counter += 1;
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
 
-      while (this.counter != 0) {
-        this.counter -= 1;
-        for (let a of this.dpcr_ipcr.data) {
-          for (let b_dpcr_ipcr of a.si) {
-            for (let x of this.get_ipcrDetails.data) {
-              for (let y_ipcrDetails of x.si) {
-                if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
-                  if (b_dpcr_ipcr.isSubTask == 0) {
-                    const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
-                    if (indexToRemove !== -1) {
-                      a.si.splice(indexToRemove, 1);
-                    }
-                  } else {
-                    for (let j of b_dpcr_ipcr.st) {
-                      for (let k of y_ipcrDetails.st) {
-                        if (j.subTaskId == k.subTaskId) {
-                          const indexToRemove = b_dpcr_ipcr.st.indexOf(j);
-                          if (indexToRemove !== -1) {
-                            b_dpcr_ipcr.st.splice(indexToRemove, 1);
-                          }
-                        }
-                      }
-                    }
-                    if (b_dpcr_ipcr.st.length == 0) {
-                      const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
-                      if (indexToRemove !== -1) {
-                        a.si.splice(indexToRemove, 1);
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }, 1000);
-  }
+  //     while (this.counter != 0) {
+  //       this.counter -= 1;
+  //       for (let a of this.dpcr_ipcr.data) {
+  //         for (let b_dpcr_ipcr of a.si) {
+  //           for (let x of this.get_ipcrDetails.data) {
+  //             for (let y_ipcrDetails of x.si) {
+  //               if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
+  //                 if (b_dpcr_ipcr.isSubTask == 0) {
+  //                   const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
+  //                   if (indexToRemove !== -1) {
+  //                     a.si.splice(indexToRemove, 1);
+  //                   }
+  //                 } else {
+  //                   for (let j of b_dpcr_ipcr.st) {
+  //                     for (let k of y_ipcrDetails.st) {
+  //                       if (j.subTaskId == k.subTaskId) {
+  //                         const indexToRemove = b_dpcr_ipcr.st.indexOf(j);
+  //                         if (indexToRemove !== -1) {
+  //                           b_dpcr_ipcr.st.splice(indexToRemove, 1);
+  //                         }
+  //                       }
+  //                     }
+  //                   }
+  //                   if (b_dpcr_ipcr.st.length == 0) {
+  //                     const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
+  //                     if (indexToRemove !== -1) {
+  //                       a.si.splice(indexToRemove, 1);
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }, 1000);
+  // }
 
-  removeMFO() {
-    setTimeout(() => {
-      for (let a of this.get_ipcrDetails.data) {
-        for (let a_si of a.si) {
-          if (a_si.isSubTask == 1 && a_si.st.length == 0) {
-            this.ipcrService.DeleteMFO(a_si.ipcrDataId);
-          }
-        }
-      }
-    }, 1000);
-  }
+  // removeMFO() {
+  //   setTimeout(() => {
+  //     for (let a of this.get_ipcrDetails.data) {
+  //       for (let a_si of a.si) {
+  //         if (a_si.isSubTask == 1 && a_si.st.length == 0) {
+  //           this.ipcrService.DeleteMFO(a_si.ipcrDataId);
+  //         }
+  //       }
+  //     }
+  //   }, 1000);
+  // }
 }

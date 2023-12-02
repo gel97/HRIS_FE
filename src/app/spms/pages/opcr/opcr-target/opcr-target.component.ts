@@ -70,11 +70,11 @@ export class OpcrTargetComponent implements OnInit {
         this.opcrService.GetOPCRDetails();
         this.mfoService.GetMFOes();
         this.sortExcist();
-      }, 1000);
+      }, 0);
     } else {
       localStorage.setItem('isShow', '0');
       this.opcrService.storageIsShow.set(0);
-      this.sortExcist();
+      // this.sortExcist();
     }
   }
 
@@ -188,7 +188,7 @@ export class OpcrTargetComponent implements OnInit {
     setTimeout(() => {
       this.opcr.mutate((a: any) => (a.isLoading = false));
       this.opcrService.GetOPCRs(this.getYear, this.officeId ?? '');
-    }, 1000);
+    }, 0);
   }
 
   EditOPCR() {
@@ -272,7 +272,7 @@ export class OpcrTargetComponent implements OnInit {
         if (!this.opcrData().error) {
           this.closebutton.nativeElement.click();
         }
-      }, 1000);
+      }, 0);
       this.sortExcist();
     } else {
       this.prompt = true;
@@ -372,7 +372,7 @@ export class OpcrTargetComponent implements OnInit {
       if (!this.opcrDetails().error) {
         this.closebuttonEdit.nativeElement.click();
       }
-    }, 1000);
+    }, 0);
   }
 
   OPCRDetails(data: any) {
