@@ -11,7 +11,7 @@
               <h3 class="fw-normal">Total {{i.user.length}} users</h3>
               <ul class="list-unstyled d-flex align-items-center avatar-group mb-0" >
                 <li *ngFor="let u of i.user;let e = index"  data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-sm pull-up" aria-label="Kim Karlos" data-bs-original-title="Kim Karlos">
-                  <img class="rounded-circle"*ngIf="e<=5" [src]="u.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/user_picture.png'" alt="Avatar">
+                  <img class="rounded-circle"*ngIf="e<=5" [src]="u.profile"  loading="lazy" onerror="this.src='./assets/img/avatars/user_picture.png'" alt="Avatar">
                 </li>
               </ul>
             </div>
@@ -62,7 +62,7 @@
                   <td>
                     <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                       <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Lilian Fuller">
-                        <img  [src]="i.profile"  loading="lazy" onerror="this.src='../assets/img/avatars/user_picture.png'" alt="Avatar" class="rounded-circle">
+                        <img  [src]="i.profile"  loading="lazy" onerror="this.src='./assets/img/avatars/user_picture.png'" alt="Avatar" class="rounded-circle">
                       </li>
                     </ul>
                   </td>

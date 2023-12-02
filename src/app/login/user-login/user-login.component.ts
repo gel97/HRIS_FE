@@ -79,7 +79,6 @@ export class UserLoginComponent implements OnInit {
             });
           },
           complete: () => {
-            location.reload();
             this.loading = false;
             const Toast = Swal.mixin({
               toast: true,

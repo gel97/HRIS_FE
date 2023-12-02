@@ -54,6 +54,7 @@ export class AuthService {
 
   signout() {
     localStorage.clear();
+    location.reload();
     this.Router.navigate(['user-login']);
     
   }
