@@ -165,6 +165,34 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.qty3 = Math.floor(this.mfoDetails.qty);
     this.mfoDetails.qty2 = Math.floor(this.mfoDetails.qty / 2 + 1);
     this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
+
+    if (
+      this.mfoDetails.qty3 >= 4 &&
+      this.mfoDetails.qty3 <= 6
+    ) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 1;
+    } else if (this.mfoDetails.qty3 == 3) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 2;
+    } else if (this.mfoDetails.qty3 == 2) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 2;
+      this.mfoDetails.qty2 -= 1;
+      this.mfoDetails.qty1 -= 1;
+    } else if (this.mfoDetails.qty3 == 1) {
+      this.mfoDetails.qty5 = 1;
+      this.mfoDetails.qty4 = null;
+      this.mfoDetails.qty3 = null;
+      this.mfoDetails.qty2 = null;
+      this.mfoDetails.qty1 = null;
+    }else if (this.editopcrDetails.qty <= 0) {
+      this.editopcrDetails.qty5 = null;
+      this.editopcrDetails.qty4 = null;
+      this.editopcrDetails.qty3 = null;
+      this.editopcrDetails.qty2 = null;
+      this.editopcrDetails.qty1 = null;
+    }
   }
 
   editcalculateRating() {
@@ -181,6 +209,33 @@ export class OpcrTargetComponent implements OnInit {
     this.editopcrDetails.qty1 = Math.floor(
       this.editopcrDetails.qty / 2
     );
+    if (
+      this.editopcrDetails.qty3 >= 4 &&
+      this.editopcrDetails.qty3 <= 6
+    ) {
+      this.editopcrDetails.qty4 += 1;
+      this.editopcrDetails.qty5 += 1;
+    } else if (this.editopcrDetails.qty3 == 3) {
+      this.editopcrDetails.qty4 += 1;
+      this.editopcrDetails.qty5 += 2;
+    } else if (this.editopcrDetails.qty3 == 2) {
+      this.editopcrDetails.qty4 += 1;
+      this.editopcrDetails.qty5 += 2;
+      this.editopcrDetails.qty2 -= 1;
+      this.editopcrDetails.qty1 -= 1;
+    } else if (this.editopcrDetails.qty3 == 1) {
+      this.editopcrDetails.qty5 = 1;
+      this.editopcrDetails.qty4 = null;
+      this.editopcrDetails.qty3 = null;
+      this.editopcrDetails.qty2 = null;
+      this.editopcrDetails.qty1 = null;
+    }else if (this.editopcrDetails.qty <= 0) {
+      this.editopcrDetails.qty5 = null;
+      this.editopcrDetails.qty4 = null;
+      this.editopcrDetails.qty3 = null;
+      this.editopcrDetails.qty2 = null;
+      this.editopcrDetails.qty1 = null;
+    }
   }
 
   GetOPCRs() {
