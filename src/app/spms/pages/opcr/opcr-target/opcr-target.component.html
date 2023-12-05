@@ -304,33 +304,33 @@
                                 <tbody>
                                   <tr>
                                     <td>{{ "5" }}</td>
-                                    <td>{{ si.standard.qty5 }}</td>
-                                    <td>{{ si.standard.qlty5 }}</td>
-                                    <td>{{ si.standard.timely5 }}</td>
+                                    <td>{{ si.qty5 }}</td>
+                                    <td>{{ si.qlty5 }}</td>
+                                    <td>{{ si.timely5 }}</td>
                                   </tr>
                                   <tr>
                                     <td>{{ "4" }}</td>
-                                    <td>{{ si.standard.qty4 }}</td>
-                                    <td>{{ si.standard.qlty4 }}</td>
-                                    <td>{{ si.standard.timely4 }}</td>
+                                    <td>{{ si.qty4 }}</td>
+                                    <td>{{ si.qlty4 }}</td>
+                                    <td>{{ si.timely4 }}</td>
                                   </tr>
                                   <tr>
                                     <td>{{ "3" }}</td>
-                                    <td>{{ si.standard.qty3 }}</td>
-                                    <td>{{ si.standard.qlty3 }}</td>
-                                    <td>{{ si.standard.timely3 }}</td>
+                                    <td>{{ si.qty3 }}</td>
+                                    <td>{{ si.qlty3 }}</td>
+                                    <td>{{ si.timely3 }}</td>
                                   </tr>
                                   <tr>
                                     <td>{{ "2" }}</td>
-                                    <td>{{ si.standard.qty2 }}</td>
-                                    <td>{{ si.standard.qlty2 }}</td>
-                                    <td>{{ si.standard.timely2 }}</td>
+                                    <td>{{ si.qty2 }}</td>
+                                    <td>{{ si.qlty2 }}</td>
+                                    <td>{{ si.timely2 }}</td>
                                   </tr>
                                   <tr>
                                     <td>{{ "1" }}</td>
-                                    <td>{{ si.standard.qty1 }}</td>
-                                    <td>{{ si.standard.qlty1 }}</td>
-                                    <td>{{ si.standard.timely1 }}</td>
+                                    <td>{{ si.qty1 }}</td>
+                                    <td>{{ si.qlty1 }}</td>
+                                    <td>{{ si.timely1 }}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -877,10 +877,10 @@
                 <tr>
                   <td>{{ "5" }}</td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
+                    <span *ngIf="editopcrDetails">
                       <div class="form-floating">
                         <input
-                          [(ngModel)]="editopcrDetails.standard.qty5"
+                          [(ngModel)]="editopcrDetails.qty5"
                           type="number"
                           class="form-control"
                           id="floatingInput"
@@ -891,23 +891,23 @@
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.qlty5 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.qlty5 }}
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.timely5 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.timely5 }}
                     </span>
                   </td>
                 </tr>
                 <tr>
                   <td>{{ "4" }}</td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
+                    <span *ngIf="editopcrDetails">
                       <div class="form-floating">
                         <input
-                          [(ngModel)]="editopcrDetails.standard.qty4"
+                          [(ngModel)]="editopcrDetails.qty4"
                           type="number"
                           class="form-control"
                           id="floatingInput"
@@ -918,23 +918,23 @@
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.qlty4 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.qlty4 }}
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.timely4 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.timely4 }}
                     </span>
                   </td>
                 </tr>
                 <tr>
                   <td>{{ "3" }}</td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
+                    <span *ngIf="editopcrDetails">
                       <div class="form-floating">
                         <input
-                          [(ngModel)]="editopcrDetails.standard.qty3"
+                          [(ngModel)]="editopcrDetails.qty3"
                           type="number"
                           class="form-control"
                           id="floatingInput"
@@ -945,23 +945,23 @@
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.qlty3 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.qlty3 }}
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.timely3 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.timely3 }}
                     </span>
                   </td>
                 </tr>
                 <tr>
                   <td>{{ "2" }}</td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
+                    <span *ngIf="editopcrDetails">
                       <div class="form-floating">
                         <input
-                          [(ngModel)]="editopcrDetails.standard.qty2"
+                          [(ngModel)]="editopcrDetails.qty2"
                           type="number"
                           class="form-control"
                           id="floatingInput"
@@ -972,23 +972,23 @@
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.qlty2 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.qlty2 }}
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.timely2 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.timely2 }}
                     </span>
                   </td>
                 </tr>
                 <tr>
                   <td>{{ "1" }}</td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
+                    <span *ngIf="editopcrDetails">
                       <div class="form-floating">
                         <input
-                          [(ngModel)]="editopcrDetails.standard.qty1"
+                          [(ngModel)]="editopcrDetails.qty1"
                           type="number"
                           class="form-control"
                           id="floatingInput"
@@ -999,13 +999,13 @@
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.qlty1 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.qlty1 }}
                     </span>
                   </td>
                   <td>
-                    <span *ngIf="editopcrDetails.standard">
-                      {{ editopcrDetails.standard.timely1 }}
+                    <span *ngIf="editopcrDetails">
+                      {{ editopcrDetails.timely1 }}
                     </span>
                   </td>
                 </tr>

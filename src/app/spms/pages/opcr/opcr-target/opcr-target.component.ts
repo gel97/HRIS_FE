@@ -168,17 +168,17 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   editcalculateRating() {
-    this.editopcrDetails.standard.qty5 = Math.floor(
+    this.editopcrDetails.qty5 = Math.floor(
       this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
     );
-    this.editopcrDetails.standard.qty4 = Math.floor(
+    this.editopcrDetails.qty4 = Math.floor(
       this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
     );
-    this.editopcrDetails.standard.qty3 = Math.floor(this.editopcrDetails.qty);
-    this.editopcrDetails.standard.qty2 = Math.floor(
+    this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
+    this.editopcrDetails.qty2 = Math.floor(
       this.editopcrDetails.qty / 2 + 1
     );
-    this.editopcrDetails.standard.qty1 = Math.floor(
+    this.editopcrDetails.qty1 = Math.floor(
       this.editopcrDetails.qty / 2
     );
   }
@@ -361,11 +361,11 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   EditOPCRData() {
-    this.editopcrDetails.qty5 = this.editopcrDetails.standard.qty5;
-    this.editopcrDetails.qty4 = this.editopcrDetails.standard.qty4;
-    this.editopcrDetails.qty3 = this.editopcrDetails.standard.qty3;
-    this.editopcrDetails.qty2 = this.editopcrDetails.standard.qty2;
-    this.editopcrDetails.qty1 = this.editopcrDetails.standard.qty1;
+    this.editopcrDetails.qty5 = this.editopcrDetails.qty5;
+    this.editopcrDetails.qty4 = this.editopcrDetails.qty4;
+    this.editopcrDetails.qty3 = this.editopcrDetails.qty3;
+    this.editopcrDetails.qty2 = this.editopcrDetails.qty2;
+    this.editopcrDetails.qty1 = this.editopcrDetails.qty1;
     this.editopcrDetails.sharedDiv = this.sharedDivValue();
     this.opcrService.EditOPCRData(this.editopcrDetails);
     setTimeout(() => {

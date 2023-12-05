@@ -113,7 +113,7 @@
                           <mat-option>
                               <ngx-mat-select-search [(ngModel)]="SearchOffice" (ngModelChange)="searchOffice()" placeholderLabel="Search..."  noEntriesFoundLabel="'no match found'"></ngx-mat-select-search>
                           </mat-option>
-                          <mat-option *ngFor="let i of offices" [value]="i.officeId"> {{i.officeId}}-{{i.officeNameShort}} </mat-option>
+                          <mat-option *ngFor="let i of offices" [value]="i.officeId"> {{i.officeNameShort}} </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
