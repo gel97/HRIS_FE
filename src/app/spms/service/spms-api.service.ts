@@ -34,6 +34,7 @@ export class SpmsApiService {
   get_ipcrs = (year: string, divisionId: string, userId: string) =>
     `/tPMIpcrs/${year}/${divisionId}/${userId}`;
   post_ipcr = () => `/tPMIpcrs`;
+  put_ipcr_status = () => `/tPMIpcrs/Status`;
   view_get_dpcr_ipcr = (divisionId: string, isCommon: number) =>
     `/vPMDpcr_Ipcr/${divisionId}/${isCommon}`;
 

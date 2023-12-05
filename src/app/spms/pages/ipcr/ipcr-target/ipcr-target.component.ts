@@ -16,6 +16,7 @@ export class IpcrTargetComponent implements OnInit {
   post_ipcr: any = {};
   ipcrDetails: any = {};
   ipcrSTDetails: any = {};
+  edit_ipcr_status: any = {};
 
   reportActualService = inject(ReportActualService);
   ipcrService = inject(IpcrService);
@@ -127,6 +128,16 @@ export class IpcrTargetComponent implements OnInit {
       );
       this.ipcrService.storageIsShow.set(0);
     }
+  }
+
+  EditIPCRStatusOpen() {
+    this.edit_ipcr_status.active = 1;
+    this.ipcrService.PutIPCRStatus(this.edit_ipcr_status);
+  }
+
+  EditIPCRStatusFinal() {
+    this.edit_ipcr_status.active = 2;
+    this.ipcrService.PutIPCRStatus(this.edit_ipcr_status);
   }
 
   IPCRDetails(ipcrId: string, details: string) {
@@ -254,6 +265,30 @@ export class IpcrTargetComponent implements OnInit {
         break;
       case 3:
         catName = 'Support';
+        break;
+      default:
+        break;
+    }
+
+    if (cat == null) {
+      catName = 'No Function';
+    }
+
+    return catName;
+  }
+
+  displayStatus(cat: any) {
+    let catName = '';
+    switch (cat) {
+      case 1:
+        catName = 'Open';
+        break;
+      case 2:
+        catName = 'Final';
+
+        break;
+      case 0:
+        catName = 'Draft';
         break;
       default:
         break;

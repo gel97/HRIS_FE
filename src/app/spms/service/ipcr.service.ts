@@ -152,7 +152,22 @@ export class IpcrService {
           this.GetIPCRs(data.year, data.divisionId, data.userId);
         },
         error: (error: any) => {
-          this.alertService.error();
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-start',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: 'warning',
+            title: 'IPCR-coded for this semester ',
+          });
         },
         complete: () => {
           this.alertService.save();
@@ -176,6 +191,21 @@ export class IpcrService {
         },
         complete: () => {
           this.alertService.save();
+        },
+      });
+  }
+
+  PutIPCRStatus(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcr_status(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+        },
+        complete: () => {
+          this.alertService.update();
         },
       });
   }
@@ -279,7 +309,7 @@ export class IpcrService {
       if (this.counter == 0) {
         this.loading = false;
         this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
-         this.siChecker();
+        this.siChecker();
         this.removeMFO();
       }
     }, 1000);
