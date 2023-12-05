@@ -87,7 +87,7 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a *ngIf="data.active != 1" class="dropdown-item" (click)="edit_ipcr_status = data; EditIPCRStatusOpen()"><i
+                                    <a *ngIf="data.active == 0" class="dropdown-item" (click)="edit_ipcr_status = data; EditIPCRStatusOpen()"><i
                                             class="bx bx-paperclip me-1"></i>Open</a>
                                     <a *ngIf="data.active == 1" class="dropdown-item" (click)="edit_ipcr_status = data; EditIPCRStatusFinal()"><i
                                             class="bx bxs-flag-alt me-1"></i>Final</a>
