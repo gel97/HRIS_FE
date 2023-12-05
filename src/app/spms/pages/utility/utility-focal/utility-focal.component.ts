@@ -60,7 +60,7 @@ export class UtilityFocalComponent implements OnInit{
       this.offices = (<any>response);
       this.staticOffices = (<any>response);
     },err=>{
-      alert('error')
+      //alert('error')
     });
   }
 
@@ -95,7 +95,7 @@ export class UtilityFocalComponent implements OnInit{
         i.user=[];
       });
     },err=>{
-      alert('error')
+      //alert('error')
     }
     );
     this._utilService.get_employee_list().subscribe((response:any) =>{
@@ -105,7 +105,7 @@ export class UtilityFocalComponent implements OnInit{
       this.get_user_profile();
       
     },err=>{
-      alert('error')
+      //alert('error')
     }
     );
     this._utilService.get_employee_role('').subscribe((response:any) =>{
@@ -114,7 +114,7 @@ export class UtilityFocalComponent implements OnInit{
         i.profile ='';
       }
     },err=>{
-       alert('error')
+       //alert('error')
     }
     );
   } 
@@ -138,7 +138,7 @@ export class UtilityFocalComponent implements OnInit{
         i.profile = (<any>request).imageDataURL;
         
       },err =>{
-        alert('error')
+        //alert('error')
       }
       );
     }
@@ -158,7 +158,7 @@ export class UtilityFocalComponent implements OnInit{
     this._utilService.get_user_role(this.userEIC).pipe(take(1)).subscribe((response:any) =>{
       this.user_menu = (<any>response);
     },err=>{
-      alert('error')
+      //alert('error')
     })
     
     this.user_role=[];
@@ -179,7 +179,7 @@ export class UtilityFocalComponent implements OnInit{
         }
       }
     },err=>{
-      alert('error')
+      //alert('error')
     }
     );
 
@@ -187,7 +187,9 @@ export class UtilityFocalComponent implements OnInit{
     if(data.officeId === null){
       this.isAssignOffice = true;
     }else{
-      this.isAssignOffice = false;
+      this.SearchOffice = data.officeId;
+      console.log(data.officeId)
+      this.isAssignOffice = true;
     }
   // console.log("data", data)
 
