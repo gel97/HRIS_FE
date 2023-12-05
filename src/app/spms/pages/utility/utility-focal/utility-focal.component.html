@@ -100,7 +100,7 @@
                       <mat-label>EMPLOYEE</mat-label>
                       <mat-select [(ngModel)]="userEIC"  (ngModelChange)="userMenus()" >
                           <mat-option>
-                              <ngx-mat-select-search [(ngModel)]="SearchName" (ngModelChange)="searchFilter()" placeholderLabel="Search..."  noEntriesFoundLabel="'no match found'"></ngx-mat-select-search>
+                              <ngx-mat-select-search [(ngModel)]="SearchName" (ngModelChange)="searchFilter(); searchOffice()" placeholderLabel="Search..."  noEntriesFoundLabel="'no match found'"></ngx-mat-select-search>
                           </mat-option>
                           <mat-option *ngFor="let i of empListfitler()" value="{{i.eic}}"> {{i.lastName}}, {{i.firstName}}</mat-option>
                       </mat-select>
@@ -113,7 +113,7 @@
                           <mat-option>
                               <ngx-mat-select-search [(ngModel)]="SearchOffice" (ngModelChange)="searchOffice()" placeholderLabel="Search..."  noEntriesFoundLabel="'no match found'"></ngx-mat-select-search>
                           </mat-option>
-                          <mat-option *ngFor="let i of offices" value="{{i.officeId}}"> {{i.officeNameShort}} </mat-option>
+                          <mat-option *ngFor="let i of offices" [value]="i.officeId"> {{i.officeId}}-{{i.officeNameShort}} </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>

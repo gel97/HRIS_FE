@@ -221,8 +221,10 @@ export class UtilityFocalComponent implements OnInit {
     );
     if (data.officeId === null) {
       this.isAssignOffice = true;
-    } else {
-      this.isAssignOffice = false;
+    }else{
+      this.SearchOffice = data.officeId;
+      console.log(data.officeId)
+      this.isAssignOffice = true;
     }
     // console.log("data", data)
 
