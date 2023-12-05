@@ -25,10 +25,11 @@
                 </span>
             </a>
         </div>
+        <!-- data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll" -->
         <div *ngIf="isShow() == 0" class="col-4">
             <div class="pt-4" style="margin-right:5px;">
-                <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                <button (click)="PostIpcr()" class="btn btn-primary float-end" type="button">
                     <i class='bx bx-plus'></i>IPCR
                 </button>
             </div>
@@ -51,6 +52,7 @@
                         <th>Year</th>
                         <th>Sem</th>
                         <th>Date Created</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -67,6 +69,17 @@
                         <td>
                             {{data.transDT | date:'MMM. dd, yyyy' }}
                         </td>
+                        <td> <span [ngClass]="
+                            data.active == '1'
+                              ? 'badge rounded-pill bg-label-success'
+                              : data.active == '2'
+                              ? 'badge rounded-pill bg-label-primary'
+                              : data.active == '0'
+                              ? 'badge rounded-pill bg-label-danger'
+                              : ''
+                          ">
+                                {{ displayStatus(data.active) }}</span>
+                        </td>
                         <td>
                             <div class="dropdown position-static pointer">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -74,6 +87,10 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
+                                    <a *ngIf="data.active != 1" class="dropdown-item" (click)="edit_ipcr_status = data; EditIPCRStatusOpen()"><i
+                                            class="bx bx-paperclip me-1"></i>Open</a>
+                                    <a *ngIf="data.active == 1" class="dropdown-item" (click)="edit_ipcr_status = data; EditIPCRStatusFinal()"><i
+                                            class="bx bxs-flag-alt me-1"></i>Final</a>
                                     <a class="dropdown-item" (click)="printIpcr(data)"><i
                                             class="bx bx-printer me-1"></i>
                                         Print IPCR</a>

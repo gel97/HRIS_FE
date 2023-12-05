@@ -165,6 +165,28 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.qty3 = Math.floor(this.mfoDetails.qty);
     this.mfoDetails.qty2 = Math.floor(this.mfoDetails.qty / 2 + 1);
     this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
+
+    if (
+      this.mfoDetails.qty3 >= 4 &&
+      this.mfoDetails.qty3 <= 6
+    ) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 1;
+    } else if (this.mfoDetails.qty3 == 3) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 2;
+    } else if (this.mfoDetails.qty3 == 2) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 2;
+      this.mfoDetails.qty2 -= 1;
+      this.mfoDetails.qty1 -= 1;
+    } else if (this.mfoDetails.qty3 == 1) {
+      this.mfoDetails.qty5 = 1;
+      this.mfoDetails.qty4 = '';
+      this.mfoDetails.qty3 = '';
+      this.mfoDetails.qty2 = '';
+      this.mfoDetails.qty1 = '';
+    }
   }
 
   editcalculateRating() {
@@ -181,6 +203,27 @@ export class OpcrTargetComponent implements OnInit {
     this.editopcrDetails.standard.qty1 = Math.floor(
       this.editopcrDetails.qty / 2
     );
+    if (
+      this.editopcrDetails.standard.qty3 >= 4 &&
+      this.editopcrDetails.standard.qty3 <= 6
+    ) {
+      this.editopcrDetails.standard.qty4 += 1;
+      this.editopcrDetails.standard.qty5 += 1;
+    } else if (this.editopcrDetails.standard.qty3 == 3) {
+      this.editopcrDetails.standard.qty4 += 1;
+      this.editopcrDetails.standard.qty5 += 2;
+    } else if (this.editopcrDetails.standard.qty3 == 2) {
+      this.editopcrDetails.standard.qty4 += 1;
+      this.editopcrDetails.standard.qty5 += 2;
+      this.editopcrDetails.standard.qty2 -= 1;
+      this.editopcrDetails.standard.qty1 -= 1;
+    } else if (this.editopcrDetails.standard.qty3 == 1) {
+      this.editopcrDetails.standard.qty5 = 1;
+      this.editopcrDetails.standard.qty4 = '';
+      this.editopcrDetails.standard.qty3 = '';
+      this.editopcrDetails.standard.qty2 = '';
+      this.editopcrDetails.standard.qty1 = '';
+    }
   }
 
   GetOPCRs() {
