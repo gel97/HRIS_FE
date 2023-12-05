@@ -175,7 +175,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.indicator },
+            { text: b.qty+ " "+ b.indicator },
             {},
             { text: b.sharedDiv },
             {},
@@ -210,7 +210,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.indicator },
+            { text: b.qty+ " "+ b.indicator },
             {},
             { text: b.sharedDiv },
             {},
@@ -245,7 +245,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.indicator },
+            { text: b.qty+ " "+ b.indicator },
             {},
             { text: b.sharedDiv },
             {},
