@@ -182,47 +182,59 @@ export class OpcrTargetComponent implements OnInit {
       this.mfoDetails.qty1 -= 1;
     } else if (this.mfoDetails.qty3 == 1) {
       this.mfoDetails.qty5 = 1;
-      this.mfoDetails.qty4 = '';
-      this.mfoDetails.qty3 = '';
-      this.mfoDetails.qty2 = '';
-      this.mfoDetails.qty1 = '';
+      this.mfoDetails.qty4 = null;
+      this.mfoDetails.qty3 = null;
+      this.mfoDetails.qty2 = null;
+      this.mfoDetails.qty1 = null;
+    }else if (this.editopcrDetails.qty <= 0) {
+      this.editopcrDetails.qty5 = null;
+      this.editopcrDetails.qty4 = null;
+      this.editopcrDetails.qty3 = null;
+      this.editopcrDetails.qty2 = null;
+      this.editopcrDetails.qty1 = null;
     }
   }
 
   editcalculateRating() {
-    this.editopcrDetails.standard.qty5 = Math.floor(
+    this.editopcrDetails.qty5 = Math.floor(
       this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
     );
-    this.editopcrDetails.standard.qty4 = Math.floor(
+    this.editopcrDetails.qty4 = Math.floor(
       this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
     );
-    this.editopcrDetails.standard.qty3 = Math.floor(this.editopcrDetails.qty);
-    this.editopcrDetails.standard.qty2 = Math.floor(
+    this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
+    this.editopcrDetails.qty2 = Math.floor(
       this.editopcrDetails.qty / 2 + 1
     );
-    this.editopcrDetails.standard.qty1 = Math.floor(
+    this.editopcrDetails.qty1 = Math.floor(
       this.editopcrDetails.qty / 2
     );
     if (
-      this.editopcrDetails.standard.qty3 >= 4 &&
-      this.editopcrDetails.standard.qty3 <= 6
+      this.editopcrDetails.qty3 >= 4 &&
+      this.editopcrDetails.qty3 <= 6
     ) {
-      this.editopcrDetails.standard.qty4 += 1;
-      this.editopcrDetails.standard.qty5 += 1;
-    } else if (this.editopcrDetails.standard.qty3 == 3) {
-      this.editopcrDetails.standard.qty4 += 1;
-      this.editopcrDetails.standard.qty5 += 2;
-    } else if (this.editopcrDetails.standard.qty3 == 2) {
-      this.editopcrDetails.standard.qty4 += 1;
-      this.editopcrDetails.standard.qty5 += 2;
-      this.editopcrDetails.standard.qty2 -= 1;
-      this.editopcrDetails.standard.qty1 -= 1;
-    } else if (this.editopcrDetails.standard.qty3 == 1) {
-      this.editopcrDetails.standard.qty5 = 1;
-      this.editopcrDetails.standard.qty4 = '';
-      this.editopcrDetails.standard.qty3 = '';
-      this.editopcrDetails.standard.qty2 = '';
-      this.editopcrDetails.standard.qty1 = '';
+      this.editopcrDetails.qty4 += 1;
+      this.editopcrDetails.qty5 += 1;
+    } else if (this.editopcrDetails.qty3 == 3) {
+      this.editopcrDetails.qty4 += 1;
+      this.editopcrDetails.qty5 += 2;
+    } else if (this.editopcrDetails.qty3 == 2) {
+      this.editopcrDetails.qty4 += 1;
+      this.editopcrDetails.qty5 += 2;
+      this.editopcrDetails.qty2 -= 1;
+      this.editopcrDetails.qty1 -= 1;
+    } else if (this.editopcrDetails.qty3 == 1) {
+      this.editopcrDetails.qty5 = 1;
+      this.editopcrDetails.qty4 = null;
+      this.editopcrDetails.qty3 = null;
+      this.editopcrDetails.qty2 = null;
+      this.editopcrDetails.qty1 = null;
+    }else if (this.editopcrDetails.qty <= 0) {
+      this.editopcrDetails.qty5 = null;
+      this.editopcrDetails.qty4 = null;
+      this.editopcrDetails.qty3 = null;
+      this.editopcrDetails.qty2 = null;
+      this.editopcrDetails.qty1 = null;
     }
   }
 
@@ -404,11 +416,11 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   EditOPCRData() {
-    this.editopcrDetails.qty5 = this.editopcrDetails.standard.qty5;
-    this.editopcrDetails.qty4 = this.editopcrDetails.standard.qty4;
-    this.editopcrDetails.qty3 = this.editopcrDetails.standard.qty3;
-    this.editopcrDetails.qty2 = this.editopcrDetails.standard.qty2;
-    this.editopcrDetails.qty1 = this.editopcrDetails.standard.qty1;
+    this.editopcrDetails.qty5 = this.editopcrDetails.qty5;
+    this.editopcrDetails.qty4 = this.editopcrDetails.qty4;
+    this.editopcrDetails.qty3 = this.editopcrDetails.qty3;
+    this.editopcrDetails.qty2 = this.editopcrDetails.qty2;
+    this.editopcrDetails.qty1 = this.editopcrDetails.qty1;
     this.editopcrDetails.sharedDiv = this.sharedDivValue();
     this.opcrService.EditOPCRData(this.editopcrDetails);
     setTimeout(() => {
