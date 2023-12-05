@@ -70,11 +70,11 @@ export class OpcrTargetComponent implements OnInit {
         this.opcrService.GetOPCRDetails();
         this.mfoService.GetMFOes();
         this.sortExcist();
-      }, 1000);
+      }, 0);
     } else {
       localStorage.setItem('isShow', '0');
       this.opcrService.storageIsShow.set(0);
-      this.sortExcist();
+      // this.sortExcist();
     }
   }
 
@@ -272,7 +272,7 @@ export class OpcrTargetComponent implements OnInit {
         if (!this.opcrData().error) {
           this.closebutton.nativeElement.click();
         }
-      }, 1000);
+      }, 0);
       this.sortExcist();
     } else {
       this.prompt = true;
@@ -336,7 +336,7 @@ export class OpcrTargetComponent implements OnInit {
     let catName = '';
     switch (cat) {
       case 1:
-        catName = 'Pre-Final';
+        catName = 'Open';
         break;
       case 2:
         catName = 'Final';
@@ -372,7 +372,7 @@ export class OpcrTargetComponent implements OnInit {
       if (!this.opcrDetails().error) {
         this.closebuttonEdit.nativeElement.click();
       }
-    }, 1000);
+    }, 0);
   }
 
   OPCRDetails(data: any) {

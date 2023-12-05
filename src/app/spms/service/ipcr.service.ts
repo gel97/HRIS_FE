@@ -279,7 +279,7 @@ export class IpcrService {
       if (this.counter == 0) {
         this.loading = false;
         this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
-        this.siChecker();
+         this.siChecker();
         this.removeMFO();
       }
     }, 1000);
@@ -293,7 +293,7 @@ export class IpcrService {
           this.dpcr_ipcr.mutate((a) => (a.isNoData = true));
         }
       }
-    }, 1000);
+    }, 0);
   }
 
   tagRemove: boolean = false;
@@ -310,7 +310,7 @@ export class IpcrService {
       if (!this.tagRemove) {
         this.ipcrDetails.mutate((a) => (a.completeLoading = false));
       }
-    }, 1000);
+    }, 0);
   }
 
   AddIPCRSubData(data: any) {
