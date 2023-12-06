@@ -42,6 +42,8 @@ export class DivisionMfoComponent implements OnInit {
   }
 
   EditMfo() {
+    this.mfoData.divisionId = this.mfoService.divisionId;
+
     if (this.mfoData.mfo !== undefined || this.mfoData.mfo !== '') {
       this.mfoService.EditMfo(this.mfoData);
     }
