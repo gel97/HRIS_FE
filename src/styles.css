@@ -22,3 +22,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .bg-custom-subtask-si {
   background-color: #F1EAFF
 }
+
+.my-popup-class {
+  z-index: 9999; /* Define your desired z-index value */
+}

@@ -11,7 +11,9 @@
         <app-table-employee-div 
             [employee]="empDiv" 
             [officeDivision]="officeDivision"
+            [officeRole]="officeRole"
             (updateEmployeeDivision)="UpdateEmployeeDivision($event)"
+            (updateEmployeeOfficeRole)="UpdateOfficeRole($event)"
         />
     </div>
 </div>

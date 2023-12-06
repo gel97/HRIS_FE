@@ -11,6 +11,7 @@ export class UserDivisionComponent implements OnInit {
   empNoDiv:any = this.userDivisionService.empNoDiv(); 
   empDiv:any = this.userDivisionService.empDiv(); 
   officeDivision:any = this.userDivisionService.officeDivision(); 
+  officeRole:any = this.userDivisionService.officeRole(); 
 
   ngOnInit(): void {
     this.GetData();
@@ -20,6 +21,7 @@ export class UserDivisionComponent implements OnInit {
     this.userDivisionService.PostEmpDiv();
     this.userDivisionService.PostEmpNoDiv();
     this.userDivisionService.GetOfficeDivision();
+    this.userDivisionService.GetOfficeRole();
 
   }
 
@@ -29,5 +31,9 @@ export class UserDivisionComponent implements OnInit {
 
   UpdateEmployeeDivision(data:any){
     this.userDivisionService.UpdateUserDivision(data)
+  }
+
+  UpdateOfficeRole(data:any){
+    this.userDivisionService.UpdateOfficeRole(data)
   }
 }

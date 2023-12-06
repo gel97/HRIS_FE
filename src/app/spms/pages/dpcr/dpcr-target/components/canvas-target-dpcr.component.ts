@@ -91,7 +91,7 @@ import {
     @Output() submit = new EventEmitter<any>();
   
     currentYear = new Date().getFullYear();
-    periods = [{period:0, desc: 'Full Year'},{period:1, desc: '1st Sem'},{period:2, desc: '2nd Sem'},]
+    periods = [{period:1, desc: '1st Sem'},{period:2, desc: '2nd Sem'},]
     listYear: any = [];
   
     ngOnInit(): void {
