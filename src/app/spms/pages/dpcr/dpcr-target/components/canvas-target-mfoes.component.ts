@@ -30,7 +30,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         >
           <div class="offcanvas-header">
             <h1 id="offcanvasEndLabel" class="offcanvas-title">
-              OPCR MAJOR FINAL OUTPUT
+              MAJOR FINAL OUTPUT
             </h1>
             <button
               (click)="HideCanvasOpcrMfoes()"
@@ -51,7 +51,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="nav-link"
                         [ngClass]="
-                          !dpcrService.isCommonDivision() ? 'active' : ''
+                          dpcrService.isCommonDivision() === 0 ? 'active' : ''
                         "
                         role="tab"
                         data-bs-toggle="tab"
@@ -60,9 +60,32 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         aria-selected="false"
                       >
                         <ng-container>
-                          <i class="bx bx-grid-alt"></i> OFFICE MFO
+                          <i class="bx bx-grid-alt"></i> OFFICE
                           <span
-                            *ngIf="!dpcrService.isCommonDivision()"
+                            *ngIf="dpcrService.isCommonDivision() === 0"
+                            class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
+                          >
+                            {{ dpcrDataMfoes.data.length }}
+                          </span>
+                        </ng-container>
+                      </button>
+                    </li>
+                    <li class="nav-item">
+                      <button
+                        (click)="setMFOs(-1)"
+                        type="button"
+                        class="nav-link"
+                       
+                        role="tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-justified-home"
+                        aria-controls="navs-pills-justified-home"
+                        aria-selected="false"
+                      >
+                        <ng-container>
+                          <i class="bx bx-grid-alt"></i> DIVISION
+                          <span
+                            *ngIf="dpcrService.isCommonDivision() === -1"
                             class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
                           >
                             {{ dpcrDataMfoes.data.length }}
@@ -76,7 +99,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="button"
                         class="nav-link"
                         [ngClass]="
-                          dpcrService.isCommonDivision() ? 'active' : ''
+                          dpcrService.isCommonDivision() === 1 ? 'active' : ''
                         "
                         role="tab"
                         data-bs-toggle="tab"
@@ -85,9 +108,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         aria-selected="true"
                       >
                         <ng-container>
-                          <i class="bx bx-grid-alt"></i> COMMON MFO
+                          <i class="bx bx-grid-alt"></i> COMMON
                           <span
-                            *ngIf="dpcrService.isCommonDivision()"
+                            *ngIf="dpcrService.isCommonDivision() === 1"
                             class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger"
                           >
                             {{ dpcrDataMfoes.data.length }}
@@ -125,7 +148,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <div
                     class="tab-pane fade"
                     [ngClass]="
-                      !dpcrService.isCommonDivision() ? 'show active' : ''
+                      dpcrService.isCommonDivision() === 0 ? 'show active' : ''
                     "
                     id="navs-pills-justified-home"
                     role="tabpanel"
@@ -233,7 +256,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <div
                     class="tab-pane fade"
                     [ngClass]="
-                      dpcrService.isCommonDivision() ? 'show active' : ''
+                      dpcrService.isCommonDivision() === 1 ? 'show active' : ''
                     "
                     id="navs-pills-justified-profile"
                     role="tabpanel"
@@ -385,6 +408,11 @@ export class CanvasTargetDpcrMfoesComponent {
 
   setMFOs(value: number) {
     this.dpcrService.isCommonDivision.set(value);
-    this.dpcrService.GetDpcrDataMfoes();
+    if(value >= 0){
+      this.dpcrService.GetDpcrDataMfoes();
+    }
+    else{ // get dpcr mfoes
+      this.dpcrService.GetDpcrDataDivisionMfoes();
+    }
   }
 }

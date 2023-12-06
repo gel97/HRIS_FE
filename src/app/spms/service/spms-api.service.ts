@@ -17,6 +17,9 @@ export class SpmsApiService {
   put_mfo_category = (mfoId: string, categoryId: number) =>
     `/tPMMFOes/category/${mfoId}/${categoryId}`;
 
+  get_division_mfoes = (divisionId: string) =>`/tPMMFOes/division/${divisionId}`;
+  post_search_division_mfo = () => `/tPMMFOes/Search/Division/MFO`;
+
   post_success_indicator = () => `/tPMMFOIndicators`;
   put_success_indicator = () => `/tPMMFOIndicators`;
   delete_success_indicator = (indicatorId: string) =>

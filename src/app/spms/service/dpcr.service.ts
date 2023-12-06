@@ -312,6 +312,41 @@ export class DpcrService {
       });
   }
 
+  GetDpcrDataDivisionMfoes() {
+    this.dpcrDataMfoes.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(
+        api + this.url.get_division_mfoes(this.divisionId ?? ''),
+        {
+          responseType: `json`,
+        }
+      )
+      .subscribe({
+        next: (response: any = {}) => {
+          this.dpcrDataMfoes.mutate((a) => {
+              (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.dpcrDataMfoes.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          console.log('dpcrDataMfoes: ', this.dpcrData());
+        },
+      });
+  }
+
   AddSubTaskCommonMfo(data: any) {
     this.dpcr.mutate((a) => (a.isLoadingSave = true));
 

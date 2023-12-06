@@ -53,10 +53,14 @@ export class OfficeComponent implements OnInit {
   }
 
   DeleteMfo(mfoId: any) {
+    this.mfoService.isAddOfficeMfo.set(true);
+    
     this.mfoService.DeleteMfo(mfoId);
   }
 
   AddSI() {
+    this.mfoService.isAddOfficeMfo.set(true);
+
     this.siData.mfoId = this.mfoData.mfoId;
 
     if (this.siData.inidicator !== undefined || this.siData.inidicator !== '') {
@@ -77,6 +81,8 @@ export class OfficeComponent implements OnInit {
   }
 
   DeleteSI(indicatorId: any) {
+    this.mfoService.isAddOfficeMfo.set(true);
+
     this.mfoService.DeleteSI(indicatorId);
   }
 
