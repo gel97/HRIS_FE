@@ -59,7 +59,10 @@ export class AlertService {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, delete it!',
+        showClass: {
+          popup: 'z-3' // Define your custom class here
+        }
       }).then((result) => {
         console.log(result)
         if (result.isConfirmed) {
