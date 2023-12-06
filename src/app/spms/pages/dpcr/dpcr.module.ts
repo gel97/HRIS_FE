@@ -20,12 +20,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { StepperSubtaskComponent } from './dpcr-target/components/stepper-subtask.component';
 import { ViewSubtaskComponent } from './dpcr-target/components/view-sub-task.component';
-import { DpcrSubtaskComponent } from './dpcr-subtask/dpcr-subtask.component';
 import { ModalEditSubTaskComponent } from './dpcr-target/components/modal-edit-sub-task.component';
 import { ModalDpcrDataEditQuantityComponent } from './dpcr-target/components/modal-dpcr-data-edit-quantity.component';
 import { CanvasTargetDpcrMfoesComponent } from './dpcr-target/components/canvas-target-mfoes.component';
 import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actual-skeleton.component';
 import { ModalEditSubTaskCmfoComponent } from './dpcr-target/components/modal-edit-sub-task-cmfo.component';
+import { DivisionMfoComponent } from './division-mfo/division-mfo.component';
+import { TableMfoComponent } from './division-mfo/components/table-mfo.component';
+import { SpinnerComponent } from '../../components/spinner.component';
+import { CanvasMFOComponent } from './division-mfo/components/canvas-mfo.component';
+import { CanvasSIComponent } from './division-mfo/components/canvas-si.component';
+import { SearchMFOComponent } from './division-mfo/components/search-mfo.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -40,12 +45,17 @@ import { ModalEditSubTaskCmfoComponent } from './dpcr-target/components/modal-ed
     ModalSubTaskComponent,
     StepperSubtaskComponent,
     ViewSubtaskComponent,
-    DpcrSubtaskComponent,
     ModalEditSubTaskComponent,
     ModalDpcrDataEditQuantityComponent,
     CanvasTargetDpcrMfoesComponent,
     DpcrActualSkeletonComponent,
-    ModalEditSubTaskCmfoComponent
+    ModalEditSubTaskCmfoComponent,
+    DivisionMfoComponent,
+    TableMfoComponent,
+    SpinnerComponent,
+    CanvasMFOComponent,
+    CanvasSIComponent,
+    SearchMFOComponent
   ],
   imports: [
     CommonModule,
