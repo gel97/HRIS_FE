@@ -27,7 +27,6 @@ import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actua
 import { ModalEditSubTaskCmfoComponent } from './dpcr-target/components/modal-edit-sub-task-cmfo.component';
 import { DivisionMfoComponent } from './division-mfo/division-mfo.component';
 import { TableMfoComponent } from './division-mfo/components/table-mfo.component';
-import { SpinnerComponent } from '../../components/spinner.component';
 import { CanvasMFOComponent } from './division-mfo/components/canvas-mfo.component';
 import { CanvasSIComponent } from './division-mfo/components/canvas-si.component';
 import { SearchMFOComponent } from './division-mfo/components/search-mfo.component';
@@ -52,7 +51,6 @@ import { SearchMFOComponent } from './division-mfo/components/search-mfo.compone
     ModalEditSubTaskCmfoComponent,
     DivisionMfoComponent,
     TableMfoComponent,
-    SpinnerComponent,
     CanvasMFOComponent,
     CanvasSIComponent,
     SearchMFOComponent

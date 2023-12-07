@@ -18,7 +18,12 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
           <tbody>
             <tr>
               <td colspan="4" class="text-center">
-                <app-spinner></app-spinner>
+              <div
+                class="spinner-border spinner-border-lg text-primary"
+                role="status"
+              >
+              <span class="visually-hidden">Loading...</span>
+            </div>
               </td>
             </tr>
           </tbody>
