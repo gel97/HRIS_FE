@@ -71,17 +71,27 @@ export class SpmsApiService {
   put_dpcr_data = () => `/tPMDpcrData`;
   delete_dpcr_data = (dpcrDataId: string) => `/tPMDpcrData/${dpcrDataId}`;
   get_dpcr_data_mfoes = (
+    officeId: string,
     dpcrId: string,
     divisionName: string,
     mfoType: number
-  ) => `/tPMDpcrData/mfoes/${dpcrId}/${divisionName}/${mfoType}`;
+  ) => `/tPMDpcrData/mfoes/${officeId}/${dpcrId}/${divisionName}/${mfoType}`;
   get_dpcr_data_search_mfoes = (
+    officeId: string,
     dpcrId: string,
     divisionName: string,
     mfoType: number,
     searchMfo: string
   ) =>
-    `/tPMDpcrData/searchMfoes/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
+    `/tPMDpcrData/searchMfoes/${officeId}/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
+
+  get_dpcr_data_mfoes_division = (
+    officeId: string,
+    divisionId: string,
+    dpcrId: string,
+    divisionName: string,
+  ) => `/tPMDpcrData/mfoes/division/${officeId}/${divisionId}/${dpcrId}/${divisionName}`;
+
   get_dpcr_data = (dpcrId: string) => `/tPMDpcrData/list/${dpcrId}`;
   get_dpcr_data_subtask = (dpcrId: string, mfoId: string) =>
     `/tPMDpcrData/subtask/${dpcrId}/${mfoId}`;

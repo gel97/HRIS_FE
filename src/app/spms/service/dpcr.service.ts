@@ -278,6 +278,7 @@ export class DpcrService {
       .get<any[]>(
         api +
           this.url.get_dpcr_data_mfoes(
+            this.officeId??"",
             this.storageDpcrId(),
             this.divisionName ?? '',
             this.isCommonDivision()
@@ -311,6 +312,48 @@ export class DpcrService {
         },
       });
   }
+
+  GetDpcrDataMfoesDivision() {
+    this.dpcrDataMfoes.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(
+        api +
+          this.url.get_dpcr_data_mfoes_division(
+            this.officeId??"",
+            this.divisionId ?? "",
+            this.storageDpcrId(),
+            this.divisionName ?? '',
+          ),
+        {
+          responseType: `json`,
+        }
+      )
+      .subscribe({
+        next: (response: any = {}) => {
+          this.dpcrDataMfoes.mutate((a) => {
+            (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.dpcrDataMfoes.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          console.log('dpcrDataMfoes: ', this.dpcrData());
+        },
+      });
+  }
+
 
   GetDpcrDataDivisionMfoes() {
     this.dpcrDataMfoes.mutate((a) => (a.isLoading = true));
@@ -467,6 +510,7 @@ export class DpcrService {
       .get<any[]>(
         api +
           this.url.get_dpcr_data_search_mfoes(
+            this.officeId ?? "",
             this.storageDpcrId(),
             this.divisionName ?? '',
             this.isCommonDivision(),
