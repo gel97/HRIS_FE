@@ -56,6 +56,7 @@ import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
             <tr>
               <th [width]="10">#</th>
               <th>Name</th>
+              <th>Office Role</th>
               <th>Division</th>
               <th [width]="10">Actions</th>
             </tr>
@@ -65,40 +66,53 @@ import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
             <tr>
               <td><strong>{{(employee.metadata.pageNumber -1) * (employee.metadata.pageSize) + (i+1) }}</strong></td>
               <td>{{a.fullNameFirst}}</td>
+              <td><span class="badge rounded-pill bg-label-success m-1">{{a.officeRole}}</span></td>
               <td>{{a.divisionName}}</td>
               <td>
-                 <div class="dropdown position-static" *ngIf="!a.isLoading; else LoadingActions">
-                    <button
-                      type="button"
-                      class="btn p-0 dropdown-toggle hide-arrow"
-                      data-bs-toggle="dropdown"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
+                <div class="d-flex align-items-center">
+                  <div class="dropdown position-static">
+                      <button type="button" class="btn rounded-pill btn-icon btn-primary dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <span class="tf-icons bx bx-carousel"></span>
+                      </button>
+                      <div class="dropdown-menu">
+                        <p class="m-2"><strong>Assign to:</strong></p>
+                        <ng-container *ngFor="let z of officeDivision.data; let y = index">
+                            <a class="dropdown-item cursor-pointer" 
+                              (click)="SelectedEmployee({EIC:a.eic , divisionId: z.divisionId})"
+                            >
+                              {{z.divisionName}}
+                            </a>
+                        </ng-container>   
+                        <a class="dropdown-item cursor-pointer text-danger"
+                          (click)="DeleteEmployeeDivision(a.eic)"
+                        >
+                          <i class="bx bx-trash me-1"></i> Remove Employee
+                        </a>             
+                      </div>
+                  </div>
+                  &nbsp;
+                  <div class="dropdown position-static">
+                    <button type="button" class="btn rounded-pill btn-icon btn-primary dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                      <span class="tf-icons bx bx-user"></span>
                     </button>
                     <div class="dropdown-menu">
-                      <p class="m-2"><strong>Assign to:</strong></p>
-                      <ng-container *ngFor="let z of officeDivision.data; let y = index">
+                      <p class="m-2"><strong>Assign as:</strong></p>
+                      <ng-container *ngFor="let z of officeRole.data; let y = index">
                           <a class="dropdown-item cursor-pointer" 
-                            (click)="SelectedEmployee({EIC:a.eic , divisionId: z.divisionId})"
+                            (click)="SelectedOfficeRoleEmployee({EIC:a.eic , officeRoleId: z.officeRoleId})"
                           >
-                            {{z.divisionName}}
+                            {{z.officeRole}}
                           </a>
                       </ng-container>   
-                      <a class="dropdown-item cursor-pointer"
-                        (click)="DeleteEmployeeDivision(a.eic)"
+                      <a class="dropdown-item cursor-pointer text-danger"
+                        (click)="DeleteEmployeeOfficeRole(a.eic)"
                       >
-                        <i class="bx bx-trash me-1"></i> Remove
+                        <i class="bx bx-trash me-1"></i> Remove Role
                       </a>             
                     </div>
                   </div>
-                  <ng-template #LoadingActions>
-                    <ngx-skeleton-loader
-                      count="1"
-                      animation="pulse"
-                      appearance="circle"
-                      [theme]="{ margin: '0px' }"
-                    ></ngx-skeleton-loader>
-                  </ng-template>
+                </div>
+
               </td>
             </tr>        
             </ng-container>
@@ -134,16 +148,26 @@ export class TableEmployeeDivComponent {
   division:any = "Division";
   @Input() employee: any;
   @Input() officeDivision: any;
+  @Input() officeRole: any;
 
   @Output() updateEmployeeDivision = new EventEmitter<any>();
+  @Output() updateEmployeeOfficeRole = new EventEmitter<any>();
 
- 
   SelectedEmployee(data:any){
     this.updateEmployeeDivision.emit(data);
   }
 
+  SelectedOfficeRoleEmployee(data:any){
+    this.updateEmployeeOfficeRole.emit(data);
+  }
+
   DeleteEmployeeDivision(EIC:string){
     this.userDivisionService.DeleteEmployeeDivision(EIC);
+  }
+
+  DeleteEmployeeOfficeRole(EIC:string){
+    this.userDivisionService.DeleteEmployeeOfficeRole(EIC);
+
   }
 
   pageSizeOptions = [5, 10, 50, 100];

@@ -243,10 +243,23 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
   }
 
-  EditOPCRFinal() {
+  EditOPCRFinal(opcrId: any) {
     this.editOpcr.active = 2;
+    this.post_signatories(opcrId);
     this.opcrService.EditOPCR(this.editOpcr);
     this.GetOPCRs();
+  }
+
+  post_signatories(id: any) {
+    this.opcrService.post_signatories(id).subscribe({
+      next: () => {},
+      error: () => {
+        alert('error');
+      },
+      complete: () => {
+        alert('success');
+      },
+    });
   }
 
   ReportOPCR(data: any) {

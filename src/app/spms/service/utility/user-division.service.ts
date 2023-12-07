@@ -28,6 +28,12 @@ export class UserDivisionService {
     isLoading: false,
   });
 
+  officeRole = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
   isSearchLoadingEmpNoDiv = signal<boolean>(false);
   searchEmpNoDiv = signal<any>("");
   pageNumberEmpNoDiv = signal<number>(1);
@@ -145,6 +151,66 @@ export class UserDivisionService {
       });
   }
 
+  GetOfficeRole() {
+    this.officeRole.mutate((a) => (a.isLoading = true));
+    
+    this.http
+      .get<any[]>(api + this.url.get_employee_office_role())
+      .subscribe({
+        next: (response: any = {}) => {
+          this.officeRole.mutate((a) => (a.data = response));
+          this.officeRole.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {},
+      });
+  }
+
+  UpdateOfficeRole(data:any){
+    this.officeRole.mutate((a) => (a.isLoadingSave = true));
+    data.officeId = this.officeId;
+    this.http
+      .put<any[]>(api + this.url.put_employee_office_role(), data, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.PostEmpDiv();
+
+          this.officeRole.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.officeRole.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
+  async DeleteEmployeeOfficeRole(EIC: string) {
+    try {
+      let deleteData = await this.alertService.delete(
+        this.url.delete_employee_office_role(EIC)
+      );
+
+      if (deleteData) {
+        this.PostEmpDiv();
+      } else {
+        //console.log("cancel")
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   PostOfficeDivision(data:any) {
     this.officeDivision.mutate((a) => (a.isLoading = true));
     data.officeId = this.officeId;
@@ -168,6 +234,48 @@ export class UserDivisionService {
         },
         complete: () => {},
       });
+  }
+
+  UpdateOfficeDivision(data:any){
+    this.officeDivision.mutate((a) => (a.isLoadingSave = true));
+    this.http
+      .put<any[]>(api + this.url.put_officedivision(), data, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.PostEmpDiv();
+
+          this.officeDivision.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.officeDivision.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
+  async DeleteOfficeDivision(divisionId: string) {
+    try {
+      let deleteData = await this.alertService.delete(
+        this.url.delete_officedivision(divisionId)
+      );
+
+      if (deleteData) {
+        this.GetOfficeDivision();
+      } else {
+        //console.log("cancel")
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   AddUserDivision(user:any){

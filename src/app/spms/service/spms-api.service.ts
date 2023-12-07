@@ -17,6 +17,9 @@ export class SpmsApiService {
   put_mfo_category = (mfoId: string, categoryId: number) =>
     `/tPMMFOes/category/${mfoId}/${categoryId}`;
 
+  get_division_mfoes = (divisionId: string) =>`/tPMMFOes/division/${divisionId}`;
+  post_search_division_mfo = () => `/tPMMFOes/Search/Division/MFO`;
+
   post_success_indicator = () => `/tPMMFOIndicators`;
   put_success_indicator = () => `/tPMMFOIndicators`;
   delete_success_indicator = (indicatorId: string) =>
@@ -94,6 +97,8 @@ export class SpmsApiService {
 
   get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
   post_officedivision = () => `/tPMOfficeDivisions`;
+  put_officedivision = () => `/tPMOfficeDivisions`;
+  delete_officedivision = (divisionId:any) => `/tPMOfficeDivisions/${divisionId}`;
 
   get_utility_role = () =>'/tPMRole';
   post_utility_employee_role = (officeId:string) =>`/vPMEmployee/employee_role?officeId=${officeId}`;
@@ -109,7 +114,12 @@ export class SpmsApiService {
   post_employee_add_division = () => `/vPMEmployee/employee/add/division`;
   put_employee_update_division = () => `/vPMEmployee/employee/update/division`;
   delete_employee_division = (EIC:string) => `/vPMEmployee/employee/remove/division/${EIC}`;
+  get_employee_office_role = () => `/vPMEmployee/employee/office/role`;
+  put_employee_office_role = () => `/vPMEmployee/employee/office/role`;
+  delete_employee_office_role = (EIC:string) => `/vPMEmployee/employee/office/role/${EIC}`;
 
   get_office = () => `/tPMOffice`;
   post_employee_assign_office_focal = () => `/vPMEmployee/employee/assign/office/focal`;
+
+  post_signatories = (typeId:any) => `/tPMSignatories/${typeId}`;
 }

@@ -28,6 +28,7 @@ import { IpcrTargetSkeletonComponent } from './pages/ipcr/ipcr-target/components
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
 import { OtsComponent } from './pages/ots/ots.component';
+
 @NgModule({
   declarations: [
     SpmsComponent,

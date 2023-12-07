@@ -54,12 +54,12 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <span
                     *ngIf="item.active; else Inactive"
                     class="badge bg-label-success me-1"
-                    >active</span
+                    >Open</span
                   >
                   <ng-template #Inactive>
                   <span 
                     class="badge bg-label-danger me-1"
-                    >inactive</span
+                    >Draft</span
                   >
                   </ng-template>
                 </td>
@@ -146,9 +146,6 @@ export class TableDpcrComponent {
     let result = '';
 
     switch (value) {
-      case 0:
-        result = 'FULL YEAR';
-        break;
       case 1:
         result = '1st';
         break;
