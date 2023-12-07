@@ -389,6 +389,31 @@ export class IpcrTargetComponent implements OnInit {
       this.ipcrDetails.qty2 = Math.floor(this.ipcrDetails.qty / 2 + 1);
       this.ipcrDetails.qty1 = Math.floor(this.ipcrDetails.qty / 2);
 
+      if (this.ipcrDetails.qty3 >= 4 && this.ipcrDetails.qty3 <= 6) {
+        this.ipcrDetails.qty4 += 1;
+        this.ipcrDetails.qty5 += 1;
+      } else if (this.ipcrDetails.qty3 == 3) {
+        this.ipcrDetails.qty4 += 1;
+        this.ipcrDetails.qty5 += 2;
+      } else if (this.ipcrDetails.qty3 == 2) {
+        this.ipcrDetails.qty4 += 1;
+        this.ipcrDetails.qty5 += 2;
+        this.ipcrDetails.qty2 -= 1;
+        this.ipcrDetails.qty1 -= 1;
+      } else if (this.ipcrDetails.qty3 == 1) {
+        this.ipcrDetails.qty5 = 1;
+        this.ipcrDetails.qty4 = null;
+        this.ipcrDetails.qty3 = null;
+        this.ipcrDetails.qty2 = null;
+        this.ipcrDetails.qty1 = null;
+      } else if (this.ipcrDetails.qty <= 0) {
+        this.ipcrDetails.qty5 = null;
+        this.ipcrDetails.qty4 = null;
+        this.ipcrDetails.qty3 = null;
+        this.ipcrDetails.qty2 = null;
+        this.ipcrDetails.qty1 = null;
+      }
+
       if (this.qtyRemaining < 0 || this.ipcrDetails.qty < 0) {
         this.promptEdit = true;
       } else {
@@ -419,6 +444,32 @@ export class IpcrTargetComponent implements OnInit {
       this.ipcrDetails.qty3 = Math.floor(this.quantity);
       this.ipcrDetails.qty2 = Math.floor(this.quantity / 2 + 1);
       this.ipcrDetails.qty1 = Math.floor(this.quantity / 2);
+
+      if (this.ipcrDetails.qty3 >= 4 && this.ipcrDetails.qty3 <= 6) {
+        this.ipcrDetails.qty4 += 1;
+        this.ipcrDetails.qty5 += 1;
+      } else if (this.ipcrDetails.qty3 == 3) {
+        this.ipcrDetails.qty4 += 1;
+        this.ipcrDetails.qty5 += 2;
+      } else if (this.ipcrDetails.qty3 == 2) {
+        this.ipcrDetails.qty4 += 1;
+        this.ipcrDetails.qty5 += 2;
+        this.ipcrDetails.qty2 -= 1;
+        this.ipcrDetails.qty1 -= 1;
+      } else if (this.ipcrDetails.qty3 == 1) {
+        this.ipcrDetails.qty5 = 1;
+        this.ipcrDetails.qty4 = null;
+        this.ipcrDetails.qty3 = null;
+        this.ipcrDetails.qty2 = null;
+        this.ipcrDetails.qty1 = null;
+      } else if (this.ipcrDetails.qty <= 0) {
+        this.ipcrDetails.qty5 = null;
+        this.ipcrDetails.qty4 = null;
+        this.ipcrDetails.qty3 = null;
+        this.ipcrDetails.qty2 = null;
+        this.ipcrDetails.qty1 = null;
+      }
+
       if (
         this.quantity > this.dpcrQuantity - this.ipcrService.ipcr_rem() ||
         this.quantity < 0
@@ -452,6 +503,32 @@ export class IpcrTargetComponent implements OnInit {
       this.ipcrSTDetails.qty3 = Math.floor(this.quantityST);
       this.ipcrSTDetails.qty2 = Math.floor(this.quantityST / 2 + 1);
       this.ipcrSTDetails.qty1 = Math.floor(this.quantityST / 2);
+
+      if (this.ipcrSTDetails.qty3 >= 4 && this.ipcrSTDetails.qty3 <= 6) {
+        this.ipcrSTDetails.qty4 += 1;
+        this.ipcrSTDetails.qty5 += 1;
+      } else if (this.ipcrSTDetails.qty3 == 3) {
+        this.ipcrSTDetails.qty4 += 1;
+        this.ipcrSTDetails.qty5 += 2;
+      } else if (this.ipcrSTDetails.qty3 == 2) {
+        this.ipcrSTDetails.qty4 += 1;
+        this.ipcrSTDetails.qty5 += 2;
+        this.ipcrSTDetails.qty2 -= 1;
+        this.ipcrSTDetails.qty1 -= 1;
+      } else if (this.ipcrSTDetails.qty3 == 1) {
+        this.ipcrSTDetails.qty5 = 1;
+        this.ipcrSTDetails.qty4 = null;
+        this.ipcrSTDetails.qty3 = null;
+        this.ipcrSTDetails.qty2 = null;
+        this.ipcrSTDetails.qty1 = null;
+      } else if (this.ipcrSTDetails.qty <= 0) {
+        this.ipcrSTDetails.qty5 = null;
+        this.ipcrSTDetails.qty4 = null;
+        this.ipcrSTDetails.qty3 = null;
+        this.ipcrSTDetails.qty2 = null;
+        this.ipcrSTDetails.qty1 = null;
+      }
+
       if (
         this.quantityST > this.dpcrSTQuantity - this.ipcrService.ipcrST_rem() ||
         this.quantityST < 0
@@ -493,6 +570,31 @@ export class IpcrTargetComponent implements OnInit {
       this.ipcrSTDetails.qty2 = Math.floor(this.ipcrSTDetails.qty / 2 + 1);
       this.ipcrSTDetails.qty1 = Math.floor(this.ipcrSTDetails.qty / 2);
 
+      if (this.ipcrSTDetails.qty3 >= 4 && this.ipcrSTDetails.qty3 <= 6) {
+        this.ipcrSTDetails.qty4 += 1;
+        this.ipcrSTDetails.qty5 += 1;
+      } else if (this.ipcrSTDetails.qty3 == 3) {
+        this.ipcrSTDetails.qty4 += 1;
+        this.ipcrSTDetails.qty5 += 2;
+      } else if (this.ipcrSTDetails.qty3 == 2) {
+        this.ipcrSTDetails.qty4 += 1;
+        this.ipcrSTDetails.qty5 += 2;
+        this.ipcrSTDetails.qty2 -= 1;
+        this.ipcrSTDetails.qty1 -= 1;
+      } else if (this.ipcrSTDetails.qty3 == 1) {
+        this.ipcrSTDetails.qty5 = 1;
+        this.ipcrSTDetails.qty4 = null;
+        this.ipcrSTDetails.qty3 = null;
+        this.ipcrSTDetails.qty2 = null;
+        this.ipcrSTDetails.qty1 = null;
+      } else if (this.ipcrSTDetails.qty <= 0) {
+        this.ipcrSTDetails.qty5 = null;
+        this.ipcrSTDetails.qty4 = null;
+        this.ipcrSTDetails.qty3 = null;
+        this.ipcrSTDetails.qty2 = null;
+        this.ipcrSTDetails.qty1 = null;
+      }
+
       if (this.qtyRemainingST < 0 || this.ipcrSTDetails.qty < 0) {
         this.promptEditST = true;
       } else {
@@ -515,80 +617,4 @@ export class IpcrTargetComponent implements OnInit {
     this.localStorage();
   }
 
-  // counter: number = 0;
-  // counter_mfo: number = 0;
-  // sortExcist() {
-  //   setTimeout(() => {
-  //     for (let a of this.dpcr_ipcr.data) {
-  //       for (let b_dpcr_ipcr of a.si) {
-  //         for (let x of this.get_ipcrDetails.data) {
-  //           for (let y_ipcrDetails of x.si) {
-  //             if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
-  //               if (b_dpcr_ipcr.isSubTask == 0) {
-  //                 this.counter += 1;
-  //               } else {
-  //                 for (let j of b_dpcr_ipcr.st) {
-  //                   for (let k of y_ipcrDetails.st) {
-  //                     if (j.subTaskId == k.subTaskId) {
-  //                       this.counter += 1;
-  //                     }
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     while (this.counter != 0) {
-  //       this.counter -= 1;
-  //       for (let a of this.dpcr_ipcr.data) {
-  //         for (let b_dpcr_ipcr of a.si) {
-  //           for (let x of this.get_ipcrDetails.data) {
-  //             for (let y_ipcrDetails of x.si) {
-  //               if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
-  //                 if (b_dpcr_ipcr.isSubTask == 0) {
-  //                   const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
-  //                   if (indexToRemove !== -1) {
-  //                     a.si.splice(indexToRemove, 1);
-  //                   }
-  //                 } else {
-  //                   for (let j of b_dpcr_ipcr.st) {
-  //                     for (let k of y_ipcrDetails.st) {
-  //                       if (j.subTaskId == k.subTaskId) {
-  //                         const indexToRemove = b_dpcr_ipcr.st.indexOf(j);
-  //                         if (indexToRemove !== -1) {
-  //                           b_dpcr_ipcr.st.splice(indexToRemove, 1);
-  //                         }
-  //                       }
-  //                     }
-  //                   }
-  //                   if (b_dpcr_ipcr.st.length == 0) {
-  //                     const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
-  //                     if (indexToRemove !== -1) {
-  //                       a.si.splice(indexToRemove, 1);
-  //                     }
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }, 1000);
-  // }
-
-  // removeMFO() {
-  //   setTimeout(() => {
-  //     for (let a of this.get_ipcrDetails.data) {
-  //       for (let a_si of a.si) {
-  //         if (a_si.isSubTask == 1 && a_si.st.length == 0) {
-  //           this.ipcrService.DeleteMFO(a_si.ipcrDataId);
-  //         }
-  //       }
-  //     }
-  //   }, 1000);
-  // }
 }
