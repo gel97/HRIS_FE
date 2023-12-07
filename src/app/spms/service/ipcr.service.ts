@@ -166,7 +166,7 @@ export class IpcrService {
 
           Toast.fire({
             icon: 'warning',
-            title: 'IPCR-coded for this semester ',
+            title: 'IPCR-coded for this semester/Not yet open',
           });
         },
         complete: () => {
@@ -202,8 +202,7 @@ export class IpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {},
-        error: (error: any) => {
-        },
+        error: (error: any) => {},
         complete: () => {
           this.alertService.update();
         },

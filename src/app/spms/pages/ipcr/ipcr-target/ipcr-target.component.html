@@ -49,8 +49,8 @@
                 <thead>
                     <tr>
                         <th>Details</th>
-                        <th>Year</th>
                         <th>Sem</th>
+                        <th>Year</th>
                         <th>Date Created</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -58,14 +58,14 @@
                 </thead>
                 <tbody *ngFor="let data of ipcr.data">
                     <tr>
-                        <td class="pointer"><a (click)="IPCRDetails(data.ipcrId, data.details)">
+                        <td class="pointer"><a (click)="IPCRDetails(data.ipcrId, data.details, data.active)">
                                 <strong>{{data.details}}</strong>
                             </a></td>
-                        <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
                         <td>
                             <span class="badge"
                                 [ngClass]="data.semester == '0' ? 'bg-label-success': data.semester == '1' ? 'bg-label-primary': data.semester == '2' ? 'bg-label-info': ''">{{semester(data.semester)}}</span>
                         </td>
+                        <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
                         <td>
                             {{data.transDT | date:'MMM. dd, yyyy' }}
                         </td>
@@ -87,9 +87,11 @@
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a *ngIf="data.active != 1" class="dropdown-item" (click)="edit_ipcr_status = data; EditIPCRStatusOpen()"><i
+                                    <a *ngIf="data.active == 0" class="dropdown-item"
+                                        (click)="edit_ipcr_status = data; EditIPCRStatusOpen()"><i
                                             class="bx bx-paperclip me-1"></i>Open</a>
-                                    <a *ngIf="data.active == 1" class="dropdown-item" (click)="edit_ipcr_status = data; EditIPCRStatusFinal()"><i
+                                    <a *ngIf="data.active == 1" class="dropdown-item"
+                                        (click)="edit_ipcr_status = data; EditIPCRStatusFinal()"><i
                                             class="bx bxs-flag-alt me-1"></i>Final</a>
                                     <a class="dropdown-item" (click)="printIpcr(data)"><i
                                             class="bx bx-printer me-1"></i>
@@ -216,7 +218,7 @@ height: 100%;
                                                                 <!--/ Bordered Table -->
                                                             </div>
                                                         </div>
-                                                        <div>
+                                                        <div *ngIf="ipcr_details_status != 2">
                                                             <button (click)="DeleteIPCRDetails(si.ipcrDataId)"
                                                                 type="button"
                                                                 class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
@@ -308,7 +310,7 @@ height: 100%;
                                                                     <!--/ Bordered Table -->
                                                                 </div>
                                                             </div>
-                                                            <div>
+                                                            <div *ngIf="ipcr_details_status != 2">
 
                                                                 <button (click)="DeleteIPCRSTDetails(st.ipcrSubtaskId)"
                                                                     type="button"
@@ -360,12 +362,14 @@ height: 100%;
                 </div>
             </div>
         </div>
-        <div *ngIf="!isExpand" class="col-xl-1">
-            <button *ngIf="ipcrService.ipcrDetails().data.length > 0" (click)="isExpand = true" type="button"
-                class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasDPCR_IPCR" aria-controls="offcanvasScroll"> <i class='bx bx-expand'></i>
-            </button>
-        </div>
+        <ng-container *ngIf="ipcr_details_status != 2">
+            <div *ngIf="!isExpand" class="col-xl-1">
+                <button *ngIf="ipcrService.ipcrDetails().data.length > 0" (click)="isExpand = true" type="button"
+                    class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasDPCR_IPCR" aria-controls="offcanvasScroll"> <i class='bx bx-expand'></i>
+                </button>
+            </div>
+        </ng-container>
     </div>
 </div>
 

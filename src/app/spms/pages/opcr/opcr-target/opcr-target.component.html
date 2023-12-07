@@ -1,77 +1,72 @@
 <!-- OPCR-->
 <ng-container>
-  <div class="card">
-    <div class="row">
-      <div class="col-8">
-        <div class="card-header p-3">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-style1 m-0">
-              <li class="breadcrumb-item">
-                <a><i class="bx bx-data"></i>&nbsp;OPCR</a>
-              </li>
-              <li class="breadcrumb-item" [ngClass]="isShow() == 0 ? 'active' : ''">
-                <a><i class="bx bxs-right-top-arrow-circle"></i>&nbsp;Target</a>
-              </li>
-              <li *ngIf="isShow() == 1" class="breadcrumb-item active">
-                <a> {{ opcrService.storageOpcrDetails() }}</a>
-              </li>
-            </ol>
-          </nav>
+    <div class="card">
+        <div class="row">
+            <div class="col-8">
+                <div class="card-header p-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-style1 m-0">
+                            <li class="breadcrumb-item">
+                                <a><i class="bx bx-data"></i>&nbsp;OPCR</a>
+                            </li>
+                            <li class="breadcrumb-item" [ngClass]="isShow() == 0 ? 'active' : ''">
+                                <a><i class="bx bxs-right-top-arrow-circle"></i>&nbsp;Target</a>
+                            </li>
+                            <li *ngIf="isShow() == 1" class="breadcrumb-item active">
+                                <a> {{ opcrService.storageOpcrDetails() }}</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div *ngIf="isShow() == 1" class="col-4">
+                <br />
+                <a class="pointer float-end">
+                    <span class="row px-4" (click)="removelocalStorage()">
+                        <i class="bx bx-arrow-back"></i>
+                    </span>
+                </a>
+            </div>
+            <div *ngIf="isShow() == 0 && opcr().data.length == 0" class="col-4">
+                <div class="pt-4" style="margin-right: 5px">
+                    <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                        <i class="bx bx-plus"></i>OPCR
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-      <div *ngIf="isShow() == 1" class="col-4">
-        <br />
-        <a class="pointer float-end">
-          <span class="row px-4" (click)="removelocalStorage()">
-            <i class="bx bx-arrow-back"></i>
-          </span>
-        </a>
-      </div>
-      <div *ngIf="isShow() == 0 && opcr().data.length == 0" class="col-4">
-        <div class="pt-4" style="margin-right: 5px">
-          <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
-            <i class="bx bx-plus"></i>OPCR
-          </button>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="isShow() == 0" class="card-body">
-      <div>
-        <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
-          (ngModelChange)="onChangeYear($event)">
-          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
-      </div>
-      <br />
-      <div *ngIf="opcr().data.length != 0; else noData">
-        <!-- Bordered Table -->
-        <div class="table-responsive text-nowrap">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Details</th>
-                <th>Year</th>
-                <th>Sem</th>
-                <th>Date Created</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let data of opcr().data; let i = index">
-              <tr>
-                <td class="pointer">
-                  <a (click)="OPCRDetails(data)">
-                    <strong>{{ data.details }}</strong>
-                  </a>
-                </td>
-                <td>
-                  <span class="badge bg-label-primary me-1">{{
-                    data.year
-                    }}</span>
-                </td>
-                <td>
-                  <span class="badge" [ngClass]="
+        <div *ngIf="isShow() == 0" class="card-body">
+            <div>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
+                    (ngModelChange)="onChangeYear($event)">
+                    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                </select>
+            </div>
+            <br />
+            <div *ngIf="opcr().data.length != 0; else noData">
+                <!-- Bordered Table -->
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Details</th>
+                                <th>Sem</th>
+                                <th>Year</th>
+                                <th>Date Created</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let data of opcr().data; let i = index">
+                            <tr>
+                                <td class="pointer">
+                                    <a (click)="OPCRDetails(data)">
+                                        <strong>{{ data.details }}</strong>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge" [ngClass]="
                     data.semester == '0'
                       ? 'bg-label-success'
                       : data.semester == '1'
@@ -80,13 +75,18 @@
                       ? 'bg-label-info'
                       : ''
                   ">{{ sem(data.semester) }}</span>
-                </td>
-                <td>
-                  {{ data.transDT | date : "MMM. dd, yyyy" }}
-                </td>
-                <ng-container>
-                  <td>
-                    <span [ngClass]="
+                                </td>
+                                <td>
+                                    <span class="badge bg-label-primary me-1">{{
+                                        data.year
+                                        }}</span>
+                                </td>
+                                <td>
+                                    {{ data.transDT | date : "MMM. dd, yyyy" }}
+                                </td>
+                                <ng-container>
+                                    <td>
+                                        <span [ngClass]="
                       data.active == '1'
                         ? 'badge rounded-pill bg-label-success'
                         : data.active == '2'
@@ -95,42 +95,50 @@
                         ? 'badge rounded-pill bg-label-danger'
                         : ''
                     ">
-                      {{ displayStatus(data.active) }}</span>
-                  </td>
-                </ng-container>
-                <td>
-                  <div class="dropdown position-static pointer">
-                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                      <a *ngIf="data.active != 1" (click)="editOpcr = data; EditOPCR()" class="dropdown-item"><i
-                          class="bx bx-paperclip me-1"></i>Open</a>
-                      <a *ngIf="data.active == 1" (click)="editOpcr = data; EditOPCRFinal()" class="dropdown-item"><i
-                          class="bx bxs-flag-alt me-1"></i>Final</a>
-                      <a (click)="ReportOPCR(data)" class="dropdown-item"><i class="bx bx-printer me-1"></i> Print
-                        OPCR</a>
-                      <a (click)="DeleteOPCR(data.opcrId)" class="dropdown-item"><i class="bx bx-trash me-1"></i>
-                        Delete</a>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                                            {{ displayStatus(data.active) }}</span>
+                                    </td>
+                                </ng-container>
+                                <td>
+                                    <div class="dropdown position-static pointer">
+                                        <button
+                                            (click)="show_uncommited_division_list(data.year); uncommited_division_boolean=false"
+                                            type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a *ngIf="data.active == 0" (click)="editOpcr = data; EditOPCR()"
+                                                class="dropdown-item"><i class="bx bx-paperclip me-1"></i>Open</a>
+                                            <!-- && !uncommited_division_boolean -->
+                                            <a *ngIf="data.active == 1 && !uncommited_division_boolean"
+                                                (click)="editOpcr = data; EditOPCRFinal(data.opcrId)"
+                                                class="dropdown-item"><i class="bx bxs-flag-alt me-1"></i>Final</a>
+                                            <a (click)="ReportOPCR(data)" class="dropdown-item"><i
+                                                    class="bx bx-printer me-1"></i> Print
+                                                OPCR</a>
+                                            <a (click)="DeleteOPCR(data.opcrId)" class="dropdown-item"><i
+                                                    class="bx bx-trash me-1"></i>
+                                                Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <ng-template #noData>
+                <div>
+                    <br />
+                    <img src="assets/img/document.png" alt="" width="200" height="200"
+                        style="display: block; margin: 0 auto" />
+                    <span style="display: flex; justify-content: center; align-items: center">
+                        <label><strong>No Data Found!</strong></label>&nbsp;
+                    </span>
+                </div>
+            </ng-template>
         </div>
-      </div>
-      <ng-template #noData>
-        <div>
-          <br />
-          <img src="assets/img/document.png" alt="" width="200" height="200" style="display: block; margin: 0 auto" />
-          <span style="display: flex; justify-content: center; align-items: center">
-            <label><strong>No Data Found!</strong></label>&nbsp;
-          </span>
-        </div>
-      </ng-template>
     </div>
-  </div>
 </ng-container>
 <!-- <ng-template #isLoading>
   <app-opcr-target-skeleton></app-opcr-target-skeleton>
@@ -138,22 +146,35 @@
 
 <!-- OPCR Details-->
 <div class="container-fluid flex-grow-1 py-4" *ngIf="isShow() == 1">
-  <div class="row p-0">
-    <div [ngClass]="isExpandMfoes ? 'col-xl-6 p-0' : 'col-xl-11 p-0'">
-      <div class="p-0">
-        <div class="">
-          <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
-            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-8">
-                    <h1 class="card-title" style="color: blue">
-                      {{ data.mfo }}
-                    </h1>
-                  </div>
-                  <div class="col-4">
-                    <div class="btn-group float-end">
-                      <small class="badge rounded-pill float-end pointer" [ngClass]="
+    <h6 class="mt-2 text-muted"> Division list </h6>
+    <div class="row p-2">
+        <div class="col-10">
+            <ng-container *ngFor="let a of uncommited_division">
+                <ng-container *ngIf="a.status == 0 ; else commited">
+                    <span class="badge rounded-pill bg-label-danger m-1">{{a.divisionName}}</span>
+                </ng-container>
+                <ng-template #commited>
+                    <span class="badge rounded-pill bg-success m-1">{{a.divisionName}}</span>
+                </ng-template>
+            </ng-container>
+        </div>
+    </div>
+    <div class="row p-0">
+        <div [ngClass]="isExpandMfoes ? 'col-xl-6 p-0' : 'col-xl-11 p-0'">
+            <div class="p-0">
+                <div class="">
+                    <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
+                        <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h1 class="card-title" style="color: blue">
+                                            {{ data.mfo }}
+                                        </h1>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="btn-group float-end">
+                                            <small class="badge rounded-pill float-end pointer" [ngClass]="
                         data.categoryId == '1'
                           ? 'bg-label-success'
                           : data.categoryId == '2'
@@ -162,645 +183,670 @@
                           ? 'bg-label-warning'
                           : 'bg-label-secondary'
                       " data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ displayCatergory(data.categoryId) }}
-                      </small>
-                      <ul class="dropdown-menu dropdown-menu-end pointer">
-                        <li *ngIf="data.isCommon == 0">
-                          <a (click)="
+                                                {{ displayCatergory(data.categoryId) }}
+                                            </small>
+                                            <ul class="dropdown-menu dropdown-menu-end pointer">
+                                                <li *ngIf="data.isCommon == 0">
+                                                    <a (click)="
                             PutMFOCategory(data.mfoId, 1); data.categoryId = 1
                           " class="dropdown-item">STRATEGIC</a>
-                        </li>
-                        <li>
-                          <a (click)="
+                                                </li>
+                                                <li>
+                                                    <a (click)="
                             PutMFOCategory(data.mfoId, 2); data.categoryId = 2
                           " class="dropdown-item">CORE
-                          </a>
-                        </li>
-                        <li>
-                          <a (click)="
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a (click)="
                             PutMFOCategory(data.mfoId, 3); data.categoryId = 3
                           " class="dropdown-item">SUPPORT
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <!-- Accordion -->
-                <div class="row">
-                  <div class="col-md mb-4 mb-md-0">
-                    <div class="accordion mt-3" id="accordionExample">
-                      <div class="card accordion-item bg-lightest thick-border"
-                        *ngFor="let si of data.si; let i = index">
-                        <h2 class="accordion-header" id="heading{{ parent }}{{ i }}">
-                          <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
-                            [attr.data-bs-target]="'#accordion' + parent + i" aria-expanded="false"
-                            [attr.aria-controls]="'accordion' + parent + i">
-                            <i class="bx bx-label"></i>
-                            <strong style="color: #697a8d">&nbsp;<span style="color: black">{{
-                                si.qty
-                                }}</span>&nbsp;{{ si.indicator }}</strong>
-                          </button>
-                          <h4 *ngIf="si.isShared == 1" style="margin-left: 50px">
-                            <i class="bx bx-carousel"></i>&nbsp;{{
-                            si.sharedDiv
-                            }}
-                          </h4>
-                        </h2>
-                        <div id="accordion{{ parent }}{{ i }}" class="accordion-collapse collapse"
-                          [attr.aria-labelledby]="'heading' + parent + i" data-bs-parent="#accordionExample">
-                          <div class="accordion-body">
-                            <!-- Bordered Table -->
-                            <div class="table-responsive text-nowrap">
-                              <table class="table table-bordered">
-                                <thead>
-                                  <tr>
-                                    <th>RATING</th>
-                                    <th>QUANTITY</th>
-                                    <th>QUALITY</th>
-                                    <th>TIMELINESS</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>{{ "5" }}</td>
-                                    <td>{{ si.qty5 }}</td>
-                                    <td>{{ si.qlty5 }}</td>
-                                    <td>{{ si.timely5 }}</td>
-                                  </tr>
-                                  <tr>
-                                    <td>{{ "4" }}</td>
-                                    <td>{{ si.qty4 }}</td>
-                                    <td>{{ si.qlty4 }}</td>
-                                    <td>{{ si.timely4 }}</td>
-                                  </tr>
-                                  <tr>
-                                    <td>{{ "3" }}</td>
-                                    <td>{{ si.qty3 }}</td>
-                                    <td>{{ si.qlty3 }}</td>
-                                    <td>{{ si.timely3 }}</td>
-                                  </tr>
-                                  <tr>
-                                    <td>{{ "2" }}</td>
-                                    <td>{{ si.qty2 }}</td>
-                                    <td>{{ si.qlty2 }}</td>
-                                    <td>{{ si.timely2 }}</td>
-                                  </tr>
-                                  <tr>
-                                    <td>{{ "1" }}</td>
-                                    <td>{{ si.qty1 }}</td>
-                                    <td>{{ si.qlty1 }}</td>
-                                    <td>{{ si.timely1 }}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <!--/ Bordered Table -->
-                          </div>
-                        </div>
-                        <div>
-                          <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
-                            class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
-                            <span class="tf-icons bx bx-trash"></span>
-                          </button>
-                          <button (click)="checker(si.qtyUnit)" type="button" data-bs-toggle="modal" (click)="
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Accordion -->
+                                <div class="row">
+                                    <div class="col-md mb-4 mb-md-0">
+                                        <div class="accordion mt-3" id="accordionExample">
+                                            <div class="card accordion-item bg-lightest thick-border"
+                                                *ngFor="let si of data.si; let i = index">
+                                                <h2 class="accordion-header" id="heading{{ parent }}{{ i }}">
+                                                    <button type="button" class="accordion-button collapsed"
+                                                        data-bs-toggle="collapse"
+                                                        [attr.data-bs-target]="'#accordion' + parent + i"
+                                                        aria-expanded="false"
+                                                        [attr.aria-controls]="'accordion' + parent + i">
+                                                        <i class="bx bx-label"></i>
+                                                        <strong style="color: #697a8d">&nbsp;<span
+                                                                style="color: black">{{
+                                                                si.qty
+                                                                }}</span>&nbsp;{{ si.indicator }}</strong>
+                                                    </button>
+                                                    <h4 *ngIf="si.isShared == 1" style="margin-left: 50px">
+                                                        <i class="bx bx-carousel"></i>&nbsp;{{
+                                                        si.sharedDiv
+                                                        }}
+                                                    </h4>
+                                                </h2>
+                                                <div id="accordion{{ parent }}{{ i }}"
+                                                    class="accordion-collapse collapse"
+                                                    [attr.aria-labelledby]="'heading' + parent + i"
+                                                    data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <!-- Bordered Table -->
+                                                        <div class="table-responsive text-nowrap">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>RATING</th>
+                                                                        <th>QUANTITY</th>
+                                                                        <th>QUALITY</th>
+                                                                        <th>TIMELINESS</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>{{ "5" }}</td>
+                                                                        <td>{{ si.qty5 }}</td>
+                                                                        <td>{{ si.qlty5 }}</td>
+                                                                        <td>{{ si.timely5 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{ "4" }}</td>
+                                                                        <td>{{ si.qty4 }}</td>
+                                                                        <td>{{ si.qlty4 }}</td>
+                                                                        <td>{{ si.timely4 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{ "3" }}</td>
+                                                                        <td>{{ si.qty3 }}</td>
+                                                                        <td>{{ si.qlty3 }}</td>
+                                                                        <td>{{ si.timely3 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{ "2" }}</td>
+                                                                        <td>{{ si.qty2 }}</td>
+                                                                        <td>{{ si.qlty2 }}</td>
+                                                                        <td>{{ si.timely2 }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{ "1" }}</td>
+                                                                        <td>{{ si.qty1 }}</td>
+                                                                        <td>{{ si.qlty1 }}</td>
+                                                                        <td>{{ si.timely1 }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <!--/ Bordered Table -->
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="opcr_details_status != 2">
+                                                    <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
+                                                        class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
+                                                        <span class="tf-icons bx bx-trash"></span>
+                                                    </button>
+                                                    <button (click)="checker(si.qtyUnit)" type="button"
+                                                        data-bs-toggle="modal" (click)="
                             editopcrDetails = si;
                             editMFODetails = data;
                             displayDivision(si.sharedDiv); editcalculateRating()
                           " data-bs-target="#editDetails"
-                            class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
-                            <span class="tf-icons bx bx-pencil"></span>
-                          </button>
+                                                        class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
+                                                        <span class="tf-icons bx bx-pencil"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/ Accordion -->
+                            </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--/ Accordion -->
-              </div>
-            </div>
-          </ng-container>
-          <ng-template #isLoading>
-            <app-opcr-target-skeleton></app-opcr-target-skeleton>
-          </ng-template>
+                    </ng-container>
+                    <ng-template #isLoading>
+                        <app-opcr-target-skeleton></app-opcr-target-skeleton>
+                    </ng-template>
 
-          <div *ngIf="
+                    <div *ngIf="
             opcrDetails().data.length === 0 &&
             flag == 0 &&
             opcrDetails().isLoading != true
           ">
-            <img src="assets/img/document.png" alt="" width="200" height="200" style="display: block; margin: 0 auto" />
-            <span style="
+                        <img src="assets/img/document.png" alt="" width="200" height="200"
+                            style="display: block; margin: 0 auto" />
+                        <span style="
               display: flex;
               flex-direction: column;
               justify-content: space-between;
               align-items: center;
               height: 100%;
             ">
-              <div>
-                <label style="margin-bottom: 10px"><strong>No Data Found!</strong></label>
-              </div>
-              <div *ngIf="!isExpandMfoes">
-                <button (click)="isExpandMfoes = true" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMfoes"
-                  aria-controls="offcanvasScroll" type="button" class="btn btn-primary">
-                  MAJOR FINAL OUTPUT
-                </button>
-              </div>
-            </span>
-          </div>
+                            <div>
+                                <label style="margin-bottom: 10px"><strong>No Data Found!</strong></label>
+                            </div>
+                            <div *ngIf="!isExpandMfoes">
+                                <button (click)="isExpandMfoes = true" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll" type="button"
+                                    class="btn btn-primary">
+                                    MAJOR FINAL OUTPUT
+                                </button>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <ng-container *ngIf="opcr_details_status != 2">
+            <div *ngIf="!isExpandMfoes" class="col-xl-1">
+                <button *ngIf="opcrDetails().data.length != 0" type="button" (click)="isExpandMfoes = true"
+                    class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasMfoes" aria-controls="offcanvasScroll">
+                    <i class="bx bx-expand"></i>
+                </button>
+            </div>
+        </ng-container>
     </div>
-    <div *ngIf="!isExpandMfoes" class="col-xl-1">
-      <button *ngIf="opcrDetails().data.length != 0" type="button" (click)="isExpandMfoes = true"
-        class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMfoes"
-        aria-controls="offcanvasScroll">
-        <i class="bx bx-expand"></i>
-      </button>
-    </div>
-  </div>
 </div>
 <!-- End Offcanvas OPCR-->
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScroll"
-  aria-labelledby="offcanvasScrollLabel">
-  <div class="offcanvas-header">
-    <h1 id="offcanvasEndLabel" class="offcanvas-title">OPCR</h1>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body my-auto mx-0 flex-grow-0">
-    <div class="col-md-12">
-      <div class="">
-        <div class="form-floating">
-          <input [(ngModel)]="data.details" type="text" class="form-control" id="floatingInput" placeholder=""
-            aria-describedby="floatingInputHelp" />
-          <label for="floatingInput">OPCR</label>
-          <div id="floatingInputHelp" class="form-text">Input OPCR</div>
+    aria-labelledby="offcanvasScrollLabel">
+    <div class="offcanvas-header">
+        <h1 id="offcanvasEndLabel" class="offcanvas-title">OPCR</h1>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body my-auto mx-0 flex-grow-0">
+        <div class="col-md-12">
+            <div class="">
+                <div class="form-floating">
+                    <input [(ngModel)]="data.details" type="text" class="form-control" id="floatingInput" placeholder=""
+                        aria-describedby="floatingInputHelp" />
+                    <label for="floatingInput">OPCR</label>
+                    <div id="floatingInputHelp" class="form-text">Input OPCR</div>
+                </div>
+            </div>
+            <br />
         </div>
-      </div>
-      <br />
+        <div class="col-md-12">
+            <div>
+                <select class="form-select" aria-label="Default select example" [(ngModel)]="fullYear"
+                    (ngModelChange)="onChangeYearInput($event)">
+                    <option value="0" selected>Full Year</option>
+                    <option value="1">1st Sem</option>
+                    <option value="2">2nd Sem</option>
+                </select>
+            </div>
+            <div id="floatingInputHelp" class="form-text">Select Period</div>
+        </div>
+        <br />
+        <button (click)="PostOPCR()" type="button" class="btn btn-primary mb-2 d-grid w-100">
+            Save
+        </button>
+        <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
+            Cancel
+        </button>
     </div>
-    <div class="col-md-12">
-      <div>
-        <select class="form-select" aria-label="Default select example" [(ngModel)]="fullYear"
-          (ngModelChange)="onChangeYearInput($event)">
-          <option value="0" selected>Full Year</option>
-          <option value="1">1st Sem</option>
-          <option value="2">2nd Sem</option>
-        </select>
-      </div>
-      <div id="floatingInputHelp" class="form-text">Select Period</div>
-    </div>
-    <br />
-    <button (click)="PostOPCR()" type="button" class="btn btn-primary mb-2 d-grid w-100">
-      Save
-    </button>
-    <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
-      Cancel
-    </button>
-  </div>
 </div>
 
 <!-- Modal Add-->
 <div class="modal fade" id="modalAdd" tabindex="-1" aria-hidden="true" style="z-index: 5000">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" id="modalCenterTitle">
-          {{ mfoDetails.indicator }}
-        </h1>
-        <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <div class="row">
-            <div class="col-6">
-              <label class="form-label" for="basic-default-fullname">Quantity</label>
-              <input [(ngModel)]="mfoDetails.qty" (ngModelChange)="calculateRating()" type="number" class="form-control"
-                id="basic-default-fullname" placeholder="" />
-              <div class="col-md">
-                <div class="form-check form-check-inline mt-3">
-                  <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1" class="form-check-input" type="radio"
-                    value="0" id="defaultRadio2" checked />
-                  <label class="form-check-label" for="defaultRadio2">
-                    Numeric
-                  </label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1" class="form-check-input" type="radio"
-                    value="1" id="defaultRadio1" />
-                  <label class="form-check-label" for="defaultRadio1">
-                    Percentage
-                  </label>
-                </div>
-              </div>
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    {{ mfoDetails.indicator }}
+                </h1>
+                <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
-            <!-- *ngIf="!mfoService.isCommon()" -->
-            <div class="col-6">
-              <div class="col-md">
-                <small class="text-light fw-semibold">DIVISION</small>
-                <div *ngFor="let data of division; let i = index">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" [id]="data.divisionName"
-                      [checked]="data.isCheckDiv" (change)="onCheckDivision(data.divisionName, $event)" />
-                    <label class="form-check-label" [for]="data.divisionName">{{
-                      data.divisionName
-                      }}</label>
-                  </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label" for="basic-default-fullname">Quantity</label>
+                            <input [(ngModel)]="mfoDetails.qty" (ngModelChange)="calculateRating()" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" />
+                            <div class="col-md">
+                                <div class="form-check form-check-inline mt-3">
+                                    <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1"
+                                        class="form-check-input" type="radio" value="0" id="defaultRadio2" checked />
+                                    <label class="form-check-label" for="defaultRadio2">
+                                        Numeric
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1"
+                                        class="form-check-input" type="radio" value="1" id="defaultRadio1" />
+                                    <label class="form-check-label" for="defaultRadio1">
+                                        Percentage
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- *ngIf="!mfoService.isCommon()" -->
+                        <div class="col-6">
+                            <div class="col-md">
+                                <small class="text-light fw-semibold">DIVISION</small>
+                                <div *ngFor="let data of division; let i = index">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            [id]="data.divisionName" [checked]="data.isCheckDiv"
+                                            (change)="onCheckDivision(data.divisionName, $event)" />
+                                        <label class="form-check-label" [for]="data.divisionName">{{
+                                            data.divisionName
+                                            }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="this.prompt">
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bx bxs-x-square"></i>&nbsp;Please fill the missing
+                            fields!
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <!-- Bootstrap Table with Header - Light -->
+                <div class="card">
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>RATING</th>
+                                    <th>QUANTITY</th>
+                                    <th>QUALITY</th>
+                                    <th>TIMELINESS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                <tr>
+                                    <td>{{ "5" }}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="mfoDetails.qty5" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.qlty5 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.timely5 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "4" }}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="mfoDetails.qty4" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.qlty4 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.timely4 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "3" }}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="mfoDetails.qty3" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.qlty3 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.timely3 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "2" }}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="mfoDetails.qty2" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.qlty2 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.timely2 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "1" }}</td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="mfoDetails.qty1" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.qlty1 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="mfoDetails.standard">
+                                            {{ mfoDetails.standard.timely1 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Bootstrap Table with Header - Light -->
             </div>
-          </div>
-          <div *ngIf="this.prompt">
-            <div class="alert alert-danger" role="alert">
-              <i class="bx bxs-x-square"></i>&nbsp;Please fill the missing
-              fields!
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button (click)="PostOPCRDetails()" type="button" class="btn btn-primary">
+                    <span>Save Details</span>
+                </button>
             </div>
-          </div>
         </div>
-        <!-- Bootstrap Table with Header - Light -->
-        <div class="card">
-          <div class="table-responsive text-nowrap">
-            <table class="table">
-              <thead class="table-light">
-                <tr>
-                  <th>RATING</th>
-                  <th>QUANTITY</th>
-                  <th>QUALITY</th>
-                  <th>TIMELINESS</th>
-                </tr>
-              </thead>
-              <tbody class="table-border-bottom-0">
-                <tr>
-                  <td>{{ "5" }}</td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      <div class="form-floating">
-                        <input [(ngModel)]="mfoDetails.qty5" type="number" class="form-control" id="floatingInput"
-                          placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.qlty5 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.timely5 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "4" }}</td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      <div class="form-floating">
-                        <input [(ngModel)]="mfoDetails.qty4" type="number" class="form-control" id="floatingInput"
-                          placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.qlty4 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.timely4 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "3" }}</td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      <div class="form-floating">
-                        <input [(ngModel)]="mfoDetails.qty3" type="number" class="form-control" id="floatingInput"
-                          placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.qlty3 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.timely3 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "2" }}</td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      <div class="form-floating">
-                        <input [(ngModel)]="mfoDetails.qty2" type="number" class="form-control" id="floatingInput"
-                          placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.qlty2 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.timely2 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "1" }}</td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      <div class="form-floating">
-                        <input [(ngModel)]="mfoDetails.qty1" type="number" class="form-control" id="floatingInput"
-                          placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.qlty1 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="mfoDetails.standard">
-                      {{ mfoDetails.standard.timely1 }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- Bootstrap Table with Header - Light -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-        <button (click)="PostOPCRDetails()" type="button" class="btn btn-primary">
-          <span>Save Details</span>
-        </button>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- Modal Edit-->
 <div class="modal fade" id="editDetails" tabindex="-1" aria-hidden="true" style="z-index: 5000">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" id="modalCenterTitle">
-          {{ editopcrDetails.indicator }}
-        </h1>
-        <button #closebuttonEdit type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <div class="row">
-            <div class="col-6">
-              <label class="form-label" for="basic-default-fullname">Quantity</label>
-              <input [(ngModel)]="editopcrDetails.qty" (ngModelChange)="editcalculateRating()" type="number"
-                class="form-control" id="basic-default-fullname" placeholder="" />
-              <div class="col-md">
-                <div class="form-check form-check-inline mt-3">
-                  <input (click)="editQtyUnit(0)" [checked]="checkedNumeric" class="form-check-input" type="radio"
-                    name="inlineRadioOptions" id="inlineRadio1" value="option1" />
-                  <label class="form-check-label" for="inlineRadio1">Numeric</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input (click)="editQtyUnit(1)" [checked]="checkedPercentaged" class="form-check-input" type="radio"
-                    name="inlineRadioOptions" id="inlineRadio2" value="option2" />
-                  <label class="form-check-label" for="inlineRadio2">Percentage</label>
-                </div>
-              </div>
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    {{ editopcrDetails.indicator }}
+                </h1>
+                <button #closebuttonEdit type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
-            <!-- *ngIf="!editMFODetails.isCommon" -->
-            <div class="col-6">
-              <div class="col-md">
-                <small class="text-light fw-semibold">DIVISION</small>
-                <div *ngFor="let data of division; let i = index">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" [id]="data.divisionName"
-                      [checked]="data.isCheckDiv" (change)="onCheckDivision(data.divisionName, $event)" />
-                    <label class="form-check-label" [for]="data.divisionName">
-                      {{ data.divisionName }}
-                    </label>
-                  </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="form-label" for="basic-default-fullname">Quantity</label>
+                            <input [(ngModel)]="editopcrDetails.qty" (ngModelChange)="editcalculateRating()"
+                                type="number" class="form-control" id="basic-default-fullname" placeholder="" />
+                            <div class="col-md">
+                                <div class="form-check form-check-inline mt-3">
+                                    <input (click)="editQtyUnit(0)" [checked]="checkedNumeric" class="form-check-input"
+                                        type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                                    <label class="form-check-label" for="inlineRadio1">Numeric</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input (click)="editQtyUnit(1)" [checked]="checkedPercentaged"
+                                        class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio2" value="option2" />
+                                    <label class="form-check-label" for="inlineRadio2">Percentage</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- *ngIf="!editMFODetails.isCommon" -->
+                        <div class="col-6">
+                            <div class="col-md">
+                                <small class="text-light fw-semibold">DIVISION</small>
+                                <div *ngFor="let data of division; let i = index">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            [id]="data.divisionName" [checked]="data.isCheckDiv"
+                                            (change)="onCheckDivision(data.divisionName, $event)" />
+                                        <label class="form-check-label" [for]="data.divisionName">
+                                            {{ data.divisionName }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <!-- Bootstrap Table with Header - Light -->
+                <div class="card">
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>RATING</th>
+                                    <th>QUANTITY</th>
+                                    <th>QUALITY</th>
+                                    <th>TIMELINESS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                <tr>
+                                    <td>{{ "5" }}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.qty5" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.qlty5 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.timely5 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "4" }}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.qty4" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.qlty4 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.timely4 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "3" }}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.qty3" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.qlty3 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.timely3 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "2" }}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.qty2" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.qlty2 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.timely2 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "1" }}</td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="editopcrDetails.qty1" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.qlty1 }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="editopcrDetails">
+                                            {{ editopcrDetails.timely1 }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Bootstrap Table with Header - Light -->
             </div>
-          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button (click)="EditOPCRData()" type="button" class="btn btn-primary">
+                    <span>Save Details</span>
+                </button>
+            </div>
         </div>
-        <!-- Bootstrap Table with Header - Light -->
-        <div class="card">
-          <div class="table-responsive text-nowrap">
-            <table class="table">
-              <thead class="table-light">
-                <tr>
-                  <th>RATING</th>
-                  <th>QUANTITY</th>
-                  <th>QUALITY</th>
-                  <th>TIMELINESS</th>
-                </tr>
-              </thead>
-              <tbody class="table-border-bottom-0">
-                <tr>
-                  <td>{{ "5" }}</td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      <div class="form-floating">
-                        <input [(ngModel)]="editopcrDetails.qty5" type="number" class="form-control"
-                          id="floatingInput" placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.qlty5 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.timely5 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "4" }}</td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      <div class="form-floating">
-                        <input [(ngModel)]="editopcrDetails.qty4" type="number" class="form-control"
-                          id="floatingInput" placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.qlty4 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.timely4 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "3" }}</td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      <div class="form-floating">
-                        <input [(ngModel)]="editopcrDetails.qty3" type="number" class="form-control"
-                          id="floatingInput" placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.qlty3 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.timely3 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "2" }}</td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      <div class="form-floating">
-                        <input [(ngModel)]="editopcrDetails.qty2" type="number" class="form-control"
-                          id="floatingInput" placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.qlty2 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.timely2 }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ "1" }}</td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      <div class="form-floating">
-                        <input [(ngModel)]="editopcrDetails.qty1" type="number" class="form-control"
-                          id="floatingInput" placeholder="" aria-describedby="floatingInputHelp" />
-                      </div>
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.qlty1 }}
-                    </span>
-                  </td>
-                  <td>
-                    <span *ngIf="editopcrDetails">
-                      {{ editopcrDetails.timely1 }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- Bootstrap Table with Header - Light -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-        <button (click)="EditOPCRData()" type="button" class="btn btn-primary">
-          <span>Save Details</span>
-        </button>
-      </div>
     </div>
-  </div>
 </div>
 
 <!-- End Offcanvas MFO-->
 <div class="offcanvas offcanvas-end offcanvas-end-modified" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-  id="offcanvasMfoes" aria-labelledby="offcanvasScrollLabel" style="z-index: 10">
-  <div class="offcanvas-header">
-    <h1 id="offcanvasScrollLabel" class="offcanvas-title">MFOES</h1>
-    <button (click)="isExpandMfoes = false" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-      aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body pt-0">
-    <div class="col-12">
-      <div class="sticky-top bg-white">
-        <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
-          <li class="nav-item">
-            <button (click)="setMFOs(0)" type="button" class="nav-link"
-              [ngClass]="!mfoService.isCommon() ? 'active' : ''" role="tab" data-bs-toggle="tab"
-              data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home"
-              aria-selected="true">
-              <i class="bx bx-grid-alt"></i> OFFICE MFO
-            </button>
-          </li>
-          <li class="nav-item">
-            <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
-              [ngClass]="mfoService.isCommon() ? 'active' : ''" data-bs-toggle="tab"
-              data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile"
-              aria-selected="false">
-              <i class="bx bx-grid-alt"></i>COMMON MFO
-            </button>
-          </li>
-        </ul>
-        <div class="input-group">
-          <span class="input-group-text">
-            <div class="spinner-border spinner-border-sm text-primary" role="status"
-              *ngIf="isSearchLoading(); else showIcon">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-            <ng-template #showIcon>
-              <i class="tf-icons bx bx-search"></i>
-            </ng-template>
-          </span>
-          <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
-            placeholder="Search..." />
-        </div>
-      </div>
-      <br />
-      <ng-container *ngIf="mfo().data.length != 0; else noDataMfo">
-        <div class="" *ngIf="loading != true; else isLoadingMfoes">
-          <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
-            <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead class="table-light">
-                  <tr>
-                    <th style="width: 100px; color: blue">Indicator</th>
-                  </tr>
-                </thead>
-                <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0">
-                  <ng-container *ngIf="data.si.length > 0">
-                    <tr class="text-justify" style="color: blue; white-space: normal">
-                      <div class="row">
-                        <div class="col-8">
-                          <strong><i class="bx bx-label"></i>&nbsp;{{
-                            data.mfo
-                            }}</strong>
+    id="offcanvasMfoes" aria-labelledby="offcanvasScrollLabel" style="z-index: 10">
+    <div class="offcanvas-header">
+        <h1 id="offcanvasScrollLabel" class="offcanvas-title">MFOES</h1>
+        <button (click)="isExpandMfoes = false" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body pt-0">
+        <div class="col-12">
+            <div class="sticky-top bg-white">
+                <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                    <li class="nav-item">
+                        <button (click)="setMFOs(0)" type="button" class="nav-link"
+                            [ngClass]="!mfoService.isCommon() ? 'active' : ''" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home"
+                            aria-selected="true">
+                            <i class="bx bx-grid-alt"></i> OFFICE MFO
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button (click)="setMFOs(1)" type="button" class="nav-link" role="tab"
+                            [ngClass]="mfoService.isCommon() ? 'active' : ''" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile"
+                            aria-selected="false">
+                            <i class="bx bx-grid-alt"></i>COMMON MFO
+                        </button>
+                    </li>
+                </ul>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <div class="spinner-border spinner-border-sm text-primary" role="status"
+                            *ngIf="isSearchLoading(); else showIcon">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
-                        <div class="col-4">
-                          <small class="badge rounded-pill float-end" [ngClass]="
+                        <ng-template #showIcon>
+                            <i class="tf-icons bx bx-search"></i>
+                        </ng-template>
+                    </span>
+                    <input type="text" [(ngModel)]="search.MFO" (ngModelChange)="searchMfoOffice()" class="form-control"
+                        placeholder="Search..." />
+                </div>
+            </div>
+            <br />
+            <ng-container *ngIf="mfo().data.length != 0; else noDataMfo">
+                <div class="" *ngIf="loading != true; else isLoadingMfoes">
+                    <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 100px; color: blue">Indicator</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0">
+                                    <ng-container *ngIf="data.si.length > 0">
+                                        <tr class="text-justify" style="color: blue; white-space: normal">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <strong><i class="bx bx-label"></i>&nbsp;{{
+                                                        data.mfo
+                                                        }}</strong>
+                                                </div>
+                                                <div class="col-4">
+                                                    <small class="badge rounded-pill float-end" [ngClass]="
                             data.categoryId == '1'
                               ? 'bg-label-success'
                               : data.categoryId == '2'
@@ -809,43 +855,45 @@
                               ? 'bg-label-warning'
                               : 'bg-label-secondary'
                           " data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ displayCatergory(data.categoryId) }}
-                          </small>
+                                                        {{ displayCatergory(data.categoryId) }}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr *ngFor="let si of data.si">
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-11 text-justify" style="white-space: normal">
+                                                        <i class="bx bx-chevron-right"></i>
+                                                        &nbsp;
+                                                        {{ si.indicator }}
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <button (click)="mfoDetails = si; clearSelectedDiv()"
+                                                            type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#modalAdd"
+                                                            class="btn rounded-pill btn-icon btn-primary float-end">
+                                                            <span class="tf-icons bx bx bx-plus"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
                         </div>
-                      </div>
-                    </tr>
-                    <tr *ngFor="let si of data.si">
-                      <td>
-                        <div class="row">
-                          <div class="col-11 text-justify" style="white-space: normal">
-                            <i class="bx bx-chevron-right"></i>
-                            &nbsp;
-                            {{ si.indicator }}
-                          </div>
-                          <div class="col-1">
-                            <button (click)="mfoDetails = si; clearSelectedDiv()" type="button" data-bs-toggle="modal"
-                              data-bs-target="#modalAdd" class="btn rounded-pill btn-icon btn-primary float-end">
-                              <span class="tf-icons bx bx bx-plus"></span>
-                            </button>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #noDataMfo>
+                <div class="text-center" style="margin-top: 30px">
+                    <label><strong>No Data Found!</strong></label>
+                </div>
+            </ng-template>
         </div>
-      </ng-container>
-      <ng-template #noDataMfo>
-        <div class="text-center" style="margin-top: 30px">
-          <label><strong>No Data Found!</strong></label>
-        </div>
-      </ng-template>
+        <ng-template #isLoadingMfoes>
+            <app-ipcr-target-skeleton></app-ipcr-target-skeleton>
+        </ng-template>
     </div>
-    <ng-template #isLoadingMfoes>
-      <app-ipcr-target-skeleton></app-ipcr-target-skeleton>
-    </ng-template>
-  </div>
 </div>

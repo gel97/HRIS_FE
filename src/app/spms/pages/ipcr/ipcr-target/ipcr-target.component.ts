@@ -120,6 +120,7 @@ export class IpcrTargetComponent implements OnInit {
 
         // this.ipcrService.siChecker();
       }, 0);
+      this.ipcr_details_status = localStorage.getItem('ipcrFinalStatus');
     } else {
       this.ipcrService.GetIPCRs(
         this.getYear,
@@ -140,7 +141,10 @@ export class IpcrTargetComponent implements OnInit {
     this.ipcrService.PutIPCRStatus(this.edit_ipcr_status);
   }
 
-  IPCRDetails(ipcrId: string, details: string) {
+  ipcr_details_status: number | any;
+  IPCRDetails(ipcrId: string, details: string, active: any) {
+    this.ipcr_details_status = active;
+    localStorage.setItem('ipcrFinalStatus', active);
     localStorage.setItem('isShow_ipcr', '1');
     this.ipcrService.storageIsShow.set(1);
 
@@ -248,6 +252,8 @@ export class IpcrTargetComponent implements OnInit {
     localStorage.setItem('ipcrData', '');
     this.ipcrService.storageIpcrData.set(null);
 
+    localStorage.removeItem('ipcrFinalStatus');
+
     this.localStorage();
   }
 
@@ -353,7 +359,7 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   ipcrYear() {
-    for (let i = new Date().getFullYear(); i >= 2020; i--) {
+    for (let i = new Date().getFullYear() + 1; i >= 2020; i--) {
       this.years.push(i);
     }
   }
