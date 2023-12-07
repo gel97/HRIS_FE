@@ -56,7 +56,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   opcrYear() {
-    for (let i = new Date().getFullYear(); i >= 2020; i--) {
+    for (let i = new Date().getFullYear() + 1; i >= 2020; i--) {
       this.years.push(i);
     }
   }
@@ -70,6 +70,7 @@ export class OpcrTargetComponent implements OnInit {
         this.opcrService.GetOPCRDetails();
         this.mfoService.GetMFOes();
         this.sortExcist();
+        this.uncommited_division_list();
       }, 0);
     } else {
       localStorage.setItem('isShow', '0');
@@ -166,10 +167,7 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.qty2 = Math.floor(this.mfoDetails.qty / 2 + 1);
     this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
 
-    if (
-      this.mfoDetails.qty3 >= 4 &&
-      this.mfoDetails.qty3 <= 6
-    ) {
+    if (this.mfoDetails.qty3 >= 4 && this.mfoDetails.qty3 <= 6) {
       this.mfoDetails.qty4 += 1;
       this.mfoDetails.qty5 += 1;
     } else if (this.mfoDetails.qty3 == 3) {
@@ -186,7 +184,7 @@ export class OpcrTargetComponent implements OnInit {
       this.mfoDetails.qty3 = null;
       this.mfoDetails.qty2 = null;
       this.mfoDetails.qty1 = null;
-    }else if (this.editopcrDetails.qty <= 0) {
+    } else if (this.editopcrDetails.qty <= 0) {
       this.editopcrDetails.qty5 = null;
       this.editopcrDetails.qty4 = null;
       this.editopcrDetails.qty3 = null;
@@ -203,16 +201,9 @@ export class OpcrTargetComponent implements OnInit {
       this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
     );
     this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
-    this.editopcrDetails.qty2 = Math.floor(
-      this.editopcrDetails.qty / 2 + 1
-    );
-    this.editopcrDetails.qty1 = Math.floor(
-      this.editopcrDetails.qty / 2
-    );
-    if (
-      this.editopcrDetails.qty3 >= 4 &&
-      this.editopcrDetails.qty3 <= 6
-    ) {
+    this.editopcrDetails.qty2 = Math.floor(this.editopcrDetails.qty / 2 + 1);
+    this.editopcrDetails.qty1 = Math.floor(this.editopcrDetails.qty / 2);
+    if (this.editopcrDetails.qty3 >= 4 && this.editopcrDetails.qty3 <= 6) {
       this.editopcrDetails.qty4 += 1;
       this.editopcrDetails.qty5 += 1;
     } else if (this.editopcrDetails.qty3 == 3) {
@@ -229,7 +220,7 @@ export class OpcrTargetComponent implements OnInit {
       this.editopcrDetails.qty3 = null;
       this.editopcrDetails.qty2 = null;
       this.editopcrDetails.qty1 = null;
-    }else if (this.editopcrDetails.qty <= 0) {
+    } else if (this.editopcrDetails.qty <= 0) {
       this.editopcrDetails.qty5 = null;
       this.editopcrDetails.qty4 = null;
       this.editopcrDetails.qty3 = null;
@@ -430,7 +421,15 @@ export class OpcrTargetComponent implements OnInit {
     }, 0);
   }
 
+  opcr_details_status: number | any;
+  uncommited_division: any = [];
   OPCRDetails(data: any) {
+    this.opcr_details_status = data.active;
+    localStorage.setItem('opcrFinalStatus', data.active);
+    console.log('active', this.opcr_details_status);
+    localStorage.setItem('currentYear', data.year);
+    this.uncommited_division_list();
+
     this.opcrService.storageIsShow.set(1);
     this.opcrService.storageOpcrId.set(data.opcrId);
     this.opcrService.storageOpcrDetails.set(data.details);
@@ -447,6 +446,40 @@ export class OpcrTargetComponent implements OnInit {
     });
 
     this.localStorage();
+  }
+
+  uncommited_division_boolean: boolean = false;
+  show_uncommited_division_list(year: any) {
+    this.opcrService.get_uncommited_division(year).subscribe({
+      next: (response: any) => {
+        console.log('uncommited', response);
+        this.uncommited_division = response;
+      },
+      error: () => {},
+      complete: () => {
+        for (let i of this.uncommited_division) {
+          if (i.status == 0) {
+            this.uncommited_division_boolean = true;
+            console.log('here');
+            break;
+          }
+        }
+      },
+    });
+  }
+
+  uncommited_division_list() {
+    this.opcr_details_status = localStorage.getItem('opcrFinalStatus');
+    this.opcrService
+      .get_uncommited_division(localStorage.getItem('currentYear'))
+      .subscribe({
+        next: (response: any) => {
+          console.log('uncommited', response);
+          this.uncommited_division = response;
+        },
+        error: () => {},
+        complete: () => {},
+      });
   }
 
   editQtyUnit(value: number) {
@@ -508,6 +541,8 @@ export class OpcrTargetComponent implements OnInit {
 
     localStorage.setItem('isShow', '0');
     localStorage.setItem('opcrId', '');
+    localStorage.removeItem('currentYear');
+    localStorage.removeItem('opcrFinalStatus');
 
     this.GetOPCRs();
     this.GetMFOs();

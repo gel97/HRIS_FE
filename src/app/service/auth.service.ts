@@ -9,9 +9,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   readonly APIUrl_login = 'https://davnorsystems.gov.ph/hrisAPI/api/Auth';
-  //readonly APIUrl_HRIS = 'https://localhost:44395/api/auth/login';
-  readonly APIUrl_HRIS =
-    'https://davaodelnorte.ph/AppData/hrisv3api/api/auth/login';
+  readonly APIUrl_HRIS = 'https://localhost:44395/api/auth/login';
+  //readonly APIUrl_HRIS =
+  //  'https://davaodelnorte.ph/AppData/hrisv3api/api/auth/login';
   private userPayload: any;
   constructor(private http: HttpClient, private Router: Router) {
     this.userPayload = this.decodedToken();
