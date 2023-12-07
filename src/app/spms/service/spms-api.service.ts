@@ -33,6 +33,7 @@ export class SpmsApiService {
   post_opcr = () => `/tPMOpcrs`;
   put_opcr = () => `/tPMOpcrs`;
   delete_opcr = (opcrId: string) => `/tPMOpcrs/${opcrId}`;
+  get_uncommited_division = (year :any , officeId : string ) => `/tPMOpcrs/UncommitedDivision/${year},${officeId}`
 
   get_ipcrs = (year: string, divisionId: string, userId: string) =>
     `/tPMIpcrs/${year}/${divisionId}/${userId}`;
@@ -129,4 +130,7 @@ export class SpmsApiService {
 
   get_office = () => `/tPMOffice`;
   post_employee_assign_office_focal = () => `/vPMEmployee/employee/assign/office/focal`;
+
+  post_signatories = (typeId:any) => `/tPMSignatories/${typeId}`;
+  get_signatories = (typeId:any, officeId:any, divisionId:any) => `/tPMSignatories/${typeId}/${officeId}/${divisionId}`;
 }
