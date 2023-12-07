@@ -50,7 +50,7 @@ export class TokenInterceptor implements HttpInterceptor {
             this.Router.navigate(['user-login']);
           }
         }
-        return throwError(() => new Error('Some other error occured'));
+        return throwError(err);
       })
     );
   }

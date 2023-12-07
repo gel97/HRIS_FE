@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { SpmsApiService } from './spms-api.service';
 import { api } from 'src/app/connection';
 import Swal from 'sweetalert2';
@@ -149,25 +149,47 @@ export class IpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
+          console.log('error', response);
           this.GetIPCRs(data.year, data.divisionId, data.userId);
         },
         error: (error: any) => {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-start',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer);
-              toast.addEventListener('mouseleave', Swal.resumeTimer);
-            },
-          });
+          console.log(error instanceof HttpErrorResponse);
+          console.log('error return', error.status);
+          if (error.status == 409) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-start',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
 
-          Toast.fire({
-            icon: 'warning',
-            title: 'IPCR-coded for this semester/Not yet open',
-          });
+            Toast.fire({
+              icon: 'warning',
+              title: 'IPCR-coded for this semester',
+            });
+          } else if (error.status == 500) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-start',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
+
+            Toast.fire({
+              icon: 'warning',
+              title: 'Not yet open',
+            });
+          }
         },
         complete: () => {
           this.alertService.save();
