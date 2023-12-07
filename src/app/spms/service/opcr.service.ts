@@ -124,9 +124,9 @@ export class OpcrService {
     return this.http.get<any[]>(api + this.url.get_uncommited_division(year, this.officeId ?? ''), {responseType: `json`});
   }
 
-  post_signatories(typeId:any){
-    return this.http.post<any[]>(api + this.url.post_signatories(typeId), {responseType: `json`})
-  }
+  // post_signatories(typeId:any){
+  //   return this.http.post<any[]>(api + this.url.post_signatories(typeId), {responseType: `json`})
+  // }
 
   GetOfficeDivision(officeId: string) {
     this.officeDivision.mutate((a) => (a.isLoading = true));

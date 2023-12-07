@@ -122,4 +122,5 @@ export class SpmsApiService {
   post_employee_assign_office_focal = () => `/vPMEmployee/employee/assign/office/focal`;
 
   post_signatories = (typeId:any) => `/tPMSignatories/${typeId}`;
+  get_signatories = (typeId:any, officeId:any, divisionId:any) => `/tPMSignatories/${typeId}/${officeId}/${divisionId}`;
 }

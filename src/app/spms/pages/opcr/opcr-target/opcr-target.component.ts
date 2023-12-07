@@ -5,6 +5,7 @@ import { interval, take } from 'rxjs';
 import { ReportActualService } from 'src/app/spms/service/report-actual.service';
 import Swal from 'sweetalert2';
 import { MonthRangeService } from 'src/app/spms/service/month-range.service';
+import { SignatoriesService } from 'src/app/spms/service/signatories.service';
 @Component({
   selector: 'app-opcr-target',
   templateUrl: './opcr-target.component.html',
@@ -14,6 +15,7 @@ export class OpcrTargetComponent implements OnInit {
   constructor() {}
   opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
+  signatoriesService = inject(SignatoriesService);
   reportActualService = inject(ReportActualService);
   monthRangeService = inject(MonthRangeService);
 
@@ -251,14 +253,10 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   post_signatories(id: any) {
-    this.opcrService.post_signatories(id).subscribe({
+    this.signatoriesService.post_signatories(id).subscribe({
       next: () => {},
-      error: () => {
-        alert('error');
-      },
-      complete: () => {
-        alert('success');
-      },
+      error: () => {},
+      complete: () => {},
     });
   }
 
@@ -273,7 +271,7 @@ export class OpcrTargetComponent implements OnInit {
       year: parseInt(data.year),
       semester: data.semester,
     });
-
+    this.reportActualService.get_signatories(data.opcrId);
     setTimeout(() => {
       this.reportActualService.triggerSwitch(1);
       this.reportActualService.ReportActual(this.opcrDetails().data);
