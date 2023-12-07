@@ -407,12 +407,13 @@ export class CanvasTargetDpcrMfoesComponent {
   }
 
   setMFOs(value: number) {
+    console.log(value)
     this.dpcrService.isCommonDivision.set(value);
-    if(value >= 0){
+    if(value == 0 || value == 1){
       this.dpcrService.GetDpcrDataMfoes();
     }
     else{ // get dpcr mfoes
-      this.dpcrService.GetDpcrDataDivisionMfoes();
+      this.dpcrService.GetDpcrDataMfoesDivision();
     }
   }
 }
