@@ -305,4 +305,32 @@ export class OpcrService {
         },
       });
   }
+
+  EditOPCR_Details(opcr: any) {
+    this.opcr.mutate((a) => (a.isLoading = true));
+    this.http
+      .put<any[]>(api + this.url.edit_opcr_details(), opcr, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          console.log('edited', response);
+          this.opcr.mutate((a) => {
+            a.isLoading = true;
+            a.error = false;
+          });
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.opcr.mutate((a) => {
+            a.isLoading = false;
+            a.error = true;
+          });
+        },
+        complete: () => {
+          // this.closebutton.nativeElement.click();
+          this.alertService.update();
+        },
+      });
+  }
 }
