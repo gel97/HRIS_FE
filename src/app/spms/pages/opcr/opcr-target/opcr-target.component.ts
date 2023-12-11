@@ -43,6 +43,7 @@ export class OpcrTargetComponent implements OnInit {
   editMFODetails: any = {};
   editOpcr: any = {};
   division: any = [];
+  flag_opcr: boolean = false;
   isExpandMfoes: boolean = false;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -301,6 +302,11 @@ export class OpcrTargetComponent implements OnInit {
     this.opcrService.AddOPCR(this.data);
   }
 
+  EditOPCR_Details() {
+    this.opcrService.EditOPCR_Details(this.data);
+    this.GetOPCRs();
+  }
+
   PutMFOCategory(mfoId: string, categoryId: number) {
     this.opcrService.PutMFOCategory(mfoId, categoryId);
   }
@@ -414,6 +420,8 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
+    this.flag_opcr = false;
+    this.data = {};
     this.opcrService.GetOPCRs(year, this.officeId ?? '');
   }
 

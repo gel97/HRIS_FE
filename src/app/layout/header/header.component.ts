@@ -15,11 +15,13 @@ export class HeaderComponent implements OnInit {
 
   public fullName: string | any;
   public officeName: string | any;
+  public divisionName: string |any;
   public profilePicture: any = {};
 
   ngOnInit(): void {
     this.fullName = localStorage.getItem('fullName');
     this.officeName = localStorage.getItem('officeName');
+    this.divisionName = localStorage.getItem('divisionName');
     this.get_profile_picture();
   }
 

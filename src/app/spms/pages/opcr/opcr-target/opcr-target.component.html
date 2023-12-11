@@ -29,7 +29,7 @@
             </div>
             <div *ngIf="isShow() == 0 && opcr().data.length == 0" class="col-4">
                 <div class="pt-4" style="margin-right: 5px">
-                    <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
+                    <button (click)="flag_opcr = true " class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
                         <i class="bx bx-plus"></i>OPCR
                     </button>
@@ -58,65 +58,70 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody *ngFor="let data of opcr().data; let i = index">
+                        <tbody *ngFor="let data_opcr of opcr().data; let i = index">
                             <tr>
                                 <td class="pointer">
-                                    <a (click)="OPCRDetails(data)">
-                                        <strong>{{ data.details }}</strong>
+                                    <a (click)="OPCRDetails(data_opcr)">
+                                        <strong>{{ data_opcr.details }}</strong>
                                     </a>
                                 </td>
                                 <td>
                                     <span class="badge" [ngClass]="
-                    data.semester == '0'
+                    data_opcr.semester == '0'
                       ? 'bg-label-success'
-                      : data.semester == '1'
+                      : data_opcr.semester == '1'
                       ? 'bg-label-primary'
-                      : data.semester == '2'
+                      : data_opcr.semester == '2'
                       ? 'bg-label-info'
                       : ''
-                  ">{{ sem(data.semester) }}</span>
+                  ">{{ sem(data_opcr.semester) }}</span>
                                 </td>
                                 <td>
                                     <span class="badge bg-label-primary me-1">{{
-                                        data.year
+                                        data_opcr.year
                                         }}</span>
                                 </td>
                                 <td>
-                                    {{ data.transDT | date : "MMM. dd, yyyy" }}
+                                    {{ data_opcr.transDT | date : "MMM. dd, yyyy" }}
                                 </td>
                                 <ng-container>
                                     <td>
                                         <span [ngClass]="
-                      data.active == '1'
+                      data_opcr.active == '1'
                         ? 'badge rounded-pill bg-label-success'
-                        : data.active == '2'
+                        : data_opcr.active == '2'
                         ? 'badge rounded-pill bg-label-primary'
-                        : data.active == '0'
+                        : data_opcr.active == '0'
                         ? 'badge rounded-pill bg-label-danger'
                         : ''
                     ">
-                                            {{ displayStatus(data.active) }}</span>
+                                            {{ displayStatus(data_opcr.active) }}</span>
                                     </td>
                                 </ng-container>
                                 <td>
                                     <div class="dropdown position-static pointer">
                                         <button
-                                            (click)="show_uncommited_division_list(data.year); uncommited_division_boolean=false"
+                                            (click)="show_uncommited_division_list(data_opcr.year); uncommited_division_boolean=false"
                                             type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a *ngIf="data.active == 0" (click)="editOpcr = data; EditOPCR()"
+                                            <a *ngIf="data_opcr.active == 0" (click)="editOpcr = data_opcr; EditOPCR()"
                                                 class="dropdown-item"><i class="bx bx-paperclip me-1"></i>Open</a>
                                             <!-- && !uncommited_division_boolean -->
-                                            <a *ngIf="data.active == 1 && !uncommited_division_boolean"
-                                                (click)="editOpcr = data; EditOPCRFinal(data.opcrId)"
+                                            <a *ngIf="data_opcr.active == 1 && !uncommited_division_boolean"
+                                                (click)="editOpcr = data_opcr; EditOPCRFinal(data_opcr.opcrId)"
                                                 class="dropdown-item"><i class="bx bxs-flag-alt me-1"></i>Final</a>
-                                            <a (click)="ReportOPCR(data)" class="dropdown-item"><i
+                                            <a (click)="ReportOPCR(data_opcr)" class="dropdown-item"><i
                                                     class="bx bx-printer me-1"></i> Print
                                                 OPCR</a>
-                                            <a (click)="DeleteOPCR(data.opcrId)" class="dropdown-item"><i
+                                            <a (click)="data = data_opcr" class="dropdown-item" type="button"
+                                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
+                                                aria-controls="offcanvasScroll"><i class="bx bx-edit-alt me-1"></i>
+                                                Edit
+                                            </a>
+                                            <a (click)="DeleteOPCR(data_opcr.opcrId)" class="dropdown-item"><i
                                                     class="bx bx-trash me-1"></i>
                                                 Delete</a>
                                         </div>
@@ -362,15 +367,15 @@
         <div class="col-md-12">
             <div class="">
                 <div class="form-floating">
-                    <input [(ngModel)]="data.details" type="text" class="form-control" id="floatingInput" placeholder=""
-                        aria-describedby="floatingInputHelp" />
+                    <input [(ngModel)]="data.details" type="text" class="form-control"
+                        id="floatingInput" placeholder="" aria-describedby="floatingInputHelp" />
                     <label for="floatingInput">OPCR</label>
                     <div id="floatingInputHelp" class="form-text">Input OPCR</div>
                 </div>
             </div>
             <br />
         </div>
-        <div class="col-md-12">
+        <div *ngIf="flag_opcr" class="col-md-12">
             <div>
                 <select class="form-select" aria-label="Default select example" [(ngModel)]="fullYear"
                     (ngModelChange)="onChangeYearInput($event)">
@@ -382,7 +387,7 @@
             <div id="floatingInputHelp" class="form-text">Select Period</div>
         </div>
         <br />
-        <button (click)="PostOPCR()" type="button" class="btn btn-primary mb-2 d-grid w-100">
+        <button (click)="flag_opcr ? PostOPCR(): EditOPCR_Details()" type="button" class="btn btn-primary mb-2 d-grid w-100">
             Save
         </button>
         <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
