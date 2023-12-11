@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
+import { OpcrService } from 'src/app/spms/service/opcr.service';
+
 import {
   trigger,
   state,
@@ -63,6 +65,35 @@ import {
                       >
                         {{ displayCatergory(a.categoryId) }}
                       </small>
+                      <ul *ngIf="a.si[0].isDpcrMfo" class="dropdown-menu dropdown-menu-end pointer">
+                        <li>
+                          <a
+                            (click)="
+                              PutMFOCategory(a.mfoId, 1); a.categoryId = 1
+                            "
+                            class="dropdown-item"
+                            >STRATEGIC</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            (click)="
+                              PutMFOCategory(a.mfoId, 2); a.categoryId = 2
+                            "
+                            class="dropdown-item"
+                            >CORE
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            (click)="
+                              PutMFOCategory(a.mfoId, 3); a.categoryId = 3
+                            "
+                            class="dropdown-item"
+                            >SUPPORT
+                          </a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </td>
@@ -185,37 +216,36 @@ import {
                         >
                         {{ c.stIndicator }}
                       </td>
-                      <td>                     
+                      <td>
                         <div class="dropdown position-static">
-                            <button
-                              type="button"
-                              class="btn p-0 dropdown-toggle hide-arrow "
-                              data-bs-toggle="dropdown"
+                          <button
+                            type="button"
+                            class="btn p-0 dropdown-toggle hide-arrow "
+                            data-bs-toggle="dropdown"
+                          >
+                            <i
+                              class="bx bx-dots-vertical-rounded text-label"
+                            ></i>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a
+                              class="dropdown-item cursor-pointer"
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalEditSubTask"
+                              (click)="subtaskData = c"
                             >
                               <i
-                                class="bx bx-dots-vertical-rounded text-label"
+                                class="bx bxs-edit text-label cursor-pointer"
                               ></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a
-                                class="dropdown-item cursor-pointer"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditSubTask"
-                                (click)="subtaskData = c"
-                              >
-                                <i
-                                  class="bx bxs-edit text-label cursor-pointer"
-                                ></i>
-                                Edit Sub-Task
-                              </a>
-                              <a
-                                class="dropdown-item cursor-pointer"
-                                (click)="DeleteSubtask(c.subTaskId)"
-                                ><i class="bx bx-trash me-1"></i> Delete</a
-                              >
-                            </div>
+                              Edit Sub-Task
+                            </a>
+                            <a
+                              class="dropdown-item cursor-pointer"
+                              (click)="DeleteSubtask(c.subTaskId)"
+                              ><i class="bx bx-trash me-1"></i> Delete</a
+                            >
                           </div>
-                        
+                        </div>
                       </td>
                     </tr>
                   </ng-container>
@@ -320,6 +350,7 @@ import {
 })
 export class TableDpcrDataComponent {
   dpcrService = inject(DpcrService);
+  opcrService = inject(OpcrService);
 
   @Input() dpcrData: any;
   @Input() isShowCanvasOpcrMfoes: any;
@@ -339,7 +370,7 @@ export class TableDpcrDataComponent {
     this.deleteDpcrDataIndicator.emit(dpcrDataId);
   }
 
-  DeleteSubtask(id:string){
+  DeleteSubtask(id: string) {
     this.deleteSubtask.emit(id);
   }
 
@@ -394,5 +425,9 @@ export class TableDpcrDataComponent {
     }
 
     return catName ? catName + '' : 'NO FUNCTION';
+  }
+
+  PutMFOCategory(mfoId: string, categoryId: number) {
+    this.opcrService.PutMFOCategory(mfoId, categoryId);
   }
 }

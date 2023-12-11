@@ -349,4 +349,4 @@ export class TableMfoComponent {
   ClearSIData() {
     this.clearSIData.emit('Clear SI data');
   }
-}
+} 

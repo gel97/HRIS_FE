@@ -5,7 +5,10 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   template: `
     <!-- Modal -->
     <div class="modal fade" id="modalDpcrData" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-lg"
+        role="document"
+      >
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalScrollableTitle">
@@ -33,7 +36,37 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               />
               <label for="quantity">Quantity</label>
             </div>
-            <div class="form-floating px-2 col-5">
+            <div class="col-md" *ngIf="dpcrSIData.isDpcrMfo">
+              <div class="form-check form-check-inline mt-3">
+                <input
+                  (click)="dpcrSIData.qtyUnit = 0"
+                  [checked]="dpcrSIData.qtyUnit === 0"
+                  class="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="inlineRadio1"
+                  value="option1"
+                />
+                <label class="form-check-label" for="inlineRadio1"
+                  >Numeric</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  (click)="dpcrSIData.qtyUnit = 1"
+                  [checked]="dpcrSIData.qtyUnit === 1"
+                  class="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="inlineRadio2"
+                  value="option2"
+                />
+                <label class="form-check-label" for="inlineRadio2"
+                  >Percentage</label
+                >
+              </div>
+            </div>
+            <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo">
               <input
                 type="number"
                 class="form-control"
@@ -45,8 +78,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               />
               <label for="quantityOpcr">Remaining Quantity</label>
             </div>
-            <div class="form-floating px-2 col-3">
-            <input
+            <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo">
+              <input
                 type="number"
                 class="form-control"
                 id="qtyOpcr"
@@ -58,14 +91,19 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               <label for="qtyOpcr">Total Quantity</label>
             </div>
             <div
-              *ngIf="dpcrSIData.qty > (dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted)"
+              *ngIf="
+                dpcrSIData.qty > dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted &&
+                !dpcrSIData.isDpcrMfo
+              "
               class="alert alert-danger mt-2"
               role="alert"
             >
               <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
               than
               <strong
-                ><u>{{ dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted }}</u></strong
+                ><u>{{
+                  dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted
+                }}</u></strong
               >
             </div>
             <div class="table-responsive text-wrap">
@@ -209,16 +247,16 @@ export class ModalDpcrDataComponent {
 
   @Output() submit = new EventEmitter<any>();
 
-  Submit(){
-    this.submit.emit("submit");
+  Submit() {
+    this.submit.emit('submit');
     this.handleStatus();
   }
 
-  handleStatus(){
+  handleStatus() {
     setTimeout(() => {
-      if(!this.error){
-          this.closeModal.nativeElement.click();
-        }    
+      if (!this.error) {
+        this.closeModal.nativeElement.click();
+      }
     }, 500);
   }
 

@@ -34,7 +34,37 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               />
               <label for="quantity">Quantity</label>
             </div>
-            <div class="form-floating px-2 col-5">
+            <div class="col-md"  *ngIf="dpcrSIData.isDpcrMfo">
+              <div class="form-check form-check-inline mt-3">
+                <input
+                  (click)="dpcrSIData.qtyUnit = 0"
+                  [checked]="dpcrSIData.qtyUnit === 0"
+                  class="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="inlineRadio1"
+                  value="option1"
+                />
+                <label class="form-check-label" for="inlineRadio1"
+                  >Numeric</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  (click)="dpcrSIData.qtyUnit = 1"
+                  [checked]="dpcrSIData.qtyUnit === 1"
+                  class="form-check-input"
+                  type="radio"
+                  name="inlineRadioOptions"
+                  id="inlineRadio2"
+                  value="option2"
+                />
+                <label class="form-check-label" for="inlineRadio2"
+                  >Percentage</label
+                >
+              </div>
+            </div>
+            <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo">
               <input
                 type="number"
                 class="form-control"
@@ -46,7 +76,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               />
               <label for="quantityOpcr">Remaining Quantity</label>
             </div>
-            <div class="form-floating px-2 col-3">
+            <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo">
             <input
                 type="number"
                 class="form-control"
@@ -59,7 +89,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               <label for="qtyOpcr">Total Quantity</label>
             </div>
             <div
-              *ngIf="(this.dpcrSIData.qty - this.dpcrSIData.qtyCommitted) > dpcrSIData.qtyRemaining"
+              *ngIf="(this.dpcrSIData.qty - this.dpcrSIData.qtyCommitted) > dpcrSIData.qtyRemaining && !dpcrSIData.isDpcrMfo"
               class="alert alert-danger mt-2"
               role="alert"
             >
