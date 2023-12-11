@@ -16,7 +16,9 @@ import {
     <div class="card">
       <div class="row">
         <div class="col-10">
-          <h5 class="card-header">DIVISION MFO</h5>
+          <h3 class="card-header">
+            <strong class="badge rounded-pill bg-label-info shadow-sm">{{dpcrService.divisionName}} MFO</strong>
+          </h3>
         </div>
         <div class="col-2">
           <button
