@@ -3,18 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { api } from '../connection';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   readonly APIUrl_login = 'https://davnorsystems.gov.ph/hrisAPI/api/Auth';
-  readonly APIUrl_HRIS = 'https://localhost:44395/api/auth/login';
-  //readonly APIUrl_HRIS =
-  //  'https://davaodelnorte.ph/AppData/hrisv3api/api/auth/login';
-  //readonly APIUrl_HRIS = 'https://localhost:44395/api/auth/login';
-  //readonly APIUrl_HRIS =
-  //  'https://localhost:7114/api/auth/login';
+  readonly APIUrl_HRIS =  api + '/auth/login';
+
   private userPayload: any;
   constructor(private http: HttpClient, private Router: Router) {
     this.userPayload = this.decodedToken();
