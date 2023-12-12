@@ -31,23 +31,26 @@ export class UserLoginComponent implements OnInit {
         this.Router.navigate(['']);
       },
       error: (error: any) => {
-        this.loading = false;
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-          },
-        });
-
-        Toast.fire({
-          icon: 'error',
-          title: 'Incorrect Username or Password',
-        });
+        if(error.status ==400){
+          console.log(error);
+          this.loading = false;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer);
+              toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+          });
+  
+          Toast.fire({
+            icon: 'error',
+            title: 'Incorrect username or password',
+          });
+        }
       },
       complete: () => {
         this.Auth.loginHRIS(this.eic).subscribe({
@@ -60,23 +63,26 @@ export class UserLoginComponent implements OnInit {
             this.Router.navigate(['']);
           },
           error: (error: any) => {
-            this.loading = false;
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-              },
-            });
-
-            Toast.fire({
-              icon: 'error',
-              title: 'Incorrect Username or Password',
-            });
+            if(error.status ==400){
+              console.log(error);
+              this.loading = false;
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer);
+                  toast.addEventListener('mouseleave', Swal.resumeTimer);
+                },
+              });
+      
+              Toast.fire({
+                icon: 'error',
+                title: 'Contact HR to activate your account',
+              });
+            }
           },
           complete: () => {
             this.loading = false;
