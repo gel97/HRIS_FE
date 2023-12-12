@@ -313,7 +313,7 @@ export class DpcrService {
       });
   }
 
-  GetDpcrDataMfoesDivision() {
+  GetDpcrDataMfoesDivision(searchDivisionMfo:any) {
     this.dpcrDataMfoes.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(
@@ -323,6 +323,7 @@ export class DpcrService {
             this.divisionId ?? "",
             this.storageDpcrId(),
             this.divisionName ?? '',
+            searchDivisionMfo
           ),
         {
           responseType: `json`,

@@ -92,7 +92,8 @@ export class SpmsApiService {
     divisionId: string,
     dpcrId: string,
     divisionName: string,
-  ) => `/tPMDpcrData/mfoes/division/${officeId}/${divisionId}/${dpcrId}/${divisionName}`;
+    searchMfo: string,
+  ) => `/tPMDpcrData/mfoes/division/${officeId}/${divisionId}/${dpcrId}/${divisionName}/${searchMfo}`;
 
   get_dpcr_data = (dpcrId: string) => `/tPMDpcrData/list/${dpcrId}`;
   get_dpcr_data_subtask = (dpcrId: string, mfoId: string) =>
