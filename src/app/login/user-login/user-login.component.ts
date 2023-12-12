@@ -31,7 +31,7 @@ export class UserLoginComponent implements OnInit {
         this.Router.navigate(['']);
       },
       error: (error: any) => {
-        if(error.status ==400){
+        if (error.status == 400) {
           console.log(error);
           this.loading = false;
           const Toast = Swal.mixin({
@@ -45,7 +45,7 @@ export class UserLoginComponent implements OnInit {
               toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
           });
-  
+
           Toast.fire({
             icon: 'error',
             title: 'Incorrect username or password',
@@ -63,7 +63,7 @@ export class UserLoginComponent implements OnInit {
             this.Router.navigate(['']);
           },
           error: (error: any) => {
-            if(error.status ==400){
+            if (error.status == 400) {
               console.log(error);
               this.loading = false;
               const Toast = Swal.mixin({
@@ -77,7 +77,7 @@ export class UserLoginComponent implements OnInit {
                   toast.addEventListener('mouseleave', Swal.resumeTimer);
                 },
               });
-      
+
               Toast.fire({
                 icon: 'error',
                 title: 'Contact HR to activate your account',
