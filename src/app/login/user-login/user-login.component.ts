@@ -80,7 +80,7 @@ export class UserLoginComponent implements OnInit {
 
               Toast.fire({
                 icon: 'error',
-                title: 'Contact HR to activate your account',
+                title: 'Contact OFFICE ADMIN to activate your account',
               });
             }
           },
