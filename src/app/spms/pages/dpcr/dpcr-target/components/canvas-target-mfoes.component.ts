@@ -388,7 +388,11 @@ export class CanvasTargetDpcrMfoesComponent {
     if (this.search === '' || this.search === null) {
       this.search = null;
     }
-    this.dpcrService.GetDpcrDataSearchMfoes(this.search);
+    if(this.dpcrService.isCommonDivision() > 0){
+      this.dpcrService.GetDpcrDataSearchMfoes(this.search);
+    }else{
+      this.dpcrService.GetDpcrDataMfoesDivision(this.search);
+    }
   }
 
   HideCanvasOpcrMfoes() {
@@ -413,7 +417,7 @@ export class CanvasTargetDpcrMfoesComponent {
       this.dpcrService.GetDpcrDataMfoes();
     }
     else{ // get dpcr mfoes
-      this.dpcrService.GetDpcrDataMfoesDivision();
+      this.dpcrService.GetDpcrDataMfoesDivision(null);
     }
   }
 }
