@@ -1,30 +1,30 @@
-.bg-img{
-    background: url('src/assets/img/Login 02.jpg');
+.bg-img {
+    background: url("src/assets/img/Login 02.jpg");
     height: 100vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat; /* Prevent the background image from repeating */
   }
-
-/* Default styles for larger screens */
-.login-wrapper {
-    margin-top: 11%; /* Adjust the margin based on the overall screen height */
-    margin-left: 70%; /* Adjust the left margin based on the overall screen width */
-    /* height: 450px; */
-}
-
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-    .login-wrapper {
-        margin-left: 5%; /* Adjust the left margin for smaller screens */
-    }
+  
+  .login-card {
+    position: absolute;
+    top: 60%; /* Adjust the top percentage value to move the card down */
+    left: 83%; /* Adjust the left percentage value to center the card horizontally */
+    transform: translate(-50%, -50%);
+    width: 450px; /* Adjust the width as needed, you can use percentage or vw units */
+    height: 400px; /* Adjust the height as needed, you can use percentage or vh units */
+  }
+  
+  /* Media Query for Mobile View */
+  @media screen and (max-width: 1317px) {
     .bg-img {
-        background-size: contain; 
-        background-size: 420%;
+      background: none; /* Remove background for mobile view */
     }
-    /* Adjust the background size for smaller screens */
-}
-
-/* Additional media queries as needed for other screen sizes */
-
-
+  
+    .login-card {
+      width: 90%;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+    }
+  }
