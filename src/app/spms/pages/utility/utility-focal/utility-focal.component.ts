@@ -91,6 +91,21 @@ export class UtilityFocalComponent implements OnInit {
     );
   }
 
+  reAssign_office_focal() {
+    this.focalData.userEIC = this.userEIC;
+    this._utilService.assign_office_focal(this.focalData).subscribe(
+      (request) => {
+        this.searchOffice = this.focalData.officeId;
+        this.initData();
+        this.addRoleDisplay = 1;
+        this.alertService.update();
+      },
+      (err) => {
+        this.alertService.error();
+      }
+    );
+  }
+
   searchOffice() {
     if (!this.SearchOffice) {
       this.offices = this.staticOffices;
