@@ -30,7 +30,6 @@
           </div>
         </div>
       </div>
-
       <div class="col-xl-4 col-lg-6 col-md-6">
         <div class="card h-100">
           <div class="row h-100">
@@ -55,7 +54,6 @@
         </div>
       </div>
       <div class="col-12">
-
         <div class="card">
           <div class="table-responsive">
             <table class="table table-hover">
@@ -90,6 +88,7 @@
                   <td>
                     <i class="bx bx-edit-alt cursor-pointer" (click)="userEIC=i.eic;userMenus();addRoleDisplay=2"
                       matTooltip="Edit" [matTooltipPosition]="'above'"></i>
+                    <i class='bx bx-buildings' (click)="userEIC=i.eic; focalData.officeId = i.officeId" data-bs-toggle="modal" data-bs-target="#modalOffice" matTooltip="Edit Office" [matTooltipPosition]="'below'"></i>
                   </td>
                 </tr>
               </tbody>
@@ -104,7 +103,6 @@
       <div class="col-8">
         <div class="card">
           <div class="card-header">
-
           </div>
           <div class="card-body">
             <div class="row">
@@ -170,19 +168,7 @@
                                   <mat-checkbox [(ngModel)]="i.isCheck" (ngModelChange)="update_All_Check()">
                                     Access
                                   </mat-checkbox>
-                                  <!-- <input class="form-check-input" type="checkbox" id="{{e}}{{i.roleId}}" [checked]="i.isCheck">
-                                  <label class="form-check-label" for="{{e}}{{i.roleId}}">
-                                    Access
-                                  </label> -->
                                 </div>
-
-                                <!-- 
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" id="userManagementCreate">
-                                  <label class="form-check-label" for="userManagementCreate">
-                                    Create
-                                  </label>
-                                </div> -->
                               </div>
                             </td>
                             <td class="text-left" style="text-align: left;">
@@ -209,7 +195,6 @@
         </div>
       </div>
       <div class="col"></div>
-
     </div>
     <!-- Add Role Modal -->
     <div class="modal fade" id="addRoleModal" tabindex="-1" aria-modal="true" role="dialog">
@@ -226,8 +211,6 @@
             <!-- Add role form -->
             <div id="addRoleForm" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework">
               <div class="col-12 mb-4 fv-plugins-icon-container">
-
-
                 <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
               </div>
               <div class="col-12">
@@ -260,18 +243,6 @@
                                 Read
                               </label>
                             </div>
-                            <!-- <div class="form-check me-3 me-lg-5">
-                              <input class="form-check-input" type="checkbox" id="userManagementWrite">
-                              <label class="form-check-label" for="userManagementWrite">
-                                Write
-                              </label>
-                            </div>
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" id="userManagementCreate">
-                              <label class="form-check-label" for="userManagementCreate">
-                                Create
-                              </label>
-                            </div> -->
                           </div>
                         </td>
                       </tr>
@@ -305,7 +276,6 @@
           </div>
           <div class="card-body">
             <div class="col-lg-12">
-
             </div>
             <div class="col">
               <div class="example-container">
@@ -317,18 +287,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="col-lg-12">
-               
-                      <mat-form-field appearance="outline" style="width: 100%;">
-                          <mat-label>Role</mat-label>
-                          <mat-select name="accountInfo.sex" >
-                            <mat-option *ngFor="let i of role_list" [value]="i.roleId"> {{i.roleName}}</mat-option>
-                          </mat-select>
-                      </mat-form-field>
-                  </div> -->
-
-
           </div>
         </div>
       </div>
@@ -369,13 +327,10 @@
                 </button>
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
     </div>
-
   </div>
   <div class="col-lg-6 mb-4">
     <div class="card">
@@ -408,49 +363,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="accordion-item shadow-none border border-bottom-0 mb-0">
-                  <div class="accordion-header" id="headingTwo">
-                    <button type="button" class="bg-lighter rounded-0 accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#chapterTwo" aria-expanded="false" aria-controls="chapterTwo">
-                      <span class="d-flex flex-column">
-                        <span class="h5 mb-1">Web Design for Web Developers</span>
-                        <span class="fw-normal">1 / 4 | 4.4 min</span>
-                      </span>
-                    </button>
-                  </div>
-                  <div id="chapterTwo" class="accordion-collapse collapse" data-bs-parent="#courseContent" style="">
-                    <div class="accordion-body py-3 border-top">
-                      <div class="form-check d-flex align-items-center mb-3">
-                        <input class="form-check-input" type="checkbox" id="defCheck1" checked="">
-                        <label for="defCheck1" class="form-check-label ms-3">
-                          <span class="mb-0 h6">1. How to use Pages in Figma</span>
-                          <span class="text-muted d-block">8:31 min</span>
-                        </label>
-                      </div>
-                      <div class="form-check d-flex align-items-center mb-3">
-                        <input class="form-check-input" type="checkbox" id="defCheck2">
-                        <label for="defCheck2" class="form-check-label ms-3">
-                          <span class="mb-0 h6">2. What is Lo Fi Wireframe</span>
-                          <span class="text-muted d-block">2 min</span>
-                        </label>
-                      </div>
-                      <div class="form-check d-flex align-items-center mb-3">
-                        <input class="form-check-input" type="checkbox" id="defCheck3">
-                        <label for="defCheck3" class="form-check-label ms-3">
-                          <span class="mb-0 h6">3. How to use color in Figma</span>
-                          <span class="text-muted d-block">5.9 min</span>
-                        </label>
-                      </div>
-                      <div class="form-check d-flex align-items-center">
-                        <input class="form-check-input" type="checkbox" id="defCheck4">
-                        <label for="defCheck4" class="form-check-label ms-3">
-                          <span class="mb-0 h6">4. Frames vs Groups in Figma</span>
-                          <span class="text-muted d-block">3.6 min</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-
         </div>
         <div class="table-responsive text-nowrap hide">
           <table class="table table-borderless table-hover table-striped">
@@ -470,6 +382,41 @@
           </table>
         </div>
 
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Small Modal -->
+ <div class="modal fade" id="modalOffice" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Transfer Office Assignment</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <mat-form-field style="width: 100%;" appearance="outline">
+          <mat-label>OFFICE</mat-label>
+          <mat-select [(ngModel)]="focalData.officeId">
+            <mat-option>
+              <ngx-mat-select-search [(ngModel)]="SearchOffice" (ngModelChange)="searchOffice()"
+                placeholderLabel="Search..." noEntriesFoundLabel="'no match found'"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let i of offices" [value]="i.officeId"> {{i.officeNameShort}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" (click)="reAssign_office_focal()" data-bs-dismiss="modal">Save changes</button>
       </div>
     </div>
   </div>
