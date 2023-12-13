@@ -95,7 +95,6 @@ export class UtilityFocalComponent implements OnInit {
     this.focalData.userEIC = this.userEIC;
     this._utilService.assign_office_focal(this.focalData).subscribe(
       (request) => {
-        this.searchOffice = this.focalData.officeId;
         this.initData();
         this.addRoleDisplay = 1;
         this.alertService.update();
