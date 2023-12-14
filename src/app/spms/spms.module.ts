@@ -28,6 +28,8 @@ import { IpcrTargetSkeletonComponent } from './pages/ipcr/ipcr-target/components
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
 import { OtsComponent } from './pages/ots/ots.component';
+import { LogsComponent } from './pages/logs/logs.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { OtsComponent } from './pages/ots/ots.component';
     IpcrActualComponent,
     OtsComponent,
     UtilityComponent,
+    LogsComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +59,7 @@ import { OtsComponent } from './pages/ots/ots.component';
     CdkDropListGroup,
     MatTooltipModule,
     NgxSkeletonLoaderModule,
+    MatPaginatorModule
   ],
 })
 export class SpmsModule {}

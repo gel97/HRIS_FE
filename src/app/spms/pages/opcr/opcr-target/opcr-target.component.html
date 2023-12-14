@@ -29,8 +29,8 @@
             </div>
             <div *ngIf="isShow() == 0 && opcr().data.length == 0" class="col-4">
                 <div class="pt-4" style="margin-right: 5px">
-                    <button (click)="flag_opcr = true " class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                    <button (click)="flag_opcr = true " class="btn btn-primary float-end" type="button"
+                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
                         <i class="bx bx-plus"></i>OPCR
                     </button>
                 </div>
@@ -121,8 +121,8 @@
                                                 aria-controls="offcanvasScroll"><i class="bx bx-edit-alt me-1"></i>
                                                 Edit
                                             </a>
-                                            <a (click)="DeleteOPCR(data_opcr.opcrId)" class="dropdown-item"><i
-                                                    class="bx bx-trash me-1"></i>
+                                            <a (click)="DeleteOPCR(data_opcr.opcrId)"
+                                                class="dropdown-item text-danger"><i class="bx bx-trash me-1"></i>
                                                 Delete</a>
                                         </div>
                                     </div>
@@ -367,8 +367,8 @@
         <div class="col-md-12">
             <div class="">
                 <div class="form-floating">
-                    <input [(ngModel)]="data.details" type="text" class="form-control"
-                        id="floatingInput" placeholder="" aria-describedby="floatingInputHelp" />
+                    <input [(ngModel)]="data.details" type="text" class="form-control" id="floatingInput" placeholder=""
+                        aria-describedby="floatingInputHelp" />
                     <label for="floatingInput">OPCR</label>
                     <div id="floatingInputHelp" class="form-text">Input OPCR</div>
                 </div>
@@ -387,7 +387,8 @@
             <div id="floatingInputHelp" class="form-text">Select Period</div>
         </div>
         <br />
-        <button (click)="flag_opcr ? PostOPCR(): EditOPCR_Details()" type="button" class="btn btn-primary mb-2 d-grid w-100">
+        <button (click)="flag_opcr ? PostOPCR(): EditOPCR_Details()" type="button"
+            class="btn btn-primary mb-2 d-grid w-100">
             Save
         </button>
         <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">

@@ -7,6 +7,7 @@ import { OpcrTargetComponent } from './pages/opcr/opcr-target/opcr-target.compon
 import { SpmsComponent } from './spms.component';
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
+import { LogsComponent } from './pages/logs/logs.component';
 const routes: Routes = [
   {
     path: '',
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'ipcr/actual',
         component: IpcrActualComponent,
+      },
+      {
+        path: 'logs',
+        component: LogsComponent
       },
       {
         path:'dpcr',
