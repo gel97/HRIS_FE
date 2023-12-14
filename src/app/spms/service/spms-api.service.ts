@@ -6,7 +6,7 @@ import { api } from 'src/app/connection';
 })
 export class SpmsApiService {
   constructor() {}
-  get_employee_list = () =>'/vPMEmployee';
+  get_employee_list = () => '/vPMEmployee';
 
   get_mfoes = (officeId: string, type: number) =>
     `/tPMMFOes/${officeId}/${type}`;
@@ -17,7 +17,8 @@ export class SpmsApiService {
   put_mfo_category = (mfoId: string, categoryId: number) =>
     `/tPMMFOes/category/${mfoId}/${categoryId}`;
 
-  get_division_mfoes = (divisionId: string) =>`/tPMMFOes/division/${divisionId}`;
+  get_division_mfoes = (divisionId: string) =>
+    `/tPMMFOes/division/${divisionId}`;
   post_search_division_mfo = () => `/tPMMFOes/Search/Division/MFO`;
 
   post_success_indicator = () => `/tPMMFOIndicators`;
@@ -32,9 +33,10 @@ export class SpmsApiService {
     `/tPMOpcrs/${year},${officeId}`;
   post_opcr = () => `/tPMOpcrs`;
   put_opcr = () => `/tPMOpcrs/Active`;
-  edit_opcr_details = () => `/tPMOpcrs/Details`
+  edit_opcr_details = () => `/tPMOpcrs/Details`;
   delete_opcr = (opcrId: string) => `/tPMOpcrs/${opcrId}`;
-  get_uncommited_division = (year :any , officeId : string ) => `/tPMOpcrs/UncommitedDivision/${year},${officeId}`
+  get_uncommited_division = (year: any, officeId: string) =>
+    `/tPMOpcrs/UncommitedDivision/${year},${officeId}`;
 
   get_ipcrs = (year: string, divisionId: string, userId: string) =>
     `/tPMIpcrs/${year}/${divisionId}/${userId}`;
@@ -92,8 +94,9 @@ export class SpmsApiService {
     divisionId: string,
     dpcrId: string,
     divisionName: string,
-    searchMfo: string,
-  ) => `/tPMDpcrData/mfoes/division/${officeId}/${divisionId}/${dpcrId}/${divisionName}/${searchMfo}`;
+    searchMfo: string
+  ) =>
+    `/tPMDpcrData/mfoes/division/${officeId}/${divisionId}/${dpcrId}/${divisionName}/${searchMfo}`;
 
   get_dpcr_data = (dpcrId: string) => `/tPMDpcrData/list/${dpcrId}`;
   get_dpcr_data_subtask = (dpcrId: string, mfoId: string) =>
@@ -110,14 +113,17 @@ export class SpmsApiService {
   get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
   post_officedivision = () => `/tPMOfficeDivisions`;
   put_officedivision = () => `/tPMOfficeDivisions`;
-  delete_officedivision = (divisionId:any) => `/tPMOfficeDivisions/${divisionId}`;
+  delete_officedivision = (divisionId: any) =>
+    `/tPMOfficeDivisions/${divisionId}`;
 
-  get_utility_role = () =>'/tPMRole';
-  post_utility_employee_role = (officeId:string) =>`/vPMEmployee/employee_role?officeId=${officeId}`;
-  get_utility_user_role = (EIC: string) =>`/tPMUserRole/user_role/${EIC}`;
-  post_utility_user_role = (EIC:string) =>`/tPMUserRole?EIC=${EIC}`;
+  get_utility_role = () => '/tPMRole';
+  post_utility_employee_role = (officeId: string) =>
+    `/vPMEmployee/employee_role?officeId=${officeId}`;
+  get_utility_user_role = (EIC: string) => `/tPMUserRole/user_role/${EIC}`;
+  post_utility_user_role = (EIC: string) => `/tPMUserRole?EIC=${EIC}`;
   delete_utility_user_role = (transId: string) => `/tPMUserRole/${transId}`;
-  get_user_profile_picture =  (EIC: string) => `/vPMEmployee/profile_picture?EIC=${EIC}`;
+  get_user_profile_picture = (EIC: string) =>
+    `/vPMEmployee/profile_picture?EIC=${EIC}`;
 
   get_ipcr_data = (ipcrId: string) => `/tPMIpcrDatas/list/${ipcrId}`;
 
@@ -125,14 +131,21 @@ export class SpmsApiService {
   post_employee_division = () => `/vPMEmployee/employee/division/list`;
   post_employee_add_division = () => `/vPMEmployee/employee/add/division`;
   put_employee_update_division = () => `/vPMEmployee/employee/update/division`;
-  delete_employee_division = (EIC:string) => `/vPMEmployee/employee/remove/division/${EIC}`;
+  delete_employee_division = (EIC: string) =>
+    `/vPMEmployee/employee/remove/division/${EIC}`;
   get_employee_office_role = () => `/vPMEmployee/employee/office/role`;
   put_employee_office_role = () => `/vPMEmployee/employee/office/role`;
-  delete_employee_office_role = (EIC:string) => `/vPMEmployee/employee/office/role/${EIC}`;
+  delete_employee_office_role = (EIC: string) =>
+    `/vPMEmployee/employee/office/role/${EIC}`;
 
   get_office = () => `/tPMOffice`;
-  post_employee_assign_office_focal = () => `/vPMEmployee/employee/assign/office/focal`;
+  post_employee_assign_office_focal = () =>
+    `/vPMEmployee/employee/assign/office/focal`;
 
-  post_signatories = (typeId:any) => `/tPMSignatories/${typeId}`;
-  get_signatories = (typeId:any, officeId:any, divisionId:any) => `/tPMSignatories/${typeId}/${officeId}/${divisionId}`;
+  post_signatories = (typeId: any) => `/tPMSignatories/${typeId}`;
+  get_signatories = (typeId: any, officeId: any, divisionId: any) =>
+    `/tPMSignatories/${typeId}/${officeId}/${divisionId}`;
+
+  get_logs = () => `/tPMLogs`
+  post_all_logs = () => `/tPMLogs/LogsComplete`;
 }
