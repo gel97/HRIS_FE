@@ -36,6 +36,7 @@ export class AuthService {
     localStorage.setItem('officeNameLong', data.officeName);
     localStorage.setItem('positionTitle', data.positionTitle);
     localStorage.setItem('userId', data.eic);
+    localStorage.setItem('expire', data.expire);
   }
 
   decodedToken() {
@@ -49,7 +50,11 @@ export class AuthService {
   }
 
   isLogin(): boolean {
-    return !!localStorage.getItem('token');
+    const datenow = new Date();
+    var get_expire_token = localStorage.getItem('expire')?.toLowerCase();
+    const expire_token = new Date(get_expire_token!);
+
+    return !!localStorage.getItem('token') && expire_token >= datenow;
   }
 
   signout() {
