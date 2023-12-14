@@ -5,6 +5,9 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-style1 m-0">
                         <li class="breadcrumb-item">
+                            <a><i class='bx bx-briefcase'></i>&nbsp;Utility</a>
+                        </li>
+                        <li class="breadcrumb-item">
                             <a><i class="bx bx-receipt"></i>&nbsp;Logs</a>
                         </li>
                         <li *ngIf="flag" class="breadcrumb-item active">
@@ -58,7 +61,7 @@
                         <span>{{x.officeNameShort}}&nbsp;<a href="#">{{x.fullNameFirst}}</a> has <a
                                 style="color: black;"><strong>{{x.method}}</strong></a>&nbsp;<a
                                 href="#">{{x.description}}</a> Table on
-                            <a href="#">{{x.transDate | date : "MMM. dd, yyyy"}}</a>
+                            <a href="#">{{x.transDate | date : "MMM. dd, yyyy h:mm a"}}</a>
                         </span>
                     </div>
                 </div>
@@ -120,10 +123,12 @@
                           ? 'bg-label-primary'
                           : y.methodId == '3'
                           ? 'bg-label-danger'
-                          : ''
+                          : y.methodId == '4'
+                          ? 'bg-label-danger'
+                          :''
                       ">{{y.method}}</span></td>
                     <td>{{y.description}}&nbsp;<span>Table</span></td>
-                    <td>{{y.transDate | date : "MMM. dd, yyyy"}}</td>
+                    <td>{{y.transDate | date : "MMM. dd, yyyy h:mm a"}}</td>
                 </tr>
             </tbody>
             <tfoot class="table-border-bottom-0">
