@@ -50,11 +50,12 @@ export class AuthService {
   }
 
   isLogin(): boolean {
-    const datenow = new Date();
-    var get_expire_token = localStorage.getItem('expire')?.toLowerCase();
-    const expire_token = new Date(get_expire_token!);
+    // const datenow = new Date();
+    // var get_expire_token = localStorage.getItem('expire')?.toLowerCase();
+    // const expire_token = new Date(get_expire_token!);
 
-    return !!localStorage.getItem('token') && expire_token >= datenow;
+    // return !!localStorage.getItem('token') && expire_token >= datenow;
+    return !!localStorage.getItem('token')
   }
 
   signout() {

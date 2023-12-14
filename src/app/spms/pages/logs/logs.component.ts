@@ -55,6 +55,12 @@ export class LogsComponent implements OnInit {
         break;
     }
 
+    switch (color) {
+      case 4:
+        return_color = 'red';
+        break;
+    }
+
     return return_color;
   }
 
@@ -78,6 +84,12 @@ export class LogsComponent implements OnInit {
         break;
     }
 
+    switch (background) {
+      case 4:
+        return_background = 'rgb(241, 191, 191)';
+        break;
+    }
+
     return return_background;
   }
 
@@ -97,6 +109,12 @@ export class LogsComponent implements OnInit {
 
     switch (icon) {
       case 3:
+        return_icon = 'bx-trash-alt';
+        break;
+    }
+
+    switch (icon) {
+      case 4:
         return_icon = 'bx-trash-alt';
         break;
     }
