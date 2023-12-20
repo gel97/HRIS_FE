@@ -12,8 +12,7 @@ export class MainComponent implements OnInit{
   
   ngOnInit(): void {
     this.otsService.GetOts();
-    this.otsService.GetOtsMfoe();
-    console.log(this.ots)
+    this.otsService.GetCheckUserOpenIpcr();
   }
 
 

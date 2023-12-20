@@ -40,8 +40,9 @@ import { OtsService } from 'src/app/spms/service/ots.service';
               <tr>
                 <th [width]="10">#</th>
                 <th [width]="2">Date Accomplished</th>
-                <th>MFO</th>
-                <th>Description</th>
+                <th [width]="10">MFO</th>
+                <th [width]="10">Success Indicator</th>
+                <th [width]="10">Description</th>
                 <th [width]="2">Quantity</th>
                 <th [width]="2">Quality</th>
                 <th [width]="2">Timeliness</th>
@@ -54,36 +55,57 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                 <tr>
                   <td><strong>{{i+1}}</strong></td>
                   <td>{{data.dateDone | date:'MMM. dd, yyyy' }}</td>
-                  <td></td>
-                  <td>{{data.description}}</td>
-                  <td class="text-center">{{data.qtyR}}</td>
-                  <td class="text-center">{{data.qltyR}}</td>
-                  <td class="text-center">{{data.timelyR}}</td>
-                  <td class="text-center"></td>
                   <td>
-                  <div class="dropdown position-static">
-                        <button
-                          type="button"
-                          class="btn p-0 dropdown-toggle hide-arrow"
-                          data-bs-toggle="dropdown"
+                    <span *ngIf="data.st === null; else showStMfo">
+                      {{data.mfo | truncate: 20}}
+                    </span>
+                    <ng-template #showStMfo>
+                      {{data.st.stMfo  | truncate: 20}}
+                    </ng-template>
+                  </td>
+                  <td>
+                    <span *ngIf="data.st === null; else showSt">
+                      {{data.indicator | truncate: 20}}
+                    </span>
+                    <ng-template #showSt>
+                      {{data.st.stIndicator  | truncate: 20}}
+                    </ng-template>
+                  </td>
+                  <td>{{data.description}}</td>
+                  <td>{{data.qtyR}}</td>
+                  <td>{{data.qltyR}}</td>
+                  <td>{{data.timelyR}}</td>
+                  <td> 
+                    <div [ngSwitch]="data.status">
+                      <strong *ngSwitchCase="2" class="badge rounded-pill bg-label-danger">Return</strong>
+                      <strong *ngSwitchCase="1" class="badge rounded-pill bg-label-success">Approved</strong>
+                      <strong *ngSwitchCase="0" class="badge rounded-pill bg-label-warning">Pending</strong>
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="data.approvedDate === null" class="dropdown position-static">
+                      <button
+                        type="button"
+                        class="btn p-0 dropdown-toggle hide-arrow"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          
+                          class="dropdown-item cursor-pointer"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalDpcrDataEditQuantity"
+                          ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                        >             
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          
+                          ><i class="bx bx-trash me-1"></i> Delete</a
                         >
-                          <i class="bx bx-dots-vertical-rounded"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                          <a
-                            
-                            class="dropdown-item cursor-pointer"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalDpcrDataEditQuantity"
-                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                          >             
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            
-                            ><i class="bx bx-trash me-1"></i> Delete</a
-                          >
-                        </div>
                       </div>
+                    </div>
                   </td>
                 </tr>          
               </ng-container>

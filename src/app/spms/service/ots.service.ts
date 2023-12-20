@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
 import DataSource from 'devextreme/data/data_source';
 import { ErrorService } from './error.service';
+import { IpcrService } from './ipcr.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +18,9 @@ export class OtsService {
     private http: HttpClient,
     private url: SpmsApiService,
     private alertService: AlertService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private ipcrService: IpcrService
+
   ) {}
 
   ots = signal<any>({
@@ -37,6 +40,51 @@ export class OtsService {
   otsData:any=[];
   dataSource: DataSource | any;
   storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
+
+   GetCheckUserOpenIpcr(){
+    this.otsMfoes.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_check_user_open_ipcr(), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetIPCRMfoes(response.ipcrId);
+          this.otsMfoes.mutate((a) => (a.errorMessage = null));
+        },
+        error: (error:any) => {
+          if(error.status === 409){
+            this.otsMfoes.mutate((a) => (a.errorMessage = "No open IPCR yet. Please check your IPCR, then try again."));
+          } else {
+            this.alertService.error();
+          }
+        },
+        complete: () => {
+          this.otsMfoes.mutate((a) => (a.isLoading = false));
+        },
+      });
+      
+   }
+
+   GetIPCRMfoes(ipcrId:string) {
+    this.otsMfoes.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcrdetails_wSub(ipcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.otsMfoes.mutate((a) => (a.data = response));
+        },
+        error: (error) => {
+          this.alertService.error();
+
+        },
+        complete: () => {
+          this.otsMfoes.mutate((a) => (a.isLoading = false));
+        },
+      });
+  }
 
    GetOts() {
     this.ots.mutate((a) => (a.isLoading = true));

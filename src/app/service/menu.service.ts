@@ -52,7 +52,6 @@ export class MenuService {
           });
         },
         complete: () => {
-          console.log('spms: ', this.menu());
         },
       });
   }
