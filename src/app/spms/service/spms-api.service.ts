@@ -60,6 +60,9 @@ export class SpmsApiService {
   delete_ipcrdata_st = (ipcrSubtaskId: string) =>
     `/tPMIpcrDataSubTasks/${ipcrSubtaskId}`;
 
+  get_ipcr_data_actual = (ipcrId: string) =>
+    `/tPMIpcrDatas/actual/list/${ipcrId}`;
+
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
   put_opcrdata = () => `/tPMOpcrDatas`;
   post_opcrdata = () => `/tPMOpcrDatas`;
