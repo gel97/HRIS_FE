@@ -30,7 +30,10 @@ import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.compon
 import { OtsComponent } from './pages/ots/ots.component';
 import { LogsComponent } from './pages/logs/logs.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { ViewIpcrComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr.component';
+import { HeaderIpcrActualComponent } from './pages/ipcr/ipcr-actual/components/header-ipcr-actual.component';
+import { ViewIpcrDataActualComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr-data-actual.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -48,6 +51,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     OtsComponent,
     UtilityComponent,
     LogsComponent,
+    ViewIpcrComponent,
+    HeaderIpcrActualComponent,
+    ViewIpcrDataActualComponent,
   ],
   imports: [
     CommonModule,
@@ -59,7 +65,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     CdkDropListGroup,
     MatTooltipModule,
     NgxSkeletonLoaderModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    NgCircleProgressModule.forRoot({
+      // set defaults here
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
   ],
 })
 export class SpmsModule {}

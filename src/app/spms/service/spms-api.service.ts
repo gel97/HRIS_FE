@@ -60,6 +60,9 @@ export class SpmsApiService {
   delete_ipcrdata_st = (ipcrSubtaskId: string) =>
     `/tPMIpcrDataSubTasks/${ipcrSubtaskId}`;
 
+  get_ipcr_data_actual = (ipcrId: string) =>
+    `/tPMIpcrDatas/actual/list/${ipcrId}`;
+
   delete_opcrdata = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
   put_opcrdata = () => `/tPMOpcrDatas`;
   post_opcrdata = () => `/tPMOpcrDatas`;
@@ -109,6 +112,7 @@ export class SpmsApiService {
 
   post_ots = () => `/tPMOts`;
   get_ots = () => `/tPMOts`;
+  get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
 
   get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
   post_officedivision = () => `/tPMOfficeDivisions`;

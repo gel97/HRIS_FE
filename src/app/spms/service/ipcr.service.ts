@@ -19,10 +19,18 @@ export class IpcrService {
   storageIsShow = signal<any>(localStorage.getItem('isShow_ipcr'));
   storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
   storageIpcrData = signal<any>(localStorage.getItem('ipcrData'));
+  isShowIpcrDataActual = signal<number>(0);
+
   isCommon = signal<number>(0);
   divisionId: string | null = localStorage.getItem('divisionId');
 
   ipcr = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+  ipcrDataActual = signal<any>({
     data: [],
     error: false,
     isLoading: false,
@@ -63,6 +71,26 @@ export class IpcrService {
           this.alertService.error();
         },
         complete: () => {},
+      });
+  }
+
+  GetIPCRDataActual(ipcrId: string) {
+    this.ipcrDataActual.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_data_actual(ipcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.ipcrDataActual.mutate((a) => (a.data = response));
+          this.ipcrDataActual.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          console.log("ipcrDataActual: ", this.ipcrDataActual())
+        },
       });
   }
 

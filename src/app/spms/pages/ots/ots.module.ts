@@ -11,25 +11,29 @@ import { TableMfoesComponent } from './main/components/table-mfoes.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TableMonthComponent } from './main/components/table-month.component';
 import { ModalOtsComponent } from './main/components/modal-ots.component';
+import { WarningComponent } from "../../components/warning.component";
+import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
 @NgModule({
-  declarations: [ 
-    MainComponent,
-    SchedulerComponent,
-    TableOtsComponent,
-    TableMfoesComponent,
-    TableMonthComponent,
-    ModalOtsComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    OtsRoutingModule,
-    DxSchedulerModule,
-    DxPopupModule,
-    DxScrollViewModule,
-    DxSelectBoxModule,
-    NgxSkeletonLoaderModule
-  ]
+    declarations: [
+        MainComponent,
+        SchedulerComponent,
+        TableOtsComponent,
+        TableMfoesComponent,
+        TableMonthComponent,
+        ModalOtsComponent,
+        TruncatePipe
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        OtsRoutingModule,
+        DxSchedulerModule,
+        DxPopupModule,
+        DxScrollViewModule,
+        DxSelectBoxModule,
+        NgxSkeletonLoaderModule,
+        WarningComponent
+    ]
 })
 export class OtsModule { }
