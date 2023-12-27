@@ -32,6 +32,8 @@ export class IpcrService {
 
   ipcrDataActual = signal<any>({
     data: [],
+    rating: [],
+    finalRating: {},
     error: false,
     isLoading: false,
   });
@@ -82,7 +84,9 @@ export class IpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
-          this.ipcrDataActual.mutate((a) => (a.data = response));
+          this.ipcrDataActual.mutate((a) => (a.data = response.data));
+          this.ipcrDataActual.mutate((a) => (a.rating = response.rating));
+          this.ipcrDataActual.mutate((a) => (a.finalRating = response.finalRating));
           this.ipcrDataActual.mutate((a) => (a.isLoading = false));
         },
         error: () => {
