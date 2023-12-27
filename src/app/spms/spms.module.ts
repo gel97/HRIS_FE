@@ -34,6 +34,7 @@ import { ViewIpcrComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr
 import { HeaderIpcrActualComponent } from './pages/ipcr/ipcr-actual/components/header-ipcr-actual.component';
 import { ViewIpcrDataActualComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr-data-actual.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -54,6 +55,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     ViewIpcrComponent,
     HeaderIpcrActualComponent,
     ViewIpcrDataActualComponent,
+    FirstLetterUppercasePipe
   ],
   imports: [
     CommonModule,

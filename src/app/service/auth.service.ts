@@ -37,6 +37,9 @@ export class AuthService {
     localStorage.setItem('positionTitle', data.positionTitle);
     localStorage.setItem('userId', data.eic);
     localStorage.setItem('expire', data.expire);
+    localStorage.setItem('sex', data.sex);
+    localStorage.setItem('firstName', data.firstName);
+
   }
 
   decodedToken() {
