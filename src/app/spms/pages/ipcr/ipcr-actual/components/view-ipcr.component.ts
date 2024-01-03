@@ -114,6 +114,8 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
 export class ViewIpcrComponent implements OnInit {
     ipcrService = inject(IpcrService);
     years: number[] = [];
+    divisionId: string | null = localStorage.getItem('divisionId');
+    userId: string | null = localStorage.getItem('userId');
     isShow: number | any = this.ipcrService.storageIsShow;
     ipcrData: string | any = this.ipcrService.storageIpcrData;
     currentDate: Date = new Date();
@@ -149,7 +151,7 @@ export class ViewIpcrComponent implements OnInit {
     }
 
     onChangeYear(year: any) {
-        //this.ipcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
+        this.ipcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
     }
 
     semester(year: number) {

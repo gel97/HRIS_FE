@@ -111,6 +111,7 @@ export class SpmsApiService {
   delete_subtask = (subTaskId: string) => `/tPMSubTask/${subTaskId}`;
 
   post_ots = () => `/tPMOts`;
+  put_ots = () => `/tPMOts`;
   get_ots = () => `/tPMOts`;
   get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
 
