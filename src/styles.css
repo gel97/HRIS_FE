@@ -26,3 +26,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .my-popup-class {
   z-index: 9999; /* Define your desired z-index value */
 }
+
+.gradient-primary {
+  background: linear-gradient(to right, #80B3FF, #687EFF); /* Replace colors as needed */
+}
+
+.gradient-warning {
+  background: linear-gradient(to right, #FFE15D, #F49D1A); /* Replace colors as needed */
+}
+
+.gradient-success {
+  background: linear-gradient(to right, #38E54D, #5BB318); /* Replace colors as needed */
+}
