@@ -130,8 +130,11 @@ export class MfoService {
           this.alertService.save();
         },
         error: (error: any) => {
-          this.alertService.error();
-          this.mfoDivision.mutate((a) => {
+          if(error.status === 409){
+            this.alertService.customError("MFO already eixst")
+          }else{
+            this.alertService.error();
+          }          this.mfoDivision.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
           });
