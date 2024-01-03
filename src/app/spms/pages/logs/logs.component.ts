@@ -23,7 +23,7 @@ export class LogsComponent implements OnInit {
 
   pageSizeOptions = [5, 10, 50, 100];
 
-  page: any = { pageNumber: 1, pageSize: 10 };
+  page: any = { pageNumber: 1, pageSize: 10 , officeId : localStorage.getItem('officeId')};
 
   hidePageSize = false;
   showPageSizeOptions = true;
@@ -154,7 +154,7 @@ export class LogsComponent implements OnInit {
   post_all_logs() {
     this.flag = true;
     console.log('Selected Office ID_1:', this.selectedOfficeId);
-    this.page.officeId = this.selectedOfficeId;
+    // this.page.officeId = this.selectedOfficeId;
     this.logsService.post_all_logs(this.page).subscribe({
       next: (response: any) => {
         this.fetch_logs_complete = response.items;

@@ -51,7 +51,9 @@ export class OpcrTargetComponent implements OnInit {
   @ViewChild('closebuttonEdit')
   closebuttonEdit!: { nativeElement: { click: () => void } };
 
+  officeName: any = ''
   ngOnInit(): void {
+    this.officeName = localStorage.getItem('officeName')
     this.localStorage();
     this.GetOPCRs();
     this.GetOfficeDivision();
@@ -243,14 +245,14 @@ export class OpcrTargetComponent implements OnInit {
   EditOPCR() {
     this.editOpcr.active = 1;
     this.opcrService.EditOPCR(this.editOpcr);
-    this.GetOPCRs();
+    // this.GetOPCRs();
   }
 
   EditOPCRFinal(opcrId: any) {
     this.editOpcr.active = 2;
     this.post_signatories(opcrId);
     this.opcrService.EditOPCR(this.editOpcr);
-    this.GetOPCRs();
+    // this.GetOPCRs();
   }
 
   post_signatories(id: any) {
@@ -278,6 +280,7 @@ export class OpcrTargetComponent implements OnInit {
       this.reportActualService.ReportActual(this.opcrDetails().data);
     }, 1000);
   }
+  
 
   GetMFOs() {
     this.mfoService.GetMFOes();
@@ -304,7 +307,7 @@ export class OpcrTargetComponent implements OnInit {
 
   EditOPCR_Details() {
     this.opcrService.EditOPCR_Details(this.data);
-    this.GetOPCRs();
+    // this.GetOPCRs();
   }
 
   PutMFOCategory(mfoId: string, categoryId: number) {

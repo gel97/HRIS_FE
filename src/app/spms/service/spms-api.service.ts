@@ -114,6 +114,10 @@ export class SpmsApiService {
   get_ots = () => `/tPMOts`;
   get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
 
+  get_ots_request = (status:number) => `/tPMOts/OtsRequest/${status}`;
+  get_ots_request_summary = () => `/tPMOts/Summary`;
+
+
   get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
   post_officedivision = () => `/tPMOfficeDivisions`;
   put_officedivision = () => `/tPMOfficeDivisions`;

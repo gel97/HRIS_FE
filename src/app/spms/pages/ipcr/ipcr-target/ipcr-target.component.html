@@ -8,6 +8,9 @@
                         <li class="breadcrumb-item">
                             <a><i class='bx bx-data'></i>&nbsp;IPCR</a>
                         </li>
+                        <li class="breadcrumb-item">
+                            <a><i class='bx bx-carousel'></i>&nbsp;{{divisionName}}</a>
+                        </li>
                         <li class="breadcrumb-item " [ngClass]="isShow()==0? 'active':''">
                             <a><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>
                         </li>
@@ -132,7 +135,7 @@ height: 100%;
                     <ng-container *ngIf="get_ipcrDetails.completeLoading!= true; else completeLoads">
                         <div class="card mb-2 shadow-sm"
                             *ngFor="let data of get_ipcrDetails.data ; let parent = index ">
-                            <ng-container *ngIf="data.si.length>0">
+                            <ng-container *ngIf="data.si.length>0; else noDataDisplay">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-8">
@@ -335,7 +338,7 @@ height: 100%;
                             </ng-container>
                         </div>
                     </ng-container>
-                    <div *ngIf="ipcrService.ipcrDetails().data.length <= 0">
+                    <ng-template #noDataDisplay>
                         <img src="assets/img/document.png" alt="" width="200" height="200"
                             style="display: block; margin: 0 auto" />
                         <span style="
@@ -355,9 +358,9 @@ height: 100%;
                                     OUTPUT</button>
                             </div>
                         </span>
-                    </div>
+                    </ng-template>
                     <ng-template #completeLoads>
-                        <app-ipcr-target-skeleton></app-ipcr-target-skeleton>
+                        <app-opcr-target-skeleton></app-opcr-target-skeleton>
                     </ng-template>
                 </div>
             </div>
@@ -558,7 +561,7 @@ height: 100%;
                             </table>
                         </ng-container>
                     </ng-container>
-                    <ng-template #isLoading><app-ipcr-target-skeleton></app-ipcr-target-skeleton></ng-template>
+                    <ng-template #isLoading><app-mfo-skeleton></app-mfo-skeleton></ng-template>
                 </ng-container>
                 <ng-template #nosidata>
                     <div class="text-center" style="margin-top: 30px;">
