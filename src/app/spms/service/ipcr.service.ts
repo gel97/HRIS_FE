@@ -24,6 +24,8 @@ export class IpcrService {
   isCommon = signal<number>(0);
   divisionId: string | null = localStorage.getItem('divisionId');
 
+  isLoadingIpcr: boolean= false
+
   ipcr = signal<any>({
     data: [],
     error: false,
@@ -96,6 +98,7 @@ export class IpcrService {
 
   GetIPCRDetails() {
     this.ipcrDetails.mutate((a) => (a.isLoading = true));
+    this.ipcrDetails.mutate((a) => (a.completeLoading = true));
     this.http
       .get<any[]>(api + this.url.get_ipcrdetails_wSub(this.storageIpcrId()), {
         responseType: `json`,
@@ -104,9 +107,11 @@ export class IpcrService {
         next: (response: any = {}) => {
           this.ipcrDetails.mutate((a) => (a.data = response));
           this.ipcrDetails.mutate((a) => (a.isLoading = false));
+          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
         },
         error: () => {
           this.alertService.error();
+          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
         },
         complete: () => {},
       });

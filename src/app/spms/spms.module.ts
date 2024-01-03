@@ -25,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton.component';
 import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components/opcr-target-skeleton.component';
 import { IpcrTargetSkeletonComponent } from './pages/ipcr/ipcr-target/components/ipcr-target-skeleton.component';
+import { MfoSkeletonComponent } from './pages/opcr/opcr-target/components/mfo-skeleton.component';
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
 import { OtsComponent } from './pages/ots/ots.component';
@@ -46,6 +47,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     OpcrActualSkeletonComponent,
     OpcrTargetSkeletonComponent,
     IpcrTargetSkeletonComponent,
+    MfoSkeletonComponent,
     IpcrTargetComponent,
     IpcrActualComponent,
     OtsComponent,
@@ -71,8 +73,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
       radius: 100,
       outerStrokeWidth: 16,
       innerStrokeWidth: 8,
-      outerStrokeColor: "#78C000",
-      innerStrokeColor: "#C7E596",
+      outerStrokeColor: '#78C000',
+      innerStrokeColor: '#C7E596',
       animationDuration: 300,
     }),
   ],

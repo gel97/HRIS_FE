@@ -30,6 +30,8 @@ import { TableMfoComponent } from './division-mfo/components/table-mfo.component
 import { CanvasMFOComponent } from './division-mfo/components/canvas-mfo.component';
 import { CanvasSIComponent } from './division-mfo/components/canvas-si.component';
 import { SearchMFOComponent } from './division-mfo/components/search-mfo.component';
+import { OtsRequestComponent } from './ots-request/ots-request/ots-request.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -53,7 +55,8 @@ import { SearchMFOComponent } from './division-mfo/components/search-mfo.compone
     TableMfoComponent,
     CanvasMFOComponent,
     CanvasSIComponent,
-    SearchMFOComponent
+    SearchMFOComponent,
+    OtsRequestComponent
   ],
   imports: [
     CommonModule,
@@ -66,6 +69,7 @@ import { SearchMFOComponent } from './division-mfo/components/search-mfo.compone
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
+    MatTooltipModule
   ],
 })
 export class DpcrModule {}
