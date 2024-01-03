@@ -1,0 +1,322 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card-header p-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-style1 m-0">
+                    <li class="breadcrumb-item">
+                        <a><i class="bx bx-data"></i>&nbsp;DPCR</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a><i class='bx bx-home-smile'></i>&nbsp;{{divisionName}}</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a><i class='bx bxs-notepad'></i>&nbsp;OTS-REQUEST</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<!-- Custom content with heading -->
+<div class="col-lg-12 mb-4 mb-xl-0">
+    <!-- <small *ngIf="toggle ==0; else approved" class="text-warning fw-semibold">Pending</small>
+    <ng-template #approved>
+        <small class="text-primary fw-semibold">Approved</small>
+    </ng-template> -->
+    <div class="mt-3">
+        <div class="row">
+            <div class="col-md-4 col-12 mb-3 mb-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a (click)="toggleSwitch(0)" class="list-group-item list-group-item-action active"
+                                id="list-pending-list" data-bs-toggle="list" href="#list-pending">Pending</a>
+                            <a (click)="toggleSwitch(1)" class="list-group-item list-group-item-action"
+                                id="list-approved-list" data-bs-toggle="list" href="#list-approved">Approved</a>
+                        </div>
+                        <br>
+                        <small class="text-danger fw-semibold">Summary</small>
+                        <div class="demo-inline-spacing mt-3 ">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <strong>Pending</strong>
+                                    <span class="badge bg-warning">{{this.ots_request_summary.totalPending}}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <strong>Approved</strong>
+                                    <span class="badge bg-primary">{{this.ots_request_summary.totalApproved}}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <strong>Total</strong>
+                                    <span class="badge bg-danger rounded-pill">{{this.ots_request_summary.total}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 col-12">
+                <div class="tab-content p-0">
+                    <div class="tab-pane fade show active" id="list-pending">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- List group checkbox -->
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <small class="text-warning fw-semibold">List of Pending</small>
+                                        </div>
+                                        <div class="col-6 d-flex justify-content-end">
+                                            <button type="button" class="btn rounded-pill btn-primary">Approve</button>
+                                            <button type="button" class="btn rounded-pill btn-success">Approve
+                                                All</button>
+                                        </div>
+                                    </div>
+                                    <div class="demo-inline-spacing mt-3">
+                                        <div class="list-group">
+                                            <ng-container
+                                                *ngIf="this.ots_request_summary.totalPending != 0;else pendingIsEmpty">
+                                                <ng-container *ngFor="let data of ots_request">
+                                                    <label class="list-group-item">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <input class="form-check-input me-1" type="checkbox"
+                                                                    value="" />
+                                                                <a (click)="ots_modal_data = data" class="pointer"
+                                                                    data-bs-toggle="tooltip" data-bs-toggle="modal"
+                                                                    data-bs-target="#smallModal"
+                                                                    matTooltip="Additional information"
+                                                                    matTooltipPosition="above"><strong>{{data.description}}</strong>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <ul
+                                                                    class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                                                    <li data-bs-toggle="tooltip"
+                                                                        [matTooltip]="data.fullNameFirst"
+                                                                        matTooltipPosition="above"
+                                                                        class="avatar avatar-xs pull-up">
+                                                                        <img src="./assets/img/avatars/5.png"
+                                                                            alt="Avatar" class="rounded-circle" />
+                                                                    </li>
+                                                                    <ng-container> <strong
+                                                                            style="color: blue;">{{data.fullNameFirst}}</strong></ng-container>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-1 pointer">
+                                                                <span
+                                                                    class="badge badge-center rounded-pill bg-secondary"><a
+                                                                        data-bs-toggle="tooltip" matTooltip="QUANTITY"
+                                                                        matTooltipPosition="above">{{data.qtyR}}</a></span>
+                                                            </div>
+                                                            <div class="col-1 pointer">
+                                                                <span
+                                                                    class="badge badge-center rounded-pill bg-success"><a
+                                                                        data-bs-toggle="tooltip" matTooltip="QUALITY"
+                                                                        matTooltipPosition="above">{{data.qltyR}}</a></span>
+                                                            </div>
+                                                            <div class="col-1 pointer">
+                                                                <span class="badge badge-center rounded-pill bg-info"><a
+                                                                        data-bs-toggle="tooltip" matTooltip="TIMELINESS"
+                                                                        matTooltipPosition="above">{{data.timelyR}}</a></span>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </ng-container>
+                                            </ng-container>
+                                            <ng-template #pendingIsEmpty>
+                                                <span
+                                                    style="display: flex; align-items: center; justify-content: center;">
+                                                    <strong>No Data Found...</strong></span>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/ List group checkbox -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-approved">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- List group checkbox -->
+                                <div class="col-lg-12">
+                                    <small class="text-primary fw-semibold">List of Approved</small>
+                                    <div class="demo-inline-spacing mt-3">
+                                        <div class="list-group">
+                                            <ng-container
+                                                *ngIf="this.ots_request_summary.totalApproved != 0;else approvedIsEmpty">
+                                                <ng-container *ngFor="let data of ots_request">
+                                                    <label class="list-group-item">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <input class="form-check-input me-1" type="checkbox"
+                                                                    value="" />
+                                                                <a class="pointer"><strong>{{data.description}}</strong>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <ul
+                                                                    class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                                                    <li data-bs-toggle="tooltip"
+                                                                        data-popup="tooltip-custom"
+                                                                        data-bs-placement="top"
+                                                                        class="avatar avatar-xs pull-up"
+                                                                        [title]="data.fullNameFirst">
+                                                                        <img src="./assets/img/avatars/5.png"
+                                                                            alt="Avatar" class="rounded-circle" />
+                                                                    </li>
+                                                                    <ng-container> <strong
+                                                                            style="color: blue;">{{data.fullNameFirst}}</strong></ng-container>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <span
+                                                                    class="badge badge-center rounded-pill bg-secondary">{{data.qtyR}}</span>
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <span
+                                                                    class="badge badge-center rounded-pill bg-success">{{data.qltyR}}</span>
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <span
+                                                                    class="badge badge-center rounded-pill bg-info">{{data.timelyR}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </ng-container>
+                                            </ng-container>
+                                            <ng-template #approvedIsEmpty>
+                                                <span
+                                                    style="display: flex; align-items: center; justify-content: center;">
+                                                    <strong>No Data Found...</strong></span>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/ List group checkbox -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">
+                    <span>{{ots_modal_data.mfo}}</span><br><strong><i class="bx bx-label text-primary"></i>&nbsp;<span
+                            class="text-primary">{{ots_modal_data.indicator}}</span></strong>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <input [(ngModel)]="ots_modal_data.description" type="email" class="form-control"
+                                id="floatingInputDisabled" placeholder="name@example.com" disabled>
+                            <label for="floatingInputDisabled">Description</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            <input [(ngModel)]="ots_modal_data.qtyR" type="email" class="form-control"
+                                id="floatingInputDisabled" placeholder="name@example.com" disabled>
+                            <label for="floatingInputDisabled">Quantity</label>
+                        </div>
+                    </div>
+                    <label class="col-form-label">Quality</label>
+                    <div class="row mb-2">
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.qltyR == 5? 'highlighted_quality':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.qlty5">
+                                5
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.qltyR == 4? 'highlighted_quality':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.qlty4">
+                                4
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.qltyR == 3? 'highlighted_quality':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.qlty3">
+                                3
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.qltyR == 2? 'highlighted_quality':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.qlty2">
+                                2
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.qltyR == 1? 'highlighted_quality':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.qlty1">
+                                1
+                            </button>
+                        </div>
+                    </div>
+                    <label class="col-form-label">Timeliness</label>
+                    <div class="row mb-2">
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.timelyR == 5? 'highlighted_timeliness':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.timely5">
+                                5
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.timelyR == 4? 'highlighted_timeliness':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.timely4">
+                                4
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.timelyR == 3? 'highlighted_timeliness':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.timely3">
+                                3
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.timelyR == 2? 'highlighted_timeliness':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.timely2">
+                                2
+                            </button>
+                        </div>
+                        <div class="col-2">
+                            <button [ngClass]="ots_modal_data.timelyR == 1? 'highlighted_timeliness':''" type="button"
+                                class="btn rounded-pill btn-icon btn-outline-primary"
+                                [disabled]="!ots_modal_data.timely1">
+                                1
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">Save changes & Approve</button>
+            </div>
+        </div>
+    </div>
+</div>

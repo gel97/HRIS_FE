@@ -9,6 +9,9 @@
                             <li class="breadcrumb-item">
                                 <a><i class="bx bx-data"></i>&nbsp;OPCR</a>
                             </li>
+                            <li class="breadcrumb-item">
+                                <a><i class='bx bx-buildings'></i>&nbsp;{{officeName}}</a>
+                            </li>
                             <li class="breadcrumb-item" [ngClass]="isShow() == 0 ? 'active' : ''">
                                 <a><i class="bx bxs-right-top-arrow-circle"></i>&nbsp;Target</a>
                             </li>
@@ -899,7 +902,7 @@
             </ng-template>
         </div>
         <ng-template #isLoadingMfoes>
-            <app-ipcr-target-skeleton></app-ipcr-target-skeleton>
+            <app-mfo-skeleton></app-mfo-skeleton>
         </ng-template>
     </div>
 </div>

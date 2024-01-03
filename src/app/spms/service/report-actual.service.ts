@@ -52,8 +52,10 @@ export class ReportActualService {
         break;
     }
     if (this.switchero != 4) {
-      this.employeeName = this.signatories.officeHead.fullNameTitle;
-      this.employeePosition = this.signatories.officeHead.positionTitle;
+      this.employeeName = this.signatories?.officeHead?.fullNameTitle ?? '(NO DATA)';
+      this.employeePosition = this.signatories?.officeHead?.positionTitle ?? '(NO DATA)';
+      // this.employeeName = '';
+      // this.employeePosition = '';
     } else {
       this.employeeName = localStorage.getItem('fullName');
       this.employeePosition = localStorage.getItem('positionTitle');
@@ -66,10 +68,15 @@ export class ReportActualService {
     let officeShort = localStorage.getItem('officeName');
     let date = localStorage.getItem('reportDate');
 
-    let reviewedBy = this.signatories.adminHead.fullNameTitle;
-    let reviewedByPosition = this.signatories.adminHead.positionTitle;
-    let approvedByPosition = this.signatories.governor.positionTitle;
-    let approvedBy = this.signatories.governor.fullNameTitle;
+    let reviewedBy = this.signatories?.adminHead?.fullNameTitle ?? '(NO DATA)';
+    let reviewedByPosition = this.signatories?.adminHead?.positionTitle ?? '(NO DATA)';
+    let approvedByPosition = this.signatories?.governor?.positionTitle ?? '(NO DATA)';
+    let approvedBy = this.signatories?.governor?.fullNameTitle ?? '(NO DATA)';
+
+    // let reviewedBy = '';
+    // let reviewedByPosition = '';
+    // let approvedByPosition = '';
+    // let approvedBy = '';
 
     let content: any = [];
     let tableBody: any = [];

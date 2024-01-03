@@ -196,4 +196,14 @@ export class OtsService {
       });
   }
 
+
+  get_ots_request(status:number){
+    return this.http.get<any[]>(api + this.url.get_ots_request(status),{responseType: `json`})
+  }
+
+
+
+  get_ots_request_summary(){
+    return this.http.get<any[]>(api + this.url.get_ots_request_summary(),{responseType: `json`})
+  }
 }

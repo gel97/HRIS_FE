@@ -51,7 +51,9 @@ export class IpcrTargetComponent implements OnInit {
   @ViewChild('closebuttonEditST')
   closebuttonEditST!: { nativeElement: { click: () => void } };
 
+  divisionName: any = '';
   ngOnInit(): void {
+    this.divisionName = localStorage.getItem('divisionName');
     this.ipcrYear();
     this.localStorage();
   }
@@ -614,7 +616,9 @@ export class IpcrTargetComponent implements OnInit {
 
   setMFOs(set: number) {
     this.ipcrService.isCommon.set(set);
-    this.localStorage();
+    this.ipcrService.ViewGetDPCR_IPCR();
+    setTimeout(() => {
+      this.ipcrService.sortExcist();
+    }, 0);
   }
-
 }
