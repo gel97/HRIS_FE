@@ -96,7 +96,8 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                           
                           class="dropdown-item cursor-pointer"
                           data-bs-toggle="modal"
-                          data-bs-target="#modalDpcrDataEditQuantity"
+                          data-bs-target="#modalUpdateOts"
+                          (click)="SetOtsData(data)"
                           ><i class="bx bx-edit-alt me-1"></i> Edit</a
                         >             
                         <a
@@ -121,6 +122,11 @@ export class TableOtsComponent {
   otsService = inject(OtsService);
 
   @Input() ots: any;
+  @Output() setOtsData = new EventEmitter<any>();
+
+  SetOtsData(data: any) {
+    this.setOtsData.emit(data);
+  }
 
   SetCurrentDate(){
     const currentDate = new Date();

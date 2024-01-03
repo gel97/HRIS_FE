@@ -149,7 +149,21 @@ export class OtsService {
       });
   }
 
-    
+  EditOts(data: any) {
+    console.log(data);
+    this.http
+      .put<any[]>(api + this.url.put_ots(), data)
+      .subscribe({
+        next: (response: any = {}) => {
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error()
+        },
+        complete: () => {},
+      });
+  }
+   
   GetOtsMfoe() {
     this.otsMfoes.mutate((a) => (a.isLoading = true));
     this.http

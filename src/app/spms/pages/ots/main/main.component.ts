@@ -9,6 +9,7 @@ export class MainComponent implements OnInit{
   otsService = inject(OtsService);
   ots = this.otsService.ots();
   otsMfoes = this.otsService.otsMfoes();
+  otsData:any = {};
   
   ngOnInit(): void {
     this.otsService.GetOts();

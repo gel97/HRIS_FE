@@ -13,6 +13,7 @@ import { TableMonthComponent } from './main/components/table-month.component';
 import { ModalOtsComponent } from './main/components/modal-ots.component';
 import { WarningComponent } from "../../components/warning.component";
 import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
+import { ModalOtsEditComponent } from './main/components/modal-ots-edit.component';
 @NgModule({
     declarations: [
         MainComponent,
@@ -21,7 +22,8 @@ import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
         TableMfoesComponent,
         TableMonthComponent,
         ModalOtsComponent,
-        TruncatePipe
+        TruncatePipe,
+        ModalOtsEditComponent
     ],
     imports: [
         CommonModule,

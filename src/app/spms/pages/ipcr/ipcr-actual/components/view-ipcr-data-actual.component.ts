@@ -4,39 +4,6 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
   selector: 'app-view-ipcr-data-actual',
   template: `
     <div class="row">
-      <!-- <div class="col-3">
-        <div class="card mb-3">
-          <div class="card-header">
-            <p class="text-secondary fw-bold fs-2">{{ ipcrDataActual.finalRating.total }}</p>
-            <p>Rating</p>
-          </div>
-          <div class="card-body">
-            <p>Average Rating</p>
-            <div class="row">
-              <div class="col-6">
-                <div class="row">
-                  <div class="col-12">
-                    {{ ipcrDataActual.finalRating.total }}
-                  </div>
-                  <div class="col-12">Actual Rating</div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="row">
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-3 p-4"> 
-          <div class="card-body text-center">
-          <p class="text-secondary fw-bold fs-2 ">{{ ipcrDataActual.finalRating.total }}</p>
-          <br>
-            <p>Rating</p>
-          </div>
-        </div>
-      </div> -->
       <div *ngFor="let a of ipcrDataActual.rating; let i = index" class="col-3">
         <div
           class="card text-white mb-3"
@@ -71,7 +38,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
               </div>
               <div class="row">
                 <div class="col-12 text-center fs-2 fw-bold">
-                  {{ a.aveRating }}
+                  {{ a.aveByCat }}
                 </div>
                 <div class="col-12 text-center mt-1">Average</div>
               </div>
@@ -79,7 +46,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div *ngIf="ipcrDataActual.finalRating.total >= 1" class="col-12">
         <div>
           <div class="col-12">
             <div class="card h-100">
@@ -123,12 +90,6 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                   </p>
                   <p *ngSwitchDefault>Default Content</p>
                 </div>
-                <!-- <p
-                  class="pt-4 ml-2"
-                  [innerHTML]="
-                    getRating(ipcrDataActual.finalRating.adjectivalRating)
-                  "
-                ></p> -->
               </div>
             </div>
           </div>
