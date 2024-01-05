@@ -117,6 +117,8 @@ export class SpmsApiService {
 
   get_ots_request = (status:number) => `/tPMOts/OtsRequest/${status}`;
   get_ots_request_summary = () => `/tPMOts/Summary`;
+  put_ots_request_overRide = () => `/tPMOts/OTS_Request/OverRide`;
+  put_ots_request_approve = () => `/tPMOts/OTS_Request/Approve`;
 
 
   get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;

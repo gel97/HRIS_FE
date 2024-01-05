@@ -51,9 +51,9 @@ export class OpcrTargetComponent implements OnInit {
   @ViewChild('closebuttonEdit')
   closebuttonEdit!: { nativeElement: { click: () => void } };
 
-  officeName: any = ''
+  officeName: any = '';
   ngOnInit(): void {
-    this.officeName = localStorage.getItem('officeName')
+    this.officeName = localStorage.getItem('officeName');
     this.localStorage();
     this.GetOPCRs();
     this.GetOfficeDivision();
@@ -198,39 +198,49 @@ export class OpcrTargetComponent implements OnInit {
     }
   }
 
+  clearCalculateRating() {
+    this.mfoDetails.qty5 = null;
+    this.mfoDetails.qty4 = null;
+    this.mfoDetails.qty3 = null;
+    this.mfoDetails.qty2 = null;
+    this.mfoDetails.qty1 = null;
+  }
+
   editcalculateRating() {
-    this.editopcrDetails.qty5 = Math.floor(
-      this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
-    );
-    this.editopcrDetails.qty4 = Math.floor(
-      this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
-    );
-    this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
-    this.editopcrDetails.qty2 = Math.floor(this.editopcrDetails.qty / 2 + 1);
-    this.editopcrDetails.qty1 = Math.floor(this.editopcrDetails.qty / 2);
-    if (this.editopcrDetails.qty3 >= 4 && this.editopcrDetails.qty3 <= 6) {
-      this.editopcrDetails.qty4 += 1;
-      this.editopcrDetails.qty5 += 1;
-    } else if (this.editopcrDetails.qty3 == 3) {
-      this.editopcrDetails.qty4 += 1;
-      this.editopcrDetails.qty5 += 2;
-    } else if (this.editopcrDetails.qty3 == 2) {
-      this.editopcrDetails.qty4 += 1;
-      this.editopcrDetails.qty5 += 2;
-      this.editopcrDetails.qty2 -= 1;
-      this.editopcrDetails.qty1 -= 1;
-    } else if (this.editopcrDetails.qty3 == 1) {
-      this.editopcrDetails.qty5 = 1;
-      this.editopcrDetails.qty4 = null;
-      this.editopcrDetails.qty3 = null;
-      this.editopcrDetails.qty2 = null;
-      this.editopcrDetails.qty1 = null;
-    } else if (this.editopcrDetails.qty <= 0) {
-      this.editopcrDetails.qty5 = null;
-      this.editopcrDetails.qty4 = null;
-      this.editopcrDetails.qty3 = null;
-      this.editopcrDetails.qty2 = null;
-      this.editopcrDetails.qty1 = null;
+    if (this.editopcrDetails.qtyUnit != 1) {
+      this.editopcrDetails.qty5 = Math.floor(
+        this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
+      );
+      this.editopcrDetails.qty4 = Math.floor(
+        this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
+      );
+      this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
+      this.editopcrDetails.qty2 = Math.floor(this.editopcrDetails.qty / 2 + 1);
+      this.editopcrDetails.qty1 = Math.floor(this.editopcrDetails.qty / 2);
+      if (this.editopcrDetails.qty3 >= 4 && this.editopcrDetails.qty3 <= 6) {
+        this.editopcrDetails.qty4 += 1;
+        this.editopcrDetails.qty5 += 1;
+      } else if (this.editopcrDetails.qty3 == 3) {
+        this.editopcrDetails.qty4 += 1;
+        this.editopcrDetails.qty5 += 2;
+      } else if (this.editopcrDetails.qty3 == 2) {
+        this.editopcrDetails.qty4 += 1;
+        this.editopcrDetails.qty5 += 2;
+        this.editopcrDetails.qty2 -= 1;
+        this.editopcrDetails.qty1 -= 1;
+      } else if (this.editopcrDetails.qty3 == 1) {
+        this.editopcrDetails.qty5 = 1;
+        this.editopcrDetails.qty4 = null;
+        this.editopcrDetails.qty3 = null;
+        this.editopcrDetails.qty2 = null;
+        this.editopcrDetails.qty1 = null;
+      } else if (this.editopcrDetails.qty <= 0) {
+        this.editopcrDetails.qty5 = null;
+        this.editopcrDetails.qty4 = null;
+        this.editopcrDetails.qty3 = null;
+        this.editopcrDetails.qty2 = null;
+        this.editopcrDetails.qty1 = null;
+      }
     }
   }
 
@@ -242,15 +252,17 @@ export class OpcrTargetComponent implements OnInit {
     }, 1000);
   }
 
-  EditOPCR() {
+  EditOPCR(opcrId: any) {
+    console.log(opcrId);
     this.editOpcr.active = 1;
+    this.post_signatories(opcrId);
     this.opcrService.EditOPCR(this.editOpcr);
     // this.GetOPCRs();
   }
 
   EditOPCRFinal(opcrId: any) {
     this.editOpcr.active = 2;
-    this.post_signatories(opcrId);
+    // this.post_signatories(opcrId);
     this.opcrService.EditOPCR(this.editOpcr);
     // this.GetOPCRs();
   }
@@ -280,7 +292,6 @@ export class OpcrTargetComponent implements OnInit {
       this.reportActualService.ReportActual(this.opcrDetails().data);
     }, 1000);
   }
-  
 
   GetMFOs() {
     this.mfoService.GetMFOes();
