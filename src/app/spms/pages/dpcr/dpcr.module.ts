@@ -32,6 +32,8 @@ import { CanvasSIComponent } from './division-mfo/components/canvas-si.component
 import { SearchMFOComponent } from './division-mfo/components/search-mfo.component';
 import { OtsRequestComponent } from './ots-request/ots-request/ots-request.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { ViewDpcrActualComponent } from './dpcr-actual/components/view-dpcr-actual.component';
+import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-actual.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -56,7 +58,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     CanvasMFOComponent,
     CanvasSIComponent,
     SearchMFOComponent,
-    OtsRequestComponent
+    OtsRequestComponent,
+    ViewDpcrActualComponent,
+    HeaderDpcrActualComponent
   ],
   imports: [
     CommonModule,

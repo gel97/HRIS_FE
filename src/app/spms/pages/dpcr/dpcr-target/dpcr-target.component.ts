@@ -23,7 +23,10 @@ export class DpcrTargetComponent implements OnInit{
   isShowSubtask:boolean = false;
   isShowCanvasOpcrMfoes:boolean = false;
 
+  currentYear: number = new Date().getFullYear();
+
   ngOnInit(): void {
+    this.dpcrService.year.set(this.currentYear);
     this.dpcrService.GetDpcr();
     this.localStorage();
     console.log(this.dpcr)
