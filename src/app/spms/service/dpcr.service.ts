@@ -36,10 +36,12 @@ export class DpcrService {
   divisionName: string | null = localStorage.getItem('divisionName');
   isCommonDivision = signal<number>(0);
   searchDivisionMfo = signal<any>('');
+  year = signal<number>(0);
 
   storageIsShowDpcrData = signal<any>(localStorage.getItem('isShowDpcrData'));
   storageDpcrId = signal<any>(localStorage.getItem('dpcrId'));
   storageDpcrDetails = signal<any>(localStorage.getItem('dpcrDetails'));
+  isShowDpcrDataActual = signal<number>(0);
 
   constructor(
     private mfoService: MfoService,
@@ -52,7 +54,7 @@ export class DpcrService {
   GetDpcr() {
     this.dpcr.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_dpcr(this.divisionId ?? ''), {
+      .get<any[]>(api + this.url.get_dpcr(this.year(), this.divisionId ?? ''), {
         responseType: `json`,
       })
       .subscribe({

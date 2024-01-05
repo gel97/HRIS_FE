@@ -72,7 +72,7 @@ export class SpmsApiService {
   put_dpcr = () => `/tPMDpcr`;
   put_dpcr_setactive = (dpcrId: string) => `/tPMDpcr/setactive/${dpcrId}`;
   delete_dpcr = (dpcrId: string) => `/tPMDpcr/${dpcrId}`;
-  get_dpcr = (divisionId: string) => `/tPMDpcr/list/${divisionId}`;
+  get_dpcr = (year:number,divisionId: string) => `/tPMDpcr/list/${year}/${divisionId}`;
 
   post_dpcr_data = () => `/tPMDpcrData`;
   put_dpcr_data = () => `/tPMDpcrData`;
