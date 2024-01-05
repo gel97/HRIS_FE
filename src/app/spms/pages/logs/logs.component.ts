@@ -15,15 +15,18 @@ export class LogsComponent implements OnInit {
   fetch_logs: any = [];
   fetch_logs_complete: any = [];
   fetch_office: any = [];
-  public profilePicture: any = {};
+  public profilePicture: any = [];
   flag: boolean = false;
-  selectedOfficeId = localStorage.getItem('officeId');
+  selectedOfficeId = '';
   pageEvent: PageEvent | undefined;
   search: any = '';
 
   pageSizeOptions = [5, 10, 50, 100];
 
-  page: any = { pageNumber: 1, pageSize: 10 , officeId : localStorage.getItem('officeId')};
+  page: any = {
+    pageNumber: 1,
+    pageSize: 10,
+  };
 
   hidePageSize = false;
   showPageSizeOptions = true;
@@ -125,12 +128,14 @@ export class LogsComponent implements OnInit {
   handlePageEvent(e: PageEvent) {
     this.page.pageNumber = e.pageIndex + 1;
     this.page.pageSize = e.pageSize;
+    this.page.officeId = this.selectedOfficeId;
+    this.page.search = this.search;
     this.post_all_logs();
   }
 
   searchLogs() {
-    console.log('search', this.search);
     this.page.search = this.search;
+    this.page.officeId = this.selectedOfficeId;
     this.post_all_logs();
   }
 
@@ -138,7 +143,8 @@ export class LogsComponent implements OnInit {
     this.logsService.get_office().subscribe({
       next: (response: any) => {
         this.fetch_office = response;
-        console.log('office', this.fetch_office);
+        this.fetch_office.push({officeId:'', officeNameShort: 'ALL OFFICE'})
+        console.log('data_fetch', this.fetch_office);
       },
       error: () => {},
       complete: () => {},
@@ -146,25 +152,23 @@ export class LogsComponent implements OnInit {
   }
 
   onSelectChange() {
-    console.log('Selected Office ID_2:', this.selectedOfficeId);
     this.page.officeId = this.selectedOfficeId;
+    this.page.search = this.search;
     this.post_all_logs();
   }
 
   post_all_logs() {
     this.flag = true;
-    console.log('Selected Office ID_1:', this.selectedOfficeId);
-    // this.page.officeId = this.selectedOfficeId;
     this.logsService.post_all_logs(this.page).subscribe({
       next: (response: any) => {
         this.fetch_logs_complete = response.items;
         this.page = response.metadata;
-        console.log('complete', this.fetch_logs_complete);
-        console.log('complete1', this.page);
       },
       error: () => {},
       complete: () => {
-        this.get_profile_picture(this.fetch_logs_complete.eic);
+        this.fetch_logs_complete = this.get_profile_picture(
+          this.fetch_logs_complete
+        );
       },
     });
   }
@@ -173,26 +177,27 @@ export class LogsComponent implements OnInit {
     this.flag = false;
   }
 
-  get_profile_picture(picture: any) {
-    this.ProfilePicture.get_profile_picture(picture).subscribe({
-      next: (data: any) => {
-        this.profilePicture = data;
-        console.log(this.profilePicture);
-      },
-      error: (error: any) => {},
-      complete: () => {},
+  get_profile_picture(data: any) {
+    data.map((i: any, index: number) => {
+      this.ProfilePicture.get_profile_picture(i.eic).subscribe({
+        next: (reponse: any) => {
+          data[index].imageExtracted = reponse.imageDataURL;
+        },
+        error: (error: any) => {},
+        complete: () => {},
+      });
     });
+    return data;
   }
 
   get_logs() {
     this.logsService.get_logs().subscribe({
       next: (response: any) => {
         this.fetch_logs = response;
-        console.log(this.fetch_logs);
       },
       error: () => {},
       complete: () => {
-        this.get_profile_picture(this.fetch_logs.eic);
+        this.fetch_logs = this.get_profile_picture(this.fetch_logs);
       },
     });
   }

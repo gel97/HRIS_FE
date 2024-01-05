@@ -201,9 +201,15 @@ export class OtsService {
     return this.http.get<any[]>(api + this.url.get_ots_request(status),{responseType: `json`})
   }
 
-
-
   get_ots_request_summary(){
     return this.http.get<any[]>(api + this.url.get_ots_request_summary(),{responseType: `json`})
+  }
+
+  put_ots_request_overRide(data:any){
+    return this.http.put<any[]>(api + this.url.put_ots_request_overRide(),data,{responseType: `json`})
+  }
+
+  put_ots_request_approve(data:any){
+    return this.http.put<any[]>(api + this.url.put_ots_request_approve(),data,{responseType: `json`})
   }
 }

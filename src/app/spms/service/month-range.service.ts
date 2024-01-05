@@ -1,9 +1,16 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root',
 })
 export class MonthRangeService {
+
+  options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
   constructor(private http: HttpClient) {}
 
   setMonthRange(data: any) {
@@ -33,17 +40,29 @@ export class MonthRangeService {
     switch (sem) {
       case 0:
         data = 'JANUARY TO DECEMBER';
-        localStorage.setItem('reportDate', 'January 10, ' + year);
+        localStorage.setItem(
+          'reportDate',
+          //'January 10, ' + year
+          new Date().toLocaleDateString(undefined, this.options)
+        );
         break;
       case 1:
         data = 'JANUARY TO JUNE';
-        localStorage.setItem('reportDate', 'January 10, ' + year.toString());
+        localStorage.setItem(
+          'reportDate',
+          //'January 10, ' + year.toString()
+          new Date().toLocaleDateString(undefined, this.options)
+        );
         break;
       case 2:
         data = 'JULY TO DECEMBER';
         // let intYear: number = parseInt(year, 10);
         // let _newYear = intYear + 1;
-        localStorage.setItem('reportDate', 'July 10, ' + year.toString());
+        localStorage.setItem(
+          'reportDate',
+          //'July 10, ' + year.toString()
+          new Date().toLocaleDateString(undefined, this.options)
+        );
         break;
       default:
         break;
@@ -66,19 +85,25 @@ export class MonthRangeService {
           let newYear = yearInt + 1;
           localStorage.setItem(
             'reportDate',
-            'January 10, ' + newYear.toString()
+            // 'January 10, ' + newYear.toString()
+            new Date().toLocaleDateString(undefined, this.options)
           );
           break;
         case 1:
           data = 'JANUARY TO JUNE';
-          localStorage.setItem('reportDate', 'July 10, ' + yearInt.toString());
+          localStorage.setItem(
+            'reportDate',
+            //'July 10, ' + yearInt.toString()
+            new Date().toLocaleDateString(undefined, this.options)
+          );
           break;
         case 2:
           data = 'JULY TO DECEMBER';
           let _newYear = yearInt + 1;
           localStorage.setItem(
             'reportDate',
-            'January 10, ' + _newYear.toString()
+            // 'January 10, ' + _newYear.toString()
+            new Date().toLocaleDateString(undefined, this.options)
           );
           break;
         default:

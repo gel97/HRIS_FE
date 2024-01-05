@@ -32,6 +32,7 @@ import { CanvasSIComponent } from './division-mfo/components/canvas-si.component
 import { SearchMFOComponent } from './division-mfo/components/search-mfo.component';
 import { OtsRequestComponent } from './ots-request/ots-request/ots-request.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { ViewDpcrActualComponent } from './dpcr-actual/components/view-dpcr-actual.component';
 import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-actual.component';
 @NgModule({
@@ -73,7 +74,8 @@ import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
   ],
 })
 export class DpcrModule {}

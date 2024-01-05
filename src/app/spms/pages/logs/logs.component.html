@@ -45,7 +45,7 @@
 </div>
 <ol *ngIf="!flag" class="timeline">
     <h3> <span class="badge rounded-pill bg-primary">{{"10 Latest Data only"}}</span></h3>
-    <ng-container *ngFor="let x of fetch_logs">
+    <ng-container *ngFor="let x of fetch_logs; let i = index">
         <li class="timeline-item">
             <span class="timeline-item-icon faded-icon" [style.color]="colorScheme(x.methodId)"
                 [style.background]="backgroundScheme(x.methodId)">
@@ -55,8 +55,8 @@
                 <div class="card-body">
                     <div class="timeline-item-description">
                         <i class="avatar small">
-                            <img
-                                [src]="profilePicture.imageDataURL? profilePicture.imageDataURL: './assets/img/avatars/user_picture.png'" />
+                            <!-- <img [src]="get_profile_picture(x.eic) ? profilePicture.imageDataURL : './assets/img/avatars/user_picture.png'" /> -->
+                            <img [src]="x.imageExtracted? x.imageExtracted: './assets/img/avatars/user_picture.png'" />
                         </i>
                         <span>{{x.officeNameShort}}&nbsp;<a href="#">{{x.fullNameFirst}}</a> has <a
                                 style="color: black;"><strong>{{x.method}}</strong></a>&nbsp;<a
@@ -110,7 +110,9 @@
                     <td>
                         <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                             class="avatar avatar-xs pull-up" [title]="y.fullNameFirst">
-                            <img [src]="profilePicture.imageDataURL? profilePicture.imageDataURL: './assets/img/avatars/user_picture.png'"
+                            <!-- <img [src]="profilePicture.imageDataURL? profilePicture.imageDataURL: './assets/img/avatars/user_picture.png'"
+                                alt="Avatar" class="rounded-circle" /> -->
+                            <img [src]="y.imageExtracted? y.imageExtracted: './assets/img/avatars/user_picture.png'"
                                 alt="Avatar" class="rounded-circle" />
                         </li>
                     </td>

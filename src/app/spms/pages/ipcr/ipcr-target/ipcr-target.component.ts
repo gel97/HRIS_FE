@@ -8,7 +8,7 @@ import { MonthRangeService } from 'src/app/spms/service/month-range.service';
   styleUrls: ['./ipcr-target.component.css'],
 })
 export class IpcrTargetComponent implements OnInit {
-  getYear = '2023';
+  getYear = new Date().getFullYear().toString();
   sem = '1';
   divisionId: string | null = localStorage.getItem('divisionId');
   userId: string | null = localStorage.getItem('userId');
@@ -115,6 +115,7 @@ export class IpcrTargetComponent implements OnInit {
   localStorage() {
     if (this.ipcrService.storageIsShow() == 1) {
       this.ipcrService.GetIPCRDetails();
+      console.log('getipcr', this.get_ipcrDetails);
       this.ipcrService.ViewGetDPCR_IPCR();
       setTimeout(() => {
         this.ipcrService.sortExcist();

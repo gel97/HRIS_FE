@@ -110,7 +110,8 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a *ngIf="data_opcr.active == 0" (click)="editOpcr = data_opcr; EditOPCR()"
+                                            <a *ngIf="data_opcr.active == 0"
+                                                (click)="editOpcr = data_opcr; EditOPCR(data_opcr.opcrId)"
                                                 class="dropdown-item"><i class="bx bx-paperclip me-1"></i>Open</a>
                                             <!-- && !uncommited_division_boolean -->
                                             <a *ngIf="data_opcr.active == 1 && !uncommited_division_boolean"
@@ -231,7 +232,7 @@
                                                         <strong style="color: #697a8d">&nbsp;<span
                                                                 style="color: black">{{
                                                                 si.qty
-                                                                }}</span>&nbsp;{{ si.indicator }}</strong>
+                                                                }}{{si.qtyUnit? '%':''}}</span>&nbsp;{{ si.indicator }}</strong>
                                                     </button>
                                                     <h4 *ngIf="si.isShared == 1" style="margin-left: 50px">
                                                         <i class="bx bx-carousel"></i>&nbsp;{{
@@ -427,8 +428,9 @@
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input [(ngModel)]="mfoDetails.qtyUnit" name="default-radio-1"
-                                        class="form-check-input" type="radio" value="1" id="defaultRadio1" />
+                                    <input (click)="clearCalculateRating()" [(ngModel)]="mfoDetails.qtyUnit"
+                                        name="default-radio-1" class="form-check-input" type="radio" value="1"
+                                        id="defaultRadio1" />
                                     <label class="form-check-label" for="defaultRadio1">
                                         Percentage
                                     </label>

@@ -27,7 +27,7 @@
     </ng-template> -->
     <div class="mt-3">
         <div class="row">
-            <div class="col-md-4 col-12 mb-3 mb-md-0">
+            <div class="col-md-3 col-12 mb-3 mb-md-0">
                 <div class="card">
                     <div class="card-body">
                         <div class="list-group">
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 col-12">
+            <div class="col-md-9 col-12">
                 <div class="tab-content p-0">
                     <div class="tab-pane fade show active" id="list-pending">
                         <div class="card">
@@ -69,9 +69,17 @@
                                             <small class="text-warning fw-semibold">List of Pending</small>
                                         </div>
                                         <div class="col-6 d-flex justify-content-end">
-                                            <button type="button" class="btn rounded-pill btn-primary">Approve</button>
-                                            <button type="button" class="btn rounded-pill btn-success">Approve
-                                                All</button>
+
+                                            <div class="mt-3">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button (click)="Approve()" type="button"
+                                                        class="btn btn-sm btn-outline-primary"><i
+                                                            class='bx bx-check'></i>&nbsp;Approve</button>
+                                                    <button (click)="ApproveAll()" type="button"
+                                                        class="btn btn-sm btn-outline-danger"><i
+                                                            class='bx bx-list-check'></i>&nbsp;Approve All</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="demo-inline-spacing mt-3">
@@ -83,7 +91,9 @@
                                                         <div class="row">
                                                             <div class="col-4">
                                                                 <input class="form-check-input me-1" type="checkbox"
-                                                                    value="" />
+                                                                    value="" [checked]="data.isChecked"
+                                                                    [id]="data.recNo"
+                                                                    (change)="isCheck_List_Pending(data.recNo,$event)" />
                                                                 <a (click)="ots_modal_data = data" class="pointer"
                                                                     data-bs-toggle="tooltip" data-bs-toggle="modal"
                                                                     data-bs-target="#smallModal"
@@ -98,11 +108,18 @@
                                                                         [matTooltip]="data.fullNameFirst"
                                                                         matTooltipPosition="above"
                                                                         class="avatar avatar-xs pull-up">
-                                                                        <img src="./assets/img/avatars/5.png"
+                                                                        <img [src]="data.imageExtracted? data.imageExtracted: './assets/img/avatars/user_picture.png'"
                                                                             alt="Avatar" class="rounded-circle" />
                                                                     </li>
                                                                     <ng-container> <strong
-                                                                            style="color: blue;">{{data.fullNameFirst}}</strong></ng-container>
+                                                                            style="color: blue;">{{data.fullNameFirst}}</strong>&nbsp;
+                                                                        <span class="badge bg-label-primary pointer"><a
+                                                                                data-bs-toggle="tooltip"
+                                                                                matTooltip="CREATED DATE"
+                                                                                matTooltipPosition="above">
+                                                                                {{data.dateDone |
+                                                                                date:'MMM.dd,yyyy'}}</a></span>
+                                                                    </ng-container>
                                                                 </ul>
                                                             </div>
                                                             <div class="col-1 pointer">
@@ -152,9 +169,7 @@
                                                     <label class="list-group-item">
                                                         <div class="row">
                                                             <div class="col-4">
-                                                                <input class="form-check-input me-1" type="checkbox"
-                                                                    value="" />
-                                                                <a class="pointer"><strong>{{data.description}}</strong>
+                                                                <a><strong>{{data.description}}</strong>
                                                                 </a>
                                                             </div>
                                                             <div class="col-5">
@@ -165,24 +180,37 @@
                                                                         data-bs-placement="top"
                                                                         class="avatar avatar-xs pull-up"
                                                                         [title]="data.fullNameFirst">
-                                                                        <img src="./assets/img/avatars/5.png"
+                                                                        <img [src]="data.imageExtracted? data.imageExtracted: './assets/img/avatars/user_picture.png'"
                                                                             alt="Avatar" class="rounded-circle" />
                                                                     </li>
                                                                     <ng-container> <strong
-                                                                            style="color: blue;">{{data.fullNameFirst}}</strong></ng-container>
+                                                                            style="color: blue;">{{data.fullNameFirst}}</strong>&nbsp;
+                                                                        <span class="badge bg-label-primary pointer"><a
+                                                                                data-bs-toggle="tooltip"
+                                                                                matTooltip="APPROVED DATE"
+                                                                                matTooltipPosition="above">
+                                                                                {{data.approvedDate |
+                                                                                date:'MMM.dd,yyyy'}}</a></span>
+                                                                    </ng-container>
                                                                 </ul>
                                                             </div>
                                                             <div class="col-1">
                                                                 <span
-                                                                    class="badge badge-center rounded-pill bg-secondary">{{data.qtyR}}</span>
+                                                                    class="badge badge-center rounded-pill bg-secondary pointer"><a
+                                                                        data-bs-toggle="tooltip" matTooltip="QUANTITY"
+                                                                        matTooltipPosition="above">{{data.qtyR}}</a></span>
                                                             </div>
                                                             <div class="col-1">
                                                                 <span
-                                                                    class="badge badge-center rounded-pill bg-success">{{data.qltyR}}</span>
+                                                                    class="badge badge-center rounded-pill bg-success pointer"><a
+                                                                        data-bs-toggle="tooltip" matTooltip="QUALITY"
+                                                                        matTooltipPosition="above">{{data.qltyR}}</a></span>
                                                             </div>
                                                             <div class="col-1">
                                                                 <span
-                                                                    class="badge badge-center rounded-pill bg-info">{{data.timelyR}}</span>
+                                                                    class="badge badge-center rounded-pill bg-info pointer"><a
+                                                                        data-bs-toggle="tooltip" matTooltip="TIMELINESS"
+                                                                        matTooltipPosition="above">{{data.timelyR}}</a></span>
                                                             </div>
                                                         </div>
                                                     </label>
@@ -198,6 +226,20 @@
                                 </div>
                                 <!--/ List group checkbox -->
                             </div>
+                            <tfoot class="table-border-bottom-0">
+                                <tr class="float-end">
+                                    <th colspan="12">
+                                        <mat-paginator #paginator class="demo-paginator"
+                                            (page)="handlePageEvent($event)" [length]="page.totalItems"
+                                            [pageSize]="page.pageSize" [disabled]="disabled"
+                                            [showFirstLastButtons]="showFirstLastButtons"
+                                            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                            [hidePageSize]="hidePageSize" [pageIndex]="page.pageNumber - 1 "
+                                            aria-label="Select page">
+                                        </mat-paginator>
+                                    </th>
+                                </tr>
+                            </tfoot>
                         </div>
                     </div>
                 </div>
@@ -211,14 +253,27 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel2">
-                    <span>{{ots_modal_data.mfo}}</span><br><strong><i class="bx bx-label text-primary"></i>&nbsp;<span
-                            class="text-primary">{{ots_modal_data.indicator}}</span></strong>
+                    <ng-container *ngIf="ots_modal_data.st == null ;else isNullHeader">
+                        <span>{{ots_modal_data.mfo}}</span><br><strong><i
+                                class="bx bx-label text-primary"></i>&nbsp;<span
+                                class="text-primary">{{ots_modal_data.indicator}}</span></strong>
+                    </ng-container>
+                    <ng-template #isNullHeader>
+                        <span>{{ots_modal_data.st.stMfo}}</span><br><strong><i
+                                class="bx bx-label text-primary"></i>&nbsp;<span
+                                class="text-primary">{{ots_modal_data.st.stIndicator}}</span></strong>
+                    </ng-template>
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
+                        <span class="badge rounded-pill bg-label-primary"><i
+                                class='bx bx-user'></i>&nbsp;{{ots_modal_data.fullNameFirst}}</span>
+                    </div>
+                    <div class="col-12"><br>
                         <div class="form-floating mb-3">
                             <input [(ngModel)]="ots_modal_data.description" type="email" class="form-control"
                                 id="floatingInputDisabled" placeholder="name@example.com" disabled>
@@ -232,82 +287,183 @@
                             <label for="floatingInputDisabled">Quantity</label>
                         </div>
                     </div>
-                    <label class="col-form-label">Quality</label>
-                    <div class="row mb-2">
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.qltyR == 5? 'highlighted_quality':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.qlty5">
-                                5
-                            </button>
+                    <ng-container *ngIf="ots_modal_data.st == null ;else isNullBody">
+                        <label class="col-form-label">Quality</label>
+                        <div class="row mb-2">
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 5"
+                                    [ngClass]="ots_modal_data.qltyR == 5? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.qlty5">
+                                    5
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 4"
+                                    [ngClass]="ots_modal_data.qltyR == 4? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.qlty4">
+                                    4
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 3"
+                                    [ngClass]="ots_modal_data.qltyR == 3? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.qlty3">
+                                    3
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 2"
+                                    [ngClass]="ots_modal_data.qltyR == 2? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.qlty2">
+                                    2
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 1"
+                                    [ngClass]="ots_modal_data.qltyR == 1? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.qlty1">
+                                    1
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.qltyR == 4? 'highlighted_quality':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.qlty4">
-                                4
-                            </button>
+                        <label class="col-form-label">Timeliness</label>
+                        <div class="row mb-2">
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 5"
+                                    [ngClass]="ots_modal_data.timelyR == 5? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.timely5">
+                                    5
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 4"
+                                    [ngClass]="ots_modal_data.timelyR == 4? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.timely4">
+                                    4
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 3"
+                                    [ngClass]="ots_modal_data.timelyR == 3? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.timely3">
+                                    3
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 2"
+                                    [ngClass]="ots_modal_data.timelyR == 2? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.timely2">
+                                    2
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 1"
+                                    [ngClass]="ots_modal_data.timelyR == 1? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.timely1">
+                                    1
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.qltyR == 3? 'highlighted_quality':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.qlty3">
-                                3
-                            </button>
+                    </ng-container>
+                    <ng-template #isNullBody>
+                        <label class="col-form-label">Quality</label>
+                        <div class="row mb-2">
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 5"
+                                    [ngClass]="ots_modal_data.qltyR == 5? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.qlty5">
+                                    5
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 4"
+                                    [ngClass]="ots_modal_data.qltyR == 4? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.qlty4">
+                                    4
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 3"
+                                    [ngClass]="ots_modal_data.qltyR == 3? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.qlty3">
+                                    3
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 2"
+                                    [ngClass]="ots_modal_data.qltyR == 2? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.qlty2">
+                                    2
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.qltyR = 1"
+                                    [ngClass]="ots_modal_data.qltyR == 1? 'highlighted_quality':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.qlty1">
+                                    1
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.qltyR == 2? 'highlighted_quality':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.qlty2">
-                                2
-                            </button>
+                        <label class="col-form-label">Timeliness</label>
+                        <div class="row mb-2">
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 5"
+                                    [ngClass]="ots_modal_data.timelyR == 5? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.timely5">
+                                    5
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 4"
+                                    [ngClass]="ots_modal_data.timelyR == 4? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.timely4">
+                                    4
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 3"
+                                    [ngClass]="ots_modal_data.timelyR == 3? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.timely3">
+                                    3
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 2"
+                                    [ngClass]="ots_modal_data.timelyR == 2? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.timely2">
+                                    2
+                                </button>
+                            </div>
+                            <div class="col-2">
+                                <button (click)="ots_modal_data.timelyR = 1"
+                                    [ngClass]="ots_modal_data.timelyR == 1? 'highlighted_timeliness':''" type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-primary"
+                                    [disabled]="!ots_modal_data.st.timely1">
+                                    1
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.qltyR == 1? 'highlighted_quality':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.qlty1">
-                                1
-                            </button>
-                        </div>
-                    </div>
-                    <label class="col-form-label">Timeliness</label>
-                    <div class="row mb-2">
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.timelyR == 5? 'highlighted_timeliness':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.timely5">
-                                5
-                            </button>
-                        </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.timelyR == 4? 'highlighted_timeliness':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.timely4">
-                                4
-                            </button>
-                        </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.timelyR == 3? 'highlighted_timeliness':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.timely3">
-                                3
-                            </button>
-                        </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.timelyR == 2? 'highlighted_timeliness':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.timely2">
-                                2
-                            </button>
-                        </div>
-                        <div class="col-2">
-                            <button [ngClass]="ots_modal_data.timelyR == 1? 'highlighted_timeliness':''" type="button"
-                                class="btn rounded-pill btn-icon btn-outline-primary"
-                                [disabled]="!ots_modal_data.timely1">
-                                1
-                            </button>
-                        </div>
-                    </div>
+                    </ng-template>
+
                 </div>
 
             </div>
@@ -315,7 +471,7 @@
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                <button type="button" class="btn btn-primary">Save changes & Approve</button>
+                <button (click)="SaveAndApprove()" type="button" class="btn btn-primary">Save changes & Approve</button>
             </div>
         </div>
     </div>

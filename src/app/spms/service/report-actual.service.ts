@@ -33,7 +33,7 @@ export class ReportActualService {
 
   ReportActual(data: any) {
     console.log('actual report', data);
-    let title1 = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
+    let title1 = localStorage.getItem('officeNameLong');
 
     switch (this.switchero) {
       case 1:
@@ -52,8 +52,10 @@ export class ReportActualService {
         break;
     }
     if (this.switchero != 4) {
-      this.employeeName = this.signatories?.officeHead?.fullNameTitle ?? '(NO DATA)';
-      this.employeePosition = this.signatories?.officeHead?.positionTitle ?? '(NO DATA)';
+      this.employeeName =
+        this.signatories?.officeHead?.fullNameTitle ?? '(NO DATA)';
+      this.employeePosition =
+        this.signatories?.officeHead?.positionTitle ?? '(NO DATA)';
       // this.employeeName = '';
       // this.employeePosition = '';
     } else {
@@ -69,8 +71,10 @@ export class ReportActualService {
     let date = localStorage.getItem('reportDate');
 
     let reviewedBy = this.signatories?.adminHead?.fullNameTitle ?? '(NO DATA)';
-    let reviewedByPosition = this.signatories?.adminHead?.positionTitle ?? '(NO DATA)';
-    let approvedByPosition = this.signatories?.governor?.positionTitle ?? '(NO DATA)';
+    let reviewedByPosition =
+      this.signatories?.adminHead?.positionTitle ?? '(NO DATA)';
+    let approvedByPosition =
+      this.signatories?.governor?.positionTitle ?? '(NO DATA)';
     let approvedBy = this.signatories?.governor?.fullNameTitle ?? '(NO DATA)';
 
     // let reviewedBy = '';
@@ -199,7 +203,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.qty + ' ' + b.indicator },
+            { text: b.qty + '' + (b.qtyUnit ? '%' : '') + ' ' + b.indicator },
             {},
             { text: b.sharedDiv },
             {},
@@ -234,7 +238,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.qty + ' ' + b.indicator },
+            { text: b.qty + '' + (b.qtyUnit ? '%' : '') + ' ' + b.indicator },
             {},
             { text: b.sharedDiv },
             {},
@@ -269,7 +273,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.qty + ' ' + b.indicator },
+            { text: b.qty + '' + (b.qtyUnit ? '%' : '') + ' ' + b.indicator },
             {},
             { text: b.sharedDiv },
             {},
