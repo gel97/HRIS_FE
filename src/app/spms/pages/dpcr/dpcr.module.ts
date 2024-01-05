@@ -33,6 +33,8 @@ import { SearchMFOComponent } from './division-mfo/components/search-mfo.compone
 import { OtsRequestComponent } from './ots-request/ots-request/ots-request.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ViewDpcrActualComponent } from './dpcr-actual/components/view-dpcr-actual.component';
+import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-actual.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -57,7 +59,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     CanvasMFOComponent,
     CanvasSIComponent,
     SearchMFOComponent,
-    OtsRequestComponent
+    OtsRequestComponent,
+    ViewDpcrActualComponent,
+    HeaderDpcrActualComponent
   ],
   imports: [
     CommonModule,

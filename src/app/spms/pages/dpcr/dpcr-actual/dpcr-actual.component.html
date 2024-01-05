@@ -1,4 +1,9 @@
-<div *ngIf="dpcrService.storageIsShowDpcrData() && !checkDpcrMfoesDataEmpty(); else isError" class="card">
+<app-header-dpcr-actual 
+    [isShowDpcrData]="dpcrService.isShowDpcrDataActual()" 
+/>
+
+<app-view-dpcr-actual *ngIf="!dpcrService.isShowDpcrDataActual()"/>
+<!-- <div *ngIf="dpcrService.storageIsShowDpcrData() && !checkDpcrMfoesDataEmpty(); else isError" class="card">
     <ng-container *ngIf="!loading; else isLoading">
         <div class="row">
             <div class="col-11">
@@ -95,11 +100,6 @@
                 </table>
             </div>
         </div>
-        <!-- <div *ngIf="checkDpcrMfoesDataEmpty()">
-            <div class="justify-content-center text-center pt-5">
-                <h1>No data found.</h1>
-            </div>
-        </div> -->
     </ng-container>
 </div>
 <ng-template #isError>
@@ -109,4 +109,4 @@
 </ng-template>
 <ng-template #isLoading>
     <app-dpcr-actual-skeleton></app-dpcr-actual-skeleton>
-</ng-template>
+</ng-template> -->

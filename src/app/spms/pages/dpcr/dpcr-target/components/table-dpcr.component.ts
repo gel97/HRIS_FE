@@ -12,11 +12,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   template: `
     <div class="card-body">
       <div>
-        <select class="form-select" aria-label="Default select example">
-          <option value="2024">2024</option>
-          <option value="2023" selected>2023</option>
-          <option value="2022">2022</option>
-          <option value="2021">2021</option>
+        <select (change)="onChangeYear($event)" class="form-select" aria-label="Default select example">
+          <option *ngFor="let year of listYear" [selected]="year === yearNow" [value]="year">{{year}}</option>
         </select>
       </div>
       <br />
@@ -111,6 +108,22 @@ export class TableDpcrComponent {
   @Output() getDpcrData = new EventEmitter<string>();
   @Output() setDpcrActive = new EventEmitter<any>();
   @Output() deleteDpcr = new EventEmitter<string>();
+
+  prevYear = new Date().getFullYear() - 1;
+  yearNow = new Date().getFullYear();
+  listYear: any = [];
+
+  ngOnInit(): void {
+    for (let index = 3; index > 0; index--) {
+      this.listYear.push(this.prevYear++);
+    }
+  }
+  
+  onChangeYear(event:any){
+    console.log(event.target.value)
+    this.dpcrService.year.set(event.target.value);
+    this.dpcrService.GetDpcr();
+  }
 
   SetDpcr(item:any) {
     this.setDpcr.emit(item);
