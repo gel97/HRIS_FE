@@ -85,6 +85,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                     setOtsData({
                                       mfo: c.stMfo,
                                       mfoId: c.subTaskId,
+                                      subtaskId: c.subTaskId,
                                       indicator: c.stIndicator,
                                       indicatorId: c.indicatorId,
                                       qty: c.qty,
@@ -392,7 +393,7 @@ export class ModalOtsComponent implements OnInit {
     this.ots.dateDone = this.otsMfoes.dateDone;
 
     this.submit.emit(this.ots);
-    this.handleStatus();
+    //this.handleStatus();
     console.log(this.ots);
   }
 
@@ -410,17 +411,17 @@ export class ModalOtsComponent implements OnInit {
   }
 
   initialDate() {
-    // const currentDate = new Date();
-    // currentDate.setHours(16, 0, 0, 0);
-    // const formattedDate = currentDate.toISOString().slice(0, 16);
+    const currentDate = new Date();
+    currentDate.setHours(16, 0, 0, 0);
+    const formattedDate = currentDate.toISOString().slice(0, 16);
 
     // this.ots.endDate = formattedDate;
     // this.ots.startDate = formattedDate;
+    this.otsMfoes.dateDone = formattedDate;
 
-    this.ots.endDate = this.otsMfoes.endDate;
-    this.ots.startDate = '2023-11-23T11:18';
-   //console.log(this.ots)
-
+    //this.ots.endDate = this.otsMfoes.endDate;
+    //this.ots.startDate = '2023-11-23T11:18';
+    //console.log(this.ots)
   }
 
   handleStatus() {

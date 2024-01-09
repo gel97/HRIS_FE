@@ -125,6 +125,20 @@ export class TableOtsComponent {
   @Output() setOtsData = new EventEmitter<any>();
 
   SetOtsData(data: any) {
+    if(data.st !== null){
+      data.qlty5 = data.st.qlty5;
+      data.qlty4 = data.st.qlty4;
+      data.qlty3 = data.st.qlty3;
+      data.qlty2 = data.st.qlty2;
+      data.qlty1 = data.st.qlty1;
+
+      data.timely5 = data.st.timely5;
+      data.timely4 = data.st.timely4;
+      data.timely3 = data.st.timely3;
+      data.timely2 = data.st.timely2;
+      data.timely1 = data.st.timely1;
+
+    }
     this.setOtsData.emit(data);
   }
 
