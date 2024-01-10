@@ -115,8 +115,9 @@ export class SpmsApiService {
   get_ots = () => `/tPMOts`;
   get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
 
-  get_ots_request = (status:number) => `/tPMOts/OtsRequest/${status}`;
-  get_ots_request_summary = () => `/tPMOts/Summary`;
+
+  get_ots_request = (status:number) => `/tPMOts/OtsRequest/${status}/${localStorage.getItem('officeRoleId')}`;
+  get_ots_request_summary = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
   put_ots_request_overRide = () => `/tPMOts/OTS_Request/OverRide`;
   put_ots_request_approve = () => `/tPMOts/OTS_Request/Approve`;
 
