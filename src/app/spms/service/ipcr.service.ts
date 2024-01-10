@@ -24,7 +24,7 @@ export class IpcrService {
   isCommon = signal<number>(0);
   divisionId: string | null = localStorage.getItem('divisionId');
 
-  isLoadingIpcr: boolean= false
+  isLoadingIpcr: boolean = false;
 
   ipcr = signal<any>({
     data: [],
@@ -88,14 +88,16 @@ export class IpcrService {
         next: (response: any = {}) => {
           this.ipcrDataActual.mutate((a) => (a.data = response.data));
           this.ipcrDataActual.mutate((a) => (a.rating = response.rating));
-          this.ipcrDataActual.mutate((a) => (a.finalRating = response.finalRating));
+          this.ipcrDataActual.mutate(
+            (a) => (a.finalRating = response.finalRating)
+          );
           this.ipcrDataActual.mutate((a) => (a.isLoading = false));
         },
         error: () => {
           this.alertService.error();
         },
         complete: () => {
-          console.log("ipcrDataActual: ", this.ipcrDataActual())
+          console.log('ipcrDataActual: ', this.ipcrDataActual());
         },
       });
   }
@@ -111,13 +113,15 @@ export class IpcrService {
         next: (response: any = {}) => {
           this.ipcrDetails.mutate((a) => (a.data = response));
           this.ipcrDetails.mutate((a) => (a.isLoading = false));
-          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
         },
         error: () => {
           this.alertService.error();
           this.ipcrDetails.mutate((a) => (a.completeLoading = false));
         },
-        complete: () => {},
+        complete: () => {
+          // this.ViewGetDPCR_IPCR();
+          // this.sortExcist();
+        },
       });
   }
 
@@ -390,14 +394,11 @@ export class IpcrService {
       for (let a of this.ipcrDetails().data) {
         for (let a_si of a.si) {
           if (a_si.isSubTask == 1 && a_si.st.length == 0) {
-            this.tagRemove = true;
             this.DeleteMFO(a_si.ipcrDataId);
           }
         }
       }
-      if (!this.tagRemove) {
-        this.ipcrDetails.mutate((a) => (a.completeLoading = false));
-      }
+      this.ipcrDetails.mutate((a) => (a.completeLoading = false));
     }, 0);
   }
 
@@ -497,12 +498,12 @@ export class IpcrService {
   }
 
   DeleteMFO(ipcrDataId: string) {
+    this.ipcrDetails.mutate((a) => (a.completeLoading = true));
     this.http
       .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
       .subscribe({
         next: (response: any = {}) => {
-          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
-          this.tagRemove = false;
+          this.tagRemove = true;
         },
         error: () => {
           this.alertService.error();

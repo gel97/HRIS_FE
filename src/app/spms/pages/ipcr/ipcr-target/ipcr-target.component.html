@@ -132,10 +132,10 @@ height: 100%;
         <div [ngClass]="isExpand? 'col-xl-6 p-0':'col-xl-11 p-0'">
             <div class="p-0">
                 <div class="">
-                    <ng-container *ngIf="get_ipcrDetails.data.length>0; else noIpcrDetails">
-                        <div class="card mb-2 shadow-sm"
-                            *ngFor="let data of get_ipcrDetails.data ; let parent = index ">
-                            <ng-container *ngIf="data.si.length>0; else noDataDisplay">
+                    <ng-container *ngIf="get_ipcrDetails.completeLoading != true ; else completeLoads">
+                        <ng-container *ngIf="get_ipcrDetails.data.length>0; else noIpcrDetails">
+                            <div class="card mb-2 shadow-sm"
+                                *ngFor="let data of get_ipcrDetails.data ; let parent = index ">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-8">
@@ -335,53 +335,33 @@ height: 100%;
                                         </div>
                                     </div>
                                 </div>
-                            </ng-container>
-                            <ng-template #noDataDisplay>
-                                <img src="assets/img/document.png" alt="" width="200" height="200"
-                                    style="display: block; margin: 0 auto" />
-                                <span style="
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%;
-            ">
-                                    <div>
-                                        <label style="margin-bottom: 10px;"><strong>No Data Found!</strong></label>
-                                    </div>
-                                    <div *ngIf="!isExpand">
-                                        <button *ngIf="ipcrService.ipcrDetails().data.length <= 0"
-                                            (click)="isExpand = true" data-bs-toggle="offcanvas"
-                                            data-bs-target="#offcanvasDPCR_IPCR" aria-controls="offcanvasScroll"
-                                            type="button" class="btn btn-primary">MAJOR
-                                            FINAL
-                                            OUTPUT</button>
-                                    </div>
-                                </span>
-                            </ng-template>
-                        </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noIpcrDetails>
+                            <img src="assets/img/document.png" alt="" width="200" height="200"
+                                style="display: block; margin: 0 auto" />
+                            <span style="
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+        ">
+                                <div>
+                                    <label style="margin-bottom: 10px;"><strong>No Data Found!</strong></label>
+                                </div>
+                                <div *ngIf="!isExpand">
+                                    <button *ngIf="ipcrService.ipcrDetails().data.length <= 0" (click)="isExpand = true"
+                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasDPCR_IPCR"
+                                        aria-controls="offcanvasScroll" type="button" class="btn btn-primary">MAJOR
+                                        FINAL
+                                        OUTPUT</button>
+                                </div>
+                            </span>
+                        </ng-template>
                     </ng-container>
-                    <ng-template #noIpcrDetails>
-                        <img src="assets/img/document.png" alt="" width="200" height="200"
-                            style="display: block; margin: 0 auto" />
-                        <span style="
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-align-items: center;
-height: 100%;
-    ">
-                            <div>
-                                <label style="margin-bottom: 10px;"><strong>No Data Found!</strong></label>
-                            </div>
-                            <div *ngIf="!isExpand">
-                                <button *ngIf="ipcrService.ipcrDetails().data.length <= 0" (click)="isExpand = true"
-                                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasDPCR_IPCR"
-                                    aria-controls="offcanvasScroll" type="button" class="btn btn-primary">MAJOR
-                                    FINAL
-                                    OUTPUT</button>
-                            </div>
-                        </span>
+                    <ng-template #completeLoads>
+                        <app-opcr-target-skeleton></app-opcr-target-skeleton>
                     </ng-template>
                 </div>
             </div>

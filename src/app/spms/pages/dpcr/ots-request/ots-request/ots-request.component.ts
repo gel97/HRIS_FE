@@ -19,11 +19,17 @@ export class OtsRequestComponent implements OnInit {
   ots_request: any = [];
   ots_request_summary: any = [];
   toggle: number = 0;
+  officeRoleId: number = 0;
 
   counter_pending: number | any;
   counter_approved: number | any;
 
-  ots_modal_data: any = {};
+  ots_modal_data: any = {
+    description: '',
+    st: {
+      stIndicator: '',
+    },
+  };
   isClicked: boolean = true;
 
   pageEvent: PageEvent | undefined;
@@ -45,17 +51,19 @@ export class OtsRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.divisionName = localStorage.getItem('divisionName');
+    this.officeRoleId = localStorage.getItem('officeRoleId') != "null" ? 1 : 0;
+    console.log('officeRoleId', this.officeRoleId);
     this.get_ots_request();
     this.get_ots_request_summary();
   }
 
-  handlePageEvent(e: PageEvent) {
-  }
+  handlePageEvent(e: PageEvent) {}
 
   toggleSwitch(toggle: number) {
     this.toggle = toggle;
     this.get_ots_request();
   }
+
 
   get_ots_request() {
     this.OtsRequestService.get_ots_request(this.toggle).subscribe({
