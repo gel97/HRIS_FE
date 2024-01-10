@@ -406,7 +406,7 @@ export class CanvasTargetDpcrMfoesComponent {
   SetDpcrDataObj(mfoData: any, siData: any, indexMfo: number, indexSI: number) {
     siData.indexMfo = indexMfo;
     siData.indexSI = indexSI;
-
+    siData.qtyUnit = 0;
     this.setDpcrDataObj.emit({ mfoData, siData });
   }
 

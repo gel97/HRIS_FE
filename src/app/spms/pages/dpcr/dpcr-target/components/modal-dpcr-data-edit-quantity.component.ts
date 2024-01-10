@@ -42,10 +42,10 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   class="form-check-input"
                   type="radio"
                   name="inlineRadioOptions"
-                  id="inlineRadio1"
-                  value="option1"
+                  id="inlineRadio11"
+                  value="0"
                 />
-                <label class="form-check-label" for="inlineRadio1"
+                <label class="form-check-label" for="inlineRadio11"
                   >Numeric</label
                 >
               </div>
@@ -56,10 +56,10 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   class="form-check-input"
                   type="radio"
                   name="inlineRadioOptions"
-                  id="inlineRadio2"
-                  value="option2"
+                  id="inlineRadio22"
+                  value="1"
                 />
-                <label class="form-check-label" for="inlineRadio2"
+                <label class="form-check-label" for="inlineRadio22"
                   >Percentage</label
                 >
               </div>
@@ -254,14 +254,54 @@ export class ModalDpcrDataEditQuantityComponent {
 
   calculateRating(event:any) {
     this.dpcrSIData.qtyRemaining = (this.dpcrSIData.qtyOpcr - this.dpcrSIData.qtyCommitted) - (this.dpcrSIData.qty - this.dpcrSIData.qtyCommitted);
-    this.dpcrSIData.qty5 = Math.floor(
-      this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
-    );
-    this.dpcrSIData.qty4 = Math.floor(
-      this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty
-    );
-    this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
-    this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
-    this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
+    if (this.dpcrSIData.qty >= 7) {
+      this.dpcrSIData.qty5 = Math.floor(this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty4 = Math.floor(this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
+      this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
+      this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
+    } else if (this.dpcrSIData.qty === 6) {
+      this.dpcrSIData.qty5 = 8;
+      this.dpcrSIData.qty4 = 7;
+      this.dpcrSIData.qty3 = 6;
+      this.dpcrSIData.qty2 = 5;
+      this.dpcrSIData.qty1 = 4;
+    } else if (this.dpcrSIData.qty === 5) {
+      this.dpcrSIData.qty5 = 7;
+      this.dpcrSIData.qty4 = 6;
+      this.dpcrSIData.qty3 = 5;
+      this.dpcrSIData.qty2 = 4;
+      this.dpcrSIData.qty1 = 3;
+    } else if (this.dpcrSIData.qty === 4) {
+      this.dpcrSIData.qty5 = 6;
+      this.dpcrSIData.qty4 = 5;
+      this.dpcrSIData.qty3 = 4;
+      this.dpcrSIData.qty2 = 3;
+      this.dpcrSIData.qty1 = 1;
+    } else if (this.dpcrSIData.qty === 3) {
+      this.dpcrSIData.qty5 = 5;
+      this.dpcrSIData.qty4 = 4;
+      this.dpcrSIData.qty3 = 3;
+      this.dpcrSIData.qty2 = 2;
+      this.dpcrSIData.qty1 = 1;
+    } else if (this.dpcrSIData.qty === 2) {
+      this.dpcrSIData.qty5 = 4;
+      this.dpcrSIData.qty4 = 3;
+      this.dpcrSIData.qty3 = 2;
+      this.dpcrSIData.qty2 = 1;
+      this.dpcrSIData.qty1 = 0;
+    } else if (this.dpcrSIData.qty === 1) {
+      this.dpcrSIData.qty5 = 1;
+      this.dpcrSIData.qty4 = null;
+      this.dpcrSIData.qty3 = null;
+      this.dpcrSIData.qty2 = null;
+      this.dpcrSIData.qty1 = 0;
+    } else {
+      this.dpcrSIData.qty5 = null;
+      this.dpcrSIData.qty4 = null;
+      this.dpcrSIData.qty3 = null;
+      this.dpcrSIData.qty2 = null;
+      this.dpcrSIData.qty1 = null;
+    }
   }
 }
