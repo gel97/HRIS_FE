@@ -133,15 +133,29 @@ export class DpcrService {
 
   async SetDpcrActive(dpcr: any) {
     try {
-      dpcr.success = 'This dpcr has been set to final';
-      dpcr.message = 'You want to set this dpcr to final';
-      dpcr.url = this.url.put_dpcr_setactive(dpcr.dpcrId);
+      switch (dpcr.active) {
+        case 1:
+          dpcr.success = 'This dpcr has been set to open';
+          dpcr.message = 'You want to set this dpcr to open';
+
+          break;
+        case 2:
+          dpcr.success = 'This dpcr has been set to final';
+          dpcr.message = 'You want to set this dpcr to final';
+
+          break;
+        default:
+          break;
+      }
+      dpcr.url = this.url.put_dpcr_setactive(dpcr.dpcrId, dpcr.active);
       let setData = await this.alertService.customUpdate(dpcr);
 
-      if (setData) {
-        this.GetDpcr();
-      } else {
-      }
+      // if (setData) {
+      //   this.GetDpcr();
+      // } else {
+      // }
+      this.GetDpcr();
+
     } catch (error) {
       console.error('Error:', error);
     }
@@ -159,7 +173,6 @@ export class DpcrService {
       .subscribe({
         next: (response: any = {}) => {
           this.GetDpcrData();
-
           this.dpcrData.mutate((a) => {
             a.isLoadingSave = false;
             a.error = false;
@@ -221,7 +234,11 @@ export class DpcrService {
         },
         complete: () => {
           console.log('dpcrData: ', this.dpcrData());
-          this.GetDpcrDataMfoes();
+          if(this.isCommonDivision() >= 0){
+            this.GetDpcrDataMfoes();
+          }else{
+            this.GetDpcrDataMfoesDivision(null)
+          }
         },
       });
   }
@@ -304,6 +321,7 @@ export class DpcrService {
         },
         error: (error: any) => {
           this.dpcrDataMfoes.mutate((a) => (a.isLoading = false));
+          this.dpcrDataMfoes.mutate((a) => (a.data = []));
 
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
@@ -346,6 +364,7 @@ export class DpcrService {
         },
         error: (error: any) => {
           this.dpcrDataMfoes.mutate((a) => (a.isLoading = false));
+          this.dpcrDataMfoes.mutate((a) => (a.data = []));
 
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
@@ -573,8 +592,8 @@ export class DpcrService {
       );
 
       if (deleteData) {
-        this.GetDpcrData();
-        this.GetDpcrDataDivisionMfoes();
+         this.GetDpcrData();
+         this.GetDpcrDataMfoesDivision(null);
       } else {
       }
     } catch (error) {

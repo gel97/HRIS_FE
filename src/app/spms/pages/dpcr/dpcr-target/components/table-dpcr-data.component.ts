@@ -17,7 +17,7 @@ import {
       <div class="row">
         <div class="col-10">
           <h3 class="card-header">
-            <strong class="badge rounded-pill bg-label-info shadow-sm">{{dpcrService.divisionName}} MFO</strong>
+            <strong class="txt-custom-light-violet">{{dpcrService.divisionName}} MFO</strong>
           </h3>
         </div>
         <div class="col-2">
@@ -126,7 +126,7 @@ import {
                   <td (click)="setIndex(i, y)">
                     <i class="bx bx-chevron-right"></i
                     ><strong
-                      ><u>{{ b.qty }}</u></strong
+                      ><u>{{ b.qty }}{{b.qtyUnit ? '%': ''}}</u></strong
                     >&nbsp;{{ b.indicator }} &nbsp;
                     <small
                       *ngIf="b.subtaskCount > 0 || b.subtaskCountCmfo"

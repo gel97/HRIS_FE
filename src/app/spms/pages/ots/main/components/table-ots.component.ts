@@ -126,6 +126,8 @@ export class TableOtsComponent {
 
   SetOtsData(data: any) {
     if(data.st !== null){
+      data.qty = data.st.qty;
+      
       data.qlty5 = data.st.qlty5;
       data.qlty4 = data.st.qlty4;
       data.qlty3 = data.st.qlty3;
