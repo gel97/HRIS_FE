@@ -68,7 +68,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     <div *ngSwitchCase="'2'">
                       <span class="badge bg-label-success me-1">Final</span>
                     </div>
-                    <div *ngSwitchDefault></div>
+                    <div *ngSwitchDefault><span class="badge bg-label-danger me-1">Draft </span></div>
                   </div>
                 </td>
                 <td>
@@ -96,7 +96,11 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                             ><i class="bx bxs-flag-alt me-1 "></i> Final</a
                           >
                         </div>
-                        <div *ngSwitchDefault></div>
+                        <div *ngSwitchDefault><a
+                            class="dropdown-item cursor-pointer"
+                            (click)="SetDpcrActive(item, 1)"
+                            ><i class="bx bxs-flag-alt me-1 "></i> Open</a
+                          ></div>
                       </div>
                       <a
                         class="dropdown-item cursor-pointer"
