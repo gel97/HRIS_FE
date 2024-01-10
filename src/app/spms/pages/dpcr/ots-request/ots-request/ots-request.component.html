@@ -71,7 +71,7 @@
                                         <div class="col-6 d-flex justify-content-end">
 
                                             <div class="mt-3">
-                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                <div *ngIf="officeRoleId" class="btn-group" role="group" aria-label="Basic example">
                                                     <button (click)="Approve()" type="button"
                                                         class="btn btn-sm btn-outline-primary"><i
                                                             class='bx bx-check'></i>&nbsp;Approve</button>
@@ -98,10 +98,11 @@
                                                                     data-bs-toggle="tooltip" data-bs-toggle="modal"
                                                                     data-bs-target="#smallModal"
                                                                     matTooltip="Additional information"
-                                                                    matTooltipPosition="above"><strong>{{data.description}}</strong>
+                                                                    matTooltipPosition="above"><strong>{{data.description?
+                                                                        data.description: data.st.stIndicator}}</strong>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-5">
+                                                            <div class="col-3">
                                                                 <ul
                                                                     class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                                                                     <li data-bs-toggle="tooltip"
@@ -112,15 +113,17 @@
                                                                             alt="Avatar" class="rounded-circle" />
                                                                     </li>
                                                                     <ng-container> <strong
-                                                                            style="color: blue;">{{data.fullNameFirst}}</strong>&nbsp;
-                                                                        <span class="badge bg-label-primary pointer"><a
-                                                                                data-bs-toggle="tooltip"
-                                                                                matTooltip="CREATED DATE"
-                                                                                matTooltipPosition="above">
-                                                                                {{data.dateDone |
-                                                                                date:'MMM.dd,yyyy'}}</a></span>
+                                                                            style="color: blue;">{{data.fullNameFirst}}</strong>
                                                                     </ng-container>
                                                                 </ul>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <span class="badge bg-label-primary pointer"><a
+                                                                        data-bs-toggle="tooltip"
+                                                                        matTooltip="CREATED DATE"
+                                                                        matTooltipPosition="above">
+                                                                        {{data.dateDone |
+                                                                        date:'MMM.dd,yyyy'}}</a></span>
                                                             </div>
                                                             <div class="col-1 pointer">
                                                                 <span
@@ -169,10 +172,11 @@
                                                     <label class="list-group-item">
                                                         <div class="row">
                                                             <div class="col-4">
-                                                                <a><strong>{{data.description}}</strong>
+                                                                <a><strong>{{data.description? data.description:
+                                                                        data.st.stIndicator}}</strong>
                                                                 </a>
                                                             </div>
-                                                            <div class="col-5">
+                                                            <div class="col-3">
                                                                 <ul
                                                                     class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                                                                     <li data-bs-toggle="tooltip"
@@ -184,15 +188,17 @@
                                                                             alt="Avatar" class="rounded-circle" />
                                                                     </li>
                                                                     <ng-container> <strong
-                                                                            style="color: blue;">{{data.fullNameFirst}}</strong>&nbsp;
-                                                                        <span class="badge bg-label-primary pointer"><a
-                                                                                data-bs-toggle="tooltip"
-                                                                                matTooltip="APPROVED DATE"
-                                                                                matTooltipPosition="above">
-                                                                                {{data.approvedDate |
-                                                                                date:'MMM.dd,yyyy'}}</a></span>
+                                                                            style="color: blue;">{{data.fullNameFirst}}</strong>
                                                                     </ng-container>
                                                                 </ul>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <span class="badge bg-label-primary pointer"><a
+                                                                        data-bs-toggle="tooltip"
+                                                                        matTooltip="APPROVED DATE"
+                                                                        matTooltipPosition="above">
+                                                                        {{data.approvedDate |
+                                                                        date:'MMM.dd,yyyy'}}</a></span>
                                                             </div>
                                                             <div class="col-1">
                                                                 <span
@@ -275,15 +281,16 @@
                     </div>
                     <div class="col-12"><br>
                         <div class="form-floating mb-3">
-                            <input [(ngModel)]="ots_modal_data.description" type="email" class="form-control"
-                                id="floatingInputDisabled" placeholder="name@example.com" disabled>
+                            <input
+                                [(ngModel)]="ots_modal_data.description? ots_modal_data.description: ots_modal_data.st.stIndicator"
+                                type="text" class="form-control" id="floatingInputDisabled" placeholder="" disabled>
                             <label for="floatingInputDisabled">Description</label>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-floating mb-3">
-                            <input [(ngModel)]="ots_modal_data.qtyR" type="email" class="form-control"
-                                id="floatingInputDisabled" placeholder="name@example.com" disabled>
+                            <input [(ngModel)]="ots_modal_data.qtyR" type="text" class="form-control"
+                                id="floatingInputDisabled" placeholder="" disabled>
                             <label for="floatingInputDisabled">Quantity</label>
                         </div>
                     </div>

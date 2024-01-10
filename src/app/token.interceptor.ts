@@ -30,6 +30,8 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((err: any) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
+            this.Auth.signout();
+            // this.Router.navigate(['user-login']);
             const Toast = Swal.mixin({
               toast: true,
               position: 'top-end',
@@ -46,8 +48,6 @@ export class TokenInterceptor implements HttpInterceptor {
               icon: 'error',
               title: 'Session expired, please login again',
             });
-            this.Auth.signout();
-            this.Router.navigate(['user-login']);
           }
         }
         return throwError(err);

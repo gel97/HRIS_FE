@@ -154,6 +154,7 @@ export class LogsComponent implements OnInit {
   onSelectChange() {
     this.page.officeId = this.selectedOfficeId;
     this.page.search = this.search;
+    this.page.pageNumber = 1;
     this.post_all_logs();
   }
 
