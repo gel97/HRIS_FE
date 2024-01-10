@@ -268,11 +268,55 @@ import {
     }
   
     calculateRating() {
-      this.data.qty5 = Math.floor(this.data.qty * 1.3);
-      this.data.qty4 = Math.floor(this.data.qty * 1.15);
-      this.data.qty3 = Math.floor(this.data.qty);
-      this.data.qty2 = Math.floor(this.data.qty / 2 + 1);
-      this.data.qty1 = Math.floor(this.data.qty / 2);
+      if (this.data.qty >= 7) {
+        this.data.qty5 = Math.floor(this.data.qty * 0.3 + this.data.qty);
+        this.data.qty4 = Math.floor(this.data.qty * 0.15 + this.data.qty);
+        this.data.qty3 = Math.floor(this.data.qty);
+        this.data.qty2 = Math.floor(this.data.qty / 2 + 1);
+        this.data.qty1 = Math.floor(this.data.qty / 2);
+      } else if (this.data.qty === 6) {
+        this.data.qty5 = 8;
+        this.data.qty4 = 7;
+        this.data.qty3 = 6;
+        this.data.qty2 = 5;
+        this.data.qty1 = 4;
+      } else if (this.data.qty === 5) {
+        this.data.qty5 = 7;
+        this.data.qty4 = 6;
+        this.data.qty3 = 5;
+        this.data.qty2 = 4;
+        this.data.qty1 = 3;
+      } else if (this.data.qty === 4) {
+        this.data.qty5 = 6;
+        this.data.qty4 = 5;
+        this.data.qty3 = 4;
+        this.data.qty2 = 3;
+        this.data.qty1 = 1;
+      } else if (this.data.qty === 3) {
+        this.data.qty5 = 5;
+        this.data.qty4 = 4;
+        this.data.qty3 = 3;
+        this.data.qty2 = 2;
+        this.data.qty1 = 1;
+      } else if (this.data.qty === 2) {
+        this.data.qty5 = 4;
+        this.data.qty4 = 3;
+        this.data.qty3 = 2;
+        this.data.qty2 = 1;
+        this.data.qty1 = 0;
+      } else if (this.data.qty === 1) {
+        this.data.qty5 = 1;
+        this.data.qty4 = null;
+        this.data.qty3 = null;
+        this.data.qty2 = null;
+        this.data.qty1 = 0;
+      } else {
+        this.data.qty5 = null;
+        this.data.qty4 = null;
+        this.data.qty3 = null;
+        this.data.qty2 = null;
+        this.data.qty1 = null;
+      }
     }
   }
   

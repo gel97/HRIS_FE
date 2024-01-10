@@ -39,29 +39,29 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             <div class="col-md" *ngIf="dpcrSIData.isDpcrMfo">
               <div class="form-check form-check-inline mt-3">
                 <input
-                  (click)="dpcrSIData.qtyUnit = 0"
-                  [checked]="dpcrSIData.qtyUnit === 0"
                   class="form-check-input"
                   type="radio"
-                  name="inlineRadioOptions"
-                  id="inlineRadio1"
-                  value="option1"
+                  name="inlineRadio1Options"
+                  id="inline1Radio1"
+                  value="0"
+                  [checked]="dpcrSIData.qtyUnit === 0 ? true : false"
+                  (change)="onChangeUnit($event)"
                 />
-                <label class="form-check-label" for="inlineRadio1"
+                <label class="form-check-label" for="inline1Radio1"
                   >Numeric</label
                 >
               </div>
               <div class="form-check form-check-inline">
                 <input
-                  (click)="dpcrSIData.qtyUnit = 1"
-                  [checked]="dpcrSIData.qtyUnit === 1"
                   class="form-check-input"
                   type="radio"
-                  name="inlineRadioOptions"
-                  id="inlineRadio2"
-                  value="option2"
+                  name="inlineRadio1Options"
+                  id="inline1Radio2"
+                  value="1"
+                  [checked]="dpcrSIData.qtyUnit === 1 ? true : false"
+                  (change)="onChangeUnit($event)"
                 />
-                <label class="form-check-label" for="inlineRadio2"
+                <label class="form-check-label" for="inline1Radio2"
                   >Percentage</label
                 >
               </div>
@@ -217,6 +217,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             </div>
           </div>
           <div class="modal-footer">
+            <div *ngIf="isEmptyUnit" class="alert alert-danger float-start" role="alert">Please select 'Numeric' or 'Percentage'</div>
             <button
               type="button"
               class="btn btn-outline-secondary"
@@ -233,13 +234,14 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     </div>
   `,
 })
-export class ModalDpcrDataComponent {
+export class ModalDpcrDataComponent{
   @ViewChild('closeModal')
   closeModal!: { nativeElement: { click: () => void } };
 
   dpcrService = inject(DpcrService);
 
   quantity: any = {};
+  isEmptyUnit: boolean = false;
 
   @Input() dpcrMFOData: any;
   @Input() dpcrSIData: any;
@@ -248,8 +250,20 @@ export class ModalDpcrDataComponent {
   @Output() submit = new EventEmitter<any>();
 
   Submit() {
-    this.submit.emit('submit');
-    this.handleStatus();
+    if(this.dpcrSIData.qtyUnit !== null){
+      this.isEmptyUnit = false;
+
+      this.submit.emit('submit');
+      this.handleStatus();
+    }else{
+      this.isEmptyUnit = true;
+    }
+  }
+
+  onChangeUnit(event: Event) {
+    this.isEmptyUnit = false;
+    const target = event.target as HTMLInputElement;
+    this.dpcrSIData.qtyUnit = target.value;
   }
 
   handleStatus() {
@@ -261,14 +275,56 @@ export class ModalDpcrDataComponent {
   }
 
   calculateRating() {
-    this.dpcrSIData.qty5 = Math.floor(
-      this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
-    );
-    this.dpcrSIData.qty4 = Math.floor(
-      this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty
-    );
-    this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
-    this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
-    this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
+
+    if (this.dpcrSIData.qty >= 7) {
+      this.dpcrSIData.qty5 = Math.floor(this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty4 = Math.floor(this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
+      this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
+      this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
+    } else if (this.dpcrSIData.qty === 6) {
+      this.dpcrSIData.qty5 = 8;
+      this.dpcrSIData.qty4 = 7;
+      this.dpcrSIData.qty3 = 6;
+      this.dpcrSIData.qty2 = 5;
+      this.dpcrSIData.qty1 = 4;
+    } else if (this.dpcrSIData.qty === 5) {
+      this.dpcrSIData.qty5 = 7;
+      this.dpcrSIData.qty4 = 6;
+      this.dpcrSIData.qty3 = 5;
+      this.dpcrSIData.qty2 = 4;
+      this.dpcrSIData.qty1 = 3;
+    } else if (this.dpcrSIData.qty === 4) {
+      this.dpcrSIData.qty5 = 6;
+      this.dpcrSIData.qty4 = 5;
+      this.dpcrSIData.qty3 = 4;
+      this.dpcrSIData.qty2 = 3;
+      this.dpcrSIData.qty1 = 1;
+    } else if (this.dpcrSIData.qty === 3) {
+      this.dpcrSIData.qty5 = 5;
+      this.dpcrSIData.qty4 = 4;
+      this.dpcrSIData.qty3 = 3;
+      this.dpcrSIData.qty2 = 2;
+      this.dpcrSIData.qty1 = 1;
+    } else if (this.dpcrSIData.qty === 2) {
+      this.dpcrSIData.qty5 = 4;
+      this.dpcrSIData.qty4 = 3;
+      this.dpcrSIData.qty3 = 2;
+      this.dpcrSIData.qty2 = 1;
+      this.dpcrSIData.qty1 = 0;
+    } else if (this.dpcrSIData.qty === 1) {
+      this.dpcrSIData.qty5 = 1;
+      this.dpcrSIData.qty4 = null;
+      this.dpcrSIData.qty3 = null;
+      this.dpcrSIData.qty2 = null;
+      this.dpcrSIData.qty1 = 0;
+    } else {
+      this.dpcrSIData.qty5 = null;
+      this.dpcrSIData.qty4 = null;
+      this.dpcrSIData.qty3 = null;
+      this.dpcrSIData.qty2 = null;
+      this.dpcrSIData.qty1 = null;
+    }
+
   }
 }

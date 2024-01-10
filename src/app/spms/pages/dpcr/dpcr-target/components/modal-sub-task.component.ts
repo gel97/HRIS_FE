@@ -83,8 +83,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   </div>
                 </div>
               </div>
-
-              <div
+              <!-- <div
                 *ngIf="dpcrSIData.qty > dpcrSIData.qtyOpcr"
                 class="alert alert-danger mt-2"
                 role="alert"
@@ -94,7 +93,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 <strong
                   ><u>{{ dpcrSIData.qtyOpcr }}</u></strong
                 >
-              </div>
+              </div> -->
               <app-stepper-subtask (submitSubTask)="SubmitSubTask($event)" />
             </div>
             <ng-template #ShowCmfo>

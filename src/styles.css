@@ -19,6 +19,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #D0A2F7
 }
 
+.txt-custom-light-violet {
+  color: #9288F8
+}
+
 .bg-custom-subtask-si {
   background-color: #F1EAFF
 }
