@@ -23,89 +23,94 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-            <div class="form-floating px-2 col-4">
-              <input
-                type="number"
-                class="form-control"
-                id="quantity"
-                [(ngModel)]="dpcrSIData.qty"
-                [max]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
-                (ngModelChange)="calculateRating()"
-                placeholder="Quantity"
-                aria-describedby="quantity"
-              />
-              <label for="quantity">Quantity</label>
-            </div>
-            <div class="col-md" *ngIf="dpcrSIData.isDpcrMfo">
-              <div class="form-check form-check-inline mt-3">
+            <ng-container *ngIf="dpcrSIData.qtyUnit; else showQty">
+              <div><h3>Quantity: <strong>{{dpcrSIData.qty}}%</strong></h3></div>
+            </ng-container>
+            <ng-template #showQty>
+              <div class="form-floating px-2 col-4">
                 <input
-                  class="form-check-input"
-                  type="radio"
-                  name="inlineRadio1Options"
-                  id="inline1Radio1"
-                  value="0"
-                  [checked]="dpcrSIData.qtyUnit === 0 ? true : false"
-                  (change)="onChangeUnit($event)"
+                  type="number"
+                  class="form-control"
+                  id="quantity"
+                  [(ngModel)]="dpcrSIData.qty"
+                  [max]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
+                  (ngModelChange)="calculateRating()"
+                  placeholder="Quantity"
+                  aria-describedby="quantity"
                 />
-                <label class="form-check-label" for="inline1Radio1"
-                  >Numeric</label
-                >
+                <label for="quantity">Quantity</label>
               </div>
-              <div class="form-check form-check-inline">
+              <div class="col-md" *ngIf="dpcrSIData.isDpcrMfo">
+                <div class="form-check form-check-inline mt-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadio1Options"
+                    id="inline1Radio1"
+                    value="0"
+                    [checked]="dpcrSIData.qtyUnit === 0 ? true : false"
+                    (change)="onChangeUnit($event)"
+                  />
+                  <label class="form-check-label" for="inline1Radio1"
+                    >Numeric</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadio1Options"
+                    id="inline1Radio2"
+                    value="1"
+                    [checked]="dpcrSIData.qtyUnit === 1 ? true : false"
+                    (change)="onChangeUnit($event)"
+                  />
+                  <label class="form-check-label" for="inline1Radio2"
+                    >Percentage</label
+                  >
+                </div>
+              </div>
+              <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo">
                 <input
-                  class="form-check-input"
-                  type="radio"
-                  name="inlineRadio1Options"
-                  id="inline1Radio2"
-                  value="1"
-                  [checked]="dpcrSIData.qtyUnit === 1 ? true : false"
-                  (change)="onChangeUnit($event)"
+                  type="number"
+                  class="form-control"
+                  id="quantityOpcr"
+                  placeholder="Quantity"
+                  [value]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
+                  aria-describedby="quantityOpcr"
+                  disabled
                 />
-                <label class="form-check-label" for="inline1Radio2"
-                  >Percentage</label
-                >
+                <label for="quantityOpcr">Remaining Quantity</label>
               </div>
-            </div>
-            <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo">
-              <input
-                type="number"
-                class="form-control"
-                id="quantityOpcr"
-                placeholder="Quantity"
-                [value]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
-                aria-describedby="quantityOpcr"
-                disabled
-              />
-              <label for="quantityOpcr">Remaining Quantity</label>
-            </div>
-            <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo">
-              <input
-                type="number"
-                class="form-control"
-                id="qtyOpcr"
-                placeholder="Quantity"
-                [value]="dpcrSIData.qtyOpcr"
-                aria-describedby="qtyOpcr"
-                disabled
-              />
-              <label for="qtyOpcr">Total Quantity</label>
-            </div>
-            <div
-              *ngIf="
-                dpcrSIData.qty > dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted &&
-                !dpcrSIData.isDpcrMfo
-              "
-              class="alert alert-danger mt-2"
-              role="alert"
-            >
-              <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
-              than
-              <strong
-                ><u>{{
-                  dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted
-                }}</u></strong
+              <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="qtyOpcr"
+                  placeholder="Quantity"
+                  [value]="dpcrSIData.qtyOpcr"
+                  aria-describedby="qtyOpcr"
+                  disabled
+                />
+                <label for="qtyOpcr">Total Quantity</label>
+              </div>
+              <div
+                *ngIf="
+                  dpcrSIData.qty > dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted &&
+                  !dpcrSIData.isDpcrMfo
+                "
+                class="alert alert-danger mt-2"
+                role="alert"
               >
-            </div>
+                <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
+                than
+                <strong
+                  ><u>{{
+                    dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted
+                  }}</u></strong
+                >
+              </div>
+            </ng-template>
             <div class="table-responsive text-wrap">
               <table class="table table-striped">
                 <thead>
@@ -127,6 +132,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty5"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -146,6 +152,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty4"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -165,6 +172,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty3"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -184,6 +192,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty2"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -203,6 +212,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty1"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
