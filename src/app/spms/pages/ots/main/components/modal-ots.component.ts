@@ -75,7 +75,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                     class="bx bx-chevron-right cursor-pointer text-secondary"
                                   ></i>
                                   <strong class="text-primary"
-                                    ><u>{{ c.qty }}</u></strong
+                                    ><u>{{ c.qty }}{{ b.qtyUnit ? '%':''}}</u></strong
                                   >
                                   {{ c.stIndicator }}
                                 </td>
@@ -94,6 +94,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                       ipcrId: b.ipcrId,
                                       isSubTask: b.isSubTask,
                                       opcrDataId: b.opcrDataId,
+                                      qtyUnit: b.qtyUnit,
                                       qlty5: c.qlty5,
                                       qlty4: c.qlty4,
                                       qlty3: c.qlty3,
@@ -109,9 +110,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                   class="btn btn-primary"
                                 >
                                   <span class="tf-icons bx bx bx-plus"></span>
-                                </button>
-
-                                
+                                </button>                          
                               </tr>
                             </ng-container>
                           </ng-container >
@@ -123,7 +122,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                   class="bx bx-chevron-right cursor-pointer text-secondary"
                                 ></i>
                                 <strong class="text-primary"
-                                  ><u>{{ b.qty }}</u></strong
+                                  ><u>{{ b.qty }}{{ b.qtyUnit ? '%':''}}</u></strong
                                 >
                                 {{ b.indicator }}
                               </td>
@@ -141,6 +140,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                       ipcrId: b.ipcrId,
                                       isSubTask: b.isSubTask,
                                       opcrDataId: b.opcrDataId,
+                                      qtyUnit: b.qtyUnit,
                                       qlty5: b.qlty5,
                                       qlty4: b.qlty4,
                                       qlty3: b.qlty3,
@@ -181,7 +181,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         <h5 class="card-title text-white">SUCCESS INDICATOR</h5>
                         <p class="card-text">
                           <strong class="text-white"
-                            ><u>{{ ots.qty }}</u>
+                            ><u>{{ ots.qty }}{{ ots.qtyUnit ? '%':''}}</u> 
                           </strong>
                           {{ ots.indicator }}
                         </p>
