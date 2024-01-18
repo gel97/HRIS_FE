@@ -70,13 +70,16 @@ export class OtsRequestComponent implements OnInit {
 
   get_ots_request() {
     this.page.officeRoleId = localStorage.getItem('officeRoleId');
+    if (this.page.officeRoleId == 'null') {
+      this.page.officeRoleId = 3;
+    }
     this.OtsRequestService.post_ots_request(this.page).subscribe({
       next: (response: any) => {
         this.ots_request = response;
       },
       error: () => {},
       complete: () => {
-       this.get_profile_picture(this.ots_request.items);
+        this.get_profile_picture(this.ots_request.items);
       },
     });
   }
