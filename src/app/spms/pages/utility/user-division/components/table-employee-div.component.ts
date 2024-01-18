@@ -181,12 +181,9 @@ export class TableEmployeeDivComponent {
   pageEvent: PageEvent | undefined;
 
   handlePageEvent(e: PageEvent) {
-    console.log(e)
-   
     this.userDivisionService.pageNumberEmpDiv.set(e.pageIndex + 1);
     this.userDivisionService.pageSizeEmpDiv.set(e.pageSize);
     this.userDivisionService.PostEmpDiv();
-
   }
 
   setPageSizeOptions(setPageSizeOptionsInput: string) {

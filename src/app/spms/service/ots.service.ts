@@ -150,7 +150,6 @@ export class OtsService {
   }
 
   EditOts(data: any) {
-    console.log(data);
     this.http
       .put<any[]>(api + this.url.put_ots(), data)
       .subscribe({
@@ -191,14 +190,15 @@ export class OtsService {
           });
         },
         complete: () => {
-          console.log("otsMfoes: ", this.otsMfoes());
+
         },
       });
   }
 
 
-  get_ots_request(status:number){
-    return this.http.get<any[]>(api + this.url.get_ots_request(status),{responseType: `json`})
+  post_ots_request(page:any){
+    return this.http.post<any[]>(api + this.url.
+      post_ots_request(),page,{responseType: `json`})
   }
 
   get_ots_request_summary(){

@@ -129,12 +129,9 @@ export class TableEmployeeNoDivComponent {
   pageEvent: PageEvent | undefined;
 
   handlePageEvent(e: PageEvent) {
-    console.log(e)
-   
     this.userDivisionService.pageNumberEmpNoDiv.set(e.pageIndex + 1);
     this.userDivisionService.pageSizeEmpNoDiv.set(e.pageSize);
     this.userDivisionService.PostEmpNoDiv();
-
   }
 
   setPageSizeOptions(setPageSizeOptionsInput: string) {
@@ -145,11 +142,9 @@ export class TableEmployeeNoDivComponent {
 
   search:string = "";
   searchData(){
-    console.log(this.search)
     this.userDivisionService.searchEmpNoDiv.set(this.search);
     this.userDivisionService.pageNumberEmpNoDiv.set(1);
     this.userDivisionService.PostEmpNoDiv();
-
   }
 
 }

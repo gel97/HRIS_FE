@@ -128,7 +128,6 @@ export class TableMonthComponent implements OnInit {
       date.setHours(16, 0, 0, 0);
       const formattedDate = date.toISOString().slice(0, 16);
 
-      console.log('date ', formattedDate);
       this.currentMonthData.push({
         day,
         month: currentMonth,
@@ -154,6 +153,5 @@ export class TableMonthComponent implements OnInit {
   SetDate(item: any) {
     this.otsService.otsMfoes.mutate((a) => (a.startDate = item.date));
     this.otsService.otsMfoes.mutate((a) => (a.endDate = item.date));
-    console.log(this.otsService.otsMfoes());
   }
 }

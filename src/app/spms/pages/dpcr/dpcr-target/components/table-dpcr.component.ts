@@ -147,7 +147,6 @@ export class TableDpcrComponent {
   }
 
   onChangeYear(event: any) {
-    console.log(event.target.value);
     this.dpcrService.year.set(event.target.value);
     this.dpcrService.GetDpcr();
   }

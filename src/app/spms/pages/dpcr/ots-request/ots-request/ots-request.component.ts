@@ -18,7 +18,7 @@ export class OtsRequestComponent implements OnInit {
   divisionName: any = '';
   ots_request: any = [];
   ots_request_summary: any = [];
-  toggle: number = 0;
+  // toggle: number = 0;
   officeRoleId: number = 0;
 
   counter_pending: number | any;
@@ -39,6 +39,7 @@ export class OtsRequestComponent implements OnInit {
   page: any = {
     pageNumber: 1,
     pageSize: 10,
+    toggle: 0,
   };
 
   hidePageSize = false;
@@ -51,28 +52,31 @@ export class OtsRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.divisionName = localStorage.getItem('divisionName');
-    this.officeRoleId = localStorage.getItem('officeRoleId') != "null" ? 1 : 0;
-    console.log('officeRoleId', this.officeRoleId);
+    this.officeRoleId = localStorage.getItem('officeRoleId') != 'null' ? 1 : 0;
     this.get_ots_request();
     this.get_ots_request_summary();
   }
 
-  handlePageEvent(e: PageEvent) {}
-
-  toggleSwitch(toggle: number) {
-    this.toggle = toggle;
+  handlePageEvent(e: PageEvent) {
+    this.page.pageNumber = e.pageIndex + 1;
+    this.page.pageSize = e.pageSize;
     this.get_ots_request();
   }
 
+  toggleSwitch(toggle: number) {
+    this.page.toggle = toggle;
+    this.get_ots_request();
+  }
 
   get_ots_request() {
-    this.OtsRequestService.get_ots_request(this.toggle).subscribe({
+    this.page.officeRoleId = localStorage.getItem('officeRoleId');
+    this.OtsRequestService.post_ots_request(this.page).subscribe({
       next: (response: any) => {
         this.ots_request = response;
       },
       error: () => {},
       complete: () => {
-        this.ots_request = this.get_profile_picture(this.ots_request);
+       this.get_profile_picture(this.ots_request.items);
       },
     });
   }
@@ -94,7 +98,6 @@ export class OtsRequestComponent implements OnInit {
     this.OtsRequestService.get_ots_request_summary().subscribe({
       next: (response: any) => {
         this.ots_request_summary = response;
-        console.log('summary', this.ots_request_summary);
       },
       error: () => {},
       complete: () => {},
@@ -104,7 +107,6 @@ export class OtsRequestComponent implements OnInit {
   toApprove = [];
   Approve() {
     this.toApprove = this.ots_request.filter((i: any) => i.isCheck);
-    console.log(this.toApprove);
     if (this.toApprove.length > 0) {
       this.OtsRequestService.put_ots_request_approve(this.toApprove).subscribe({
         next: () => {},
@@ -189,8 +191,8 @@ export class OtsRequestComponent implements OnInit {
   }
 
   isCheck_List_Pending(recNo: any, event: any) {
-    let index = this.ots_request.findIndex((a: any) => a.recNo == recNo);
-    this.ots_request[index].isCheck = event.target.checked;
+    let index = this.ots_request.items.findIndex((a: any) => a.recNo == recNo);
+    this.ots_request.items[index].isCheck = event.target.checked;
   }
 
   SaveAndApprove() {

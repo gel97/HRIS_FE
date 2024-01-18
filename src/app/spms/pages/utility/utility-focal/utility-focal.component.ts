@@ -181,7 +181,6 @@ export class UtilityFocalComponent implements OnInit {
         }
       );
     }
-    console.log(this.employee_role);
   }
   searchFilter() {
     if (!this.SearchName) {
@@ -241,13 +240,8 @@ export class UtilityFocalComponent implements OnInit {
       this.focalData.officeId = data.officeId
       this.isAssignOffice = true;
     }
-    // console.log("data", data)
-
-    //   console.log("userEIC", this.userEIC)
-    //   console.log("employee_list", this.employee_list)
   }
   updateUserRole() {
-    console.log(this.user_role);
   }
   select_All_Role(completed: boolean) {
     // for (let i of this.role_list) {

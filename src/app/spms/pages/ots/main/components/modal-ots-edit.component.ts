@@ -267,7 +267,6 @@ export class ModalOtsEditComponent {
 
   Submit() {
     this.otsService.EditOts(this.otsData);
-    console.log(this.otsData);
   }
 
   handleStatus() {
