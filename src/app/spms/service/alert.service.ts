@@ -64,7 +64,6 @@ export class AlertService {
           popup: 'z-3' // Define your custom class here
         }
       }).then((result) => {
-        console.log(result)
         if (result.isConfirmed) {
           this.http
             .delete<any[]>(api + url, { responseType: `json` })
@@ -144,7 +143,6 @@ export class AlertService {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes!'
       }).then((result) => {
-        console.log(result)
         if (result.isConfirmed) {
           this.http
             .put<any[]>(api + data.url, { responseType: `json` })

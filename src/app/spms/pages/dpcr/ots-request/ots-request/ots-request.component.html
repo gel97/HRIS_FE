@@ -71,7 +71,8 @@
                                         <div class="col-6 d-flex justify-content-end">
 
                                             <div class="mt-3">
-                                                <div *ngIf="officeRoleId" class="btn-group" role="group" aria-label="Basic example">
+                                                <div *ngIf="officeRoleId" class="btn-group" role="group"
+                                                    aria-label="Basic example">
                                                     <button (click)="Approve()" type="button"
                                                         class="btn btn-sm btn-outline-primary"><i
                                                             class='bx bx-check'></i>&nbsp;Approve</button>
@@ -86,7 +87,7 @@
                                         <div class="list-group">
                                             <ng-container
                                                 *ngIf="this.ots_request_summary.totalPending != 0;else pendingIsEmpty">
-                                                <ng-container *ngFor="let data of ots_request">
+                                                <ng-container *ngFor="let data of ots_request.items">
                                                     <label class="list-group-item">
                                                         <div class="row">
                                                             <div class="col-4">
@@ -168,7 +169,7 @@
                                         <div class="list-group">
                                             <ng-container
                                                 *ngIf="this.ots_request_summary.totalApproved != 0;else approvedIsEmpty">
-                                                <ng-container *ngFor="let data of ots_request">
+                                                <ng-container *ngFor="let data of ots_request.items">
                                                     <label class="list-group-item">
                                                         <div class="row">
                                                             <div class="col-4">
@@ -180,10 +181,9 @@
                                                                 <ul
                                                                     class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                                                                     <li data-bs-toggle="tooltip"
-                                                                        data-popup="tooltip-custom"
-                                                                        data-bs-placement="top"
-                                                                        class="avatar avatar-xs pull-up"
-                                                                        [title]="data.fullNameFirst">
+                                                                        [matTooltip]="data.fullNameFirst"
+                                                                        matTooltipPosition="above"
+                                                                        class="avatar avatar-xs pull-up">
                                                                         <img [src]="data.imageExtracted? data.imageExtracted: './assets/img/avatars/user_picture.png'"
                                                                             alt="Avatar" class="rounded-circle" />
                                                                     </li>
@@ -236,12 +236,12 @@
                                 <tr class="float-end">
                                     <th colspan="12">
                                         <mat-paginator #paginator class="demo-paginator"
-                                            (page)="handlePageEvent($event)" [length]="page.totalItems"
-                                            [pageSize]="page.pageSize" [disabled]="disabled"
+                                            (page)="handlePageEvent($event)" [length]="ots_request.metadata.totalItems"
+                                            [pageSize]="ots_request.metadata.pageSize" [disabled]="disabled"
                                             [showFirstLastButtons]="showFirstLastButtons"
                                             [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
-                                            [hidePageSize]="hidePageSize" [pageIndex]="page.pageNumber - 1 "
-                                            aria-label="Select page">
+                                            [hidePageSize]="hidePageSize"
+                                            [pageIndex]="ots_request.metadata.pageNumber - 1 " aria-label="Select page">
                                         </mat-paginator>
                                     </th>
                                 </tr>

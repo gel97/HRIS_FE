@@ -442,11 +442,9 @@ export class ModalSubTaskComponent {
   }
 
   setSI(si: any) {
-    console.log(si);
   }
 
   setCheck(data: boolean) {
-    console.log(data);
     this.newSubtask = data;
   }
 

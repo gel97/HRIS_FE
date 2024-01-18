@@ -253,7 +253,6 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   EditOPCR(opcrId: any) {
-    console.log(opcrId);
     this.editOpcr.active = 1;
     this.post_signatories(opcrId);
     this.opcrService.EditOPCR(this.editOpcr);
@@ -459,7 +458,6 @@ export class OpcrTargetComponent implements OnInit {
   OPCRDetails(data: any) {
     this.opcr_details_status = data.active;
     localStorage.setItem('opcrFinalStatus', data.active);
-    console.log('active', this.opcr_details_status);
     localStorage.setItem('currentYear', data.year);
     this.uncommited_division_list();
 
@@ -485,7 +483,6 @@ export class OpcrTargetComponent implements OnInit {
   show_uncommited_division_list(year: any) {
     this.opcrService.get_uncommited_division(year).subscribe({
       next: (response: any) => {
-        console.log('uncommited', response);
         this.uncommited_division = response;
       },
       error: () => {},
@@ -493,7 +490,6 @@ export class OpcrTargetComponent implements OnInit {
         for (let i of this.uncommited_division) {
           if (i.status == 0) {
             this.uncommited_division_boolean = true;
-            console.log('here');
             break;
           }
         }
@@ -507,7 +503,6 @@ export class OpcrTargetComponent implements OnInit {
       .get_uncommited_division(localStorage.getItem('currentYear'))
       .subscribe({
         next: (response: any) => {
-          console.log('uncommited', response);
           this.uncommited_division = response;
         },
         error: () => {},

@@ -115,7 +115,6 @@ export class IpcrTargetComponent implements OnInit {
   localStorage() {
     if (this.ipcrService.storageIsShow() == 1) {
       this.ipcrService.GetIPCRDetails();
-      console.log('getipcr', this.get_ipcrDetails);
       this.ipcrService.ViewGetDPCR_IPCR();
       setTimeout(() => {
         this.ipcrService.sortExcist();

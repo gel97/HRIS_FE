@@ -67,8 +67,6 @@ export class MfoService {
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
           });
-
-          console.log(this.mfo());
         },
         complete: () => {},
       });
@@ -102,8 +100,6 @@ export class MfoService {
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
           });
-
-          console.log("divisionMfo: ", this.mfoDivision());
         },
         complete: () => {},
       });
@@ -216,7 +212,6 @@ export class MfoService {
           this.GetDivisionMFOes();
         }
       } else {
-        //console.log("cancel")
       }
     } catch (error) {
       console.error('Error:', error);

@@ -144,7 +144,6 @@ export class LogsComponent implements OnInit {
       next: (response: any) => {
         this.fetch_office = response;
         this.fetch_office.push({officeId:'', officeNameShort: 'ALL OFFICE'})
-        console.log('data_fetch', this.fetch_office);
       },
       error: () => {},
       complete: () => {},

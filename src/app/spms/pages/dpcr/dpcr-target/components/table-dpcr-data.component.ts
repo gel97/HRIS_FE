@@ -385,7 +385,6 @@ export class TableDpcrDataComponent {
   }
 
   SetDpcr(item: any) {
-    console.log(item);
     this.setDpcr.emit(item);
   }
 
@@ -398,7 +397,6 @@ export class TableDpcrDataComponent {
   }
 
   testData() {
-    console.log(this.subtaskData);
   }
 
   setIndex(i: number, y: number) {

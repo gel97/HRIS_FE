@@ -24,7 +24,6 @@ export class ReportActualService {
     this.signatoriesService.get_signatories(typeId).subscribe({
       next: (response: any) => {
         this.signatories = response;
-        console.log('signatories return', this.signatories);
       },
       error: () => {},
       complete: () => {},
@@ -32,7 +31,6 @@ export class ReportActualService {
   }
 
   ReportActual(data: any) {
-    console.log('actual report', data);
     let title1 = localStorage.getItem('officeNameLong');
 
     switch (this.switchero) {

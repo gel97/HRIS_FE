@@ -32,7 +32,6 @@ export class UserLoginComponent implements OnInit {
       },
       error: (error: any) => {
         if (error.status == 400) {
-          console.log(error);
           this.loading = false;
           const Toast = Swal.mixin({
             toast: true,
@@ -64,7 +63,6 @@ export class UserLoginComponent implements OnInit {
           },
           error: (error: any) => {
             if (error.status == 400) {
-              console.log(error);
               this.loading = false;
               const Toast = Swal.mixin({
                 toast: true,

@@ -170,7 +170,6 @@ export class SchedulerComponent implements OnInit {
   constructor(public dataService: Service) {}
 
   ngOnInit(): void {
-    console.log(this.otsService.ots().data);
   }
 
   onOptionChanged(e: any) {
@@ -180,7 +179,6 @@ export class SchedulerComponent implements OnInit {
   }
 
   viewOtsModal(e: any) {
-    console.log(e);
     const startDate = e.cellData.startDate;
     if (!this.isValidAppointmentDate(startDate)) {
       this.notifyDisableDate();
