@@ -192,7 +192,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                   class="col-12 text-justify"
                                 >
                                   <i class="bx bx-chevron-right"></i
-                                  ><strong>{{ b.qtyOpcr }}</strong
+                                  ><strong>{{ b.qtyOpcr }}{{b.qtyUnit? '%':''}} </strong
                                   >&nbsp;{{ b.indicator }}
                                 </div>
                                 <ng-template #LoadingSI>
@@ -300,7 +300,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                   class="col-12 text-justify"
                                 >
                                   <i class="bx bx-chevron-right"></i
-                                  ><strong>{{ b.qtyOpcr }}</strong
+                                  ><strong>{{ b.qtyOpcr }}{{b.qtyUnit? '%':''}}</strong
                                   >&nbsp;{{ b.indicator }}
                                 </div>
                                 <ng-template #LoadingSI>
@@ -388,7 +388,7 @@ export class CanvasTargetDpcrMfoesComponent {
     if (this.search === '' || this.search === null) {
       this.search = null;
     }
-    if(this.dpcrService.isCommonDivision() > 0){
+    if(this.dpcrService.isCommonDivision() >= 0){
       this.dpcrService.GetDpcrDataSearchMfoes(this.search);
     }else{
       this.dpcrService.GetDpcrDataMfoesDivision(this.search);
@@ -406,7 +406,17 @@ export class CanvasTargetDpcrMfoesComponent {
   SetDpcrDataObj(mfoData: any, siData: any, indexMfo: number, indexSI: number) {
     siData.indexMfo = indexMfo;
     siData.indexSI = indexSI;
-    siData.qtyUnit = 0;
+    //siData.qtyUnit = 0;
+
+    if(siData.qtyUnit){
+      siData.qty = siData.qtyOpcr
+      siData.qty5 = siData.qtyOpcr5
+      siData.qty4 = siData.qtyOpcr4
+      siData.qty3 = siData.qtyOpcr3
+      siData.qty2 = siData.qtyOpcr2
+      siData.qty1 = siData.qtyOpcr1
+    }
+
     this.setDpcrDataObj.emit({ mfoData, siData });
   }
 

@@ -577,7 +577,6 @@ export class DpcrService {
 
       if (deleteData) {
          this.GetDpcrData();
-         this.GetDpcrDataMfoesDivision(null);
       } else {
       }
     } catch (error) {
