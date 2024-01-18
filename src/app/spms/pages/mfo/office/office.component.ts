@@ -98,7 +98,6 @@ export class OfficeComponent implements OnInit {
     this.mfoService
       .CheckMfoIfExist(this.mfoData)
       .subscribe((isExist: boolean) => {
-        console.log(this.isExistMfo);
       });
   }
 

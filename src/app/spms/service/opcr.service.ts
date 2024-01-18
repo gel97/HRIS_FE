@@ -286,7 +286,6 @@ export class OpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
-          console.log('edited', response);
           this.opcr.mutate((a) => {
             a.isLoading = true;
             a.error = false;
@@ -314,7 +313,6 @@ export class OpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
-          console.log('edited', response);
           this.opcr.mutate((a) => {
             a.isLoading = true;
             a.error = false;

@@ -20,7 +20,6 @@ export class OpcrActualComponent implements OnInit {
 
   changeCount() {
     this.count.set(5);
-    console.log(this.count());
   }
 
   opcrMfoes: any = this.opcrService.opcrDetails;
@@ -35,7 +34,6 @@ export class OpcrActualComponent implements OnInit {
       this.isLoading = false;
       this.notEmpty = this.opcrMfoes().data.length > 0;
     }, 1000);
-    // console.log(this.opcrService.storage)
   }
 
   get opcrMfoesData(): { [key: number]: any[] } {

@@ -77,7 +77,6 @@ export class DpcrActualComponent implements OnInit {
   }
 
   ReportDPCR() {
-    console.log(this.dpcrMfoes.data);
     this.reportActualService.triggerSwitch(3);
     this.reportActualService.ReportActual(this.dpcrMfoes.data);
   }

@@ -381,10 +381,6 @@ export class ModalOtsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialDate();
-    console.log("otsMfoes:", this.otsMfoes);
-    console.log("ots:", this.ots);
-
-
   }
   Submit() {
     
@@ -393,13 +389,10 @@ export class ModalOtsComponent implements OnInit {
     this.ots.dateDone = this.otsMfoes.dateDone;
 
     this.submit.emit(this.ots);
-    //this.handleStatus();
-    console.log(this.ots);
   }
 
   setOtsData(mfoData: any) {
     this.ots = mfoData;
-    console.log(this.ots);
   }
 
   setQuality(rating: number) {
@@ -414,14 +407,7 @@ export class ModalOtsComponent implements OnInit {
     const currentDate = new Date();
     currentDate.setHours(16, 0, 0, 0);
     const formattedDate = currentDate.toISOString().slice(0, 16);
-
-    // this.ots.endDate = formattedDate;
-    // this.ots.startDate = formattedDate;
     this.otsMfoes.dateDone = formattedDate;
-
-    //this.ots.endDate = this.otsMfoes.endDate;
-    //this.ots.startDate = '2023-11-23T11:18';
-    //console.log(this.ots)
   }
 
   handleStatus() {

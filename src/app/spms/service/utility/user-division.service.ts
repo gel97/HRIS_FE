@@ -85,8 +85,6 @@ export class UserDivisionService {
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
           });
-
-          console.log(this.empNoDiv());
         },
         complete: () => {},
       });
@@ -125,8 +123,6 @@ export class UserDivisionService {
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
           });
-
-          console.log(this.empDiv());
         },
         complete: () => {},
       });
@@ -204,7 +200,6 @@ export class UserDivisionService {
       if (deleteData) {
         this.PostEmpDiv();
       } else {
-        //console.log("cancel")
       }
     } catch (error) {
       console.error('Error:', error);
@@ -224,7 +219,6 @@ export class UserDivisionService {
           this.alertService.save();
         },
         error: (error) => {
-          console.log(error)
           if(error.status === 409){
             this.alertService.customError("Data already exist");
           }
@@ -271,7 +265,6 @@ export class UserDivisionService {
       if (deleteData) {
         this.GetOfficeDivision();
       } else {
-        //console.log("cancel")
       }
     } catch (error) {
       console.error('Error:', error);
@@ -342,7 +335,6 @@ export class UserDivisionService {
       if (deleteData) {
         this.PostEmpDiv();
       } else {
-        //console.log("cancel")
       }
     } catch (error) {
       console.error('Error:', error);

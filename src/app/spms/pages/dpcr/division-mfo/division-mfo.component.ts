@@ -85,11 +85,6 @@ export class DivisionMfoComponent implements OnInit {
   }
 
   CheckMfoIfExist() {
-    // this.mfoService
-    //   .CheckMfoIfExist(this.mfoData)
-    //   .subscribe((isExist: boolean) => {
-    //     console.log(this.isExistMfo);
-    //   });
   }
 
   searchMfoDivision() {

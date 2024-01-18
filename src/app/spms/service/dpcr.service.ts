@@ -78,7 +78,6 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log('dpcr: ', this.dpcr());
         },
       });
   }
@@ -113,7 +112,6 @@ export class DpcrService {
   }
 
   EditDpcr(dpcr: any) {
-    console.log(dpcr);
     this.http
       .put<any[]>(api + this.url.put_dpcr(), dpcr, { responseType: `json` })
       .subscribe({
@@ -163,7 +161,6 @@ export class DpcrService {
 
   AddDpcrData(dpcrData: any) {
     this.dpcr.mutate((a) => (a.isLoadingSave = true));
-    console.log(dpcrData);
     dpcrData.dpcrId = this.storageDpcrId();
 
     this.http
@@ -182,7 +179,6 @@ export class DpcrService {
         },
         error: (error: any) => {
           if (error.status == 409) {
-            console.log(error);
             this.alertService.customError(
               `Quantity ${dpcrData.qty} must not be greater than ${error.error.qtyRemainingCurrent}`
             );
@@ -233,7 +229,6 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log('dpcrData: ', this.dpcrData());
           if(this.isCommonDivision() >= 0){
             this.GetDpcrDataMfoes();
           }else{
@@ -244,14 +239,12 @@ export class DpcrService {
   }
 
   EditDpcrData(dpcrData: any) {
-    console.log(dpcrData);
     this.http
       .put<any[]>(api + this.url.put_dpcr_data(), dpcrData, {
         responseType: `json`,
       })
       .subscribe({
         next: (response: any = {}) => {
-          console.log(response);
           this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI].qtyOpcr =
             response.qtyOpcr;
           this.dpcrData().data[dpcrData.indexMfo].si[
@@ -261,13 +254,9 @@ export class DpcrService {
             dpcrData.indexSI
           ].qtyRemaining = response.qtyRemaining;
           this.alertService.save();
-          console.log(
-            this.dpcrData().data[dpcrData.indexMfo].si[dpcrData.indexSI]
-          );
         },
         error: (error: any) => {
           if (error.status == 409) {
-            console.log(error);
             this.alertService.customError(
               `Quantity ${dpcrData.qty} must not be greater than ${error.error.qtyRemaining}`
             );
@@ -328,7 +317,6 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log('dpcrDataMfoes: ', this.dpcrData());
         },
       });
   }
@@ -371,7 +359,6 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log('dpcrDataMfoes: ', this.dpcrData());
         },
       });
   }
@@ -407,7 +394,6 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log('dpcrDataMfoes: ', this.dpcrData());
         },
       });
   }
@@ -521,7 +507,6 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log('dpcrDataSubtask: ', this.dpcrDataSubtask());
         },
       });
   }
@@ -565,7 +550,6 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log('dpcrDataSearchMfoes: ', this.dpcrData());
         },
       });
   }

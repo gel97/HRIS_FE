@@ -97,7 +97,6 @@ export class IpcrService {
           this.alertService.error();
         },
         complete: () => {
-          console.log('ipcrDataActual: ', this.ipcrDataActual());
         },
       });
   }
@@ -190,12 +189,9 @@ export class IpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
-          console.log('error', response);
           this.GetIPCRs(data.year, data.divisionId, data.userId);
         },
         error: (error: any) => {
-          console.log(error instanceof HttpErrorResponse);
-          console.log('error return', error.status);
           if (error.status == 409) {
             const Toast = Swal.mixin({
               toast: true,
