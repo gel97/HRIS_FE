@@ -23,7 +23,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-            <ng-container *ngIf="dpcrSIData.qtyUnit; else showQty">
+            <ng-container *ngIf="dpcrSIData.qtyUnit === 1; else showQty">
               <div><h3>Quantity: <strong>{{dpcrSIData.qty}}%</strong></h3></div>
             </ng-container>
             <ng-template #showQty>
@@ -47,9 +47,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     type="radio"
                     name="inlineRadio1Options"
                     id="inline1Radio1"
-                    value="0"
-                    [checked]="dpcrSIData.qtyUnit === 0 ? true : false"
-                    (change)="onChangeUnit($event)"
+                    [value]="false"
+                    [(ngModel)]="isPrcntUnit"
                   />
                   <label class="form-check-label" for="inline1Radio1"
                     >Numeric</label
@@ -59,13 +58,12 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="inlineRadio1Options"
-                    id="inline1Radio2"
-                    value="1"
-                    [checked]="dpcrSIData.qtyUnit === 1 ? true : false"
-                    (change)="onChangeUnit($event)"
+                    name="inlineRadio2Options"
+                    id="inline2Radio2"
+                    [value]="true"
+                    [(ngModel)]="isPrcntUnit"
                   />
-                  <label class="form-check-label" for="inline1Radio2"
+                  <label class="form-check-label" for="inline2Radio2"
                     >Percentage</label
                   >
                 </div>
@@ -252,6 +250,7 @@ export class ModalDpcrDataComponent{
 
   quantity: any = {};
   isEmptyUnit: boolean = false;
+  isPrcntUnit:boolean = false;
 
   @Input() dpcrMFOData: any;
   @Input() dpcrSIData: any;
@@ -260,20 +259,17 @@ export class ModalDpcrDataComponent{
   @Output() submit = new EventEmitter<any>();
 
   Submit() {
-    if(this.dpcrSIData.qtyUnit !== null){
-      this.isEmptyUnit = false;
-
+    if(this.isPrcntUnit){
+      this.dpcrSIData.qtyUnit = 1;
       this.submit.emit('submit');
       this.handleStatus();
     }else{
-      this.isEmptyUnit = true;
-    }
-  }
+      this.dpcrSIData.qtyUnit = 0;
+      this.submit.emit('submit');
+      this.handleStatus();
 
-  onChangeUnit(event: Event) {
-    this.isEmptyUnit = false;
-    const target = event.target as HTMLInputElement;
-    this.dpcrSIData.qtyUnit = target.value;
+    }
+
   }
 
   handleStatus() {

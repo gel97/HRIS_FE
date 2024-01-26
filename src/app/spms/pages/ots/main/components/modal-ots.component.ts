@@ -33,11 +33,13 @@ import { OtsService } from 'src/app/spms/service/ots.service';
           </div>
           <div class="modal-body row">
             <ng-container *ngIf="otsMfoes.errorMessage; else showOts">
-              <div class="alert alert-danger" role="alert">{{otsMfoes.errorMessage}}</div>
-              <app-warning/>
+              <div class="alert alert-danger" role="alert">
+                {{ otsMfoes.errorMessage }}
+              </div>
+              <app-warning />
             </ng-container>
             <ng-template #showOts>
-              <div [ngClass]="ots.mfo === undefined? 'col-12':'col-6'">
+              <div [ngClass]="ots.mfo === undefined ? 'col-12' : 'col-6'">
                 <strong>LIST OF MFO</strong>
                 <div class="table-responsive mt-2">
                   <table class="table table-bordered">
@@ -61,11 +63,18 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                           </td>
                         </tr>
                         <ng-container *ngFor="let b of a.si; let y = index">
-                          <ng-container *ngIf="b.isSubTask; else showNotSubtask">
+                          <ng-container
+                            *ngIf="b.isSubTask; else showNotSubtask"
+                          >
                             <ng-container *ngFor="let c of b.st; let z = index">
                               <tr>
                                 <td></td>
-                                <td><strong class="text-secondaary">{{i+1}}.{{z+1}} {{ c.stMfo }}</strong></td>
+                                <td>
+                                  <strong class="text-secondaary"
+                                    >{{ i + 1 }}.{{ z + 1 }}
+                                    {{ c.stMfo }}</strong
+                                  >
+                                </td>
                                 <td></td>
                               </tr>
                               <tr>
@@ -75,13 +84,15 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                     class="bx bx-chevron-right cursor-pointer text-secondary"
                                   ></i>
                                   <strong class="text-primary"
-                                    ><u>{{ c.qty }}{{ b.qtyUnit ? '%':''}}</u></strong
+                                    ><u
+                                      >{{ c.qty }}{{ b.qtyUnit ? '%' : '' }}</u
+                                    ></strong
                                   >
                                   {{ c.stIndicator }}
                                 </td>
                                 <td>
-                                <button
-                                  (click)="
+                                  <button
+                                    (click)="
                                     setOtsData({
                                       mfo: c.stMfo,
                                       mfoId: c.subTaskId,
@@ -107,13 +118,14 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                       timely1: c.timely1,
                                     })
                                   "
-                                  class="btn btn-primary"
-                                >
-                                  <span class="tf-icons bx bx bx-plus"></span>
-                                </button>                          
+                                    class="btn btn-primary"
+                                  >
+                                    <span class="tf-icons bx bx bx-plus"></span>
+                                  </button>
+                                </td>
                               </tr>
                             </ng-container>
-                          </ng-container >
+                          </ng-container>
                           <ng-template #showNotSubtask>
                             <tr>
                               <td></td>
@@ -122,7 +134,9 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                   class="bx bx-chevron-right cursor-pointer text-secondary"
                                 ></i>
                                 <strong class="text-primary"
-                                  ><u>{{ b.qty }}{{ b.qtyUnit ? '%':''}}</u></strong
+                                  ><u
+                                    >{{ b.qty }}{{ b.qtyUnit ? '%' : '' }}</u
+                                  ></strong
                                 >
                                 {{ b.indicator }}
                               </td>
@@ -169,7 +183,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
               <div class="col-6" *ngIf="ots.mfo !== undefined">
                 <strong>OTS FORM</strong>
                 <div class="card mb-4">
-                  <div class="card-body">
+                  <div class="card-body" *ngIf="!isGroupOts; else ShowGroup">
                     <div class="card bg-primary text-white mb-2">
                       <div class="card-body p-3">
                         <h5 class="card-title text-white">MFO</h5>
@@ -181,7 +195,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         <h5 class="card-title text-white">SUCCESS INDICATOR</h5>
                         <p class="card-text">
                           <strong class="text-white"
-                            ><u>{{ ots.qty }}{{ ots.qtyUnit ? '%':''}}</u> 
+                            ><u>{{ ots.qty }}{{ ots.qtyUnit ? '%' : '' }}</u>
                           </strong>
                           {{ ots.indicator }}
                         </p>
@@ -339,12 +353,89 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         id="html5-datetime-local-input"
                         min="2023-11-1T08:00 | date:'yyyy-MM-ddTHH:mm'"
                       />
-                    </div>                 
+                    </div>
+                    <div class="card bg-warning text-white mb-3">
+                      <div class="card-body">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="defaultCheck1"
+                            [(ngModel)]="isGroupOts"
+                            (ngModelChange)="getGroupUsers()"
+                          />
+                          <label class="form-check-label" for="defaultCheck1">
+                            <u>Make a group OTS</u>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                  <ng-template #ShowGroup>
+                    <div class="card-body">
+                      <div *ngIf="otsGetListUserMfo.isLoading; else ShowUsers">
+                        Loading ...
+                      </div>
+                      <ng-template #ShowUsers>
+                        <div
+                          (click)="isGroupOts = false"
+                          class="cursor-pointer text-primary"
+                        >
+                          <i class="bx bx-arrow-back"></i> Back
+                        </div>
+                        <div class="table-responsive mt-2">
+                          <table class="table table-sm">
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Employee</th>
+                                <th>Division</th>
+                              </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                              <tr
+                                *ngFor="
+                                  let a of otsGetListUserMfo.data;
+                                  let i = index
+                                "
+                              >
+                                <td>
+                                  <div class="form-check">
+                                    <input
+                                      class="form-check-input"
+                                      type="checkbox"
+                                      [(ngModel)]="a.hasOts"
+                                      id="defaultCheck2"
+                                      (ngModelChange)="checkUser(a)"
+                                    />
+                                    <label
+                                      class="form-check-label"
+                                      for="defaultCheck2"
+                                    >
+                                    </label>
+                                  </div>
+                                </td>
+                                <td>
+                                  <strong>{{ i + 1 }}</strong>
+                                </td>
+                                <td>
+                                  {{ a.fullNameFirst }}
+                                </td>
+                                <td>
+                                  {{ a.divisionName }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </ng-template>
                 </div>
               </div>
             </ng-template>
-
           </div>
           <div class="modal-footer">
             <button
@@ -354,7 +445,12 @@ import { OtsService } from 'src/app/spms/service/ots.service';
             >
               Close
             </button>
-            <button *ngIf="ots.mfo !== undefined" type="button" (click)="Submit()" class="btn btn-primary">
+            <button
+              *ngIf="ots.mfo !== undefined"
+              type="button"
+              (click)="Submit()"
+              class="btn btn-primary"
+            >
               Submit OTS
             </button>
           </div>
@@ -371,8 +467,13 @@ export class ModalOtsComponent implements OnInit {
   otsService = inject(OtsService);
 
   ots: any = {};
+  isGroupOts: boolean = false;
 
   quantity: any = {};
+
+  otsGetListUserMfo = this.otsService.otsGetListUserMfo();
+
+  otsGroup: any = [];
 
   @Input() otsMfoes: any;
   @Input() error: any;
@@ -383,12 +484,34 @@ export class ModalOtsComponent implements OnInit {
     this.initialDate();
   }
   Submit() {
-    
     this.ots.startDate = this.otsMfoes.startDate;
     this.ots.endDate = this.otsMfoes.endDate;
     this.ots.dateDone = this.otsMfoes.dateDone;
 
     this.submit.emit(this.ots);
+  }
+
+  checkUser(data:any){
+    console.log("data ", data)
+
+    console.log(this.otsGetListUserMfo.data)
+    if(data.hasOts){
+      this.otsGroup.push(data);
+      console.log("otsGroup ", this.otsGroup)
+    }else{
+      this.otsGroup.splice(this.otsGroup.findIndex((v:any) => v.eic === data.eic), 1);
+      console.log("otsGroup Remove ", this.otsGroup)
+    }
+  }
+
+  removeUserToGroup(){
+    
+  }
+
+  getGroupUsers() {
+    console.log('e:', this.ots);
+    this.ots.dateDone = this.otsMfoes.dateDone;
+    this.otsService.PostOtsGetListUserMfo(this.ots);
   }
 
   setOtsData(mfoData: any) {

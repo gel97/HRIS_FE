@@ -120,6 +120,7 @@ export class SpmsApiService {
   get_ots_request_summary = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
   put_ots_request_overRide = () => `/tPMOts/OTS_Request/OverRide`;
   put_ots_request_approve = () => `/tPMOts/OTS_Request/Approve`;
+  post_ots_get_list_user_mfo = () => `/tPMOts/get_list_user_mfo`;
 
 
   get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
