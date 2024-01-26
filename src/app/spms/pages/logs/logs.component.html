@@ -91,60 +91,66 @@
 </div>
 <br>
 <div *ngIf="flag" class="card">
-    <div class="table-responsive text-nowrap">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th>OFFICE</th>
-                    <th>USER</th>
-                    <th>DESCRIPTION</th>
-                    <th>MODIFIED</th>
-                    <th>DATE</th>
-                </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-                <tr *ngFor="let y of fetch_logs_complete; let i = index">
-                    <td> <strong>{{(page.pageNumber -1) * (page.pageSize) + (i+1) }}.</strong></td>
-                    <td>
-                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                            class="avatar avatar-xs pull-up" [title]="y.fullNameFirst">
-                            <!-- <img [src]="profilePicture.imageDataURL? profilePicture.imageDataURL: './assets/img/avatars/user_picture.png'"
-                                alt="Avatar" class="rounded-circle" /> -->
-                            <img [src]="y.imageExtracted? y.imageExtracted: './assets/img/avatars/user_picture.png'"
-                                alt="Avatar" class="rounded-circle" />
-                        </li>
-                    </td>
-                    <td>{{y.officeNameShort}}</td>
-                    <td>{{y.fullNameFirst}}</td>
-                    <td><span class="badge" [ngClass]="
-                        y.methodId == '1'
-                          ? 'bg-label-success'
-                          : y.methodId == '2'
-                          ? 'bg-label-primary'
-                          : y.methodId == '3'
-                          ? 'bg-label-danger'
-                          : y.methodId == '4'
-                          ? 'bg-label-danger'
-                          :''
-                      ">{{y.method}}</span></td>
-                    <td>{{y.description}}&nbsp;<span>Table</span></td>
-                    <td>{{y.transDate | date : "MMM. dd, yyyy h:mm a"}}</td>
-                </tr>
-            </tbody>
-            <tfoot class="table-border-bottom-0">
-                <tr>
-                    <th colspan="8">
-                        <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)"
-                            [length]="page.totalItems" [pageSize]="page.pageSize" [disabled]="disabled"
-                            [showFirstLastButtons]="showFirstLastButtons"
-                            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
-                            [pageIndex]="page.pageNumber - 1 " aria-label="Select page">
-                        </mat-paginator>
-                    </th>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+    <ng-container *ngIf="!loading; else logsSkeletonLoading">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>OFFICE</th>
+                        <th>USER</th>
+                        <th>DESCRIPTION</th>
+                        <th>MODIFIED</th>
+                        <th>DATE</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    <tr *ngFor="let y of fetch_logs_complete; let i = index">
+                        <td> <strong>{{(page.pageNumber -1) * (page.pageSize) + (i+1) }}.</strong></td>
+                        <td>
+                            <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                                class="avatar avatar-xs pull-up" [title]="y.fullNameFirst">
+                                <!-- <img [src]="profilePicture.imageDataURL? profilePicture.imageDataURL: './assets/img/avatars/user_picture.png'"
+                                    alt="Avatar" class="rounded-circle" /> -->
+                                <img [src]="y.imageExtracted? y.imageExtracted: './assets/img/avatars/user_picture.png'"
+                                    alt="Avatar" class="rounded-circle" />
+                            </li>
+                        </td>
+                        <td>{{y.officeNameShort}}</td>
+                        <td>{{y.fullNameFirst}}</td>
+                        <td><span class="badge" [ngClass]="
+                            y.methodId == '1'
+                              ? 'bg-label-success'
+                              : y.methodId == '2'
+                              ? 'bg-label-primary'
+                              : y.methodId == '3'
+                              ? 'bg-label-danger'
+                              : y.methodId == '4'
+                              ? 'bg-label-danger'
+                              :''
+                          ">{{y.method}}</span></td>
+                        <td>{{y.description}}&nbsp;<span>Table</span></td>
+                        <td>{{y.transDate | date : "MMM. dd, yyyy h:mm a"}}</td>
+                    </tr>
+                </tbody>
+                <tfoot class="table-border-bottom-0">
+                    <tr>
+                        <th colspan="8">
+                            <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)"
+                                [length]="page.totalItems" [pageSize]="page.pageSize" [disabled]="disabled"
+                                [showFirstLastButtons]="showFirstLastButtons"
+                                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                [hidePageSize]="hidePageSize" [pageIndex]="page.pageNumber - 1 "
+                                aria-label="Select page">
+                            </mat-paginator>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </ng-container>
+    <ng-template #logsSkeletonLoading>
+        <app-logs-skeleton></app-logs-skeleton>
+    </ng-template>
 </div>

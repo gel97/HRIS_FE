@@ -79,23 +79,23 @@ export class OtsRequestComponent implements OnInit {
       },
       error: () => {},
       complete: () => {
-        this.get_profile_picture(this.ots_request.items);
+        // this.get_profile_picture(this.ots_request.items);
       },
     });
   }
 
-  get_profile_picture(data: any) {
-    data.map((i: any, index: number) => {
-      this.ProfilePicture.get_profile_picture(i.userId).subscribe({
-        next: (reponse: any) => {
-          data[index].imageExtracted = reponse.imageDataURL;
-        },
-        error: (error: any) => {},
-        complete: () => {},
-      });
-    });
-    return data;
-  }
+  // get_profile_picture(data: any) {
+  //   data.map((i: any, index: number) => {
+  //     this.ProfilePicture.get_profile_picture(i.userId).subscribe({
+  //       next: (reponse: any) => {
+  //         data[index].imageExtracted = reponse.imageDataURL;
+  //       },
+  //       error: (error: any) => {},
+  //       complete: () => {},
+  //     });
+  //   });
+  //   return data;
+  // }
 
   get_ots_request_summary() {
     this.OtsRequestService.get_ots_request_summary().subscribe({

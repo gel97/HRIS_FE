@@ -10,7 +10,7 @@ import { api } from '../connection';
 })
 export class AuthService {
   readonly APIUrl_login = 'https://davnorsystems.gov.ph/hrisAPI/api/Auth';
-  readonly APIUrl_HRIS =  api + '/auth/login';
+  readonly APIUrl_HRIS = api + '/auth/login';
 
   private userPayload: any;
   constructor(private http: HttpClient, private Router: Router) {
@@ -59,12 +59,17 @@ export class AuthService {
     // const expire_token = new Date(get_expire_token!);
 
     // return !!localStorage.getItem('token') && expire_token >= datenow;
-    return !!localStorage.getItem('token')
+    return !!localStorage.getItem('token');
   }
 
   signout() {
     localStorage.clear();
     location.reload();
+    this.Router.navigate(['user-login']);
+  }
+
+  expiredToken() {
+    localStorage.clear();
     this.Router.navigate(['user-login']);
   }
 
