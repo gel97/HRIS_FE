@@ -155,6 +155,27 @@ export class OtsService {
       });
   }
 
+  AddGroupOts(data: any) {
+    this.ots.mutate((a) => (a.isLoading = true));
+    this.http
+      .post<any[]>(api + this.url.post_ots_group(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.ots.mutate((a) => (a.data = response));
+          this.ots.mutate((a) => (a.isLoading = false));
+        },
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.GetOts();
+          this.alertService.save();
+        },
+      });
+  }
+
   EditOts(data: any) {
     this.http
       .put<any[]>(api + this.url.put_ots(), data)

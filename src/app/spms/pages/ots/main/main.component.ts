@@ -15,9 +15,4 @@ export class MainComponent implements OnInit{
     this.otsService.GetOts();
     this.otsService.GetCheckUserOpenIpcr();
   }
-
-
-  AddOts(data:any){
-    this.otsService.AddOts(data);
-  }
 }

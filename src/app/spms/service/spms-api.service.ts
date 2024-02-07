@@ -115,13 +115,12 @@ export class SpmsApiService {
   get_ots = () => `/tPMOts`;
   get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
 
-
   post_ots_request = () => `/tPMOts/OtsRequest`;
   get_ots_request_summary = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
   put_ots_request_overRide = () => `/tPMOts/OTS_Request/OverRide`;
   put_ots_request_approve = () => `/tPMOts/OTS_Request/Approve`;
   post_ots_get_list_user_mfo = () => `/tPMOts/get_list_user_mfo`;
-
+  post_ots_group = () => `/tPMOts/GroupOts`;
 
   get_officedivision = (officeId: any) => `/tPMOfficeDivisions/${officeId}`;
   post_officedivision = () => `/tPMOfficeDivisions`;

@@ -384,6 +384,19 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         >
                           <i class="bx bx-arrow-back"></i> Back
                         </div>
+                        <div class="form-check mt-2">
+                          <input
+                            class="form-check-input cursor-pointer"
+                            type="checkbox"
+                            value=""
+                            id="checkAll"
+                            [(ngModel)]="isCheckAll"
+                            (ngModelChange)="checkAllUser()"
+                          />
+                          <label class="form-check-label cursor-pointer" for="checkAll">
+                            Select All
+                          </label>
+                        </div>
                         <div class="table-responsive mt-2">
                           <table class="table table-sm">
                             <thead>
@@ -404,11 +417,11 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                 <td>
                                   <div class="form-check">
                                     <input
-                                      class="form-check-input"
+                                      class="form-check-input cursor-pointer"
                                       type="checkbox"
                                       [(ngModel)]="a.hasOts"
-                                      id="defaultCheck2"
-                                      (ngModelChange)="checkUser(a)"
+                                      (ngModelChange)="checkUser()"
+                                      [id]="i"
                                     />
                                     <label
                                       class="form-check-label"
@@ -421,7 +434,13 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                   <strong>{{ i + 1 }}</strong>
                                 </td>
                                 <td>
-                                  {{ a.fullNameFirst }}
+                                <label
+                                      class="form-check-label cursor-pointer"
+                                      [for]="i"
+                                    >
+                                    {{ a.fullNameFirst }}
+                                    </label>
+                                  
                                 </td>
                                 <td>
                                   {{ a.divisionName }}
@@ -468,6 +487,7 @@ export class ModalOtsComponent implements OnInit {
 
   ots: any = {};
   isGroupOts: boolean = false;
+  isCheckAll: boolean = false;
 
   quantity: any = {};
 
@@ -483,29 +503,49 @@ export class ModalOtsComponent implements OnInit {
   ngOnInit(): void {
     this.initialDate();
   }
+
   Submit() {
     this.ots.startDate = this.otsMfoes.startDate;
     this.ots.endDate = this.otsMfoes.endDate;
     this.ots.dateDone = this.otsMfoes.dateDone;
 
-    this.submit.emit(this.ots);
-  }
+    if(this.isGroupOts){
+      this.fiterGroupOts();
+      this.otsService.AddGroupOts({ots:this.ots, users: this.otsGroup})
 
-  checkUser(data:any){
-    console.log("data ", data)
-
-    console.log(this.otsGetListUserMfo.data)
-    if(data.hasOts){
-      this.otsGroup.push(data);
-      console.log("otsGroup ", this.otsGroup)
     }else{
-      this.otsGroup.splice(this.otsGroup.findIndex((v:any) => v.eic === data.eic), 1);
-      console.log("otsGroup Remove ", this.otsGroup)
+      this.otsService.AddOts(this.ots);
     }
   }
 
-  removeUserToGroup(){
-    
+  fiterGroupOts(){
+    this.otsGroup = [];
+    this.otsGetListUserMfo.data.map((a:any) => {
+      if(a.hasOts){
+        this.otsGroup.push(a);
+      }
+    })
+  }
+
+  checkUser(){
+    let data = this.otsGetListUserMfo.data.find((a:any)=> a.hasOts === false);
+    if(data){
+      this.isCheckAll = false;
+    }else{
+      this.isCheckAll = true;
+    }
+  }
+
+  checkAllUser(){    
+    if(this.isCheckAll){
+      this.otsGetListUserMfo.data.map((a:any)=>{
+        a.hasOts = true;
+      })
+    }else{
+      this.otsGetListUserMfo.data.map((a:any)=>{
+        a.hasOts = false;
+      })
+    }
   }
 
   getGroupUsers() {
