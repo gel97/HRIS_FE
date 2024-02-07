@@ -111,7 +111,11 @@ export class UtilityFocalComponent implements OnInit {
       return;
     }
     let data = this.offices.filter((obj: any = []) => {
-      return obj.officeNameShort.toLowerCase().indexOf(this.SearchOffice.toLowerCase()) > -1;
+      return (
+        obj.officeNameShort
+          .toLowerCase()
+          .indexOf(this.SearchOffice.toLowerCase()) > -1
+      );
     });
     this.offices = data;
   }
@@ -235,14 +239,12 @@ export class UtilityFocalComponent implements OnInit {
     if (data.officeId === null) {
       this.isAssignOffice = true;
       this.focalData.officeId = null;
-
-    }else{
-      this.focalData.officeId = data.officeId
+    } else {
+      this.focalData.officeId = data.officeId;
       this.isAssignOffice = true;
     }
   }
-  updateUserRole() {
-  }
+  updateUserRole() {}
   select_All_Role(completed: boolean) {
     // for (let i of this.role_list) {
     //   i.isCheck=true;

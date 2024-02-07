@@ -30,7 +30,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((err: any) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
-            this.Auth.signout();
+            this.Auth.expiredToken();
             // this.Router.navigate(['user-login']);
             const Toast = Swal.mixin({
               toast: true,

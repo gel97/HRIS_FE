@@ -70,29 +70,32 @@ export class OtsRequestComponent implements OnInit {
 
   get_ots_request() {
     this.page.officeRoleId = localStorage.getItem('officeRoleId');
+    if (this.page.officeRoleId == 'null') {
+      this.page.officeRoleId = 3;
+    }
     this.OtsRequestService.post_ots_request(this.page).subscribe({
       next: (response: any) => {
         this.ots_request = response;
       },
       error: () => {},
       complete: () => {
-       this.get_profile_picture(this.ots_request.items);
+        // this.get_profile_picture(this.ots_request.items);
       },
     });
   }
 
-  get_profile_picture(data: any) {
-    data.map((i: any, index: number) => {
-      this.ProfilePicture.get_profile_picture(i.userId).subscribe({
-        next: (reponse: any) => {
-          data[index].imageExtracted = reponse.imageDataURL;
-        },
-        error: (error: any) => {},
-        complete: () => {},
-      });
-    });
-    return data;
-  }
+  // get_profile_picture(data: any) {
+  //   data.map((i: any, index: number) => {
+  //     this.ProfilePicture.get_profile_picture(i.userId).subscribe({
+  //       next: (reponse: any) => {
+  //         data[index].imageExtracted = reponse.imageDataURL;
+  //       },
+  //       error: (error: any) => {},
+  //       complete: () => {},
+  //     });
+  //   });
+  //   return data;
+  // }
 
   get_ots_request_summary() {
     this.OtsRequestService.get_ots_request_summary().subscribe({
@@ -106,7 +109,7 @@ export class OtsRequestComponent implements OnInit {
 
   toApprove = [];
   Approve() {
-    this.toApprove = this.ots_request.filter((i: any) => i.isCheck);
+    this.toApprove = this.ots_request.items.filter((i: any) => i.isCheck);
     if (this.toApprove.length > 0) {
       this.OtsRequestService.put_ots_request_approve(this.toApprove).subscribe({
         next: () => {},

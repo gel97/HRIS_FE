@@ -20,6 +20,7 @@ export class LogsComponent implements OnInit {
   selectedOfficeId = '';
   pageEvent: PageEvent | undefined;
   search: any = '';
+  loading: boolean = false;
 
   pageSizeOptions = [5, 10, 50, 100];
 
@@ -143,7 +144,7 @@ export class LogsComponent implements OnInit {
     this.logsService.get_office().subscribe({
       next: (response: any) => {
         this.fetch_office = response;
-        this.fetch_office.push({officeId:'', officeNameShort: 'ALL OFFICE'})
+        this.fetch_office.push({ officeId: '', officeNameShort: 'ALL OFFICE' });
       },
       error: () => {},
       complete: () => {},
@@ -159,6 +160,7 @@ export class LogsComponent implements OnInit {
 
   post_all_logs() {
     this.flag = true;
+    this.loading = true;
     this.logsService.post_all_logs(this.page).subscribe({
       next: (response: any) => {
         this.fetch_logs_complete = response.items;
@@ -166,9 +168,8 @@ export class LogsComponent implements OnInit {
       },
       error: () => {},
       complete: () => {
-        this.fetch_logs_complete = this.get_profile_picture(
-          this.fetch_logs_complete
-        );
+        this.loading = false;
+        // this.get_profile_picture(this.fetch_logs_complete);
       },
     });
   }
@@ -177,18 +178,19 @@ export class LogsComponent implements OnInit {
     this.flag = false;
   }
 
-  get_profile_picture(data: any) {
-    data.map((i: any, index: number) => {
-      this.ProfilePicture.get_profile_picture(i.eic).subscribe({
-        next: (reponse: any) => {
-          data[index].imageExtracted = reponse.imageDataURL;
-        },
-        error: (error: any) => {},
-        complete: () => {},
-      });
-    });
-    return data;
-  }
+  // get_profile_picture(data: any) {
+  //   data.map((i: any, index: number) => {
+  //     this.ProfilePicture.get_profile_picture(i.eic).subscribe({
+  //       next: (reponse: any) => {
+  //         data[index].imageExtracted = reponse.imageDataURL;
+  //       },
+  //       error: (error: any) => {},
+  //       complete: () => {},
+  //     });
+  //   });
+  //   this.loading = false;
+  //   return data;
+  // }
 
   get_logs() {
     this.logsService.get_logs().subscribe({
@@ -197,7 +199,7 @@ export class LogsComponent implements OnInit {
       },
       error: () => {},
       complete: () => {
-        this.fetch_logs = this.get_profile_picture(this.fetch_logs);
+        // this.get_profile_picture(this.fetch_logs);
       },
     });
   }
