@@ -25,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton.component';
 import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components/opcr-target-skeleton.component';
 import { IpcrTargetSkeletonComponent } from './pages/ipcr/ipcr-target/components/ipcr-target-skeleton.component';
+import { LogsSkeletonComponent } from './pages/logs/components/logs-skeleton.component';
 import { MfoSkeletonComponent } from './pages/opcr/opcr-target/components/mfo-skeleton.component';
 import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
 import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
@@ -48,6 +49,7 @@ import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
     OpcrActualSkeletonComponent,
     OpcrTargetSkeletonComponent,
     IpcrTargetSkeletonComponent,
+    LogsSkeletonComponent,
     MfoSkeletonComponent,
     IpcrTargetComponent,
     IpcrActualComponent,

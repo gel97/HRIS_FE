@@ -70,9 +70,11 @@ export class SpmsApiService {
 
   post_dpcr = () => `/tPMDpcr`;
   put_dpcr = () => `/tPMDpcr`;
-  put_dpcr_setactive = (dpcrId: string, status:number) => `/tPMDpcr/setactive/${dpcrId}/${status}`;
+  put_dpcr_setactive = (dpcrId: string, status: number) =>
+    `/tPMDpcr/setactive/${dpcrId}/${status}`;
   delete_dpcr = (dpcrId: string) => `/tPMDpcr/${dpcrId}`;
-  get_dpcr = (year:number,divisionId: string) => `/tPMDpcr/list/${year}/${divisionId}`;
+  get_dpcr = (year: number, divisionId: string) =>
+    `/tPMDpcr/list/${year}/${divisionId}`;
 
   post_dpcr_data = () => `/tPMDpcrData`;
   put_dpcr_data = () => `/tPMDpcrData`;
@@ -116,7 +118,8 @@ export class SpmsApiService {
   get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
 
   post_ots_request = () => `/tPMOts/OtsRequest`;
-  get_ots_request_summary = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
+  get_ots_request_summary = () =>
+    `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
   put_ots_request_overRide = () => `/tPMOts/OTS_Request/OverRide`;
   put_ots_request_approve = () => `/tPMOts/OTS_Request/Approve`;
   post_ots_get_list_user_mfo = () => `/tPMOts/get_list_user_mfo`;
@@ -158,6 +161,8 @@ export class SpmsApiService {
   get_signatories = (typeId: any, officeId: any, divisionId: any) =>
     `/tPMSignatories/${typeId}/${officeId}/${divisionId}`;
 
-  get_logs = () => `/tPMLogs`
+  get_logs = () => `/tPMLogs`;
   post_all_logs = () => `/tPMLogs/LogsComplete`;
+
+  post_print_mpor = () => `/tPMIpcrDatas/PrintMPOR`;
 }

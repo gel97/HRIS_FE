@@ -45,10 +45,7 @@ export class PdfService {
     return null;
   };
 
-  async reportTarget(
-    data: any = [],
-    report:any = {}
-  ) {
+  async reportTarget(data: any = [], report: any = {}) {
     let _pageOrientation = report.isPortrait ? 'portrait' : 'landscape';
 
     const def = {
@@ -60,19 +57,19 @@ export class PdfService {
               {
                 stack: [
                   {
-                    text:'',
+                    text: '',
                     fontSize: 5,
                     alignment: 'center',
                   },
                   {
-                    text:report.title1,
-                    fontSize: 16,
+                    text: report.title1,
+                    fontSize: 13,
                     bold: true,
                     alignment: 'center',
                   },
                   {
                     text: report.title2,
-                    fontSize: 14, 
+                    fontSize: 11,
                     bold: true,
                     alignment: 'center',
                   },
@@ -93,7 +90,6 @@ export class PdfService {
     const pdfDoc = this.pdfMake.createPdf(def);
     //pdfDoc.print();
     pdfDoc.open();
-
   }
 
   getBase64ImageFromURL(url: string) {
