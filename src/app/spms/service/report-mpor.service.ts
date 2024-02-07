@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PdfService } from 'src/app/spms/service/pdf.service';
 import { SignatoriesService } from './signatories.service';
+import { HttpClient } from '@angular/common/http';
+import { SpmsApiService } from './spms-api.service';
+import { api } from 'src/app/connection';
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +11,18 @@ import { SignatoriesService } from './signatories.service';
 export class ReportMporService {
   constructor(
     private reportService: PdfService,
-    private signatoriesService: SignatoriesService
+    private signatoriesService: SignatoriesService,
+    private http: HttpClient,
+    private url: SpmsApiService
   ) {}
 
-  ReportMPOR() {
+  post_print_mpor(data: any) {
+    return this.http.post<any[]>(api + this.url.post_print_mpor(), data, {
+      responseType: `json`,
+    });
+  }
+
+  ReportMPOR(strategic: any, core: any, support: any) {
     let content: any = [];
     let tableBody: any = [];
     let title1 = 'PROVINCIAL BLA BLA BLA OFFICE';
@@ -29,11 +40,19 @@ export class ReportMporService {
         },
         {
           text: 'ACCOMPLISHMENTS',
-          colSpan: 15,
+          colSpan: 23,
           fontSize: 8,
           alignment: 'center',
           bold: true,
         },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
         {},
         {},
         {},
@@ -65,10 +84,14 @@ export class ReportMporService {
         {
           text: 'QUANTITY',
           fontSize: 8,
-          colSpan: 5,
+          colSpan: 9,
           alignment: 'center',
           bold: true,
         },
+        {},
+        {},
+        {},
+        {},
         {},
         {},
         {},
@@ -76,10 +99,14 @@ export class ReportMporService {
         {
           text: 'TIMELINESS',
           fontSize: 8,
-          colSpan: 5,
+          colSpan: 9,
           alignment: 'center',
           bold: true,
         },
+        {},
+        {},
+        {},
+        {},
         {},
         {},
         {},
@@ -124,7 +151,19 @@ export class ReportMporService {
           bold: true,
         },
         {
+          text: '',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
           text: 'Wk2',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
+          text: '',
           fontSize: 8,
           alignment: 'center',
           bold: true,
@@ -136,7 +175,19 @@ export class ReportMporService {
           bold: true,
         },
         {
+          text: '',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
           text: 'Wk4',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
+          text: '',
           fontSize: 8,
           alignment: 'center',
           bold: true,
@@ -154,7 +205,19 @@ export class ReportMporService {
           bold: true,
         },
         {
+          text: '',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
           text: 'Wk2',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
+          text: '',
           fontSize: 8,
           alignment: 'center',
           bold: true,
@@ -166,7 +229,19 @@ export class ReportMporService {
           bold: true,
         },
         {
+          text: '',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
           text: 'Wk4',
+          fontSize: 8,
+          alignment: 'center',
+          bold: true,
+        },
+        {
+          text: '',
           fontSize: 8,
           alignment: 'center',
           bold: true,
@@ -179,6 +254,186 @@ export class ReportMporService {
         },
       ]
     );
+
+    tableBody.push([
+      {
+        text: '1.' + ' ' + 'STRATEGIC FUNCTIONS',
+        fontSize: 11,
+        alignment: 'left',
+        bold: true,
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+    ]);
+    strategic.map((a: any, index: number) => {
+      tableBody.push([
+        { text: '1.' + (index + 1) + ' ' + a.mfo, margin: [15, 0, 0, 0] },
+        { text: a.qtyWk1, fontSize: 8 },
+        { text: a.qtyWk2, fontSize: 8 },
+        { text: a.qtyWk3, fontSize: 8 },
+        { text: a.qtyWk4, fontSize: 8 },
+        { text: a.total, fontSize: 8 },
+        { text: 6, fontSize: 8 },
+        { text: 7, fontSize: 8 },
+        { text: 8, fontSize: 8 },
+        { text: 9, fontSize: 8 },
+        { text: 10, fontSize: 8 },
+        { text: 11, fontSize: 8 },
+        { text: 12, fontSize: 8 },
+        { text: 13, fontSize: 8 },
+        { text: 14, fontSize: 8 },
+        { text: 15, fontSize: 8 },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+      ]);
+    });
+
+    tableBody.push([
+      {
+        text: '2.' + ' ' + 'CORE FUNCTIONS',
+        fontSize: 11,
+        alignment: 'left',
+        bold: true,
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+    ]);
+    core.map((a: any, index: number) => {
+      tableBody.push([
+        { text: '2.' + (index + 1) + ' ' + a.mfo, margin: [15, 0, 0, 0] },
+        { text: a.qtyWk1, fontSize: 8 },
+        { text: a.qtyWk2, fontSize: 8 },
+        { text: a.qtyWk3, fontSize: 8 },
+        { text: a.qtyWk4, fontSize: 8 },
+        { text: a.total, fontSize: 8 },
+        { text: 6, fontSize: 8 },
+        { text: 7, fontSize: 8 },
+        { text: 8, fontSize: 8 },
+        { text: 9, fontSize: 8 },
+        { text: 10, fontSize: 8 },
+        { text: 11, fontSize: 8 },
+        { text: 12, fontSize: 8 },
+        { text: 13, fontSize: 8 },
+        { text: 14, fontSize: 8 },
+        { text: 15, fontSize: 8 },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+      ]);
+    });
+
+    tableBody.push([
+      {
+        text: '3.' + ' ' + 'SUPPORT FUNCTIONS',
+        fontSize: 11,
+        alignment: 'left',
+        bold: true,
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+    ]);
+    support.map((a: any, index: number) => {
+      tableBody.push([
+        { text: '3.' + (index + 1) + ' ' + a.mfo, margin: [15, 0, 0, 0] },
+        { text: a.qtyWk1, fontSize: 8 },
+        { text: a.qtyWk2, fontSize: 8 },
+        { text: a.qtyWk3, fontSize: 8 },
+        { text: a.qtyWk4, fontSize: 8 },
+        { text: a.total, fontSize: 8 },
+        { text: 6, fontSize: 8 },
+        { text: 7, fontSize: 8 },
+        { text: 8, fontSize: 8 },
+        { text: 9, fontSize: 8 },
+        { text: 10, fontSize: 8 },
+        { text: 11, fontSize: 8 },
+        { text: 12, fontSize: 8 },
+        { text: 13, fontSize: 8 },
+        { text: 14, fontSize: 8 },
+        { text: 15, fontSize: 8 },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+      ]);
+    });
 
     content.push([
       {
@@ -201,10 +456,18 @@ export class ReportMporService {
       },
       {
         style: 'tableExample',
-        margin: [0, 20, 0, 0],
+        margin: [67, 20, 5, 0],
         table: {
           widths: [
-            300,
+            170,
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
+            '*',
             '*',
             '*',
             '*',

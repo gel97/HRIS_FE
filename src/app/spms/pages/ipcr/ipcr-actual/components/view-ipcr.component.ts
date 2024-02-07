@@ -211,6 +211,10 @@ export class ViewIpcrComponent implements OnInit {
   selectedMonth: number | any; // Initialize with a default value
   sem: number | any;
   reportMPOR: any = {};
+  get_MPOR_data: any = [];
+  strategic_functions: any = [];
+  core_functions: any = [];
+  support_functions: any = [];
 
   ipcr: any = this.ipcrService.ipcr();
 
@@ -219,8 +223,9 @@ export class ViewIpcrComponent implements OnInit {
     this.GetIpcr();
   }
 
-  selectMonth(month: any) {
+  selectMonth(month: number) {
     this.reportMPOR.monthNum = month;
+    this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
     console.log('month', month);
   }
 
@@ -251,8 +256,95 @@ export class ViewIpcrComponent implements OnInit {
 
   ReportMPOR() {
     console.log('reportmpor', this.reportMPOR);
-    // this.reportService.ReportMPOR();
+    if (this.reportMPOR.monthNum == null) {
+      this.reportMPOR.monthNum = 1;
+    }
+    this.reportService.post_print_mpor(this.reportMPOR).subscribe({
+      next: (response: any) => {
+        this.get_MPOR_data = response;
+        console.log('mpor report', this.get_MPOR_data);
+        this.Categorize(this.get_MPOR_data);
+      },
+      error: () => {},
+      complete: () => {},
+    });
   }
+
+  Categorize(data: any) {
+    this.get_MPOR_data = [];
+    this.strategic_functions = [];
+    this.core_functions = [];
+    this.support_functions = [];
+    let dumQtyWk1 = 0;
+    let dumQtyWk2 = 0;
+    let dumQtyWk3 = 0;
+    let dumQtyWk4 = 0;
+    data.mporList.map((a: any) => {
+      data.mporData.map((b: any) => {
+        if (a.ipcrDataId == b.ipcrDataId) {
+          b.data.map((c: any) => {
+            if (c.qtyWk1 != null) {
+              a.qtyWk1 = c.qtyWk1 + dumQtyWk1;
+              dumQtyWk1 = a.qtyWk1;
+            }
+            if (c.qtyWk2 != null) {
+              a.qtyWk2 = c.qtyWk2 + dumQtyWk2;
+              dumQtyWk2 = a.qtyWk2;
+            }
+            if (c.qtyWk3 != null) {
+              a.qtyWk3 = c.qtyWk3 + dumQtyWk3;
+              dumQtyWk3 = a.qtyWk3;
+            }
+            if (c.qtyWk4 != null) {
+              a.qtyWk4 = c.qtyWk4 + dumQtyWk4;
+              dumQtyWk4 = a.qtyWk4;
+            }
+            a.total = dumQtyWk1 + dumQtyWk2 + dumQtyWk3 + dumQtyWk4;
+          });
+        } else {
+          dumQtyWk1 = 0;
+          dumQtyWk2 = 0;
+          dumQtyWk3 = 0;
+          dumQtyWk4 = 0;
+        }
+      });
+    });
+    data.mporList.map((z: any) => {
+      if (z.categoryId == 1) {
+        this.strategic_functions.push(z);
+      }
+      if (z.categoryId == 2) {
+        this.core_functions.push(z);
+      }
+      if (z.categoryId == 3) {
+        this.support_functions.push(z);
+      }
+    });
+    console.log('merged', data.mporList);
+    console.log('sorted stra', this.strategic_functions);
+    console.log('sorted core', this.core_functions);
+    console.log('sorted sup', this.support_functions);
+    // this.ExtractMonth(this.strategic_functions);
+    // this.ExtractMonth(this.core_functions);
+    // this.ExtractMonth(this.support_functions);
+    this.reportService.ReportMPOR(
+      this.strategic_functions,
+      this.core_functions,
+      this.support_functions
+    );
+  }
+
+  // ExtractMonth(data: any = []) {
+  //   data.map((a: any) => {
+  //     console.log('data length', a.data.length);
+  //     if (a.data.length) {
+  //       console.log('here here here');
+  //       a.data.map((b:any)=>{
+
+  //       })
+  //     }
+  //   });
+  // }
 
   GetIpcr() {
     this.ipcrService.GetIPCRs(

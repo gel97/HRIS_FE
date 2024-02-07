@@ -109,7 +109,7 @@ export class OtsRequestComponent implements OnInit {
 
   toApprove = [];
   Approve() {
-    this.toApprove = this.ots_request.filter((i: any) => i.isCheck);
+    this.toApprove = this.ots_request.items.filter((i: any) => i.isCheck);
     if (this.toApprove.length > 0) {
       this.OtsRequestService.put_ots_request_approve(this.toApprove).subscribe({
         next: () => {},
