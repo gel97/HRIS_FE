@@ -43,6 +43,12 @@ export class OtsService {
     isLoading: false,
   });
 
+  otsGetMfoGroup = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
   otsData:any=[];
   dataSource: DataSource | any;
   storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
@@ -88,6 +94,26 @@ export class OtsService {
         },
         complete: () => {
           this.otsMfoes.mutate((a) => (a.isLoading = false));
+        },
+      });
+  }
+
+  GetOtsMfoGroup(data:any) {
+    this.otsGetMfoGroup.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ots_mfo_group(data.opcrDataId, data.dpcrDataId, data.subtaskId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.otsGetMfoGroup.mutate((a) => (a.data = response));
+        },
+        error: (error) => {
+          this.alertService.error();
+
+        },
+        complete: () => {
+          this.otsGetMfoGroup.mutate((a) => (a.isLoading = false));
         },
       });
   }
@@ -255,6 +281,9 @@ export class OtsService {
       });
   }
 
+  clearOtsGetMfo(){
+    this.otsGetMfoGroup.mutate((a) => (a.data = []));
+  }
 
   post_ots_request(page:any){
     return this.http.post<any[]>(api + this.url.

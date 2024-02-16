@@ -21,7 +21,6 @@ export class DpcrActualComponent implements OnInit {
 
   ngOnInit(): void {
     this.init();
-    this.dpcrService.GetDpcrData();
     this.loading = true;
     setTimeout(() => {
       this.loading = false;
@@ -31,7 +30,7 @@ export class DpcrActualComponent implements OnInit {
   init(){
     if(this.dpcrIdActual){
       this.dpcrService.isShowDpcrDataActual.set(1);
-      //this.dpcrService.GetIPCRDataActual(this.dpcrIdActual);
+      this.dpcrService.GetDPCRDataActual(this.dpcrIdActual);
     }else{
       this.dpcrService.isShowDpcrDataActual.set(0);
     }

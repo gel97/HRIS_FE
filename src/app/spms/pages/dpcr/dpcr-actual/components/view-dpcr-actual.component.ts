@@ -37,7 +37,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               <tbody *ngFor="let data of dpcr.data">
                 <tr>
                   <td class="pointer">
-                    <a (click)="setIpcrDetails(data)" class="cursor-pointer"><strong>{{ data.details }}</strong></a>
+                    <a (click)="setDpcrDetails(data)" class="cursor-pointer"><strong>{{ data.details }}</strong></a>
                   </td>
                   <td>
                     <span
@@ -136,12 +136,11 @@ export class ViewDpcrActualComponent implements OnInit {
         // );
     }
 
-    setIpcrDetails(data:any){
+    setDpcrDetails(data:any){
         this.dpcrService.isShowDpcrDataActual.set(1);
         localStorage.setItem('dpcrIdActual', data.dpcrId);
         localStorage.setItem('dpcrDetailsActual', data.details);
-
-      //  this.dpcrService.GetDPCRDataActual(data.dpcrId);
+        this.dpcrService.GetDPCRDataActual(data.dpcrId);
     }
 
     ipcrYear() {
@@ -153,7 +152,6 @@ export class ViewDpcrActualComponent implements OnInit {
     onChangeYear(year: any) {
         this.dpcrService.year.set(year);
         this.dpcrService.GetDpcr();
-        //this.dpcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
     }
 
     semester(year: number) {

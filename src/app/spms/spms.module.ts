@@ -35,8 +35,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ViewIpcrComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr.component';
 import { HeaderIpcrActualComponent } from './pages/ipcr/ipcr-actual/components/header-ipcr-actual.component';
 import { ViewIpcrDataActualComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr-data-actual.component';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
+//import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
+import { SharedModule } from '../shared.module';
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -44,7 +44,6 @@ import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
     OpcrActualComponent,
     OpcrTargetComponent,
     DpcrComponent,
-    ///SpinnerComponent,
     LinearLoadingComponent,
     OpcrActualSkeletonComponent,
     OpcrTargetSkeletonComponent,
@@ -59,7 +58,7 @@ import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
     ViewIpcrComponent,
     HeaderIpcrActualComponent,
     ViewIpcrDataActualComponent,
-    FirstLetterUppercasePipe
+   // FirstLetterUppercasePipe
   ],
   imports: [
     CommonModule,
@@ -72,15 +71,7 @@ import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
     MatTooltipModule,
     NgxSkeletonLoaderModule,
     MatPaginatorModule,
-    NgCircleProgressModule.forRoot({
-      // set defaults here
-      radius: 100,
-      outerStrokeWidth: 16,
-      innerStrokeWidth: 8,
-      outerStrokeColor: '#78C000',
-      innerStrokeColor: '#C7E596',
-      animationDuration: 300,
-    }),
+    SharedModule
   ],
 })
 export class SpmsModule {}
