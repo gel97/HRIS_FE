@@ -35,6 +35,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ViewDpcrActualComponent } from './dpcr-actual/components/view-dpcr-actual.component';
 import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-actual.component';
+import { ViewDpcrActualDataComponent } from './dpcr-actual/components/view-dpcr-actual-data.component';
+import { SharedModule } from 'src/app/shared.module';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -61,7 +63,8 @@ import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-
     SearchMFOComponent,
     OtsRequestComponent,
     ViewDpcrActualComponent,
-    HeaderDpcrActualComponent
+    HeaderDpcrActualComponent,
+    ViewDpcrActualDataComponent,
   ],
   imports: [
     CommonModule,
@@ -75,7 +78,8 @@ import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-
     MatInputModule,
     MatRadioModule,
     MatTooltipModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    SharedModule
   ],
 })
 export class DpcrModule {}
