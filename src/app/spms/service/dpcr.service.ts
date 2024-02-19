@@ -31,6 +31,14 @@ export class DpcrService {
     isLoading: false,
   });
 
+  dpcrDataActual = signal<any>({
+    data: [],
+    rating: [],
+    finalRating: {},
+    error: false,
+    isLoading: false,
+  });
+
   officeId: string | null = localStorage.getItem('officeId');
   divisionId: string | null = localStorage.getItem('divisionId');
   divisionName: string | null = localStorage.getItem('divisionName');
@@ -157,6 +165,30 @@ export class DpcrService {
     } catch (error) {
       console.error('Error:', error);
     }
+  }
+
+  GetDPCRDataActual(dpcrId: string) {
+    this.dpcrDataActual.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_data_actual(dpcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.dpcrDataActual.mutate((a) => (a.data = response.data));
+          this.dpcrDataActual.mutate((a) => (a.rating = response.rating));
+          this.dpcrDataActual.mutate(
+            (a) => (a.finalRating = response.finalRating)
+          );
+          this.dpcrDataActual.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          console.log("DPCR Actual: ", this.dpcrDataActual());
+        },
+      });
   }
 
   AddDpcrData(dpcrData: any) {

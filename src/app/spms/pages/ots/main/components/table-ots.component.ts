@@ -151,6 +151,8 @@ export class TableOtsComponent {
 
     this.otsService.otsMfoes.mutate((a) => (a.startDate = formattedDate));
     this.otsService.otsMfoes.mutate((a) => (a.endDate = formattedDate));
+
+    this.otsService.clearOtsGetMfo(); // Clear Group OTS
   }
 
 }
