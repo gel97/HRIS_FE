@@ -88,7 +88,9 @@
                   <td>
                     <i class="bx bx-edit-alt cursor-pointer" (click)="userEIC=i.eic;userMenus();addRoleDisplay=2"
                       matTooltip="Edit" [matTooltipPosition]="'above'"></i>
-                    <i class='bx bx-buildings' (click)="userEIC=i.eic; focalData.officeId = i.officeId" data-bs-toggle="modal" data-bs-target="#modalOffice" matTooltip="Edit Office" [matTooltipPosition]="'below'"></i>
+                    <i class='bx bx-buildings' (click)="userEIC=i.eic; focalData.officeId = i.officeId"
+                      data-bs-toggle="modal" data-bs-target="#modalOffice" matTooltip="Edit Office"
+                      [matTooltipPosition]="'below'"></i>
                   </td>
                 </tr>
               </tbody>
@@ -181,9 +183,11 @@
                     <!-- Permission table -->
                   </div>
                   <div class="col-12 text-center">
-                    <button *ngIf="role_list.length > 0; else reAssignOffice" type="submit" class="btn btn-primary me-sm-3 me-1" (click)="addUserMenu()">Submit</button>
+                    <button *ngIf="role_list.length > 0; else reAssignOffice" type="submit"
+                      class="btn btn-primary me-sm-3 me-1" (click)="addUserMenu()">Submit</button>
                     <ng-template #reAssignOffice>
-                      <button class="btn btn-primary me-sm-3 me-1" (click)="reAssign_office_focal()">Transfer Office Assignment</button>
+                      <button class="btn btn-primary me-sm-3 me-1" (click)="reAssign_office_focal()">Transfer Office
+                        Assignment</button>
                     </ng-template>
                     <button type="reset" class="btn btn-label-secondary" (click)="addRoleDisplay=1">Back</button>
                   </div>
@@ -350,7 +354,7 @@
                 </span>
               </button>
             </div>
-            <div id="chapterOne" class="accordion-collapse open" data-bs-parent="#courseContent" style="">
+            <div id="chapterOne" class="accordion-collapse open" data-bs-parent="#courseContent">
               <div class="accordion-body py-3 border-top">
                 <div class="form-check d-flex align-items-center mb-3" *ngFor="let sub_menu of menu.subMenu">
                   <input class="form-check-input" type="checkbox" id="defaultCheck1" checked="">
@@ -387,18 +391,13 @@
   </div>
 </div>
 
- <!-- Small Modal -->
- <div class="modal fade" id="modalOffice" tabindex="-1" aria-hidden="true">
+<!-- Small Modal -->
+<div class="modal fade" id="modalOffice" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content" >
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel2">Transfer Office Assignment</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <mat-form-field style="width: 100%;" appearance="outline">
@@ -413,10 +412,11 @@
         </mat-form-field>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-            Close
-          </button>
-          <button type="button" class="btn btn-primary" (click)="reAssign_office_focal()" data-bs-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="reAssign_office_focal()" data-bs-dismiss="modal">Save
+          changes</button>
       </div>
     </div>
   </div>
