@@ -166,4 +166,6 @@ export class SpmsApiService {
   post_all_logs = () => `/tPMLogs/LogsComplete`;
 
   post_print_mpor = () => `/tPMIpcrDatas/PrintMPOR`;
+  post_print_smpor = () => `/tPMIpcrDatas/PrintSMPOR`;
+  post_print_mpor_officeHead = () => `/tPMIpcrDatas/OfficeHead`;
 }
