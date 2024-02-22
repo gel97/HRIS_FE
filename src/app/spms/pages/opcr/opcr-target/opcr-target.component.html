@@ -173,7 +173,8 @@
             <div class="p-0">
                 <div class="">
                     <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
-                        <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index">
+                        <div cdkDropList (cdkDropListDropped)="drop($event)">
+                            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index" cdkDrag>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-8">
@@ -316,6 +317,8 @@
                                 <!--/ Accordion -->
                             </div>
                         </div>
+                        </div>
+                        
                     </ng-container>
                     <ng-template #isLoading>
                         <app-opcr-target-skeleton></app-opcr-target-skeleton>
