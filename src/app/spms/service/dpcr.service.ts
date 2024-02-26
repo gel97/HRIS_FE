@@ -39,6 +39,12 @@ export class DpcrService {
     isLoading: false,
   });
 
+  dpcrMfoOts = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
   officeId: string | null = localStorage.getItem('officeId');
   divisionId: string | null = localStorage.getItem('divisionId');
   divisionName: string | null = localStorage.getItem('divisionName');
@@ -58,6 +64,38 @@ export class DpcrService {
     private http: HttpClient,
     private url: SpmsApiService
   ) {}
+
+  GetDpcrMfoOts(dpcrDataId:string) {
+    this.dpcrMfoOts.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_mfo_ots(dpcrDataId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.dpcrMfoOts.mutate((a) => {
+            (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.dpcrMfoOts.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          console.log("DpcrMfoOts: ", this.dpcrMfoOts().data)
+        },
+      });
+  }
 
   GetDpcr() {
     this.dpcr.mutate((a) => (a.isLoading = true));

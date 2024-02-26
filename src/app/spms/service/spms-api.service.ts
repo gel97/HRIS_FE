@@ -109,6 +109,8 @@ export class SpmsApiService {
   get_dpcr_data = (dpcrId: string) => `/tPMDpcrData/list/${dpcrId}`;
   get_dpcr_data_subtask = (dpcrId: string, mfoId: string) =>
     `/tPMDpcrData/subtask/${dpcrId}/${mfoId}`;
+  get_dpcr_mfo_ots = (dpcrDataId: string) => `/tPMDpcrData/${dpcrDataId}/dpcr/mfo_ots`;
+
 
   post_subtask = () => `/tPMSubTask`;
   post_subtask_add_common_mfo = () => `/tPMSubTask/add/common_mfo`;
