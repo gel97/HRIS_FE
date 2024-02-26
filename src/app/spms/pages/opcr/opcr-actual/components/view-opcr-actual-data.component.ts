@@ -1,10 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { DpcrService } from 'src/app/spms/service/dpcr.service';
+import { OpcrService } from 'src/app/spms/service/opcr.service';
 @Component({
-  selector: 'app-view-dpcr-actual-data',
+  selector: 'app-view-opcr-actual-data',
   template: `
     <div class="row">
-      <div *ngFor="let a of dpcrDataActual.rating; let i = index" class="col-3">
+      <div *ngFor="let a of opcrDataActual.rating; let i = index" class="col-3">
         <div
           class="card text-white mb-3"
           [ngClass]="{
@@ -46,7 +46,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           </div>
         </div>
       </div>
-      <div *ngIf="dpcrDataActual.finalRating.total >= 1" class="col-12">
+      <div *ngIf="opcrDataActual.finalRating.total >= 1" class="col-12">
         <div>
           <div class="col-12">
             <div class="card h-100">
@@ -62,24 +62,24 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   data-app-dark-img="illustrations/sitting-girl-with-laptop-dark.png"
                 />
                 <div
-                  [ngSwitch]="dpcrDataActual.finalRating.adjectivalRating"
+                  [ngSwitch]="opcrDataActual.finalRating.adjectivalRating"
                   class="mt-4 px-4"
                 >
                   <p *ngSwitchCase="'Poor'">
-                    Hi, <b>{{ dpcrService.divisionName ?? '' }}</b
+                    Hi, <b>{{ opcrService.officeName ?? '' }}</b
                     >! Your current rating is
                     <u class="text-danger fs-6 fw-bold">{{
-                      dpcrDataActual.finalRating.total
+                      opcrDataActual.finalRating.total
                     }}</u
                     >, which is equivalent to adjectival rating of
                     <span class="badge rounded-pill bg-label-danger">Poor</span
                     >.
                   </p>
                   <p *ngSwitchCase="'Unsatisfactory'">
-                    Hello, {{ dpcrService.divisionName ?? '' }}! Unfortunately,
+                    Hello, {{ opcrService.officeName ?? '' }}! Unfortunately,
                     your rating is only
                     <u class="text-danger fs-6 fw-bold">{{
-                      dpcrDataActual.finalRating.total
+                      opcrDataActual.finalRating.total
                     }}</u
                     >, which results to
                     <span class="badge rounded-pill bg-label-danger"
@@ -88,37 +88,37 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     rating. Keep on improving your performance.
                   </p>
                   <p *ngSwitchCase="'Satisfactory'">
-                    Good job, {{ dpcrService.divisionName ?? '' }}! You have a
+                    Good job, {{ opcrService.officeName ?? '' }}! You have a
                     <span class="badge rounded-pill bg-label-primary"
                       >satistfactory</span
                     >
                     performance with a rating of
                     <u class="text-primary fs-6 fw-bold">{{
-                      dpcrDataActual.finalRating.total
+                      opcrDataActual.finalRating.total
                     }}</u
                     >.
                   </p>
                   <p *ngSwitchCase="'Very Satisfactory'">
                     Congratulations,
-                    {{ dpcrService.divisionName ?? '' }}! You were able to
+                    {{ opcrService.officeName ?? '' }}! You were able to
                     achieved a
                     <span class="badge rounded-pill bg-label-success"
                       >very satistfactory</span
                     >
                     performance with a rating of
                     <u class="text-success fs-6 fw-bold">{{
-                      dpcrDataActual.finalRating.total
+                      opcrDataActual.finalRating.total
                     }}</u
                     >.
                   </p>
                   <p *ngSwitchCase="'Outstanding'">
-                    Well done, {{ dpcrService.divisionName ?? '' }}! You did an
+                    Well done, {{ opcrService.officeName ?? '' }}! You did an
                     <span class="badge rounded-pill bg-label-success"
                       >Outstanding</span
                     >
                     performance for a rating of
                     <u class="text-success fs-6 fw-bold">{{
-                      dpcrDataActual.finalRating.total
+                      opcrDataActual.finalRating.total
                     }}</u
                     >.
                   </p>
@@ -130,7 +130,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         </div>
       </div>
     </div>
-    <ng-container *ngFor="let a of dpcrDataActual.data; let i = index">
+    <ng-container *ngFor="let a of opcrDataActual.data; let i = index">
       <div class="card my-2 ">
         <div class="card-header">
           <div class="row">
@@ -170,14 +170,14 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 <th class="text-center">Quality</th>
                 <th class="text-center">Timeliness</th>
                 <th class="text-center">Average</th>
-                <th [width]="1"></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <ng-container *ngFor="let b of a.si; let y = index">
                 <tr>
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
                     <span class="text-success"
                       ><strong
                         ><u>{{ b.qty }}</u></strong
@@ -185,7 +185,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     >
                     {{ b.indicator }}
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
                     <span *ngIf="b.actual; else noActualSt" class="text-primary"
                       ><strong
                         ><u>{{ b.actual?.totalQty ?? 0 }}</u></strong
@@ -201,7 +201,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </div>
                     </ng-template>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <circle-progress
                         [percent]="b.actual?.qtyPrcnt ?? 0"
@@ -215,7 +215,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       ></circle-progress>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuantiySt">
                         <strong class="text-primary">{{
@@ -230,7 +230,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQualitySt">
                         <strong class="text-primary">{{
@@ -245,7 +245,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimelySt">
                         <strong class="text-primary">{{
@@ -260,7 +260,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noAveSt">
                         <strong class="text-success">{{
@@ -287,17 +287,15 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       <div class="dropdown-menu">
                         <a
                           class="dropdown-item cursor-pointer"
-                          data-bs-toggle="modal"
-                          data-bs-target="#modalDpcrActualMfoOts"
-                          (click)="GetMfoOts(b?.actual?.dpcrDataId??null)"
-                          ><i class="bx bx-show-alt me-1"></i> View OTS</a
+                          (click)="isShowCommittedDivions = true; setSIindexTgtCommitted(i, y)"
+                          ><i class="bx bx-show-alt me-1"></i> View Committed Divisions</a
                         >
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr
-                  *ngIf="currentSIindex === y && currentMfoindex === i"
+                  *ngIf="isShowStandard && currentSIindex === y && currentMfoindex === i"
                   style="background-color: #f5f5f9;"
                 >
                   <td colspan="8">
@@ -351,211 +349,67 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     </div>
                   </td>
                 </tr>
-                <ng-container *ngFor="let c of b.subTasks; let w = index">
-                  <tr
-                    style="background-color: #f5f5f9;"
-                    (click)="setStMfoIndex(w)"
-                  >
+                <ng-container *ngIf="isShowCommittedDivions && currentSIindexTgtCmtd === y && currentMfoindexTgtCmtd === i">
+                  <tr style="background-color: #f5f5f9;">
                     <td colspan="8">
-                      <div class="card">
+                      <div class="card" style="width: 99%;">
                         <div class="card-header">
-                          <div class="row">
-                            <div class="col-12">
-                              <h3>
-                                <strong class="text-secondary"
-                                  >{{ i + 1 }}.{{ w + 1 }}.
-                                  {{ c.stMfo }}</strong
-                                >
-                              </h3>
-                            </div>
-                          </div>
+                          <h3>
+                            <strong class="text-secondary"
+                              ><i class="bx bx-carousel"></i>&nbsp;{{
+                                b.sharedDiv
+                              }}</strong
+                            >
+                            &nbsp;
+                            <i class='bx bx-x float-end cursor-pointer' (click)="isShowCommittedDivions = false;setSIindexTgtCommitted(i, y)"></i>
+                          </h3>
                         </div>
                         <div class="table-responsive text-wrap">
                           <table class="table table-sm">
                             <thead>
                               <tr>
-                                <th [width]="300" class="text-center">
-                                  Success Indicator
+                                <th
+                                  class=""
+                                  *ngFor="let c of b.dpcr; let w = index"
+                                >
+                                  {{ c.divisionName }}
                                 </th>
-                                <th [width]="300" class="text-center">
-                                  Actual Accomplishment
-                                </th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Quantity</th>
-                                <th class="text-center">Quality</th>
-                                <th class="text-center">Timeliness</th>
-                                <th class="text-center">Average</th>
+                                <ng-container *ngIf="!b.qtyUnit">
+                                  <th class="text-center">
+                                    Total Target Committed
+                                  </th>
+                                  <th class="text-center">Remaining Target</th>
+                                </ng-container>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <td>
-                                  <span class="text-success"
-                                    ><strong
-                                      ><u>{{ c.qty }}</u></strong
-                                    ></span
-                                  >
-                                  {{ c.stIndicator }}
-                                </td>
-                                <td>
+                                <td
+                                  class=""
+                                  *ngFor="let c of b.dpcr; let w = index"
+                                >
                                   <span
-                                    *ngIf="c.actual; else noActualSt"
-                                    class="text-primary"
-                                    ><strong
-                                      ><u>{{
-                                        c.actual?.totalQty ?? 0
-                                      }}</u></strong
-                                    ></span
+                                    class="badge rounded-pill bg-label-primary"
+                                    >{{ c.dpcrData.qty }}</span
                                   >
-                                  {{ c.actual?.actualAc ?? '' }}
-                                  <ng-template #noActualSt>
-                                    <div class="d-flex justify-content-center">
-                                      <strong
-                                        class="badge rounded-pill bg-label-danger shadow-sm"
-                                        >no data
-                                      </strong>
-                                    </div>
-                                  </ng-template>
                                 </td>
-                                <td>
-                                  <div class="d-flex justify-content-center">
-                                    <circle-progress
-                                      [percent]="c.actual?.qtyPrcnt ?? 0"
-                                      [radius]="40"
-                                      [outerStrokeWidth]="3"
-                                      [innerStrokeWidth]="3"
-                                      [outerStrokeColor]="'#78C000'"
-                                      [innerStrokeColor]="'#C7E496'"
-                                      [animation]="true"
-                                      [animationDuration]="300"
-                                    ></circle-progress>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="d-flex justify-content-center">
-                                    <h2 *ngIf="c.actual; else noQuantiySt">
-                                      <strong class="text-primary">{{
-                                        c.actual?.totalQtyRating ?? 0
-                                      }}</strong>
-                                    </h2>
-                                    <ng-template #noQuantiySt>
-                                      <strong
-                                        class="badge rounded-pill bg-label-danger shadow-sm"
-                                        >no data</strong
-                                      >
-                                    </ng-template>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="d-flex justify-content-center">
-                                    <h2 *ngIf="c.actual; else noQualitySt">
-                                      <strong class="text-primary">{{
-                                        c.actual?.totalQlty ?? 0
-                                      }}</strong>
-                                    </h2>
-                                    <ng-template #noQualitySt>
-                                      <strong
-                                        class="badge rounded-pill bg-label-danger shadow-sm"
-                                        >no data</strong
-                                      >
-                                    </ng-template>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="d-flex justify-content-center">
-                                    <h2 *ngIf="c.actual; else noTimelySt">
-                                      <strong class="text-primary">{{
-                                        c.actual?.totalTimely ?? 0
-                                      }}</strong>
-                                    </h2>
-                                    <ng-template #noTimelySt>
-                                      <strong
-                                        class="badge rounded-pill bg-label-danger shadow-sm"
-                                        >no data</strong
-                                      >
-                                    </ng-template>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="d-flex justify-content-center">
-                                    <h2 *ngIf="c.actual; else noAveSt">
-                                      <strong class="text-success">{{
-                                        c.actual?.average ?? 0
-                                      }}</strong>
-                                    </h2>
-                                    <ng-template #noAveSt>
-                                      <strong
-                                        class="badge rounded-pill bg-label-danger shadow-sm"
-                                        >no data</strong
-                                      >
-                                    </ng-template>
-                                  </div>
-                                </td>
+                                <ng-container *ngIf="!b.qtyUnit">
+                                  <td class="text-center">
+                                    <span
+                                      class="badge rounded-pill bg-label-success"
+                                      >{{ b.dpcrTotalCommitted ?? 0 }}</span
+                                    >
+                                  </td>
+                                  <td class="text-center">
+                                    <span
+                                      class="badge rounded-pill bg-label-warning"
+                                      >{{ b.qty - b.dpcrTotalCommitted }}</span
+                                    >
+                                  </td>
+                                </ng-container>
                               </tr>
                             </tbody>
                           </table>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr *ngIf="currentMfoindexSt === w">
-                    <td colspan="8" style="background-color: #f5f5f9;">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="table-responsive text-nowrap">
-                            <table class="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th [width]="10">Rating</th>
-                                  <th [width]="10">Quantity</th>
-                                  <th>Quality</th>
-                                  <th>Timeliness</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>5</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty5 }}</td>
-                                  <td>{{ c.qlty5 }}</td>
-                                  <td>{{ c.timely5 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>4</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty4 }}</td>
-                                  <td>{{ c.qlty4 }}</td>
-                                  <td>{{ c.timely4 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>3</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty3 }}</td>
-                                  <td>{{ c.qlty3 }}</td>
-                                  <td>{{ c.timely3 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>2</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty2 }}</td>
-                                  <td>{{ c.qlty2 }}</td>
-                                  <td>{{ c.timely2 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>1</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty1 }}</td>
-                                  <td>{{ c.qlty1 }}</td>
-                                  <td>{{ c.timely1 }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
                         </div>
                       </div>
                     </td>
@@ -567,15 +421,17 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         </div>
       </div>
     </ng-container>
-    <app-modal-dpcr-actual-mfo-ots />
   `,
 })
-export class ViewDpcrActualDataComponent implements OnInit {
-  dpcrService = inject(DpcrService);
-  dpcrDataActual = this.dpcrService.dpcrDataActual();
+export class ViewOpcrActualDataComponent implements OnInit {
+  opcrService = inject(OpcrService);
+  opcrDataActual = this.opcrService.opcrDataActual();
 
   currentSIindex: any = null;
   currentMfoindex: any = null;
+
+  currentSIindexTgtCmtd: any = null;
+  currentMfoindexTgtCmtd: any = null;
 
   currentMfoindexSt: any = null;
 
@@ -585,11 +441,10 @@ export class ViewDpcrActualDataComponent implements OnInit {
   firstWord: string = '';
   secondWord: string = '';
 
-  ngOnInit(): void {}
+  isShowCommittedDivions:boolean = false;
+  isShowStandard:boolean = false;
 
-  GetMfoOts(dpcrDataId:string){
-    this.dpcrService.GetDpcrMfoOts(dpcrDataId);
-  }
+  ngOnInit(): void {}
 
   setSIindex(i: number, y: number) {
     if (this.currentMfoindex === i && this.currentSIindex === y) {
@@ -598,6 +453,16 @@ export class ViewDpcrActualDataComponent implements OnInit {
     } else {
       this.currentMfoindex = i;
       this.currentSIindex = y;
+    }
+  }
+
+  setSIindexTgtCommitted(i: number, y: number) {
+    if (this.currentMfoindexTgtCmtd === i && this.currentSIindexTgtCmtd === y) {
+      this.currentSIindexTgtCmtd = null;
+      this.currentMfoindexTgtCmtd = null;
+    } else {
+      this.currentMfoindexTgtCmtd = i;
+      this.currentSIindexTgtCmtd = y;
     }
   }
 

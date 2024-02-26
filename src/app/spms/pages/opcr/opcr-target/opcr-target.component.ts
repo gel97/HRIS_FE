@@ -6,6 +6,8 @@ import { ReportActualService } from 'src/app/spms/service/report-actual.service'
 import Swal from 'sweetalert2';
 import { MonthRangeService } from 'src/app/spms/service/month-range.service';
 import { SignatoriesService } from 'src/app/spms/service/signatories.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+
 @Component({
   selector: 'app-opcr-target',
   templateUrl: './opcr-target.component.html',
@@ -13,6 +15,20 @@ import { SignatoriesService } from 'src/app/spms/service/signatories.service';
 })
 export class OpcrTargetComponent implements OnInit {
   constructor() {}
+
+  movies = [
+    'Episode I - The Phantom Menace',
+    'Episode II - Attack of the Clones',
+    'Episode III - Revenge of the Sith',
+    'Episode IV - A New Hope',
+    'Episode V - The Empire Strikes Back',
+    'Episode VI - Return of the Jedi',
+    'Episode VII - The Force Awakens',
+    'Episode VIII - The Last Jedi'
+  ];
+
+ 
+
   opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
   signatoriesService = inject(SignatoriesService);
@@ -58,6 +74,24 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
     this.GetOfficeDivision();
     this.opcrYear();
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.opcrDetails().data, event.previousIndex, event.currentIndex);
+
+    let sortData:any = [];
+
+    this.opcrDetails().data.forEach((x:any, index:number) => {
+      x.si.forEach((y:any) => {
+        const exists = sortData.some((a:any) => a.opcrDataId === y.opcrDataId);
+        if (!exists) {
+          sortData.push({opcrDataId: y.opcrDataId, index: index});
+        }
+      });
+    });
+
+    this.opcrService.PutOpcrDataSortByMfo(sortData);
+
   }
 
   opcrYear() {
