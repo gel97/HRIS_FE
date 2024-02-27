@@ -50,6 +50,25 @@ export class AlertService {
     })
   }
 
+  customUpdateWmessage(message:string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-start',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'success',
+      title: message
+    })
+  }
+
   async delete(url: any): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       Swal.fire({

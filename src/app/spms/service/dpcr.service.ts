@@ -624,6 +624,20 @@ export class DpcrService {
       });
   }
 
+  PutDpcrDataSortByMfo(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_dpcrdata_sortby_mfo(this.storageDpcrId()), data, {})
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.customError("Error: Something went wrong!");
+        },
+        complete: () => {   
+          this.alertService.customUpdateWmessage("Sorted Successfully");
+        },
+      });
+  }
+
   async DeleteDpcr(dpcrId: string) {
     try {
       let deleteData = await this.alertService.delete(

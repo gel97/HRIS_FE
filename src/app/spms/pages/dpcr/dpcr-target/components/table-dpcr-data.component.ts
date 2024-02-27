@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
 import { OpcrService } from 'src/app/spms/service/opcr.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import {
   trigger,
@@ -40,9 +41,9 @@ import {
               <th [width]="10">Actions</th>
             </tr>
           </thead>
-          <tbody class="table-border-bottom-0">
-            <ng-container *ngFor="let a of dpcrData.data; let i = index">
-              <tr class="cursor-pointer" [@rowState]="a">
+          <tbody class="table-border-bottom-0" cdkDropList (cdkDropListDropped)="drop($event)">
+            <ng-container *ngFor="let a of dpcrData.data; let i = index" >
+              <tr class="cursor-pointer" [@rowState]="a" cdkDrag>
                 <td colspan="2" *ngIf="!dpcrData.isLoading; else LoadingMfo">
                   <div class="row">
                     <div class="col-9">
@@ -342,6 +343,7 @@ import {
   //     ])
   //   ])
   // ]
+  styleUrls: ['../dpcr-target.component.css'],
   animations: [
     trigger('rowState', [
       state('void', style({ opacity: 0 })),
@@ -367,6 +369,22 @@ export class TableDpcrDataComponent {
   currentMfoIndex: any;
   currentSiIndex: any;
   subtaskData: any = {};
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.dpcrData.data, event.previousIndex, event.currentIndex);
+    let sortData:any = [];
+
+    this.dpcrData.data.forEach((x:any, index:number) => {
+      x.si.forEach((y:any) => {
+        const exists = sortData.some((a:any) => a.dpcrDataId === y.dpcrDataId);
+        if (!exists) {
+          sortData.push({dpcrDataId: y.dpcrDataId, index: index});
+        }
+      });
+    });
+    this.dpcrService.PutDpcrDataSortByMfo(sortData);
+
+  }
 
   DeleteDpcrDataIndicator(dpcrDataId: string) {
     this.deleteDpcrDataIndicator.emit(dpcrDataId);

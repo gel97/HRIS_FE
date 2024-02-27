@@ -16,19 +16,6 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 export class OpcrTargetComponent implements OnInit {
   constructor() {}
 
-  movies = [
-    'Episode I - The Phantom Menace',
-    'Episode II - Attack of the Clones',
-    'Episode III - Revenge of the Sith',
-    'Episode IV - A New Hope',
-    'Episode V - The Empire Strikes Back',
-    'Episode VI - Return of the Jedi',
-    'Episode VII - The Force Awakens',
-    'Episode VIII - The Last Jedi'
-  ];
-
- 
-
   opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
   signatoriesService = inject(SignatoriesService);
