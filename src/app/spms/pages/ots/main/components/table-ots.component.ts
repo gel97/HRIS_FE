@@ -102,7 +102,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         >             
                         <a
                           class="dropdown-item cursor-pointer"
-                          
+                          (click)="DeleteOts(data.otsId)"
                           ><i class="bx bx-trash me-1"></i> Delete</a
                         >
                       </div>
@@ -153,6 +153,10 @@ export class TableOtsComponent {
     this.otsService.otsMfoes.mutate((a) => (a.endDate = formattedDate));
 
     this.otsService.clearOtsGetMfo(); // Clear Group OTS
+  }
+
+  DeleteOts(otsId:string){
+    this.otsService.DeleteOts(otsId);
   }
 
 }

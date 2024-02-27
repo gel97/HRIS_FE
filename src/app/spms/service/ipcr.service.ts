@@ -300,6 +300,20 @@ export class IpcrService {
       });
   }
 
+  PutIpcrDataSortByMfo(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcrdata_sortby_mfo(this.storageIpcrId()), data, {})
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.customError("Error: Something went wrong!");
+        },
+        complete: () => {   
+          this.alertService.customUpdateWmessage("Sorted Successfully");
+        },
+      });
+  }
+
   counter: number = 0;
   sortExcist() {
     this.loading = true;

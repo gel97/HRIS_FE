@@ -177,7 +177,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
               <ng-container *ngFor="let b of a.si; let y = index">
                 <tr>
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
-                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
+                  <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <span class="text-success"
                       ><strong
                         ><u>{{ b.qty }}</u></strong
@@ -185,7 +185,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                     >
                     {{ b.indicator }}
                   </td>
-                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
+                  <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <span *ngIf="b.actual; else noActualSt" class="text-primary"
                       ><strong
                         ><u>{{ b.actual?.totalQty ?? 0 }}</u></strong
@@ -201,7 +201,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                       </div>
                     </ng-template>
                   </td>
-                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
+                  <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <circle-progress
                         [percent]="b.actual?.qtyPrcnt ?? 0"
@@ -215,7 +215,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                       ></circle-progress>
                     </div>
                   </td>
-                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
+                  <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuantiySt">
                         <strong class="text-primary">{{
@@ -230,7 +230,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
+                  <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQualitySt">
                         <strong class="text-primary">{{
@@ -245,7 +245,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
+                  <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimelySt">
                         <strong class="text-primary">{{
@@ -260,7 +260,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="isShowStandard = !isShowStandard; setSIindex(i, y)">
+                  <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noAveSt">
                         <strong class="text-success">{{

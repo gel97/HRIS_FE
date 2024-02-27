@@ -164,8 +164,10 @@ export class OpcrService {
       .subscribe({
         next: (response: any = {}) => {},
         error: () => {
+          this.alertService.customError("Error: Something went wrong!");
         },
-        complete: () => {
+        complete: () => {   
+          this.alertService.customUpdateWmessage("Sorted Successfully");
         },
       });
   }

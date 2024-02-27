@@ -53,6 +53,8 @@ export class SpmsApiService {
   get_ipcrdetails_wSub = (ipcrId: string) => `/tPMIpcrDatas/list/${ipcrId}`;
   post_ipcrData = () => `/tPMIpcrDatas`;
   put_ipcrData = () => `/tPMIpcrDatas`;
+  put_ipcrdata_sortby_mfo = (ipcrId: string) => `/tPMIpcrDatas/${ipcrId}/sortIpcrMfoes`;
+
   put_ipcrSubData = () => `/tPMIpcrDataSubTasks`;
   post_ipcrSubData = () => `/tPMIpcrDataSubTasks`;
   delete_ipcr = (ipcrId: string) => `/tPMIpcrs/${ipcrId}`;
@@ -96,6 +98,8 @@ export class SpmsApiService {
     searchMfo: string
   ) =>
     `/tPMDpcrData/searchMfoes/${officeId}/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
+  put_dpcrdata_sortby_mfo = (dpcrId: string) => `/tPMDpcrData/${dpcrId}/sortDpcrMfoes`;
+
 
   get_dpcr_data_mfoes_division = (
     officeId: string,
@@ -121,6 +125,7 @@ export class SpmsApiService {
   put_ots = () => `/tPMOts`;
   get_ots = () => `/tPMOts`;
   get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
+  delete_ots = (otsId: string) => `/tPMOts/${otsId}`;
 
   post_ots_request = () => `/tPMOts/OtsRequest`;
   get_ots_request_summary = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;

@@ -281,6 +281,21 @@ export class OtsService {
       });
   }
 
+  async DeleteOts(otsId: string) {
+    try {
+      let deleteData = await this.alertService.delete(
+        this.url.delete_ots(otsId)
+      );
+
+      if (deleteData) {
+        this.GetOts();
+      } else {
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   clearOtsGetMfo(){
     this.otsGetMfoGroup.mutate((a) => (a.data = []));
   }
