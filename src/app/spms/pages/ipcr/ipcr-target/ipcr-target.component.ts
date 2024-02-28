@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { IpcrService } from 'src/app/spms/service/ipcr.service';
 import { ReportActualService } from 'src/app/spms/service/report-actual.service';
 import { MonthRangeService } from 'src/app/spms/service/month-range.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-ipcr-target',
   templateUrl: './ipcr-target.component.html',
@@ -56,6 +57,23 @@ export class IpcrTargetComponent implements OnInit {
     this.divisionName = localStorage.getItem('divisionName');
     this.ipcrYear();
     this.localStorage();
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.get_ipcrDetails.data, event.previousIndex, event.currentIndex);
+    let sortData:any = [];
+
+    this.get_ipcrDetails.data.forEach((x:any, index:number) => {
+      x.si.forEach((y:any) => {
+        const exists = sortData.some((a:any) => a.ipcrDataId === y.ipcrDataId);
+        if (!exists) {
+          sortData.push({ipcrDataId: y.ipcrDataId, index: index});
+        }
+      });
+    });
+    this.ipcrService.PutIpcrDataSortByMfo(sortData);
+    console.log(sortData)
+
   }
 
   printData: any = [];

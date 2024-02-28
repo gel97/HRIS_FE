@@ -21,6 +21,13 @@ export class OpcrService {
   storageOpcrId = signal<any>(localStorage.getItem('opcrId'));
   storageOpcrDetails = signal<any>(localStorage.getItem('opcrDetails'));
 
+  storageIsShowDpcrData = signal<any>(localStorage.getItem('isShowOpcrData'));
+  storageOpcrIdActual = signal<any>(localStorage.getItem('opcrIdActual'));
+  storageOpcrDetailsActual = signal<any>(localStorage.getItem('opcrDetailsActual'));
+  isShowOpcrDataActual = signal<number>(0);
+  officeName = localStorage.getItem('officeName');
+  year = signal<number>(0);
+
   getId: string | any = localStorage.getItem('opcrId');
 
   getYear = '2023';
@@ -33,6 +40,12 @@ export class OpcrService {
   });
 
   opcrData = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+  opcrDataActual = signal<any>({
     data: [],
     error: false,
     isLoading: false,
@@ -65,6 +78,30 @@ export class OpcrService {
           this.alertService.error();
         },
         complete: () => {},
+      });
+  }
+
+  GetOPCRDataActual(opcrId: string) {
+    this.opcrDataActual.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_opcr_data_actual(opcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.opcrDataActual.mutate((a) => (a.data = response.data));
+          this.opcrDataActual.mutate((a) => (a.rating = response.rating));
+          this.opcrDataActual.mutate(
+            (a) => (a.finalRating = response.finalRating)
+          );
+          this.opcrDataActual.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          console.log("OPCR Actual: ", this.opcrDataActual());
+        },
       });
   }
 
@@ -116,6 +153,21 @@ export class OpcrService {
         },
         complete: () => {
           this.alertService.update();
+        },
+      });
+  }
+
+  
+  PutOpcrDataSortByMfo(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_opcrdata_sortby_mfo(this.storageOpcrId()), data, {})
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: () => {
+          this.alertService.customError("Error: Something went wrong!");
+        },
+        complete: () => {   
+          this.alertService.customUpdateWmessage("Sorted Successfully");
         },
       });
   }

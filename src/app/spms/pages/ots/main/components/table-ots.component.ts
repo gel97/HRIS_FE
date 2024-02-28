@@ -3,6 +3,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
 @Component({
   selector: 'app-table-ots',
   template: `
+    <app-loading [loading]="ots.isLoading"/>
     <ng-container *ngIf="ots.data.length === 0 && !ots.data.isLoading; else HasData">
       <div style="display: flex;justify-content: center;align-items: center;">
         <button
@@ -102,7 +103,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         >             
                         <a
                           class="dropdown-item cursor-pointer"
-                          
+                          (click)="DeleteOts(data.otsId)"
                           ><i class="bx bx-trash me-1"></i> Delete</a
                         >
                       </div>
@@ -153,6 +154,10 @@ export class TableOtsComponent {
     this.otsService.otsMfoes.mutate((a) => (a.endDate = formattedDate));
 
     this.otsService.clearOtsGetMfo(); // Clear Group OTS
+  }
+
+  DeleteOts(otsId:string){
+    this.otsService.DeleteOts(otsId);
   }
 
 }

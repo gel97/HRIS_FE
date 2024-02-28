@@ -1,8 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
+
 @Component({
   selector: 'app-view-dpcr-actual-data',
   template: `
+    <app-loading [loading]="dpcrDataActual.isLoading"/>
     <div class="row">
       <div *ngFor="let a of dpcrDataActual.rating; let i = index" class="col-3">
         <div
@@ -76,8 +78,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     >.
                   </p>
                   <p *ngSwitchCase="'Unsatisfactory'">
-                    Hello, {{ dpcrService.divisionName ?? '' }}!
-                    Unfortunately, your rating is only
+                    Hello, {{ dpcrService.divisionName ?? '' }}! Unfortunately,
+                    your rating is only
                     <u class="text-danger fs-6 fw-bold">{{
                       dpcrDataActual.finalRating.total
                     }}</u
@@ -88,8 +90,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     rating. Keep on improving your performance.
                   </p>
                   <p *ngSwitchCase="'Satisfactory'">
-                    Good job, {{ dpcrService.divisionName ?? '' }}! You
-                    have a
+                    Good job, {{ dpcrService.divisionName ?? '' }}! You have a
                     <span class="badge rounded-pill bg-label-primary"
                       >satistfactory</span
                     >
@@ -101,8 +102,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   </p>
                   <p *ngSwitchCase="'Very Satisfactory'">
                     Congratulations,
-                    {{ dpcrService.divisionName ?? '' }}! You were able
-                    to achieved a
+                    {{ dpcrService.divisionName ?? '' }}! You were able to
+                    achieved a
                     <span class="badge rounded-pill bg-label-success"
                       >very satistfactory</span
                     >
@@ -113,8 +114,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     >.
                   </p>
                   <p *ngSwitchCase="'Outstanding'">
-                    Well done, {{ dpcrService.divisionName ?? '' }}! You
-                    did an
+                    Well done, {{ dpcrService.divisionName ?? '' }}! You did an
                     <span class="badge rounded-pill bg-label-success"
                       >Outstanding</span
                     >
@@ -172,21 +172,26 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 <th class="text-center">Quality</th>
                 <th class="text-center">Timeliness</th>
                 <th class="text-center">Average</th>
+                <th [width]="1"></th>
               </tr>
             </thead>
             <tbody>
               <ng-container *ngFor="let b of a.si; let y = index">
-                <tr (click)="setSIindex(i, y)">
+                <tr>
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
-                  <td>
+                  <td (click)="setSIindex(i, y)">
                     <span class="text-success"
-                      ><strong><u>{{ b.qty }}</u></strong></span
+                      ><strong
+                        ><u>{{ b.qty }}</u></strong
+                      ></span
                     >
                     {{ b.indicator }}
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y)">
                     <span *ngIf="b.actual; else noActualSt" class="text-primary"
-                      ><strong><u>{{ b.actual?.totalQty ?? 0 }}</u></strong></span
+                      ><strong
+                        ><u>{{ b.actual?.totalQty ?? 0 }}</u></strong
+                      ></span
                     >
                     {{ b.actual?.actualAc ?? '' }}
                     <ng-template #noActualSt>
@@ -198,7 +203,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </div>
                     </ng-template>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <circle-progress
                         [percent]="b.actual?.qtyPrcnt ?? 0"
@@ -212,7 +217,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       ></circle-progress>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuantiySt">
                         <strong class="text-primary">{{
@@ -227,7 +232,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQualitySt">
                         <strong class="text-primary">{{
@@ -242,7 +247,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimelySt">
                         <strong class="text-primary">{{
@@ -257,7 +262,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noAveSt">
                         <strong class="text-success">{{
@@ -272,12 +277,32 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </ng-template>
                     </div>
                   </td>
+                  <td >
+                    <div class="dropdown position-static float-end">
+                      <button
+                        type="button"
+                        class="btn p-0 dropdown-toggle hide-arrow"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bx bx-dots-vertical-rounded text-primary"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalDpcrActualMfoOts"
+                          (click)="GetMfoOts(b?.actual?.dpcrDataId??null)"
+                          ><i class="bx bx-show-alt me-1"></i> View OTS</a
+                        >
+                      </div>
+                    </div>
+                  </td>
                 </tr>
                 <tr
                   *ngIf="currentSIindex === y && currentMfoindex === i"
                   style="background-color: #f5f5f9;"
                 >
-                  <td colspan="7">
+                  <td colspan="8">
                     <div class="card">
                       <div class="card-body">
                         <div class="table-responsive text-nowrap">
@@ -329,15 +354,19 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   </td>
                 </tr>
                 <ng-container *ngFor="let c of b.subTasks; let w = index">
-                  <tr style="background-color: #f5f5f9;" (click)="setStMfoIndex(w)">
-                    <td colspan="7">
+                  <tr
+                    style="background-color: #f5f5f9;"
+                    (click)="setStMfoIndex(w)"
+                  >
+                    <td colspan="8">
                       <div class="card">
                         <div class="card-header">
                           <div class="row">
                             <div class="col-12">
                               <h3>
                                 <strong class="text-secondary"
-                                  >{{ i + 1 }}.{{ w + 1 }}. {{ c.stMfo }}</strong
+                                  >{{ i + 1 }}.{{ w + 1 }}.
+                                  {{ c.stMfo }}</strong
                                 >
                               </h3>
                             </div>
@@ -364,7 +393,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                               <tr>
                                 <td>
                                   <span class="text-success"
-                                    ><strong><u>{{ c.qty }}</u></strong></span
+                                    ><strong
+                                      ><u>{{ c.qty }}</u></strong
+                                    ></span
                                   >
                                   {{ c.stIndicator }}
                                 </td>
@@ -372,9 +403,11 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                   <span
                                     *ngIf="c.actual; else noActualSt"
                                     class="text-primary"
-                                    ><strong><u>{{
-                                      c.actual?.totalQty ?? 0
-                                    }}</u></strong></span
+                                    ><strong
+                                      ><u>{{
+                                        c.actual?.totalQty ?? 0
+                                      }}</u></strong
+                                    ></span
                                   >
                                   {{ c.actual?.actualAc ?? '' }}
                                   <ng-template #noActualSt>
@@ -468,7 +501,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     </td>
                   </tr>
                   <tr *ngIf="currentMfoindexSt === w">
-                    <td colspan="7" style="background-color: #f5f5f9;">
+                    <td colspan="8" style="background-color: #f5f5f9;">
                       <div class="card">
                         <div class="card-body">
                           <div class="table-responsive text-nowrap">
@@ -483,31 +516,41 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                               </thead>
                               <tbody>
                                 <tr>
-                                  <td class="text-center"><strong>5</strong></td>
+                                  <td class="text-center">
+                                    <strong>5</strong>
+                                  </td>
                                   <td class="text-center">{{ c.qty5 }}</td>
                                   <td>{{ c.qlty5 }}</td>
                                   <td>{{ c.timely5 }}</td>
                                 </tr>
                                 <tr>
-                                  <td class="text-center"><strong>4</strong></td>
+                                  <td class="text-center">
+                                    <strong>4</strong>
+                                  </td>
                                   <td class="text-center">{{ c.qty4 }}</td>
                                   <td>{{ c.qlty4 }}</td>
                                   <td>{{ c.timely4 }}</td>
                                 </tr>
                                 <tr>
-                                  <td class="text-center"><strong>3</strong></td>
+                                  <td class="text-center">
+                                    <strong>3</strong>
+                                  </td>
                                   <td class="text-center">{{ c.qty3 }}</td>
                                   <td>{{ c.qlty3 }}</td>
                                   <td>{{ c.timely3 }}</td>
                                 </tr>
                                 <tr>
-                                  <td class="text-center"><strong>2</strong></td>
+                                  <td class="text-center">
+                                    <strong>2</strong>
+                                  </td>
                                   <td class="text-center">{{ c.qty2 }}</td>
                                   <td>{{ c.qlty2 }}</td>
                                   <td>{{ c.timely2 }}</td>
                                 </tr>
                                 <tr>
-                                  <td class="text-center"><strong>1</strong></td>
+                                  <td class="text-center">
+                                    <strong>1</strong>
+                                  </td>
                                   <td class="text-center">{{ c.qty1 }}</td>
                                   <td>{{ c.qlty1 }}</td>
                                   <td>{{ c.timely1 }}</td>
@@ -526,6 +569,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         </div>
       </div>
     </ng-container>
+    <app-modal-dpcr-actual-mfo-ots />
   `,
 })
 export class ViewDpcrActualDataComponent implements OnInit {
@@ -543,7 +587,12 @@ export class ViewDpcrActualDataComponent implements OnInit {
   firstWord: string = '';
   secondWord: string = '';
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
+
+  GetMfoOts(dpcrDataId:string){
+    this.dpcrService.GetDpcrMfoOts(dpcrDataId);
+  }
 
   setSIindex(i: number, y: number) {
     if (this.currentMfoindex === i && this.currentSIindex === y) {

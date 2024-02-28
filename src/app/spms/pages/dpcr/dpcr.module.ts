@@ -37,6 +37,16 @@ import { ViewDpcrActualComponent } from './dpcr-actual/components/view-dpcr-actu
 import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-actual.component';
 import { ViewDpcrActualDataComponent } from './dpcr-actual/components/view-dpcr-actual-data.component';
 import { SharedModule } from 'src/app/shared.module';
+import { ModalDpcrActualMfoOtsComponent } from './dpcr-actual/components/modal-dpcr-actual-mfo-ots.component';
+
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -65,6 +75,7 @@ import { SharedModule } from 'src/app/shared.module';
     ViewDpcrActualComponent,
     HeaderDpcrActualComponent,
     ViewDpcrActualDataComponent,
+    ModalDpcrActualMfoOtsComponent
   ],
   imports: [
     CommonModule,
@@ -79,6 +90,9 @@ import { SharedModule } from 'src/app/shared.module';
     MatRadioModule,
     MatTooltipModule,
     MatPaginatorModule,
+    CdkDrag,
+    CdkDropList,
+    CdkDropListGroup,
     SharedModule
   ],
 })

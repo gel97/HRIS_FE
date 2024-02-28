@@ -4,6 +4,7 @@ import { Observable, map, of } from 'rxjs';
 import { api } from 'src/app/connection';
 import { ErrorService } from '../spms/service/error.service';
 import { SpmsApiService } from '../spms/service/spms-api.service';
+import { Console } from 'console';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,6 +16,7 @@ export class MenuService {
   });
  
   userId: string | null = localStorage.getItem('userId');
+  userMenu: any | null = localStorage.getItem('user_menu');
 
   constructor(
     private errorService: ErrorService,
@@ -23,6 +25,12 @@ export class MenuService {
   ) {}
 
   GetMenu() {
+    if(this.userMenu !== null){
+      this.menu.mutate((a) => {
+        (a.data = JSON.parse(this.userMenu))
+      });
+      console.log(this.userMenu)
+    }else{
     this.menu.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(api + this.url.get_utility_user_role(this.userId ?? ''), {
@@ -37,6 +45,9 @@ export class MenuService {
                 (a.error = false),
                 (a.errorStatus = null);
             });
+            localStorage.setItem('user_menu', JSON.stringify(response));
+            console.log(response)
+
           }, 500);
           
 
@@ -54,6 +65,7 @@ export class MenuService {
         complete: () => {
         },
       });
+    }
   }
 
 }

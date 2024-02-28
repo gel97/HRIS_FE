@@ -37,6 +37,10 @@ import { HeaderIpcrActualComponent } from './pages/ipcr/ipcr-actual/components/h
 import { ViewIpcrDataActualComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr-data-actual.component';
 //import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
 import { SharedModule } from '../shared.module';
+import { OpcrActualMfoesComponent } from './pages/opcr/opcr-actual/components/opcr-actual-mfoes.component';
+import { HeaderOpcrActualComponent } from './pages/opcr/opcr-actual/components/header-opcr-actual.component';
+import { ViewOpcrActualComponent } from './pages/opcr/opcr-actual/components/view-opcr-actual.component';
+import { ViewOpcrActualDataComponent } from './pages/opcr/opcr-actual/components/view-opcr-actual-data.component';
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -58,6 +62,10 @@ import { SharedModule } from '../shared.module';
     ViewIpcrComponent,
     HeaderIpcrActualComponent,
     ViewIpcrDataActualComponent,
+    OpcrActualMfoesComponent,
+    HeaderOpcrActualComponent,
+    ViewOpcrActualComponent,
+    ViewOpcrActualDataComponent
    // FirstLetterUppercasePipe
   ],
   imports: [

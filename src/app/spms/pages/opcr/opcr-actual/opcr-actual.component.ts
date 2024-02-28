@@ -9,75 +9,26 @@ import { MonthRangeService } from 'src/app/spms/service/month-range.service';
   templateUrl: './opcr-actual.component.html',
   styleUrls: ['./opcr-actual.component.css'],
 })
-export class OpcrActualComponent implements OnInit {
-  reportService = inject(PdfService);
+export class OpcrActualComponent implements OnInit  {
   opcrService = inject(OpcrService);
-  reportStandardService = inject(ReportStandardService);
-  reportActualService = inject(ReportActualService);
-  monthRangeService = inject(MonthRangeService);
+  opcrIdActual = localStorage.getItem('opcrIdActual')
 
-  count = signal(0);
-
-  changeCount() {
-    this.count.set(5);
-  }
-
-  opcrMfoes: any = this.opcrService.opcrDetails;
-  isLoading: boolean = false;
-  notEmpty: boolean = false;
+  loading: boolean = true;
 
   ngOnInit(): void {
-    this.opcrService.GetOPCRDetails();
-
-    this.isLoading = true;
+    this.init();
+    this.loading = true;
     setTimeout(() => {
-      this.isLoading = false;
-      this.notEmpty = this.opcrMfoes().data.length > 0;
+      this.loading = false;
     }, 1000);
   }
 
-  get opcrMfoesData(): { [key: number]: any[] } {
-    const groupedData: { [key: number]: any[] } = this.opcrMfoes().data.reduce(
-      (acc: any, data: any) => {
-        const { categoryId } = data;
-        if (acc[categoryId]) {
-          acc[categoryId].push(data);
-        } else {
-          acc[categoryId] = [data];
-        }
-        return acc;
-      },
-      {}
-    );
-    return groupedData;
-  }
-
-  categoryName(cat: string) {
-    let catName = '';
-    switch (cat) {
-      case '1':
-        catName = 'STRATEGIC';
-        break;
-      case '2':
-        catName = 'CORE';
-        break;
-      case '3':
-        catName = 'SUPPORT';
-        break;
-      default:
-        break;
+  init(){
+    if(this.opcrIdActual){
+      this.opcrService.isShowOpcrDataActual.set(1);
+      this.opcrService.GetOPCRDataActual(this.opcrIdActual);
+    }else{
+      this.opcrService.isShowOpcrDataActual.set(0);
     }
-
-    return catName ? catName + ' FUNCTION' : 'NO FUNCTION';
-  }
-
-  ReportStandard() {
-    this.reportStandardService.ReportStandard(this.opcrMfoes().data);
-  }
-
-  ReportOPCR() {
-    this.monthRangeService.setSemesterActual();
-    this.reportActualService.triggerSwitch(2);
-    this.reportActualService.ReportActual(this.opcrMfoes().data);
   }
 }

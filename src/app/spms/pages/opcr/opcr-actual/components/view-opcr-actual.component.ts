@@ -1,9 +1,9 @@
 import { Component, OnInit , inject } from '@angular/core';
-import { DpcrService } from 'src/app/spms/service/dpcr.service';
+import { OpcrService } from 'src/app/spms/service/opcr.service';
 @Component({
-  selector: 'app-view-dpcr-actual',
+  selector: 'app-view-opcr-actual',
   template: `
-    <app-loading [loading]="dpcr.isLoading"/>
+    <app-loading [loading]="opcr.isLoading"/>
     <div class="card">
       <div class="row">
         <div class="card-body">
@@ -22,7 +22,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           <br />
           <!-- Bordered Table -->
           <div
-            *ngIf="dpcrService.dpcr().data.length > 0"
+            *ngIf="opcrService.opcr().data.length > 0"
             class="table-responsive text-nowrap"
           >
             <table class="table table-bordered">
@@ -35,10 +35,10 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody *ngFor="let data of dpcr.data">
+              <tbody *ngFor="let data of opcr.data">
                 <tr>
                   <td class="pointer">
-                    <a (click)="setDpcrDetails(data)" class="cursor-pointer"><strong>{{ data.details }}</strong></a>
+                    <a (click)="setOpcrDetails(data)" class="cursor-pointer"><strong>{{ data.details }}</strong></a>
                   </td>
                   <td>
                     <span
@@ -82,7 +82,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               </tbody>
             </table>
           </div>
-          <div *ngIf="dpcrService.dpcr().data.length <= 0">
+          <div *ngIf="opcrService.opcr().data.length <= 0">
             <img
               src="assets/img/document.png"
               alt=""
@@ -112,24 +112,25 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     </div>
   `,
 })
-export class ViewDpcrActualComponent implements OnInit {
-    dpcrService = inject(DpcrService);
+export class ViewOpcrActualComponent implements OnInit {
+    opcrService = inject(OpcrService);
     years: number[] = [];
     divisionId: string | null = localStorage.getItem('divisionId');
     userId: string | null = localStorage.getItem('userId');
     currentDate: Date = new Date();
     currentYear: number = this.currentDate.getFullYear();
+    officeId: string | null = localStorage.getItem('officeId');
 
-    dpcr:any = this.dpcrService.dpcr();
+    opcr:any = this.opcrService.opcr();
 
     ngOnInit(): void {
         this.ipcrYear();
-        this.GetIpcr();
+        this.GetOpcr();
     }
 
-    GetIpcr(){
-        this.dpcrService.year.set(this.currentYear);
-        this.dpcrService.GetDpcr();
+    GetOpcr(){
+        this.opcrService.year.set(this.currentYear);
+        this.opcrService.GetOPCRs(this.currentYear.toString(), this.officeId??"");
         // this.ipcrService.GetIPCRs(
         //     this.currentYear.toString(),
         //     localStorage.getItem('divisionId') ?? '',
@@ -137,11 +138,11 @@ export class ViewDpcrActualComponent implements OnInit {
         // );
     }
 
-    setDpcrDetails(data:any){
-        this.dpcrService.isShowDpcrDataActual.set(1);
-        localStorage.setItem('dpcrIdActual', data.dpcrId);
-        localStorage.setItem('dpcrDetailsActual', data.details);
-        this.dpcrService.GetDPCRDataActual(data.dpcrId);
+    setOpcrDetails(data:any){
+        this.opcrService.isShowOpcrDataActual.set(1);
+        localStorage.setItem('opcrIdActual', data.opcrId);
+        localStorage.setItem('opcrDetailsActual', data.details);
+        this.opcrService.GetOPCRDataActual(data.opcrId);
     }
 
     ipcrYear() {
@@ -151,8 +152,8 @@ export class ViewDpcrActualComponent implements OnInit {
     }
 
     onChangeYear(year: any) {
-        this.dpcrService.year.set(year);
-        this.dpcrService.GetDpcr();
+        this.opcrService.year.set(year);
+        this.opcrService.GetOPCRs(year.toString(), this.officeId??"");
     }
 
     semester(year: number) {
