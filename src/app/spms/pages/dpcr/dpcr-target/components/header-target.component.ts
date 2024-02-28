@@ -10,7 +10,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 @Component({
     selector: 'app-header-target',
     template: `
-         <div class="row">
+        <div class="row">
         <div class="col-9">
             <div class="card-header p-3">
             <nav aria-label="breadcrumb">

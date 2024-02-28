@@ -14,6 +14,7 @@ import { ModalOtsComponent } from './main/components/modal-ots.component';
 import { WarningComponent } from "../../components/warning.component";
 import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
 import { ModalOtsEditComponent } from './main/components/modal-ots-edit.component';
+import { SharedModule } from 'src/app/shared.module';
 @NgModule({
     declarations: [
         MainComponent,
@@ -35,7 +36,8 @@ import { ModalOtsEditComponent } from './main/components/modal-ots-edit.componen
         DxScrollViewModule,
         DxSelectBoxModule,
         NgxSkeletonLoaderModule,
-        WarningComponent
+        WarningComponent,
+        SharedModule
     ]
 })
 export class OtsModule { }

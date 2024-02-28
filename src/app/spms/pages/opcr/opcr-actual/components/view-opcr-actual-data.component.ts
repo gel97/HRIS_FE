@@ -3,6 +3,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
 @Component({
   selector: 'app-view-opcr-actual-data',
   template: `
+    <app-loading [loading]="opcrDataActual.isLoading"/>
     <div class="row">
       <div *ngFor="let a of opcrDataActual.rating; let i = index" class="col-3">
         <div

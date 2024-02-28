@@ -3,6 +3,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
 @Component({
   selector: 'app-table-ots',
   template: `
+    <app-loading [loading]="ots.isLoading"/>
     <ng-container *ngIf="ots.data.length === 0 && !ots.data.isLoading; else HasData">
       <div style="display: flex;justify-content: center;align-items: center;">
         <button

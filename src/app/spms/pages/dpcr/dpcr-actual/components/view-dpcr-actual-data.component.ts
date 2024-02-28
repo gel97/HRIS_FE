@@ -1,8 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
+
 @Component({
   selector: 'app-view-dpcr-actual-data',
   template: `
+    <app-loading [loading]="dpcrDataActual.isLoading"/>
     <div class="row">
       <div *ngFor="let a of dpcrDataActual.rating; let i = index" class="col-3">
         <div
@@ -585,7 +587,8 @@ export class ViewDpcrActualDataComponent implements OnInit {
   firstWord: string = '';
   secondWord: string = '';
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   GetMfoOts(dpcrDataId:string){
     this.dpcrService.GetDpcrMfoOts(dpcrDataId);

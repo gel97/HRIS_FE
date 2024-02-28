@@ -3,6 +3,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
 @Component({
   selector: 'app-view-opcr-actual',
   template: `
+    <app-loading [loading]="opcr.isLoading"/>
     <div class="card">
       <div class="row">
         <div class="card-body">

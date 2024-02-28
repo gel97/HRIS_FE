@@ -3,6 +3,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
 @Component({
   selector: 'app-view-ipcr-data-actual',
   template: `
+  <app-loading [loading]="ipcrDataActual.isLoading"/>
     <div class="row">
       <div *ngFor="let a of ipcrDataActual.rating; let i = index" class="col-3">
         <div
