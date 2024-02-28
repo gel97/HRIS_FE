@@ -7,6 +7,7 @@ import { ReportSmporService } from 'src/app/spms/service/report-smpor.service';
   selector: 'app-view-ipcr',
   styleUrls: ['../ipcr-actual.component.css'],
   template: `
+    <app-loading [loading]="ipcr.isLoading"/>
     <div class="card">
       <div class="row">
         <div class="card-body">

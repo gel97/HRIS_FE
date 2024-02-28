@@ -3,6 +3,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 @Component({
   selector: 'app-view-dpcr-actual',
   template: `
+    <app-loading [loading]="dpcr.isLoading"/>
     <div class="card">
       <div class="row">
         <div class="card-body">

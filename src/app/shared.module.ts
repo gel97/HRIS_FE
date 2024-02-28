@@ -1,11 +1,13 @@
-import { NgModule } from '@angular/core';
+import { NgModule , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { FirstLetterUppercasePipe } from './pipe/first-letter-uppercase.pipe';
-
+import { NgxSpinnerModule } from "ngx-spinner";
+import { LoadingComponent } from './spms/components/loading.component';
 @NgModule({
   declarations: [
-    FirstLetterUppercasePipe
+    FirstLetterUppercasePipe,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
@@ -17,10 +19,15 @@ import { FirstLetterUppercasePipe } from './pipe/first-letter-uppercase.pipe';
       innerStrokeColor: '#C7E596',
       animationDuration: 300,
     }),
+    NgxSpinnerModule,
   ],
   exports: [
     NgCircleProgressModule,
-    FirstLetterUppercasePipe
-  ]
+    FirstLetterUppercasePipe,
+    NgxSpinnerModule,
+    LoadingComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
 })
 export class SharedModule { }
