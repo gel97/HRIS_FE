@@ -25,7 +25,9 @@ import { FormBuilder, Validators } from '@angular/forms';
       >
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalScrollableTitle"><b>EDIT SUBTASK</b></h5>
+            <h5 class="modal-title" id="modalScrollableTitle">
+              <b>EDIT SUBTASK</b>
+            </h5>
             <button
               #closeModal
               type="button"
@@ -106,7 +108,7 @@ import { FormBuilder, Validators } from '@angular/forms';
               <thead>
                 <tr>
                   <th [width]="10">Rating</th>
-                  <th>Quantity</th>
+                  <th [width]="150">Quantity</th>
                   <th>Quality</th>
                   <th>Timeliness</th>
                 </tr>
@@ -259,8 +261,13 @@ import { FormBuilder, Validators } from '@angular/forms';
             >
               Close
             </button>
-            <button type="button" (click)="EditSubtask()" class="btn btn-primary">Save changes</button>
-
+            <button
+              type="button"
+              (click)="EditSubtask()"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
           </div>
         </div>
       </div>
@@ -306,10 +313,54 @@ export class ModalEditSubTaskComponent {
   }
 
   calculateRating() {
-    this.data.qty5 = Math.floor(this.data.qty * 1.3);
-    this.data.qty4 = Math.floor(this.data.qty * 1.15);
-    this.data.qty3 = Math.floor(this.data.qty);
-    this.data.qty2 = Math.floor(this.data.qty / 2 + 1);
-    this.data.qty1 = Math.floor(this.data.qty / 2);
+    if (this.data.qty >= 7) {
+      this.data.qty5 = Math.floor(this.data.qty * 0.3 + this.data.qty);
+      this.data.qty4 = Math.floor(this.data.qty * 0.15 + this.data.qty);
+      this.data.qty3 = Math.floor(this.data.qty);
+      this.data.qty2 = Math.floor(this.data.qty / 2 + 1);
+      this.data.qty1 = Math.floor(this.data.qty / 2);
+    } else if (this.data.qty === 6) {
+      this.data.qty5 = 8;
+      this.data.qty4 = 7;
+      this.data.qty3 = 6;
+      this.data.qty2 = 5;
+      this.data.qty1 = 4;
+    } else if (this.data.qty === 5) {
+      this.data.qty5 = 7;
+      this.data.qty4 = 6;
+      this.data.qty3 = 5;
+      this.data.qty2 = 4;
+      this.data.qty1 = 3;
+    } else if (this.data.qty === 4) {
+      this.data.qty5 = 6;
+      this.data.qty4 = 5;
+      this.data.qty3 = 4;
+      this.data.qty2 = 3;
+      this.data.qty1 = 1;
+    } else if (this.data.qty === 3) {
+      this.data.qty5 = 5;
+      this.data.qty4 = 4;
+      this.data.qty3 = 3;
+      this.data.qty2 = 2;
+      this.data.qty1 = 1;
+    } else if (this.data.qty === 2) {
+      this.data.qty5 = 4;
+      this.data.qty4 = 3;
+      this.data.qty3 = 2;
+      this.data.qty2 = 1;
+      this.data.qty1 = 0;
+    } else if (this.data.qty === 1) {
+      this.data.qty5 = 1;
+      this.data.qty4 = null;
+      this.data.qty3 = null;
+      this.data.qty2 = null;
+      this.data.qty1 = 0;
+    } else {
+      this.data.qty5 = null;
+      this.data.qty4 = null;
+      this.data.qty3 = null;
+      this.data.qty2 = null;
+      this.data.qty1 = null;
+    }
   }
 }

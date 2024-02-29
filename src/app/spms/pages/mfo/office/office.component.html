@@ -14,7 +14,7 @@
           />
         </div>
         <div class="col-6">
-          <button (click)="isAdd = true; mfoData={} " type="button" class="btn btn-primary float-end" data-bs-toggle="offcanvas"
+          <button *ngIf="!isCommon() || isCommon() && hrFocal === officeId" (click)="isAdd = true; mfoData={} " type="button" class="btn btn-primary float-end" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
             <i class='bx bx-plus'></i>MFO
           </button>

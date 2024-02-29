@@ -4,7 +4,7 @@ import {
   Output,
   Input,
   ViewChild,
-  inject
+  inject,
 } from '@angular/core';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
 @Component({
@@ -12,11 +12,18 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   template: `
     <div class="card-body">
       <div>
-        <select class="form-select" aria-label="Default select example">
-          <option value="2024">2024</option>
-          <option value="2023" selected>2023</option>
-          <option value="2022">2022</option>
-          <option value="2021">2021</option>
+        <select
+          (change)="onChangeYear($event)"
+          class="form-select"
+          aria-label="Default select example"
+        >
+          <option
+            *ngFor="let year of listYear"
+            [selected]="year === yearNow"
+            [value]="year"
+          >
+            {{ year }}
+          </option>
         </select>
       </div>
       <br />
@@ -51,17 +58,18 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   {{ item.transDT | date : 'MMM. dd, yyyy' }}
                 </td>
                 <td>
-                  <span
-                    *ngIf="item.active; else Inactive"
-                    class="badge bg-label-success me-1"
-                    >active</span
-                  >
-                  <ng-template #Inactive>
-                  <span 
-                    class="badge bg-label-danger me-1"
-                    >inactive</span
-                  >
-                  </ng-template>
+                  <div [ngSwitch]="item.active">
+                    <div *ngSwitchCase="'0'">
+                      <span class="badge bg-label-danger me-1">Draft </span>
+                    </div>
+                    <div *ngSwitchCase="'1'">
+                      <span class="badge bg-label-primary me-1">Open</span>
+                    </div>
+                    <div *ngSwitchCase="'2'">
+                      <span class="badge bg-label-success me-1">Final</span>
+                    </div>
+                    <div *ngSwitchDefault><span class="badge bg-label-danger me-1">Draft </span></div>
+                  </div>
                 </td>
                 <td>
                   <div class="dropdown position-static">
@@ -73,12 +81,27 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       <i class="bx bx-dots-vertical-rounded"></i>
                     </button>
                     <div class="dropdown-menu">
-                      <a 
-                        *ngIf="!item.active"
-                        class="dropdown-item cursor-pointer"
-                        (click)="SetDpcrActive(item)"
-                        ><i class="bx bxs-flag-alt me-1 "></i> Final</a
-                      >
+                      <div [ngSwitch]="item.active">
+                        <div *ngSwitchCase="'0'">
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            (click)="SetDpcrActive(item, 1)"
+                            ><i class="bx bxs-flag-alt me-1 "></i> Open</a
+                          >
+                        </div>
+                        <div *ngSwitchCase="'1'">
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            (click)="SetDpcrActive(item, 2)"
+                            ><i class="bx bxs-flag-alt me-1 "></i> Final</a
+                          >
+                        </div>
+                        <div *ngSwitchDefault><a
+                            class="dropdown-item cursor-pointer"
+                            (click)="SetDpcrActive(item, 1)"
+                            ><i class="bx bxs-flag-alt me-1 "></i> Open</a
+                          ></div>
+                      </div>
                       <a
                         class="dropdown-item cursor-pointer"
                         (click)="SetDpcr(item); HandleDpcr()"
@@ -86,8 +109,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         data-bs-target="#offcanvasDpcr"
                         ><i class="bx bx-edit-alt me-1"></i> Edit</a
                       >
-                      <a class="dropdown-item cursor-pointer"
-                      (click)="DeleteDpcr(item.dpcrId)"
+                      <a
+                        class="dropdown-item cursor-pointer"
+                        (click)="DeleteDpcr(item.dpcrId)"
                         ><i class="bx bx-trash me-1"></i> Delete</a
                       >
                     </div>
@@ -112,15 +136,31 @@ export class TableDpcrComponent {
   @Output() setDpcrActive = new EventEmitter<any>();
   @Output() deleteDpcr = new EventEmitter<string>();
 
-  SetDpcr(item:any) {
+  prevYear = new Date().getFullYear() - 1;
+  yearNow = new Date().getFullYear();
+  listYear: any = [];
+
+  ngOnInit(): void {
+    for (let index = 3; index > 0; index--) {
+      this.listYear.push(this.prevYear++);
+    }
+  }
+
+  onChangeYear(event: any) {
+    this.dpcrService.year.set(event.target.value);
+    this.dpcrService.GetDpcr();
+  }
+
+  SetDpcr(item: any) {
     this.setDpcr.emit(item);
   }
 
-  SetDpcrActive(item:any) {
+  SetDpcrActive(item: any, status: number) {
+    item.active = status;
     this.setDpcrActive.emit(item);
   }
 
-  SetIsShowDpcrData(item:any){
+  SetIsShowDpcrData(item: any) {
     this.dpcrService.storageDpcrId.set(item.dpcrId);
     localStorage.setItem('dpcrId', item.dpcrId);
 
@@ -130,11 +170,10 @@ export class TableDpcrComponent {
     this.dpcrService.storageIsShowDpcrData.set(1);
     localStorage.setItem('isShowDpcrData', '1');
 
-    this.getDpcrData.emit("Get DPCR Data");
-
+    this.getDpcrData.emit('Get DPCR Data');
   }
 
-  DeleteDpcr(dpcrId:string){
+  DeleteDpcr(dpcrId: string) {
     this.deleteDpcr.emit(dpcrId);
   }
 
@@ -146,9 +185,6 @@ export class TableDpcrComponent {
     let result = '';
 
     switch (value) {
-      case 0:
-        result = 'FULL YEAR';
-        break;
       case 1:
         result = '1st';
         break;
@@ -161,4 +197,3 @@ export class TableDpcrComponent {
     return result;
   }
 }
-

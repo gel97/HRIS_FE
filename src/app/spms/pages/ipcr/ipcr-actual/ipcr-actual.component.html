@@ -1,0 +1,14 @@
+<app-header-ipcr-actual 
+    [isShowIpcrData]="ipcrService.isShowIpcrDataActual()" 
+/>
+
+<app-view-ipcr 
+    *ngIf="!ipcrService.isShowIpcrDataActual()"
+/>
+
+<app-view-ipcr-data-actual
+    *ngIf="ipcrService.isShowIpcrDataActual()"
+/>
+
+
+

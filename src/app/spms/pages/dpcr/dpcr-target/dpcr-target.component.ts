@@ -23,11 +23,12 @@ export class DpcrTargetComponent implements OnInit{
   isShowSubtask:boolean = false;
   isShowCanvasOpcrMfoes:boolean = false;
 
+  currentYear: number = new Date().getFullYear();
+
   ngOnInit(): void {
+    this.dpcrService.year.set(this.currentYear);
     this.dpcrService.GetDpcr();
     this.localStorage();
-    console.log(this.dpcr)
-    
   }
 
   AddDpcr(){
@@ -45,7 +46,6 @@ export class DpcrTargetComponent implements OnInit{
   }
 
   AddDpcrData(){
-    console.log(this.dpcrSIData);
     this.dpcrSIData.isSubTask = 0;
     this.dpcrService.AddDpcrData(this.dpcrSIData);
   }
@@ -61,6 +61,10 @@ export class DpcrTargetComponent implements OnInit{
 
   DeleteDPCRData(dpcrDataId:string){
     this.dpcrService.DeleteDPCRData(dpcrDataId);
+  }
+
+  DeleteSubtask(subTaskId:string){
+    this.dpcrService.DeleteSubtask(subTaskId);
   }
 
   AddSubTask(data:any){
@@ -86,7 +90,6 @@ export class DpcrTargetComponent implements OnInit{
 
   }
   setDpcrDataObj(data:any){
-    console.log("dpcr :", data)
     this.dpcrMFOData = data.mfoData;
     this.dpcrSIData = data.siData;
   }

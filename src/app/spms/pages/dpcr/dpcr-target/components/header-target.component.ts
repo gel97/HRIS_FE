@@ -10,13 +10,16 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 @Component({
     selector: 'app-header-target',
     template: `
-         <div class="row">
+        <div class="row">
         <div class="col-9">
             <div class="card-header p-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-style1 m-0">
                     <li class="breadcrumb-item">
                         <a><i class='bx bx-data'></i>&nbsp;DPCR</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <i class="bx bx-carousel"></i>&nbsp;{{dpcrService.divisionName}}
                     </li>
                     <li class="breadcrumb-item" [ngClass]="!isShowDpcrData?'active':''">
                         <a (click)="SetIsShowDpcrData()" class="cursor-pointer"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>

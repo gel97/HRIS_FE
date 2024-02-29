@@ -1,0 +1,1234 @@
+<!-- IPCR -->
+<app-loading [loading]="ipcr.isLoading"/>
+<div class="card">
+    <div class="row">
+        <div class="col-8">
+            <div class="card-header p-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-style1 m-0">
+                        <li class="breadcrumb-item">
+                            <a><i class='bx bx-data'></i>&nbsp;IPCR</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a><i class='bx bx-carousel'></i>&nbsp;{{divisionName}}</a>
+                        </li>
+                        <li class="breadcrumb-item " [ngClass]="isShow()==0? 'active':''">
+                            <a><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Target</a>
+                        </li>
+                        <li *ngIf="isShow()==1" class="breadcrumb-item active">
+                            <a>&nbsp;{{ipcrData()}}</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div *ngIf="isShow() == 1" class="col-4"><br>
+            <a class="pointer float-end">
+                <span class="row px-4" (click)="removeLocalStorage()">
+                    <i class='bx bx-arrow-back'></i>
+                </span>
+            </a>
+        </div>
+        <!-- data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll" -->
+        <div *ngIf="isShow() == 0" class="col-4">
+            <div class="pt-4" style="margin-right:5px;">
+                <button (click)="PostIpcr()" class="btn btn-primary float-end" type="button">
+                    <i class='bx bx-plus'></i>IPCR
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isShow() == 0" class="card-body">
+        <div>
+            <select class="form-select" aria-label="Default select example" [(ngModel)]="getYear"
+                (ngModelChange)="onChangeYear($event)">
+                <option *ngFor="let year of years" [value]="year">{{year}}</option>
+            </select>
+        </div>
+        <br>
+        <!-- Bordered Table -->
+        <div *ngIf="ipcrService.ipcr().data.length > 0" class="table-responsive text-nowrap">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Details</th>
+                        <th>Sem</th>
+                        <th>Year</th>
+                        <th>Date Created</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let data of ipcr.data">
+                    <tr>
+                        <td class="pointer"><a (click)="IPCRDetails(data.ipcrId, data.details, data.active)">
+                                <strong>{{data.details}}</strong>
+                            </a></td>
+                        <td>
+                            <span class="badge"
+                                [ngClass]="data.semester == '0' ? 'bg-label-success': data.semester == '1' ? 'bg-label-primary': data.semester == '2' ? 'bg-label-info': ''">{{semester(data.semester)}}</span>
+                        </td>
+                        <td><span class="badge bg-label-primary me-1">{{data.year}}</span></td>
+                        <td>
+                            {{data.transDT | date:'MMM. dd, yyyy' }}
+                        </td>
+                        <td> <span [ngClass]="
+                            data.active == '1'
+                              ? 'badge rounded-pill bg-label-success'
+                              : data.active == '2'
+                              ? 'badge rounded-pill bg-label-primary'
+                              : data.active == '0'
+                              ? 'badge rounded-pill bg-label-danger'
+                              : ''
+                          ">
+                                {{ displayStatus(data.active) }}</span>
+                        </td>
+                        <td>
+                            <div class="dropdown position-static pointer">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                    data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a *ngIf="data.active == 0" class="dropdown-item"
+                                        (click)="edit_ipcr_status = data; EditIPCRStatusOpen()"><i
+                                            class="bx bx-paperclip me-1"></i>Open</a>
+                                    <a *ngIf="data.active == 1" class="dropdown-item"
+                                        (click)="edit_ipcr_status = data; EditIPCRStatusFinal()"><i
+                                            class="bx bxs-flag-alt me-1"></i>Final</a>
+                                    <a class="dropdown-item" (click)="printIpcr(data)"><i
+                                            class="bx bx-printer me-1"></i>
+                                        Print IPCR</a>
+                                    <a (click)="ipcrService.DeleteIPCR(data)" class="dropdown-item text-danger"><i
+                                            class="bx bx-trash me-1"></i>
+                                        Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="ipcrService.ipcr().data.length <= 0">
+            <img src="assets/img/document.png" alt="" width="200" height="200" style="display: block; margin: 0 auto" />
+            <span style="
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+height: 100%;
+">
+                <div>
+                    <label style="margin-bottom: 10px;"><strong>No Data Found!</strong></label>
+                </div>
+            </span>
+        </div>
+        <!--/ Bordered Table -->
+    </div>
+</div>
+<!-- IPCR Details -->
+<div class="container-fluid flex-grow-1 py-4" *ngIf="isShow() == 1">
+    <div class="row p-0">
+        <div [ngClass]="isExpand? 'col-xl-6 p-0':'col-xl-11 p-0'">
+            <div class="p-0">
+                <div class="">
+                    <ng-container *ngIf="get_ipcrDetails.completeLoading != true ; else completeLoads">
+                        <ng-container *ngIf="get_ipcrDetails.data.length>0; else noIpcrDetails">
+                            <div cdkDropList (cdkDropListDropped)="drop($event)">
+                                <div class="card mb-2 shadow-sm"
+                                    *ngFor="let data of get_ipcrDetails.data ; let parent = index " cdkDrag>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h1 class="card-title" style="color: blue;">{{data.mfo}}</h1>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="btn-group float-end">
+                                                    <small class="badge rounded-pill float-end pointer"
+                                                        [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {{displayCatergory(data.categoryId) }}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md mb-4 mb-md-0">
+                                                <div class="accordion mt-3" id="accordionExample">
+                                                    <div class="card accordion-item bg-lightest thick-border"
+                                                        *ngFor="let si of data.si; let i =index">
+                                                        <ng-container *ngIf="si.isSubTask == 0 ; else subTaskData">
+                                                            <h2 class="accordion-header" id="heading{{parent}}{{i}}">
+                                                                <button type="button" class="accordion-button collapsed"
+                                                                    data-bs-toggle="collapse"
+                                                                    [attr.data-bs-target]="'#accordion' + parent + i"
+                                                                    aria-expanded="false"
+                                                                    [attr.aria-controls]="'accordion' + parent + i">
+                                                                    <i class='bx bx-label'></i>
+                                                                    <strong style="color: #697A8D;">&nbsp;<span
+                                                                            style="color: black;">{{si.qty}}</span>&nbsp;{{si.indicator}}</strong>
+                                                                </button>
+                                                            </h2>
+                                                            <div id="accordion{{parent}}{{i}}"
+                                                                class="accordion-collapse collapse"
+                                                                [attr.aria-labelledby]="'heading' + parent + i"
+                                                                data-bs-parent="#accordionExample">
+                                                                <div class="accordion-body">
+                                                                    <!-- Bordered Table -->
+                                                                    <div class="table-responsive text-nowrap">
+                                                                        <table class="table table-bordered">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>RATING</th>
+                                                                                    <th>QUANTITY</th>
+                                                                                    <th>QUALITY</th>
+                                                                                    <th>TIMELINESS</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>{{'5'}}</td>
+                                                                                    <td>{{si.qty5}}</td>
+                                                                                    <td>{{si.qlty5}}</td>
+                                                                                    <td>{{si.timely5}}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>{{'4'}}</td>
+                                                                                    <td>{{si.qty4}}</td>
+                                                                                    <td>{{si.qlty4}}</td>
+                                                                                    <td>{{si.timely4}}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>{{'3'}}</td>
+                                                                                    <td>{{si.qty3}}</td>
+                                                                                    <td>{{si.qlty3}}</td>
+                                                                                    <td>{{si.timely3}}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>{{'2'}}</td>
+                                                                                    <td>{{si.qty2}}</td>
+                                                                                    <td>{{si.qlty2}}</td>
+                                                                                    <td>{{si.timely2}}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>{{'1'}}</td>
+                                                                                    <td>{{si.qty1}}</td>
+                                                                                    <td>{{si.qlty1}}</td>
+                                                                                    <td>{{si.timely1}}</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <!--/ Bordered Table -->
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="ipcr_details_status != 2">
+                                                                <button (click)="DeleteIPCRDetails(si.ipcrDataId)"
+                                                                    type="button"
+                                                                    class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
+                                                                    <span class="tf-icons bx bx-trash"></span>
+                                                                </button>
+                                                                <button (click)="ipcrDetails = si"
+                                                                    (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId); returnQty = ipcrDetails.qty; promptEdit = false"
+                                                                    type="button" data-bs-toggle="modal"
+                                                                    data-bs-target="#modalEdit"
+                                                                    class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
+                                                                    <span class="tf-icons bx bx-pencil"></span>
+                                                                </button>
+                                                            </div>
+                                                        </ng-container>
+                                                        <ng-template #subTaskData>
+                                                            <div *ngFor="let st of si.st; let z =index">
+                                                                <h2 class="accordion-header"
+                                                                    id="heading{{parent}}{{i}}{{z}}">
+                                                                    <button type="button" class="accordion-button collapsed"
+                                                                        data-bs-toggle="collapse"
+                                                                        [attr.data-bs-target]="'#accordion' + parent + i + z"
+                                                                        aria-expanded="false"
+                                                                        [attr.aria-controls]="'accordion' + parent + i + z">
+                                                                        <strong style="color: black;">{{z + 1}}.
+                                                                            &nbsp;</strong>
+                                                                        <strong style="color: #697A8D;">{{st.stMfo}}
+                                                                            &nbsp;</strong>
+                                                                        <span class="badge bg-dark">SUBTASK MFO</span>
+                                                                    </button>
+                                                                    <div style="margin-left: 33px; font-size: smaller;">
+                                                                        <i class='bx bx-subdirectory-right'></i><span
+                                                                            style="color: black;">{{st.qty}}</span>
+                                                                        <i>{{st.stIndicator}}</i> &nbsp;
+                                                                        <span
+                                                                            class="badge rounded-pill bg-label-dark">SUBTASK
+                                                                            INDICATOR</span>
+                                                                    </div>
+                                                                </h2>
+                                                                <div id="accordion{{parent}}{{i}}{{z}}"
+                                                                    class="accordion-collapse collapse"
+                                                                    [attr.aria-labelledby]="'heading' + parent + i + z"
+                                                                    data-bs-parent="#accordionExample">
+                                                                    <div class="accordion-body">
+                                                                        <!-- Bordered Table -->
+                                                                        <div class="table-responsive text-nowrap">
+                                                                            <table class="table table-bordered">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>RATING</th>
+                                                                                        <th>QUANTITY</th>
+                                                                                        <th>QUALITY</th>
+                                                                                        <th>TIMELINESS</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>{{'5'}}</td>
+                                                                                        <td>{{st.qty5}}</td>
+                                                                                        <td>{{st.qlty5}}</td>
+                                                                                        <td>{{st.timely5}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>{{'4'}}</td>
+                                                                                        <td>{{st.qty4}}</td>
+                                                                                        <td>{{st.qlty4}}</td>
+                                                                                        <td>{{st.timely4}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>{{'3'}}</td>
+                                                                                        <td>{{st.qty3}}</td>
+                                                                                        <td>{{st.qlty3}}</td>
+                                                                                        <td>{{st.timely3}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>{{'2'}}</td>
+                                                                                        <td>{{st.qty2}}</td>
+                                                                                        <td>{{st.qlty2}}</td>
+                                                                                        <td>{{st.timely2}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>{{'1'}}</td>
+                                                                                        <td>{{st.qty1}}</td>
+                                                                                        <td>{{st.qlty1}}</td>
+                                                                                        <td>{{st.timely1}}</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                        <!--/ Bordered Table -->
+                                                                    </div>
+                                                                </div>
+                                                                <div *ngIf="ipcr_details_status != 2">
+
+                                                                    <button (click)="DeleteIPCRSTDetails(st.ipcrSubtaskId)"
+                                                                        type="button"
+                                                                        class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
+                                                                        <span class="tf-icons bx bx-trash"></span>
+                                                                    </button>
+                                                                    <button type="button" (click)="ipcrSTDetails = st"
+                                                                        (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId); returnQtyST = ipcrSTDetails.qty; promptEditST = false"
+                                                                        type="button" data-bs-toggle="modal"
+                                                                        data-bs-target="#modalEditSubtask"
+                                                                        class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
+                                                                        <span class="tf-icons bx bx-pencil"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noIpcrDetails>
+                            <img src="assets/img/document.png" alt="" width="200" height="200"
+                                style="display: block; margin: 0 auto" />
+                            <span style="
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+        ">
+                                <div>
+                                    <label style="margin-bottom: 10px;"><strong>No Data Found!</strong></label>
+                                </div>
+                                <div *ngIf="!isExpand">
+                                    <button *ngIf="ipcrService.ipcrDetails().data.length <= 0" (click)="isExpand = true"
+                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasDPCR_IPCR"
+                                        aria-controls="offcanvasScroll" type="button" class="btn btn-primary">MAJOR
+                                        FINAL
+                                        OUTPUT</button>
+                                </div>
+                            </span>
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #completeLoads>
+                        <app-opcr-target-skeleton></app-opcr-target-skeleton>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="ipcr_details_status != 2">
+            <div *ngIf="!isExpand" class="col-xl-1">
+                <button *ngIf="ipcrService.ipcrDetails().data.length > 0" (click)="isExpand = true" type="button"
+                    class="btn rounded-pill btn-icon btn-info mx-2" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasDPCR_IPCR" aria-controls="offcanvasScroll"> <i class='bx bx-expand'></i>
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<!-- IPCR Add -->
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScroll"
+    aria-labelledby="offcanvasScrollLabel">
+    <div class="offcanvas-header">
+        <h1 id="offcanvasScrollLabel" class="offcanvas-title">IPCR</h1>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body my-auto mx-0 flex-grow-0">
+        <div class="col-md-12">
+            <div class="">
+                <div class="form-floating">
+                    <input [(ngModel)]="post_ipcr.details" type="text" class="form-control" id="floatingInput"
+                        placeholder="" aria-describedby="floatingInputHelp" />
+                    <label for="floatingInput">IPCR</label>
+                    <div id="floatingInputHelp" class="form-text">
+                        Input IPCR
+                    </div>
+                </div>
+            </div><br>
+        </div>
+        <br>
+        <button (click)="PostIpcr()" type="button" class="btn btn-primary mb-2 d-grid w-100">Save</button>
+        <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
+            Cancel
+        </button>
+    </div>
+</div>
+
+<!-- DPCR IPCR Add -->
+<div class="offcanvas offcanvas-end offcanvas-end-modified" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+    id="offcanvasDPCR_IPCR" aria-labelledby="offcanvasScrollLabel" style="z-index: 10;">
+    <div class="offcanvas-header">
+        <h1 id="offcanvasScrollLabel" class="offcanvas-title">DPCR MAJOR FINAL OUTPUT</h1>
+        <button (click)="isExpand = false" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="col-12">
+            <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" (click)="setMFOs(0)"
+                        [ngClass]="!ipcrService.isCommon()? 'active': ''" data-bs-target="#navs-pills-justified-home"
+                        aria-controls="navs-pills-justified-home" aria-selected="true">
+                        <i class='bx bx-grid-alt'></i> DPCR MFO
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" (click)="setMFOs(1)"
+                        [ngClass]="ipcrService.isCommon()? 'active': ''" data-bs-target="#navs-pills-justified-profile"
+                        aria-controls="navs-pills-justified-profile" aria-selected="false">
+                        <i class='bx bx-grid-alt'></i> COMMON MFO
+                    </button>
+                </li>
+            </ul>
+            <br>
+            <div class="">
+                <ng-container>
+                    <ng-container *ngIf="dpcr_ipcr.isLoadingSave != true; else isLoading">
+                        <ng-container *ngIf="dpcr_ipcr.data.length >0 && dpcr_ipcr.isNoData; else noData">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 100px; color: blue;">Indicator
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let data of dpcr_ipcr.data" class="table-border-bottom-0">
+                                    <ng-container *ngIf="data.si.length >0">
+                                        <tr class="text-justify" style="color: blue; white-space: normal;">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
+                                                </div>
+                                                <div class="col-4">
+                                                    <small class="badge rounded-pill float-end"
+                                                        [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {{displayCatergory(data.categoryId)}}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <ng-container *ngFor="let si of data.si">
+                                            <tr>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-10 text-justify" style="white-space: normal;">
+                                                            <i class='bx bx-chevron-right'></i>
+                                                            &nbsp;
+                                                            {{si.indicator}}
+                                                        </div>
+                                                        <div *ngIf="si.st.length==0 && si.isSubTask == 0" class="col-1"
+                                                            style="margin-left: 20px;">
+                                                            <button
+                                                                (click)="ipcrDetails = si; dpcrQuantity = ipcrDetails.qty"
+                                                                (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId);prompt = false ; quantity = ''"
+                                                                type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#modalAdd"
+                                                                class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                <span class="tf-icons bx bx bx-plus"></span></button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <ng-container *ngFor="let st of si.st; let y = index">
+                                                <tr>
+                                                    <td>
+                                                        <div style="margin-left: 5px;">
+                                                            <strong>{{y+1}}. &nbsp; {{st.stMfo}} &nbsp;</strong> <span
+                                                                class="badge bg-dark">SUBTASK MFO</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="row">
+                                                            <div class="col-10" style="margin-left: 20px;">
+                                                                <i class='bx bx-subdirectory-right'></i> &nbsp;
+                                                                <i>{{st.stIndicator}}</i>
+                                                                &nbsp;
+                                                                <span class="badge rounded-pill bg-label-dark">SUBTASK
+                                                                    INDICATOR</span>
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <button
+                                                                    (click)="ipcrSTDetails = st; dpcrSTQuantity = ipcrSTDetails.qty"
+                                                                    (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
+                                                                    type="button" data-bs-toggle="modal"
+                                                                    data-bs-target="#modalAddSubtask"
+                                                                    class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                    <span
+                                                                        class="tf-icons bx bx bx-plus"></span></button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                            <ng-container *ngFor="let stC of si.stCmfo; let y = index">
+                                                <tr>
+                                                    <td>
+                                                        <div style="margin-left: 5px;">
+                                                            <strong>{{si.st.length + y+1}}. &nbsp; {{stC.mfo}}
+                                                                &nbsp;</strong> <span class="badge bg-dark">SUBTASK
+                                                                MFO</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <ng-container *ngFor="let siStC of stC.si">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-10" style="margin-left: 20px;">
+                                                                    <i class='bx bx-subdirectory-right'></i> &nbsp;
+                                                                    <i>{{siStC.indicator}}</i>
+                                                                    &nbsp;
+                                                                    <span
+                                                                        class="badge rounded-pill bg-label-dark">SUBTASK
+                                                                        INDICATOR</span>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <button
+                                                                        (click)="ipcrSTDetails = siStC; ipcrSTDetails.stIndicator = siStC.indicator; dpcrSTQuantity = siStC.qty"
+                                                                        (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
+                                                                        type="button" data-bs-toggle="modal"
+                                                                        data-bs-target="#modalAddSubtask"
+                                                                        class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                        <span
+                                                                            class="tf-icons bx bx bx-plus"></span></button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </tbody>
+                                <ng-template #noSIInput>
+                                    <div class="text-center" style="margin-top: 30px;">
+                                        <label><strong>No Data Found!</strong></label>
+                                    </div>
+                                </ng-template>
+                            </table>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #isLoading><app-mfo-skeleton></app-mfo-skeleton></ng-template>
+                </ng-container>
+                <ng-template #nosidata>
+                    <div class="text-center" style="margin-top: 30px;">
+                        <label><strong>No Data Found!</strong></label>
+                    </div>
+                </ng-template>
+                <ng-template #noData>
+                    <div class="text-center" style="margin-top: 30px;">
+                        <label><strong>No Data Found!</strong></label>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add -->
+<div class="modal fade" id="modalAdd" tabindex="-1" aria-hidden="true" style="z-index: 5000;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    {{ipcrDetails.indicator}}
+                </h1>
+                <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">Quantity</label>
+                            <input [(ngModel)]="quantity" (ngModelChange)="calculateRating()" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" /><br>
+                        </div>
+                        <div *ngIf="ipcrDetails.qtyUnit == 0" class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Quantity Remaining</label>
+                            <input disabled [value]="dpcrQuantity-ipcrService.ipcr_rem()" [(ngModel)]="add_qtyRemaining"
+                                type="number" class="form-control" id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>&nbsp;
+                            <span class="badge rounded-pill bg-success">{{quantityLabeler(ipcrDetails.qtyUnit)}}</span>
+                            <input disabled [(ngModel)]="dpcrQuantity" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-12">
+                            <div *ngIf="prompt">
+                                <div class="alert alert-danger" role="alert"><i
+                                        class='bx bxs-x-square'></i>&nbsp;Quantity must not exceed to
+                                    REMAINING or
+                                    REMAINING
+                                    already
+                                    depleted to zero!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- Bootstrap Table with Header - Light -->
+                    <div class="card">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>RATING</th>
+                                        <th>QUANTITY</th>
+                                        <th>QUALITY</th>
+                                        <th>TIMELINESS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr>
+                                        <td>{{'5'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty5" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty5}}
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely5}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'4'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty4" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty4}}
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely4}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'3'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty3" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty3}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely3}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'2'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty2" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty2}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely2}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'1'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty1" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty1}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely1}}
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Bootstrap Table with Header - Light -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button (click)="PostIPCRDetails()" type="button" class="btn btn-primary">
+                    Save Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Subtask-->
+<div class="modal fade" id="modalAddSubtask" tabindex="-1" aria-hidden="true" style="z-index: 5000;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    {{ipcrSTDetails.stIndicator}}
+                </h1>
+                <button #closebuttonST type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">Quantity Subtask</label>
+                            <input [(ngModel)]="quantityST" (ngModelChange)="calculateRatingST()" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div *ngIf="ipcrSTDetails.qtyUnit == 0" class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Quantity Subtask
+                                Remaining</label>
+                            <input disabled [value]="dpcrSTQuantity - ipcrService.ipcrST_rem()"
+                                [(ngModel)]="add_qtyRemainingST" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Subtask</label>&nbsp;
+                            <span
+                                class="badge rounded-pill bg-success">{{quantityLabeler(ipcrSTDetails.qtyUnit)}}</span>
+                            <input disabled [(ngModel)]="dpcrSTQuantity" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-12"><br>
+                            <div *ngIf="promptST">
+                                <div class="alert alert-danger" role="alert"><i
+                                        class='bx bxs-x-square'></i>&nbsp;Quantity must not exceed to
+                                    REMAINING or
+                                    REMAINING
+                                    already
+                                    depleted to zero!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- Bootstrap Table with Header - Light -->
+                    <div class="card">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>RATING</th>
+                                        <th>QUANTITY</th>
+                                        <th>QUALITY</th>
+                                        <th>TIMELINESS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr>
+                                        <td>{{'5'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty5" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty5}}
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely5}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'4'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty4" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty4}}
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely4}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'3'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty3" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty3}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely3}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'2'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty2" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty2}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely2}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'1'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty1" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty1}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely1}}
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Bootstrap Table with Header - Light -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button (click)="PostIPCRSTDetails()" type="button" class="btn btn-primary">
+                    Save Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true" style="z-index: 5000;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    {{ipcrDetails.indicator}}
+                </h1>
+                <button #closebuttonEdit type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">Quantity</label>
+                            <input [(ngModel)]="ipcrDetails.qty" (ngModelChange)="calculateRatingEdit()" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div *ngIf="ipcrDetails.qtyUnit == 0" class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Quantity Remaining</label>
+                            <input disabled [value]="ipcrDetails.totalIpcrQuantity-ipcrService.ipcr_rem()"
+                                [(ngModel)]="qtyRemaining" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>&nbsp;
+                            <span class="badge rounded-pill bg-success">{{quantityLabeler(ipcrDetails.qtyUnit)}}</span>
+                            <input disabled [(ngModel)]="ipcrDetails.totalIpcrQuantity" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-12"><br>
+                            <div *ngIf="promptEdit">
+                                <div class="alert alert-danger" role="alert"><i
+                                        class='bx bxs-x-square'></i>&nbsp;Quantity must not exceed to
+                                    REMAINING or
+                                    REMAINING
+                                    already
+                                    depleted below zero!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- Bootstrap Table with Header - Light -->
+                    <div class="card">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>RATING</th>
+                                        <th>QUANTITY</th>
+                                        <th>QUALITY</th>
+                                        <th>TIMELINESS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr>
+                                        <td>{{'5'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty5" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty5}}
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely5}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'4'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty4" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty4}}
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely4}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'3'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty3" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty3}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely3}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'2'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty2" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty2}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely2}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'1'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrDetails.qty1" type="number" class="form-control"
+                                                    id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.qlty1}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrDetails.timely1}}
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Bootstrap Table with Header - Light -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button (click)="EditIPCRDetails()" type="button" class="btn btn-primary">
+                    Save Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Subtask-->
+<div class="modal fade" id="modalEditSubtask" tabindex="-1" aria-hidden="true" style="z-index: 5000;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    {{ipcrSTDetails.stIndicator}}
+                </h1>
+                <button #closebuttonEditST type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">Quantity Subtask</label>
+                            <input [(ngModel)]="ipcrSTDetails.qty" (ngModelChange)="calculateRatingSTEdit()"
+                                type="number" class="form-control" id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div *ngIf="ipcrSTDetails.qtyUnit == 0" class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Quantity Subtask
+                                Remaining</label>
+                            <input disabled [value]="ipcrSTDetails.totalIpcrQuantityST - ipcrService.ipcrST_rem()"
+                                [(ngModel)]="qtyRemainingST" type="number" class="form-control"
+                                id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="basic-default-fullname">DPCR Total Subtask</label>&nbsp;
+                            <span
+                                class="badge rounded-pill bg-success">{{quantityLabeler(ipcrSTDetails.qtyUnit)}}</span>
+                            <input disabled [(ngModel)]="ipcrSTDetails.totalIpcrQuantityST" type="number"
+                                class="form-control" id="basic-default-fullname" placeholder="" />
+                        </div>
+                        <div class="col-12"><br>
+                            <div *ngIf="promptEditST">
+                                <div class="alert alert-danger" role="alert"><i
+                                        class='bx bxs-x-square'></i>&nbsp;Quantity must not exceed to
+                                    REMAINING or
+                                    REMAINING
+                                    already
+                                    depleted below zero!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- Bootstrap Table with Header - Light -->
+                    <div class="card">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>RATING</th>
+                                        <th>QUANTITY</th>
+                                        <th>QUALITY</th>
+                                        <th>TIMELINESS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr>
+                                        <td>{{'5'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty5" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty5}}
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely5}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'4'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty4" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty4}}
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely4}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'3'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty3" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty3}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely3}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'2'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty2" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty2}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely2}}
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{'1'}}</td>
+                                        <td>
+                                            <div class="form-floating">
+                                                <input [(ngModel)]="ipcrSTDetails.qty1" type="number"
+                                                    class="form-control" id="floatingInput" placeholder=""
+                                                    aria-describedby="floatingInputHelp" />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.qlty1}}
+
+                                        </td>
+                                        <td>
+                                            {{ipcrSTDetails.timely1}}
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Bootstrap Table with Header - Light -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button (click)="EditIPCRSubDetails()" type="button" class="btn btn-primary">
+                    Save Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

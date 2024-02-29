@@ -12,6 +12,14 @@ import { SpmsModule } from './spms/spms.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorComponent } from './spms/components/error/error.component';
 import { FormsModule } from '@angular/forms';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { UserLoginComponent } from './login/user-login/user-login.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { TokenInterceptor } from './token.interceptor';
+import { DatePipe } from '@angular/common';
+import { SharedModule } from './shared.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,15 +30,27 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     MainlayoutComponent,
     ErrorComponent,
+    UserLoginComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SpmsModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    NgxSkeletonLoaderModule,
+    SharedModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
+platformBrowserDynamic().bootstrapModule(AppModule);

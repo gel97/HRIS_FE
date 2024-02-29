@@ -1,19 +1,37 @@
 import { Injectable } from '@angular/core';
 import { PdfService } from 'src/app/spms/service/pdf.service';
+import { SignatoriesService } from './signatories.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportActualService {
-  constructor(private reportService: PdfService) {}
+  constructor(
+    private reportService: PdfService,
+    private signatoriesService: SignatoriesService
+  ) {}
 
   switchero: number = 0;
   triggerSwitch(trig: number) {
     this.switchero = trig;
   }
   title2: string | any;
+  employeeName: string | any;
+  employeePosition: string | any;
+  signatories: any = {};
+
+  get_signatories(typeId: any) {
+    this.signatoriesService.get_signatories(typeId).subscribe({
+      next: (response: any) => {
+        this.signatories = response;
+      },
+      error: () => {},
+      complete: () => {},
+    });
+  }
+
   ReportActual(data: any) {
-    let title1 = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
+    let title1 = localStorage.getItem('officeNameLong');
 
     switch (this.switchero) {
       case 1:
@@ -25,22 +43,42 @@ export class ReportActualService {
       case 3:
         this.title2 = 'PERFORMANCE STANDARD (DPCR)';
         break;
+      case 4:
+        this.title2 = 'PERFORMANCE STANDARD (IPCR-TARGET)';
+        break;
       default:
         break;
     }
+    if (this.switchero != 4) {
+      this.employeeName =
+        this.signatories?.officeHead?.fullNameTitle ?? '(NO DATA)';
+      this.employeePosition =
+        this.signatories?.officeHead?.positionTitle ?? '(NO DATA)';
+      // this.employeeName = '';
+      // this.employeePosition = '';
+    } else {
+      this.employeeName = localStorage.getItem('fullName');
+      this.employeePosition = localStorage.getItem('positionTitle');
+    }
+    let employeeName = this.employeeName;
+    let employeeOffice = localStorage.getItem('officeNameLong');
 
-    let employeeName = 'EDWIN A. PALERO, MPA, MHRM';
-    let employeeOffice = 'PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE';
-    let employeePosition = 'P.G. Depeartment Head';
+    let employeePosition = this.employeePosition;
+    let period = localStorage.getItem('reportPeriod');
+    let officeShort = localStorage.getItem('officeName');
+    let date = localStorage.getItem('reportDate');
 
-    let period = 'JULY to DECEMBER';
-    let officeShort = 'PHRMO';
-    let date = 'July 10, 2024';
+    let reviewedBy = this.signatories?.adminHead?.fullNameTitle ?? '(NO DATA)';
+    let reviewedByPosition =
+      this.signatories?.adminHead?.positionTitle ?? '(NO DATA)';
+    let approvedByPosition =
+      this.signatories?.governor?.positionTitle ?? '(NO DATA)';
+    let approvedBy = this.signatories?.governor?.fullNameTitle ?? '(NO DATA)';
 
-    let reviewedBy = 'JOSIE JEAN R. RABANOZ, CE, MPA, En.P.';
-    let reviewedByPosition = 'Provincial Administrator';
-    let approvedByPosition = 'Governor';
-    let approvedBy = 'EDWIN I. JUBAHIB, MMPA';
+    // let reviewedBy = '';
+    // let reviewedByPosition = '';
+    // let approvedByPosition = '';
+    // let approvedBy = '';
 
     let content: any = [];
     let tableBody: any = [];
@@ -163,7 +201,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.indicator },
+            { text: b.qty + '' + (b.qtyUnit ? '%' : '') + ' ' + b.indicator },
             {},
             { text: b.sharedDiv },
             {},
@@ -198,7 +236,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.indicator },
+            { text: b.qty + '' + (b.qtyUnit ? '%' : '') + ' ' + b.indicator },
             {},
             { text: b.sharedDiv },
             {},
@@ -233,7 +271,7 @@ export class ReportActualService {
         a.si.map((b: any) => {
           tableBody.push([
             { text: a.mfo, rowSpan: a.si.length },
-            { text: b.indicator },
+            { text: b.qty + '' + (b.qtyUnit ? '%' : '') + ' ' + b.indicator },
             {},
             { text: b.sharedDiv },
             {},

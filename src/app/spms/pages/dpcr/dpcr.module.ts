@@ -20,12 +20,33 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { StepperSubtaskComponent } from './dpcr-target/components/stepper-subtask.component';
 import { ViewSubtaskComponent } from './dpcr-target/components/view-sub-task.component';
-import { DpcrSubtaskComponent } from './dpcr-subtask/dpcr-subtask.component';
 import { ModalEditSubTaskComponent } from './dpcr-target/components/modal-edit-sub-task.component';
 import { ModalDpcrDataEditQuantityComponent } from './dpcr-target/components/modal-dpcr-data-edit-quantity.component';
 import { CanvasTargetDpcrMfoesComponent } from './dpcr-target/components/canvas-target-mfoes.component';
 import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actual-skeleton.component';
+import { ModalEditSubTaskCmfoComponent } from './dpcr-target/components/modal-edit-sub-task-cmfo.component';
+import { DivisionMfoComponent } from './division-mfo/division-mfo.component';
+import { TableMfoComponent } from './division-mfo/components/table-mfo.component';
+import { CanvasMFOComponent } from './division-mfo/components/canvas-mfo.component';
+import { CanvasSIComponent } from './division-mfo/components/canvas-si.component';
+import { SearchMFOComponent } from './division-mfo/components/search-mfo.component';
+import { OtsRequestComponent } from './ots-request/ots-request/ots-request.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ViewDpcrActualComponent } from './dpcr-actual/components/view-dpcr-actual.component';
+import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-actual.component';
+import { ViewDpcrActualDataComponent } from './dpcr-actual/components/view-dpcr-actual-data.component';
+import { SharedModule } from 'src/app/shared.module';
+import { ModalDpcrActualMfoOtsComponent } from './dpcr-actual/components/modal-dpcr-actual-mfo-ots.component';
 
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -40,11 +61,21 @@ import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actua
     ModalSubTaskComponent,
     StepperSubtaskComponent,
     ViewSubtaskComponent,
-    DpcrSubtaskComponent,
     ModalEditSubTaskComponent,
     ModalDpcrDataEditQuantityComponent,
     CanvasTargetDpcrMfoesComponent,
     DpcrActualSkeletonComponent,
+    ModalEditSubTaskCmfoComponent,
+    DivisionMfoComponent,
+    TableMfoComponent,
+    CanvasMFOComponent,
+    CanvasSIComponent,
+    SearchMFOComponent,
+    OtsRequestComponent,
+    ViewDpcrActualComponent,
+    HeaderDpcrActualComponent,
+    ViewDpcrActualDataComponent,
+    ModalDpcrActualMfoOtsComponent
   ],
   imports: [
     CommonModule,
@@ -57,6 +88,12 @@ import { DpcrActualSkeletonComponent } from './dpcr-actual/components/dpcr-actua
     MatFormFieldModule,
     MatInputModule,
     MatRadioModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    CdkDrag,
+    CdkDropList,
+    CdkDropListGroup,
+    SharedModule
   ],
 })
 export class DpcrModule {}

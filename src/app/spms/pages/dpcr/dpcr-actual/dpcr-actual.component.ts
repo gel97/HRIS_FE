@@ -16,12 +16,24 @@ export class DpcrActualComponent implements OnInit {
   standardReportService = inject(StandardReportService);
   loading: boolean = true;
 
+  dpcrIdActual = localStorage.getItem('dpcrIdActual')
+
+
   ngOnInit(): void {
-    this.dpcrService.GetDpcrData();
+    this.init();
     this.loading = true;
     setTimeout(() => {
       this.loading = false;
     }, 1000);
+  }
+
+  init(){
+    if(this.dpcrIdActual){
+      this.dpcrService.isShowDpcrDataActual.set(1);
+      this.dpcrService.GetDPCRDataActual(this.dpcrIdActual);
+    }else{
+      this.dpcrService.isShowDpcrDataActual.set(0);
+    }
   }
 
   checkDpcrMfoesDataEmpty() {
@@ -64,7 +76,6 @@ export class DpcrActualComponent implements OnInit {
   }
 
   ReportDPCR() {
-    console.log(this.dpcrMfoes.data);
     this.reportActualService.triggerSwitch(3);
     this.reportActualService.ReportActual(this.dpcrMfoes.data);
   }

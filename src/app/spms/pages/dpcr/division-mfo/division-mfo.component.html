@@ -1,0 +1,51 @@
+
+<div *ngIf="!error.error" class="card">
+    <div class="row justify-content-between">
+      <h3 class="card-header">
+        <strong class="txt-custom-light-violet">{{mfoService.divisionName}} MFO LIST</strong>
+      </h3>
+      <div class="">
+        <div class="row px-4">
+          <div class="col-6">
+            <app-search-mfo
+              [search]="search"
+              [isSearchLoading]="isSearchLoading"
+              (onSearchMFO)="searchMfoDivision()"
+            />
+          </div>
+          <div class="col-6">
+            <button (click)="isAdd = true; mfoData={} " type="button" class="btn btn-primary float-end" data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+              <i class='bx bx-plus'></i>MFO
+            </button>
+          </div>
+        </div>
+        <app-table-mfo 
+         [mfo]="mfo"
+         (setMfoData)="mfoData = $event"
+         (setSIData)="setSiData($event)"
+         (isAdd)="isAdd = $event"
+         (clearSIData)="siData={}; standard = {}"
+         (deleteMfo)="DeleteMfo($event)" 
+         (deleteSI)="DeleteSI($event)"
+         />
+      </div>
+    </div>
+  </div>
+  
+  <app-canvas-mfo 
+    [mfoData]="mfoData" 
+    [isLoading]="mfo.isLoadingSave"
+    [error]="mfo.error"
+    (onChange)="CheckMfoIfExist"
+    (submit)="isAdd? AddMfo():EditMfo()"
+ />
+
+ <app-canvas-si 
+    [mfoData]="mfoData"
+    [siData]="siData"
+    [standard]="standard"
+    [isLoading]="mfo.isLoadingSave"
+    [isAdd]="isAdd"
+    (submit)="isAdd? AddSI():EditSI()"
+/>

@@ -4,6 +4,9 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
 import { interval, take } from 'rxjs';
 import { ReportActualService } from 'src/app/spms/service/report-actual.service';
 import Swal from 'sweetalert2';
+import { MonthRangeService } from 'src/app/spms/service/month-range.service';
+import { SignatoriesService } from 'src/app/spms/service/signatories.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-opcr-target',
@@ -12,13 +15,17 @@ import Swal from 'sweetalert2';
 })
 export class OpcrTargetComponent implements OnInit {
   constructor() {}
+
   opcrService = inject(OpcrService);
   mfoService = inject(MfoService);
+  signatoriesService = inject(SignatoriesService);
   reportActualService = inject(ReportActualService);
+  monthRangeService = inject(MonthRangeService);
 
-  getYear = '2023';
+  getYear = new Date().getFullYear().toString();
+  years: number[] = [];
   fullYear = '0';
-  officeId = 'OFFPHRMONZ3WT7D';
+  officeId: string | null = localStorage.getItem('officeId');
   isCommon = 0;
   opcr: any = this.opcrService.opcr;
   isShow: number | any = this.opcrService.storageIsShow;
@@ -39,6 +46,7 @@ export class OpcrTargetComponent implements OnInit {
   editMFODetails: any = {};
   editOpcr: any = {};
   division: any = [];
+  flag_opcr: boolean = false;
   isExpandMfoes: boolean = false;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
@@ -46,10 +54,37 @@ export class OpcrTargetComponent implements OnInit {
   @ViewChild('closebuttonEdit')
   closebuttonEdit!: { nativeElement: { click: () => void } };
 
+  officeName: any = '';
   ngOnInit(): void {
+    this.officeName = localStorage.getItem('officeName');
     this.localStorage();
     this.GetOPCRs();
     this.GetOfficeDivision();
+    this.opcrYear();
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.opcrDetails().data, event.previousIndex, event.currentIndex);
+
+    let sortData:any = [];
+
+    this.opcrDetails().data.forEach((x:any, index:number) => {
+      x.si.forEach((y:any) => {
+        const exists = sortData.some((a:any) => a.opcrDataId === y.opcrDataId);
+        if (!exists) {
+          sortData.push({opcrDataId: y.opcrDataId, index: index});
+        }
+      });
+    });
+
+    this.opcrService.PutOpcrDataSortByMfo(sortData);
+
+  }
+
+  opcrYear() {
+    for (let i = new Date().getFullYear() + 1; i >= 2020; i--) {
+      this.years.push(i);
+    }
   }
 
   localStorage() {
@@ -61,11 +96,12 @@ export class OpcrTargetComponent implements OnInit {
         this.opcrService.GetOPCRDetails();
         this.mfoService.GetMFOes();
         this.sortExcist();
-      }, 1000);
+        this.uncommited_division_list();
+      }, 0);
     } else {
       localStorage.setItem('isShow', '0');
       this.opcrService.storageIsShow.set(0);
-      this.sortExcist();
+      // this.sortExcist();
     }
   }
 
@@ -156,43 +192,121 @@ export class OpcrTargetComponent implements OnInit {
     this.mfoDetails.qty3 = Math.floor(this.mfoDetails.qty);
     this.mfoDetails.qty2 = Math.floor(this.mfoDetails.qty / 2 + 1);
     this.mfoDetails.qty1 = Math.floor(this.mfoDetails.qty / 2);
+
+    if (this.mfoDetails.qty3 >= 4 && this.mfoDetails.qty3 <= 6) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 1;
+    } else if (this.mfoDetails.qty3 == 3) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 2;
+    } else if (this.mfoDetails.qty3 == 2) {
+      this.mfoDetails.qty4 += 1;
+      this.mfoDetails.qty5 += 2;
+      this.mfoDetails.qty2 -= 1;
+      this.mfoDetails.qty1 -= 1;
+    } else if (this.mfoDetails.qty3 == 1) {
+      this.mfoDetails.qty5 = 1;
+      this.mfoDetails.qty4 = null;
+      this.mfoDetails.qty3 = null;
+      this.mfoDetails.qty2 = null;
+      this.mfoDetails.qty1 = null;
+    } else if (this.editopcrDetails.qty <= 0) {
+      this.editopcrDetails.qty5 = null;
+      this.editopcrDetails.qty4 = null;
+      this.editopcrDetails.qty3 = null;
+      this.editopcrDetails.qty2 = null;
+      this.editopcrDetails.qty1 = null;
+    }
+  }
+
+  clearCalculateRating() {
+    this.mfoDetails.qty5 = null;
+    this.mfoDetails.qty4 = null;
+    this.mfoDetails.qty3 = null;
+    this.mfoDetails.qty2 = null;
+    this.mfoDetails.qty1 = null;
   }
 
   editcalculateRating() {
-    this.editopcrDetails.standard.qty5 = Math.floor(
-      this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
-    );
-    this.editopcrDetails.standard.qty4 = Math.floor(
-      this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
-    );
-    this.editopcrDetails.standard.qty3 = Math.floor(this.editopcrDetails.qty);
-    this.editopcrDetails.standard.qty2 = Math.floor(
-      this.editopcrDetails.qty / 2 + 1
-    );
-    this.editopcrDetails.standard.qty1 = Math.floor(
-      this.editopcrDetails.qty / 2
-    );
+    if (this.editopcrDetails.qtyUnit != 1) {
+      this.editopcrDetails.qty5 = Math.floor(
+        this.editopcrDetails.qty * 0.3 + this.editopcrDetails.qty
+      );
+      this.editopcrDetails.qty4 = Math.floor(
+        this.editopcrDetails.qty * 0.15 + this.editopcrDetails.qty
+      );
+      this.editopcrDetails.qty3 = Math.floor(this.editopcrDetails.qty);
+      this.editopcrDetails.qty2 = Math.floor(this.editopcrDetails.qty / 2 + 1);
+      this.editopcrDetails.qty1 = Math.floor(this.editopcrDetails.qty / 2);
+      if (this.editopcrDetails.qty3 >= 4 && this.editopcrDetails.qty3 <= 6) {
+        this.editopcrDetails.qty4 += 1;
+        this.editopcrDetails.qty5 += 1;
+      } else if (this.editopcrDetails.qty3 == 3) {
+        this.editopcrDetails.qty4 += 1;
+        this.editopcrDetails.qty5 += 2;
+      } else if (this.editopcrDetails.qty3 == 2) {
+        this.editopcrDetails.qty4 += 1;
+        this.editopcrDetails.qty5 += 2;
+        this.editopcrDetails.qty2 -= 1;
+        this.editopcrDetails.qty1 -= 1;
+      } else if (this.editopcrDetails.qty3 == 1) {
+        this.editopcrDetails.qty5 = 1;
+        this.editopcrDetails.qty4 = null;
+        this.editopcrDetails.qty3 = null;
+        this.editopcrDetails.qty2 = null;
+        this.editopcrDetails.qty1 = null;
+      } else if (this.editopcrDetails.qty <= 0) {
+        this.editopcrDetails.qty5 = null;
+        this.editopcrDetails.qty4 = null;
+        this.editopcrDetails.qty3 = null;
+        this.editopcrDetails.qty2 = null;
+        this.editopcrDetails.qty1 = null;
+      }
+    }
   }
 
   GetOPCRs() {
     this.opcr.mutate((a: any) => (a.isLoading = true));
     setTimeout(() => {
       this.opcr.mutate((a: any) => (a.isLoading = false));
-      this.opcrService.GetOPCRs(this.getYear, this.officeId);
+      this.opcrService.GetOPCRs(this.getYear, this.officeId ?? '');
     }, 1000);
   }
 
-  EditOPCR() {
-    console.log(this.editOpcr);
+  EditOPCR(opcrId: any) {
     this.editOpcr.active = 1;
+    this.post_signatories(opcrId);
     this.opcrService.EditOPCR(this.editOpcr);
-    this.GetOPCRs();
+    // this.GetOPCRs();
   }
 
-  ReportOPCR(opcrid: string, opcrdetails: string) {
-    this.opcrService.storageOpcrId.set(opcrid);
+  EditOPCRFinal(opcrId: any) {
+    this.editOpcr.active = 2;
+    // this.post_signatories(opcrId);
+    this.opcrService.EditOPCR(this.editOpcr);
+    // this.GetOPCRs();
+  }
+
+  post_signatories(id: any) {
+    this.signatoriesService.post_signatories(id).subscribe({
+      next: () => {},
+      error: () => {},
+      complete: () => {},
+    });
+  }
+
+  ReportOPCR(data: any) {
+    this.opcrService.storageOpcrId.set(data.opcrId);
     this.opcrService.GetOPCRDetails();
     this.reportActualService.triggerSwitch(1);
+
+    this.monthRangeService.setMonthRange({
+      type: 'opcr',
+      isActual: false,
+      year: parseInt(data.year),
+      semester: data.semester,
+    });
+    this.reportActualService.get_signatories(data.opcrId);
     setTimeout(() => {
       this.reportActualService.triggerSwitch(1);
       this.reportActualService.ReportActual(this.opcrDetails().data);
@@ -204,7 +318,7 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   GetOfficeDivision() {
-    this.opcrService.GetOfficeDivision(this.officeId);
+    this.opcrService.GetOfficeDivision(this.officeId ?? '');
     setTimeout(() => {
       this.displayDivision('');
     }, 1000);
@@ -220,6 +334,11 @@ export class OpcrTargetComponent implements OnInit {
     this.data.year = this.getYear;
     this.data.officeId = this.officeId;
     this.opcrService.AddOPCR(this.data);
+  }
+
+  EditOPCR_Details() {
+    this.opcrService.EditOPCR_Details(this.data);
+    // this.GetOPCRs();
   }
 
   PutMFOCategory(mfoId: string, categoryId: number) {
@@ -250,7 +369,7 @@ export class OpcrTargetComponent implements OnInit {
         if (!this.opcrData().error) {
           this.closebutton.nativeElement.click();
         }
-      }, 1000);
+      }, 0);
       this.sortExcist();
     } else {
       this.prompt = true;
@@ -282,7 +401,6 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   DeleteOPCR(opcrId: string) {
-    console.log(opcrId);
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -311,35 +429,106 @@ export class OpcrTargetComponent implements OnInit {
     }
   }
 
+  displayStatus(cat: any) {
+    let catName = '';
+    switch (cat) {
+      case 1:
+        catName = 'Open';
+        break;
+      case 2:
+        catName = 'Final';
+
+        break;
+      case 0:
+        catName = 'Draft';
+        break;
+      default:
+        break;
+    }
+
+    if (cat == null) {
+      catName = 'No Function';
+    }
+
+    return catName;
+  }
+
   onChangeYear(year: any) {
-    this.opcrService.GetOPCRs(year, this.officeId);
+    this.flag_opcr = false;
+    this.data = {};
+    this.opcrService.GetOPCRs(year, this.officeId ?? '');
   }
 
   EditOPCRData() {
-    this.editopcrDetails.qty5 = this.editopcrDetails.standard.qty5;
-    this.editopcrDetails.qty4 = this.editopcrDetails.standard.qty4;
-    this.editopcrDetails.qty3 = this.editopcrDetails.standard.qty3;
-    this.editopcrDetails.qty2 = this.editopcrDetails.standard.qty2;
-    this.editopcrDetails.qty1 = this.editopcrDetails.standard.qty1;
+    this.editopcrDetails.qty5 = this.editopcrDetails.qty5;
+    this.editopcrDetails.qty4 = this.editopcrDetails.qty4;
+    this.editopcrDetails.qty3 = this.editopcrDetails.qty3;
+    this.editopcrDetails.qty2 = this.editopcrDetails.qty2;
+    this.editopcrDetails.qty1 = this.editopcrDetails.qty1;
     this.editopcrDetails.sharedDiv = this.sharedDivValue();
     this.opcrService.EditOPCRData(this.editopcrDetails);
     setTimeout(() => {
       if (!this.opcrDetails().error) {
         this.closebuttonEdit.nativeElement.click();
       }
-    }, 1000);
+    }, 0);
   }
 
-  OPCRDetails(opcrid: string, opcrdetails: string) {
+  opcr_details_status: number | any;
+  uncommited_division: any = [];
+  OPCRDetails(data: any) {
+    this.opcr_details_status = data.active;
+    localStorage.setItem('opcrFinalStatus', data.active);
+    localStorage.setItem('currentYear', data.year);
+    this.uncommited_division_list();
+
     this.opcrService.storageIsShow.set(1);
-    this.opcrService.storageOpcrId.set(opcrid);
-    this.opcrService.storageOpcrDetails.set(opcrdetails);
+    this.opcrService.storageOpcrId.set(data.opcrId);
+    this.opcrService.storageOpcrDetails.set(data.details);
 
     localStorage.setItem('isShow', '1');
-    localStorage.setItem('opcrId', opcrid);
-    localStorage.setItem('opcrDetails', opcrdetails);
+    localStorage.setItem('opcrId', data.opcrId);
+    localStorage.setItem('opcrDetails', data.details);
+
+    this.monthRangeService.setMonthRange({
+      type: 'opcr',
+      isActual: false,
+      year: parseInt(data.year),
+      semester: data.semester,
+    });
 
     this.localStorage();
+  }
+
+  uncommited_division_boolean: boolean = false;
+  show_uncommited_division_list(year: any) {
+    this.opcrService.get_uncommited_division(year).subscribe({
+      next: (response: any) => {
+        this.uncommited_division = response;
+      },
+      error: () => {},
+      complete: () => {
+        for (let i of this.uncommited_division) {
+          if (i.status == 0) {
+            this.uncommited_division_boolean = true;
+            break;
+          }
+        }
+      },
+    });
+  }
+
+  uncommited_division_list() {
+    this.opcr_details_status = localStorage.getItem('opcrFinalStatus');
+    this.opcrService
+      .get_uncommited_division(localStorage.getItem('currentYear'))
+      .subscribe({
+        next: (response: any) => {
+          this.uncommited_division = response;
+        },
+        error: () => {},
+        complete: () => {},
+      });
   }
 
   editQtyUnit(value: number) {
@@ -401,6 +590,8 @@ export class OpcrTargetComponent implements OnInit {
 
     localStorage.setItem('isShow', '0');
     localStorage.setItem('opcrId', '');
+    localStorage.removeItem('currentYear');
+    localStorage.removeItem('opcrFinalStatus');
 
     this.GetOPCRs();
     this.GetMFOs();

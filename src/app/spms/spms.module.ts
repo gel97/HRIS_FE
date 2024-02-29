@@ -11,6 +11,7 @@ import { SpmsComponent } from './spms.component';
 import { SpinnerComponent } from './components/spinner.component';
 import { LinearLoadingComponent } from './components/linear-loading/linear-loading.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { UtilityComponent } from './pages/utility/utility.component';
 
 import {
   CdkDrag,
@@ -23,7 +24,23 @@ import {
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton.component';
 import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components/opcr-target-skeleton.component';
-
+import { IpcrTargetSkeletonComponent } from './pages/ipcr/ipcr-target/components/ipcr-target-skeleton.component';
+import { LogsSkeletonComponent } from './pages/logs/components/logs-skeleton.component';
+import { MfoSkeletonComponent } from './pages/opcr/opcr-target/components/mfo-skeleton.component';
+import { IpcrTargetComponent } from './pages/ipcr/ipcr-target/ipcr-target.component';
+import { IpcrActualComponent } from './pages/ipcr/ipcr-actual/ipcr-actual.component';
+import { OtsComponent } from './pages/ots/ots.component';
+import { LogsComponent } from './pages/logs/logs.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ViewIpcrComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr.component';
+import { HeaderIpcrActualComponent } from './pages/ipcr/ipcr-actual/components/header-ipcr-actual.component';
+import { ViewIpcrDataActualComponent } from './pages/ipcr/ipcr-actual/components/view-ipcr-data-actual.component';
+//import { FirstLetterUppercasePipe } from '../pipe/first-letter-uppercase.pipe';
+import { SharedModule } from '../shared.module';
+import { OpcrActualMfoesComponent } from './pages/opcr/opcr-actual/components/opcr-actual-mfoes.component';
+import { HeaderOpcrActualComponent } from './pages/opcr/opcr-actual/components/header-opcr-actual.component';
+import { ViewOpcrActualComponent } from './pages/opcr/opcr-actual/components/view-opcr-actual.component';
+import { ViewOpcrActualDataComponent } from './pages/opcr/opcr-actual/components/view-opcr-actual-data.component';
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -31,10 +48,25 @@ import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components
     OpcrActualComponent,
     OpcrTargetComponent,
     DpcrComponent,
-    ///SpinnerComponent,
     LinearLoadingComponent,
     OpcrActualSkeletonComponent,
     OpcrTargetSkeletonComponent,
+    IpcrTargetSkeletonComponent,
+    LogsSkeletonComponent,
+    MfoSkeletonComponent,
+    IpcrTargetComponent,
+    IpcrActualComponent,
+    OtsComponent,
+    UtilityComponent,
+    LogsComponent,
+    ViewIpcrComponent,
+    HeaderIpcrActualComponent,
+    ViewIpcrDataActualComponent,
+    OpcrActualMfoesComponent,
+    HeaderOpcrActualComponent,
+    ViewOpcrActualComponent,
+    ViewOpcrActualDataComponent
+   // FirstLetterUppercasePipe
   ],
   imports: [
     CommonModule,
@@ -46,6 +78,8 @@ import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components
     CdkDropListGroup,
     MatTooltipModule,
     NgxSkeletonLoaderModule,
+    MatPaginatorModule,
+    SharedModule
   ],
 })
 export class SpmsModule {}

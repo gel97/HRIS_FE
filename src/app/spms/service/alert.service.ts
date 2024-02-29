@@ -50,6 +50,25 @@ export class AlertService {
     })
   }
 
+  customUpdateWmessage(message:string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-start',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    
+    Toast.fire({
+      icon: 'success',
+      title: message
+    })
+  }
+
   async delete(url: any): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       Swal.fire({
@@ -59,9 +78,11 @@ export class AlertService {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, delete it!',
+        showClass: {
+          popup: 'z-3' // Define your custom class here
+        }
       }).then((result) => {
-        console.log(result)
         if (result.isConfirmed) {
           this.http
             .delete<any[]>(api + url, { responseType: `json` })
@@ -141,7 +162,6 @@ export class AlertService {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes!'
       }).then((result) => {
-        console.log(result)
         if (result.isConfirmed) {
           this.http
             .put<any[]>(api + data.url, { responseType: `json` })

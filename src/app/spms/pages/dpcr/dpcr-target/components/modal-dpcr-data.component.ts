@@ -5,8 +5,11 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   template: `
     <!-- Modal -->
     <div class="modal fade" id="modalDpcrData" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content modal-lg">
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-lg"
+        role="document"
+      >
+        <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalScrollableTitle">
               {{ dpcrSIData.indicator }}
@@ -20,55 +23,93 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-            <div class="form-floating px-2 col-4">
-              <input
-                type="number"
-                class="form-control"
-                id="quantity"
-                [(ngModel)]="dpcrSIData.qty"
-                [max]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
-                (ngModelChange)="calculateRating()"
-                placeholder="Quantity"
-                aria-describedby="quantity"
-              />
-              <label for="quantity">Quantity</label>
-            </div>
-            <div class="form-floating px-2 col-5">
-              <input
-                type="number"
-                class="form-control"
-                id="quantityOpcr"
-                placeholder="Quantity"
-                [value]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
-                aria-describedby="quantityOpcr"
-                disabled
-              />
-              <label for="quantityOpcr">OPCR Quantity Remaining</label>
-            </div>
-            <div class="form-floating px-2 col-3">
-            <input
-                type="number"
-                class="form-control"
-                id="qtyOpcr"
-                placeholder="Quantity"
-                [value]="dpcrSIData.qtyOpcr"
-                aria-describedby="qtyOpcr"
-                disabled
-              />
-              <label for="qtyOpcr">OPCR Quantity</label>
-            </div>
-            <div
-              *ngIf="dpcrSIData.qty > (dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted)"
-              class="alert alert-danger mt-2"
-              role="alert"
-            >
-              <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
-              than
-              <strong
-                ><u>{{ dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted }}</u></strong
+            <ng-container *ngIf="dpcrSIData.qtyUnit === 1; else showQty">
+              <div><h3>Quantity: <strong>{{dpcrSIData.qty}}%</strong></h3></div>
+            </ng-container>
+            <ng-template #showQty>
+              <div class="form-floating px-2 col-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quantity"
+                  [(ngModel)]="dpcrSIData.qty"
+                  [max]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
+                  (ngModelChange)="calculateRating()"
+                  placeholder="Quantity"
+                  aria-describedby="quantity"
+                />
+                <label for="quantity">Quantity</label>
+              </div>
+              <div class="col-md" *ngIf="dpcrSIData.isDpcrMfo">
+                <div class="form-check form-check-inline mt-3">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadio1Options"
+                    id="inline1Radio1"
+                    [value]="false"
+                    [(ngModel)]="isPrcntUnit"
+                  />
+                  <label class="form-check-label" for="inline1Radio1"
+                    >Numeric</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadio2Options"
+                    id="inline2Radio2"
+                    [value]="true"
+                    [(ngModel)]="isPrcntUnit"
+                  />
+                  <label class="form-check-label" for="inline2Radio2"
+                    >Percentage</label
+                  >
+                </div>
+              </div>
+              <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quantityOpcr"
+                  placeholder="Quantity"
+                  [value]="dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted"
+                  aria-describedby="quantityOpcr"
+                  disabled
+                />
+                <label for="quantityOpcr">Remaining Quantity</label>
+              </div>
+              <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="qtyOpcr"
+                  placeholder="Quantity"
+                  [value]="dpcrSIData.qtyOpcr"
+                  aria-describedby="qtyOpcr"
+                  disabled
+                />
+                <label for="qtyOpcr">Total Quantity</label>
+              </div>
+              <div
+                *ngIf="
+                  dpcrSIData.qty > dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted &&
+                  !dpcrSIData.isDpcrMfo
+                "
+                class="alert alert-danger mt-2"
+                role="alert"
               >
-            </div>
-            <div class="table-responsive text-nowrap">
+                <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
+                than
+                <strong
+                  ><u>{{
+                    dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted
+                  }}</u></strong
+                >
+              </div>
+            </ng-template>
+            <div class="table-responsive text-wrap">
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -89,6 +130,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty5"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -108,6 +150,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty4"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -127,6 +170,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty3"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -146,6 +190,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty2"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -165,6 +210,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty1"
                         class="form-control"
+                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -179,6 +225,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             </div>
           </div>
           <div class="modal-footer">
+            <div *ngIf="isEmptyUnit" class="alert alert-danger float-start" role="alert">Please select 'Numeric' or 'Percentage'</div>
             <button
               type="button"
               class="btn btn-outline-secondary"
@@ -195,13 +242,15 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     </div>
   `,
 })
-export class ModalDpcrDataComponent {
+export class ModalDpcrDataComponent{
   @ViewChild('closeModal')
   closeModal!: { nativeElement: { click: () => void } };
 
   dpcrService = inject(DpcrService);
 
   quantity: any = {};
+  isEmptyUnit: boolean = false;
+  isPrcntUnit:boolean = false;
 
   @Input() dpcrMFOData: any;
   @Input() dpcrSIData: any;
@@ -209,28 +258,79 @@ export class ModalDpcrDataComponent {
 
   @Output() submit = new EventEmitter<any>();
 
-  Submit(){
-    this.submit.emit("submit");
-    this.handleStatus();
+  Submit() {
+    if(this.isPrcntUnit){
+      this.dpcrSIData.qtyUnit = 1;
+      this.submit.emit('submit');
+      this.handleStatus();
+    }else{
+      this.dpcrSIData.qtyUnit = 0;
+      this.submit.emit('submit');
+      this.handleStatus();
+
+    }
+
   }
 
-  handleStatus(){
+  handleStatus() {
     setTimeout(() => {
-      if(!this.error){
-          this.closeModal.nativeElement.click();
-        }    
+      if (!this.error) {
+        this.closeModal.nativeElement.click();
+      }
     }, 500);
   }
 
   calculateRating() {
-    this.dpcrSIData.qty5 = Math.floor(
-      this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
-    );
-    this.dpcrSIData.qty4 = Math.floor(
-      this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty
-    );
-    this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
-    this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
-    this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
+
+    if (this.dpcrSIData.qty >= 7) {
+      this.dpcrSIData.qty5 = Math.floor(this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty4 = Math.floor(this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
+      this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
+      this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
+    } else if (this.dpcrSIData.qty === 6) {
+      this.dpcrSIData.qty5 = 8;
+      this.dpcrSIData.qty4 = 7;
+      this.dpcrSIData.qty3 = 6;
+      this.dpcrSIData.qty2 = 5;
+      this.dpcrSIData.qty1 = 4;
+    } else if (this.dpcrSIData.qty === 5) {
+      this.dpcrSIData.qty5 = 7;
+      this.dpcrSIData.qty4 = 6;
+      this.dpcrSIData.qty3 = 5;
+      this.dpcrSIData.qty2 = 4;
+      this.dpcrSIData.qty1 = 3;
+    } else if (this.dpcrSIData.qty === 4) {
+      this.dpcrSIData.qty5 = 6;
+      this.dpcrSIData.qty4 = 5;
+      this.dpcrSIData.qty3 = 4;
+      this.dpcrSIData.qty2 = 3;
+      this.dpcrSIData.qty1 = 1;
+    } else if (this.dpcrSIData.qty === 3) {
+      this.dpcrSIData.qty5 = 5;
+      this.dpcrSIData.qty4 = 4;
+      this.dpcrSIData.qty3 = 3;
+      this.dpcrSIData.qty2 = 2;
+      this.dpcrSIData.qty1 = 1;
+    } else if (this.dpcrSIData.qty === 2) {
+      this.dpcrSIData.qty5 = 4;
+      this.dpcrSIData.qty4 = 3;
+      this.dpcrSIData.qty3 = 2;
+      this.dpcrSIData.qty2 = 1;
+      this.dpcrSIData.qty1 = 0;
+    } else if (this.dpcrSIData.qty === 1) {
+      this.dpcrSIData.qty5 = 1;
+      this.dpcrSIData.qty4 = null;
+      this.dpcrSIData.qty3 = null;
+      this.dpcrSIData.qty2 = null;
+      this.dpcrSIData.qty1 = 0;
+    } else {
+      this.dpcrSIData.qty5 = null;
+      this.dpcrSIData.qty4 = null;
+      this.dpcrSIData.qty3 = null;
+      this.dpcrSIData.qty2 = null;
+      this.dpcrSIData.qty1 = null;
+    }
+
   }
 }

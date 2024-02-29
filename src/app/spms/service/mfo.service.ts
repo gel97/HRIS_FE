@@ -11,15 +11,24 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class MfoService {
-
   mfo = signal<any>({
     data: [],
     error: false,
     isLoading: false,
   });
 
+  mfoDivision = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+
   isCommon = signal<number>(0);
-  officeId = signal<string>('OFFPHRMONZ3WT7D');
+  officeId: string | null = localStorage.getItem('officeId');
+  divisionId: string | null = localStorage.getItem('divisionId');
+  divisionName: string | null = localStorage.getItem('divisionName');
+  isAddOfficeMfo = signal<boolean>(true);
 
   isSearchLoading = signal<boolean>(false);
 
@@ -33,9 +42,12 @@ export class MfoService {
   GetMFOes() {
     this.mfo.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_mfoes(this.officeId(), this.isCommon()), {
-        responseType: `json`,
-      })
+      .get<any[]>(
+        api + this.url.get_mfoes(this.officeId ?? '', this.isCommon()),
+        {
+          responseType: `json`,
+        }
+      )
       .subscribe({
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
@@ -55,20 +67,84 @@ export class MfoService {
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
           });
-
-          console.log(this.mfo());
         },
-        complete: () => {
-          
-        },
+        complete: () => {},
       });
   }
+
+  GetDivisionMFOes() {
+    this.mfoDivision.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(
+        api + this.url.get_division_mfoes(this.divisionId ?? ''),
+        {
+          responseType: `json`,
+        }
+      )
+      .subscribe({
+        next: (response: any = {}) => {
+          this.mfoDivision.mutate((a) => {
+            (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.mfoDivision.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {},
+      });
+  }
+
+  AddDivisionMfo(mfoDivision: any) {
+    this.mfoDivision.mutate((a) => (a.isLoadingSave = true));
+
+    mfoDivision.isCommon = 0;
+    mfoDivision.officeId = this.officeId;
+    mfoDivision.divisionId = this.divisionId;
+
+    this.http
+      .post<any[]>(api + this.url.post_mfo(), mfoDivision, { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDivisionMFOes();
+
+          this.mfoDivision.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.save();
+        },
+        error: (error: any) => {
+          if(error.status === 409){
+            this.alertService.customError("MFO already eixst")
+          }else{
+            this.alertService.error();
+          }          this.mfoDivision.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
 
   AddMfo(mfo: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
     mfo.isCommon = this.isCommon();
-    mfo.officeId = this.officeId();
+    mfo.officeId = this.officeId;
 
     this.http
       .post<any[]>(api + this.url.post_mfo(), mfo, { responseType: `json` })
@@ -84,7 +160,11 @@ export class MfoService {
           this.alertService.save();
         },
         error: (error: any) => {
-          this.alertService.error();
+          if(error.status === 409){
+            this.alertService.customError("MFO already eixst")
+          }else{
+            this.alertService.error();
+          }
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
@@ -94,7 +174,7 @@ export class MfoService {
       });
   }
 
-   EditMfo(mfo: any) {
+  EditMfo(mfo: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
     this.http
@@ -113,7 +193,6 @@ export class MfoService {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
-
           });
         },
         complete: () => {},
@@ -122,21 +201,26 @@ export class MfoService {
 
   async DeleteMfo(mfoId: string) {
     try {
-      let deleteData = await this.alertService.delete(this.url.delete_mfo(mfoId));
+      let deleteData = await this.alertService.delete(
+        this.url.delete_mfo(mfoId)
+      );
 
-       if(deleteData){
-        this.GetMFOes();
-      }else{
-        //console.log("cancel")
+      if (deleteData) {
+        if(this.isAddOfficeMfo()){
+          this.GetMFOes();
+        }else{
+          this.GetDivisionMFOes();
+        }
+      } else {
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   }
 
   AddSI(si: any, standard: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
-    si.officeId = this.officeId();
+    si.officeId = this.officeId;
 
     this.http
       .post<any[]>(api + this.url.post_success_indicator(), si, {
@@ -170,9 +254,14 @@ export class MfoService {
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
-            a.error = false
+            a.error = false;
           });
-          this.GetMFOes();
+          if(this.isAddOfficeMfo()){
+            this.GetMFOes();
+
+          }else{
+            this.GetDivisionMFOes();
+          }
 
           this.alertService.save();
         },
@@ -180,7 +269,7 @@ export class MfoService {
           this.alertService.error();
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
-            a.error = true
+            a.error = true;
           });
         },
         complete: () => {},
@@ -190,7 +279,7 @@ export class MfoService {
   EditSI(si: any) {
     this.mfo.mutate((a) => (a.isLoadingSave = true));
 
-    si.officeId = this.officeId();
+    si.officeId = this.officeId;
 
     this.http
       .put<any[]>(api + this.url.put_success_indicator(), si, {
@@ -210,7 +299,6 @@ export class MfoService {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
-
           });
         },
         complete: () => {},
@@ -244,18 +332,22 @@ export class MfoService {
 
   async DeleteSI(indicatorId: string) {
     try {
-      let deleteData = await this.alertService.delete(this.url.delete_success_indicator(indicatorId));
+      let deleteData = await this.alertService.delete(
+        this.url.delete_success_indicator(indicatorId)
+      );
 
-       if(deleteData){
-        this.GetMFOes();
-      }else{
+      if (deleteData) {
+        if(this.isAddOfficeMfo()){
+          this.GetMFOes();
+        }else{
+          this.GetDivisionMFOes();
+        }
+      } else {
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   }
-  
-
 
   CheckMfoIfExist(payload: any): Observable<boolean> {
     return this.http
@@ -273,7 +365,7 @@ export class MfoService {
     this.isSearchLoading.set(true);
 
     payload.isCommon = this.isCommon();
-    payload.officeId = this.officeId();
+    payload.officeId = this.officeId;
 
     return this.http
       .post<any[]>(api + this.url.post_mfo_search_office(), payload, {
@@ -283,6 +375,27 @@ export class MfoService {
         next: (response: any = {}) => {
           this.mfo.mutate((a) => (a.data = response));
           this.mfo.mutate((a) => (a.isLoading = false));
+        },
+        error: (error: any) => {},
+        complete: () => {
+          this.isSearchLoading.set(false);
+        },
+      });
+  }
+
+  SearchMfoDivision(payload: any) {
+    this.isSearchLoading.set(true);
+
+    payload.divisionId = this.divisionId;
+
+    return this.http
+      .post<any[]>(api + this.url.post_search_division_mfo(), payload, {
+        responseType: 'json',
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.mfoDivision.mutate((a) => (a.data = response));
+          this.mfoDivision.mutate((a) => (a.isLoading = false));
         },
         error: (error: any) => {},
         complete: () => {

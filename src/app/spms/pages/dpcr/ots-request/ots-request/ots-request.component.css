@@ -1,0 +1,15 @@
+.pointer {
+    cursor: pointer;
+}
+
+.highlighted_timeliness {
+    background-color: rgb(119, 205, 239); /* You can customize this to your preferred highlight style */
+  }
+
+
+.highlighted_quality {
+    background-color: greenyellow; /* You can customize this to your preferred highlight style */
+  }
+
+
+
