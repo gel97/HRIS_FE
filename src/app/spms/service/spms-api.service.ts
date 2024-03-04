@@ -80,7 +80,8 @@ export class SpmsApiService {
   get_dpcr = (year: number, divisionId: string) =>
     `/tPMDpcr/list/${year}/${divisionId}`;
 
-  get_dpcr_data_actual = (dpcrId: string) => `/tPMDpcrData/actual/list/${dpcrId}`;
+  get_dpcr_data_actual = (dpcrId: string) =>
+    `/tPMDpcrData/actual/list/${dpcrId}`;
   post_dpcr_data = () => `/tPMDpcrData`;
   put_dpcr_data = () => `/tPMDpcrData`;
   delete_dpcr_data = (dpcrDataId: string) => `/tPMDpcrData/${dpcrDataId}`;
@@ -129,8 +130,13 @@ export class SpmsApiService {
   post_ots_add_to_group = () => `/tPMOts/AddToGroupOts`;
 
   post_ots_request = () => `/tPMOts/OtsRequest`;
-  get_ots_request_summary = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
-  get_ots_mfo_group = (opcrDataId: string,dpcrDataId: string,subtaskId: string) => `/tPMOts/ots/${opcrDataId}/${dpcrDataId}/${subtaskId}/mfo_group`;
+  get_ots_request_summary = () =>
+    `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
+  get_ots_mfo_group = (
+    opcrDataId: string,
+    dpcrDataId: string,
+    subtaskId: string
+  ) => `/tPMOts/ots/${opcrDataId}/${dpcrDataId}/${subtaskId}/mfo_group`;
   put_ots_request_overRide = () => `/tPMOts/OTS_Request/OverRide`;
   put_ots_request_approve = () => `/tPMOts/OTS_Request/Approve`;
   post_ots_get_list_user_mfo = () => `/tPMOts/get_list_user_mfo`;
@@ -177,5 +183,6 @@ export class SpmsApiService {
 
   post_print_mpor = () => `/tPMIpcrDatas/PrintMPOR`;
   post_print_smpor = () => `/tPMIpcrDatas/PrintSMPOR`;
+  post_print_ipcr = () => `/tPMIpcrDatas/PrintIPCR`;
   post_print_mpor_officeHead = () => `/tPMIpcrDatas/OfficeHead`;
 }

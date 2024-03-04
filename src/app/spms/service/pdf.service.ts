@@ -55,25 +55,25 @@ export class PdfService {
           return {
             columns: [
               {
-                stack: [
-                  {
-                    text: '',
-                    fontSize: 5,
-                    alignment: 'center',
-                  },
-                  {
-                    text: report.title1,
-                    fontSize: 13,
-                    bold: true,
-                    alignment: 'center',
-                  },
-                  {
-                    text: report.title2,
-                    fontSize: 11,
-                    bold: true,
-                    alignment: 'center',
-                  },
-                ],
+                // stack: [
+                //   {
+                //     text: '',
+                //     fontSize: 5,
+                //     alignment: 'center',
+                //   },
+                //   {
+                //     text: report.title1,
+                //     fontSize: 11,
+                //     bold: true,
+                //     alignment: 'center',
+                //   },
+                //   {
+                //     text: report.title2,
+                //     fontSize: 11,
+                //     bold: true,
+                //     alignment: 'center',
+                //   },
+                // ],
               },
             ],
           };

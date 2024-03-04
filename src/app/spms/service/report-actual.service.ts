@@ -289,7 +289,7 @@ export class ReportActualService {
     let tableFooter = [];
     tableFooter.push(
       {
-        margin: [0, 10, 0, 0],
+        margin: [75, 10, 0, 0],
         table: {
           widths: [120, 100, 120],
           body: [
@@ -304,11 +304,12 @@ export class ReportActualService {
             [{ text: 'ADJECTIVE RATING', bold: true }, {}, {}],
           ],
         },
+        fontSize: 8,
       },
       {
-        margin: [0, 20, 0, 0],
+        margin: [75, 20, 0, 0],
         table: {
-          widths: [250, 250, '*', 250, '*'],
+          widths: [200, 200, 100, 200, 105],
           body: [
             [
               {
@@ -342,6 +343,7 @@ export class ReportActualService {
                     ],
                   ],
                 },
+                fontSize: 8,
               },
               {
                 style: 'tableExample',
@@ -374,6 +376,7 @@ export class ReportActualService {
                     ],
                   ],
                 },
+                fontSize: 8,
               },
               {
                 table: {
@@ -395,6 +398,7 @@ export class ReportActualService {
                     ],
                   ],
                 },
+                fontSize: 8,
               },
               {
                 table: {
@@ -426,6 +430,7 @@ export class ReportActualService {
                     ],
                   ],
                 },
+                fontSize: 8,
               },
               {
                 table: {
@@ -447,6 +452,7 @@ export class ReportActualService {
                     ],
                   ],
                 },
+                fontSize: 8,
               },
             ],
           ],
@@ -458,7 +464,17 @@ export class ReportActualService {
 
     content.push([
       {
-        margin: [0, 20, 0, 0],
+        margin: [85, 0, 0, 0],
+        alignment: 'center',
+        fontSize: 11,
+        text: [{ text: title1 + '\n' }, { text: this.title2 }],
+        bold: true,
+      },
+    ]);
+
+    content.push([
+      {
+        margin: [75, 20, 0, 0],
         text: [
           { text: 'I, ' },
           {
@@ -482,6 +498,7 @@ export class ReportActualService {
             decoration: 'underline',
           },
         ],
+        fontSize: 10,
       },
       {
         text: employeeName,
@@ -489,11 +506,13 @@ export class ReportActualService {
         decoration: 'underline',
         alignment: 'right',
         margin: [0, 0, 30, 0],
+        fontSize: 8,
       },
       {
         text: employeePosition + ', ' + officeShort,
         alignment: 'right',
         margin: [0, 0, 30, 0],
+        fontSize: 8,
       },
       {
         text: [
@@ -505,6 +524,7 @@ export class ReportActualService {
         ],
         alignment: 'right',
         margin: [0, 5, 60, 10],
+        fontSize: 8,
       },
       {
         table: {
@@ -521,6 +541,7 @@ export class ReportActualService {
                         text: 'Reviewed by:',
                         alignment: 'left',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                     [
@@ -529,7 +550,7 @@ export class ReportActualService {
                         decoration: 'underline',
                         bold: true,
                         alignment: 'center',
-
+                        fontSize: 8,
                         border: [false, false, false, false],
                       },
                     ],
@@ -538,6 +559,7 @@ export class ReportActualService {
                         text: reviewedByPosition,
                         alignment: 'center',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                   ],
@@ -552,6 +574,7 @@ export class ReportActualService {
                         text: 'Date:',
                         alignment: 'left',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                     [
@@ -559,6 +582,7 @@ export class ReportActualService {
                         text: '',
                         alignment: 'center',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                   ],
@@ -573,6 +597,7 @@ export class ReportActualService {
                         text: 'Approved by:',
                         alignment: 'left',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                     [
@@ -581,7 +606,7 @@ export class ReportActualService {
                         decoration: 'underline',
                         bold: true,
                         alignment: 'center',
-
+                        fontSize: 8,
                         border: [false, false, false, false],
                       },
                     ],
@@ -590,6 +615,7 @@ export class ReportActualService {
                         text: approvedByPosition,
                         alignment: 'center',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                   ],
@@ -604,6 +630,7 @@ export class ReportActualService {
                         text: 'Date:',
                         alignment: 'left',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                     [
@@ -611,6 +638,7 @@ export class ReportActualService {
                         text: '',
                         alignment: 'center',
                         border: [false, false, false, false],
+                        fontSize: 8,
                       },
                     ],
                   ],
@@ -620,14 +648,16 @@ export class ReportActualService {
           ],
           heights: 50,
         },
+        margin: [75, 10, 0, 0],
       },
       {
-        margin: [0, 10, 0, 0],
+        margin: [75, 10, 0, 0],
         table: {
           widths: ['*', '*', 40, '*', '*', 30, 30, 30, 30],
           body: tableBody,
         },
         pageBreak: 'after',
+        fontSize: 8,
       },
 
       tableFooter,
