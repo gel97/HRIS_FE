@@ -126,6 +126,7 @@ export class SpmsApiService {
   get_ots = () => `/tPMOts`;
   get_check_user_open_ipcr = () => `/tPMOts/check_user_open_ipcr`;
   delete_ots = (otsId: string) => `/tPMOts/${otsId}`;
+  post_ots_add_to_group = () => `/tPMOts/AddToGroupOts`;
 
   post_ots_request = () => `/tPMOts/OtsRequest`;
   get_ots_request_summary = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
