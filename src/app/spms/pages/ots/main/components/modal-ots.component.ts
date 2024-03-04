@@ -228,6 +228,10 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                               <button
                                 *ngIf="!a.data.hasOts"
                                 class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#backDropModal"
+                                data-bs-dismiss="modal"
+                                (click)="otsGroupData = a"
                               >
                                 Add OTS
                               </button>
@@ -414,18 +418,18 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                       />
                     </div>
                     <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="defaultCheck1"
-                            [(ngModel)]="isGroupOts"
-                            (ngModelChange)="getGroupUsers()"
-                          />
-                          <label class="form-check-label" for="defaultCheck1">
-                            <u>Create Group OTS</u>
-                          </label>
-                        </div>
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="defaultCheck1"
+                        [(ngModel)]="isGroupOts"
+                        (ngModelChange)="getGroupUsers()"
+                      />
+                      <label class="form-check-label" for="defaultCheck1">
+                        <u>Create Group OTS</u>
+                      </label>
+                    </div>
                     <!-- <div class="card bg-warning text-white mb-3">
                       <div class="card-body">
                         <div class="form-check">
@@ -550,6 +554,78 @@ import { OtsService } from 'src/app/spms/service/ots.service';
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="backDropModal"
+      data-bs-backdrop="static"
+      tabindex="-1"
+    >
+      <div class="modal-dialog">
+        <form class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="backDropModalTitle"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              data-bs-toggle="modal"
+              data-bs-target="#modalOts"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h2 class="text-center"><b>Are you sure you want to add this OTS?</b></h2>
+            <div class="row">
+              <div class="col mb-3">
+                <label for="nameBackdrop" class="form-label">DATE</label>
+                <input
+                  type="text"
+                  id="nameBackdrop"
+                  class="form-control"
+                  placeholder="Enter Name"
+                  [value]="otsGroupData.dateDone"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col mb-0">
+                <label for="emailBackdrop" class="form-label">DESCRIPTION</label>
+                <textarea
+                  type="text"
+                  id="nameBackdrop"
+                  class="form-control"
+                  placeholder="Enter Name"
+                  [value]="otsGroupData?.data?.description"
+                  disabled
+                ></textarea>
+              </div>     
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-toggle="modal"
+              data-bs-target="#modalOts"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-primary" 
+              (click)="AddOtsToGroup(otsGroupData.otsGroupId)"
+              data-bs-dismiss="modal"
+              >
+              Yes!
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   `,
 })
 export class ModalOtsComponent implements OnInit {
@@ -558,7 +634,7 @@ export class ModalOtsComponent implements OnInit {
 
   dpcrService = inject(DpcrService);
   otsService = inject(OtsService);
-  sample:any = ""
+  sample: any = '';
   ots: any = {};
   isGroupOts: boolean = false;
   isCheckAll: boolean = false;
@@ -569,6 +645,7 @@ export class ModalOtsComponent implements OnInit {
   otsGetMfoGroup = this.otsService.otsGetMfoGroup();
 
   otsGroup: any = [];
+  otsGroupData: any = {};
 
   @Input() otsMfoes: any;
   @Input() error: any;
@@ -577,6 +654,10 @@ export class ModalOtsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialDate();
+  }
+
+  AddOtsToGroup(otsGroupId: string) {
+    this.otsService.AddOtsToGroup(otsGroupId);
   }
 
   Submit() {
@@ -612,7 +693,7 @@ export class ModalOtsComponent implements OnInit {
 
   checkAllUser() {
     if (this.isCheckAll) {
-      this.otsGetListUserMfo.data.map((a: any, i:number) => {
+      this.otsGetListUserMfo.data.map((a: any, i: number) => {
         a.hasOts = true;
       });
     } else {
@@ -635,7 +716,7 @@ export class ModalOtsComponent implements OnInit {
     this.clearGroupOts();
   }
 
-  clearGroupOts(){
+  clearGroupOts() {
     this.isGroupOts = false;
     this.otsGroup = [];
   }
