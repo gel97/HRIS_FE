@@ -96,8 +96,7 @@ export class IpcrService {
         error: () => {
           this.alertService.error();
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
 
@@ -120,6 +119,7 @@ export class IpcrService {
         complete: () => {
           // this.ViewGetDPCR_IPCR();
           // this.sortExcist();
+          this.ipcrDetails.mutate((a) => (a.completeLoading = false));
         },
       });
   }
@@ -302,14 +302,18 @@ export class IpcrService {
 
   PutIpcrDataSortByMfo(data: any) {
     this.http
-      .put<any[]>(api + this.url.put_ipcrdata_sortby_mfo(this.storageIpcrId()), data, {})
+      .put<any[]>(
+        api + this.url.put_ipcrdata_sortby_mfo(this.storageIpcrId()),
+        data,
+        {}
+      )
       .subscribe({
         next: (response: any = {}) => {},
         error: () => {
-          this.alertService.customError("Error: Something went wrong!");
+          this.alertService.customError('Error: Something went wrong!');
         },
-        complete: () => {   
-          this.alertService.customUpdateWmessage("Sorted Successfully");
+        complete: () => {
+          this.alertService.customUpdateWmessage('Sorted Successfully');
         },
       });
   }
@@ -403,6 +407,7 @@ export class IpcrService {
     setTimeout(() => {
       for (let a of this.ipcrDetails().data) {
         for (let a_si of a.si) {
+          this.ipcrDetails.mutate((a) => (a.completeLoading = true));
           if (a_si.isSubTask == 1 && a_si.st.length == 0) {
             this.DeleteMFO(a_si.ipcrDataId);
           }
