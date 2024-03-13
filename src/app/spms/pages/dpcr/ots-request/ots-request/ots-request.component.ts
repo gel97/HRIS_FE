@@ -165,7 +165,7 @@ export class OtsRequestComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.OtsRequestService.put_ots_request_approve(
-          this.ots_request
+          this.ots_request.items
         ).subscribe({
           next: () => {},
           error: () => {},
