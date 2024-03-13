@@ -8,7 +8,7 @@ import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
   selector: 'app-view-ipcr',
   styleUrls: ['../ipcr-actual.component.css'],
   template: `
-    <app-loading [loading]="ipcr.isLoading"/>
+    <app-loading [loading]="ipcr.isLoading" />
     <div class="card">
       <div class="row">
         <div class="card-body">
@@ -438,10 +438,10 @@ export class ViewIpcrComponent implements OnInit {
     var smporData = data.smporData;
 
     smporList = this.calculateRatingSMPOR(smporList, smporData);
-    smporSubtask = this.calculateRatingSMPOR(smporSubtask, smporData);
+    // smporSubtask = this.calculateRatingSMPOR(smporSubtask, smporData);
 
     this.sortFunctionMPORorSMPOR(smporList);
-    this.sortFunctionMPORorSMPOR(smporSubtask);
+    // this.sortFunctionMPORorSMPOR(smporSubtask);
 
     console.log(smporList);
 
@@ -604,10 +604,10 @@ export class ViewIpcrComponent implements OnInit {
     var mporSubtask = data.mporSubtask;
 
     mporList = this.calculateRatingMPOR(mporList, mporData);
-    mporSubtask = this.calculateRatingMPOR(mporSubtask, mporData);
+    // mporSubtask = this.calculateRatingMPOR(mporSubtask, mporData);
 
     this.sortFunctionMPORorSMPOR(mporList);
-    this.sortFunctionMPORorSMPOR(mporSubtask);
+    // this.sortFunctionMPORorSMPOR(mporSubtask);
 
     let month: string | any = '';
     for (let i = 1; i <= 12; i++) {
