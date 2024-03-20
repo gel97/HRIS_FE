@@ -381,6 +381,7 @@ export class CanvasTargetDpcrMfoesComponent {
   @Output() submit = new EventEmitter<any>();
   @Output() setDpcrDataObj = new EventEmitter<any>();
   @Output() hideCanvasOpcrMfoes = new EventEmitter<boolean>();
+  @Output() addType = new EventEmitter<any>();
 
   search: any = '';
 
@@ -428,5 +429,8 @@ export class CanvasTargetDpcrMfoesComponent {
     else{ // get dpcr mfoes
       this.dpcrService.GetDpcrDataMfoesDivision(null);
     }
+
+    this.addType.emit(value);
+
   }
 }

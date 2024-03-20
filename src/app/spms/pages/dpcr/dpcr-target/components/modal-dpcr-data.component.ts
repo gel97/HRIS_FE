@@ -68,7 +68,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   >
                 </div>
               </div>
-              <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo">
+              <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo && addType === 0">
                 <input
                   type="number"
                   class="form-control"
@@ -80,7 +80,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 />
                 <label for="quantityOpcr">Remaining Quantity</label>
               </div>
-              <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo">
+              <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo && addType === 0">
                 <input
                   type="number"
                   class="form-control"
@@ -95,7 +95,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               <div
                 *ngIf="
                   dpcrSIData.qty > dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted &&
-                  !dpcrSIData.isDpcrMfo
+                  !dpcrSIData.isDpcrMfo && addType === 0
                 "
                 class="alert alert-danger mt-2"
                 role="alert"
@@ -255,21 +255,29 @@ export class ModalDpcrDataComponent{
   @Input() dpcrMFOData: any;
   @Input() dpcrSIData: any;
   @Input() error: any;
+  @Input() addType: any;
 
   @Output() submit = new EventEmitter<any>();
 
   Submit() {
-    if(this.isPrcntUnit){
-      this.dpcrSIData.qtyUnit = 1;
-      this.submit.emit('submit');
-      this.handleStatus();
+    console.log(this.dpcrSIData);
+    console.log(this.isPrcntUnit);
+    console.log(this.addType);
+
+    if(this.addType === -1){
+      if(this.isPrcntUnit){
+        this.dpcrSIData.qtyUnit = 1;
+        this.submit.emit('submit');
+        this.handleStatus();
+      }else{
+        this.dpcrSIData.qtyUnit = 0;
+        this.submit.emit('submit');
+        this.handleStatus();
+      }
     }else{
-      this.dpcrSIData.qtyUnit = 0;
       this.submit.emit('submit');
-      this.handleStatus();
-
+        this.handleStatus();
     }
-
   }
 
   handleStatus() {

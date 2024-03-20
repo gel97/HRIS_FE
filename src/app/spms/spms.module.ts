@@ -12,7 +12,6 @@ import { SpinnerComponent } from './components/spinner.component';
 import { LinearLoadingComponent } from './components/linear-loading/linear-loading.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { UtilityComponent } from './pages/utility/utility.component';
-
 import {
   CdkDrag,
   CdkDragDrop,
