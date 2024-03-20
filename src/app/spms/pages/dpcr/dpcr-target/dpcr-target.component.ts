@@ -23,6 +23,8 @@ export class DpcrTargetComponent implements OnInit{
   isShowSubtask:boolean = false;
   isShowCanvasOpcrMfoes:boolean = false;
 
+  addType:number = 0;
+
   currentYear: number = new Date().getFullYear();
 
   ngOnInit(): void {

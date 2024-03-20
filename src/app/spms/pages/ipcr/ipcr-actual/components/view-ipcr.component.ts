@@ -4,6 +4,7 @@ import { ReportMporService } from 'src/app/spms/service/report-mpor.service';
 import { DatePipe } from '@angular/common';
 import { ReportSmporService } from 'src/app/spms/service/report-smpor.service';
 import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-view-ipcr',
   styleUrls: ['../ipcr-actual.component.css'],
@@ -115,7 +116,9 @@ import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
                         >
                         <a
                           class="dropdown-item"
-                          (click)="reportIPCR = data; printIPCR()"
+                          (click)="ipcrService.GetIpcrActualReport(data.ipcrId)"
+                          data-bs-target="#modalIpcrActualReport"
+                          data-bs-toggle="modal"
                           ><i class="bx bx-printer me-1"></i> Print IPCR</a
                         >
                       </div>
@@ -201,6 +204,47 @@ import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
               class="btn btn-primary"
             >
               Print MPOR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalIpcrActualReport"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <iframe
+              [src]="ipcrService.ipcrActualReportUrl"
+              width="100%"
+              height="100%"
+              frameborder="0"
+            ></iframe>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
             </button>
           </div>
         </div>

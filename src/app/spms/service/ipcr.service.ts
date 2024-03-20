@@ -5,6 +5,7 @@ import { api } from 'src/app/connection';
 import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
 import { IpcrTargetComponent } from '../pages/ipcr/ipcr-target/ipcr-target.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,8 @@ export class IpcrService {
   constructor(
     private http: HttpClient,
     private url: SpmsApiService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public sanitizer: DomSanitizer
   ) {}
 
   storageIsShow = signal<any>(localStorage.getItem('isShow_ipcr'));
@@ -40,6 +42,8 @@ export class IpcrService {
     isLoading: false,
   });
 
+  ipcrActualReportUrl:SafeResourceUrl = "";
+
   ipcr_rem = signal<number>(0);
   ipcrST_rem = signal<number>(0);
 
@@ -59,6 +63,10 @@ export class IpcrService {
   });
 
   loading: boolean = false;
+
+  GetIpcrActualReport(ipcrId: string) {
+    this.ipcrActualReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_actual_report(ipcrId));
+  }
 
   GetIPCRs(year: string, divisionId: string, userId: string) {
     this.ipcr.mutate((a) => (a.isLoading = true));
