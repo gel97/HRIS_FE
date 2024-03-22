@@ -219,6 +219,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     >
       <div
         class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
         role="document"
       >
         <div class="modal-content">
@@ -241,7 +242,7 @@ import { DomSanitizer } from '@angular/platform-browser';
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-outline-secondary"
+              class="btn btn-danger"
               data-bs-dismiss="modal"
             >
               Close
