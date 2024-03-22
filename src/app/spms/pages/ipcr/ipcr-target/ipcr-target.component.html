@@ -169,8 +169,12 @@ height: 100%;
                                                                         aria-expanded="false"
                                                                         [attr.aria-controls]="'accordion' + parent + i">
                                                                         <i class='bx bx-label'></i>
-                                                                        <strong style="color: #697A8D;">&nbsp;<span
-                                                                                style="color: black;">{{si.qty}}</span>&nbsp;{{si.indicator}}</strong>
+                                                                        <strong style="color: #697a8d">&nbsp;<span
+                                                                                style="color: black">{{
+                                                                                si.qty
+                                                                                }}{{si.qtyUnit? '%':''}}</span>&nbsp;{{
+                                                                            si.indicator
+                                                                            }}</strong>
                                                                     </button>
                                                                 </h2>
                                                                 <div id="accordion{{parent}}{{i}}"
@@ -260,9 +264,14 @@ height: 100%;
                                                                         </button>
                                                                         <div
                                                                             style="margin-left: 33px; font-size: smaller;">
-                                                                            <i
-                                                                                class='bx bx-subdirectory-right'></i><span
-                                                                                style="color: black;">{{st.qty}}</span>
+                                                                            <i class='bx bx-subdirectory-right'></i>
+                                                                            <!-- <span
+                                                                                style="color: black;">{{st.qty}}</span> -->
+                                                                            <strong style="color: #697a8d">&nbsp;<span
+                                                                                    style="color: black">{{
+                                                                                    st.qty
+                                                                                    }}{{st.qtyUnit?
+                                                                                    '%':''}}</span>&nbsp;</strong>
                                                                             <i>{{st.stIndicator}}</i> &nbsp;
                                                                             <span
                                                                                 class="badge rounded-pill bg-label-dark">SUBTASK
