@@ -101,7 +101,7 @@ export class SpmsApiService {
   ) =>
     `/tPMDpcrData/searchMfoes/${officeId}/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
   put_dpcrdata_sortby_mfo = (dpcrId: string) => `/tPMDpcrData/${dpcrId}/sortDpcrMfoes`;
-
+  get_dpcr_data_target_report = (dpcrId: string) => `/tPMDpcrData/GetDpcrTargetReport/${dpcrId}`;
 
   get_dpcr_data_mfoes_division = (
     officeId: string,

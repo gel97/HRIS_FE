@@ -6,6 +6,7 @@ import { MfoService } from './mfo.service';
 import { ErrorService } from './error.service';
 import { AlertService } from './alert.service';
 import { SpmsApiService } from './spms-api.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Injectable({
   providedIn: 'root',
 })
@@ -62,8 +63,16 @@ export class DpcrService {
     private errorService: ErrorService,
     private alertService: AlertService,
     private http: HttpClient,
-    private url: SpmsApiService
+    private url: SpmsApiService,
+    public sanitizer: DomSanitizer
+
   ) {}
+
+  dpcrTargetReportUrl:SafeResourceUrl = "";
+
+  GetDpcrTargetReport(dpcrId: string) {
+    this.dpcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_dpcr_data_target_report(dpcrId));
+  }
 
   GetDpcrMfoOts(dpcrDataId:string) {
     this.dpcrMfoOts.mutate((a) => (a.isLoading = true));

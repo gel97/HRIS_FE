@@ -103,6 +103,13 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                           ></div>
                       </div>
                       <a
+                          class="dropdown-item"
+                          (click)="dpcrService.GetDpcrTargetReport(item.dpcrId)"
+                          data-bs-target="#modalDpcrTargetReport"
+                          data-bs-toggle="modal"
+                          ><i class="bx bx-printer me-1"></i> Print DPCR</a
+                        >
+                      <a
                         class="dropdown-item cursor-pointer"
                         (click)="SetDpcr(item); HandleDpcr()"
                         data-bs-toggle="offcanvas"
@@ -120,6 +127,48 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+
+        <!-- Modal -->
+        <div
+      class="modal fade"
+      id="modalDpcrTargetReport"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <iframe
+              [src]="dpcrService.dpcrTargetReportUrl"
+              width="100%"
+              height="100%"
+              frameborder="0"
+            ></iframe>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
