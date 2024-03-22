@@ -16,7 +16,7 @@ export class PdfService {
     return {
       text: 'Page ' + currentPage.toString() + ' of ' + pageCount.toString(),
       alignment: 'right',
-      margin: [0, 0, 40, 20],
+      margin: [0, 10, 40, 0],
     };
   }
 
@@ -44,6 +44,37 @@ export class PdfService {
     // Return null for other pages to have no header
     return null;
   };
+
+  // async reportTarget(data: any = [], report: any = {}) {
+  //   let _pageOrientation = report.isPortrait ? 'portrait' : 'landscape';
+
+  //   const def = {
+  //     //pageMargins:[20,20,20,20],
+  //     header: (currentPage: any, pageCount: any) => {
+  //       if (currentPage === 1) {
+  //         return {
+  //           columns: [
+  //             // Your header content here
+  //           ],
+  //         };
+  //       } else {
+  //         return null;
+  //       }
+  //     },
+  //     content: data,
+  //     pageOrientation: _pageOrientation,
+  //     pageSize: 'legal',
+  //     footer: (currentPage: number, pageCount: number) => {
+  //       return {
+  //         text: currentPage === pageCount ? '' : ' ',
+  //         pageBreak: currentPage === pageCount ? null : 'after',
+  //       };
+  //     },
+  //   };
+
+  //   const pdfDoc = this.pdfMake.createPdf(def);
+  //   pdfDoc.open();
+  // }
 
   async reportTarget(data: any = [], report: any = {}) {
     let _pageOrientation = report.isPortrait ? 'portrait' : 'landscape';
