@@ -422,6 +422,7 @@ export class ModalSubTaskComponent {
     if (this.cmfo.qty > 0) {
       data.subTaskId = data.indicatorId;
       data.dpcrDataId = this.dpcrSIData.dpcrDataId;
+      data.dpcrId = this.dpcrSIData.dpcrId;
       data.qty = this.cmfo.qty;
       data.qty5 = this.cmfo.qty5;
       data.qty4 = this.cmfo.qty4;

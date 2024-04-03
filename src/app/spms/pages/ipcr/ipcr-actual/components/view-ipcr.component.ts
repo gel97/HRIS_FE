@@ -4,6 +4,7 @@ import { ReportMporService } from 'src/app/spms/service/report-mpor.service';
 import { DatePipe } from '@angular/common';
 import { ReportSmporService } from 'src/app/spms/service/report-smpor.service';
 import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-view-ipcr',
   styleUrls: ['../ipcr-actual.component.css'],
@@ -115,7 +116,9 @@ import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
                         >
                         <a
                           class="dropdown-item"
-                          (click)="reportIPCR = data; printIPCR()"
+                          (click)="ipcrService.GetIpcrActualReport(data.ipcrId)"
+                          data-bs-target="#modalIpcrActualReport"
+                          data-bs-toggle="modal"
                           ><i class="bx bx-printer me-1"></i> Print IPCR</a
                         >
                       </div>
@@ -206,6 +209,48 @@ import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalIpcrActualReport"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <iframe
+              [src]="ipcrService.ipcrActualReportUrl"
+              width="100%"
+              height="100%"
+              frameborder="0"
+            ></iframe>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class ViewIpcrComponent implements OnInit {
@@ -268,9 +313,6 @@ export class ViewIpcrComponent implements OnInit {
     var ipcrData = data.ipcrData;
     this.sortFunctionMPORorSMPOR(ipcrList);
     this.sortFunctionMPORorSMPOR(ipcrSubtask);
-    console.log(this.strategic_functions);
-    console.log(this.core_functions);
-    console.log(this.support_functions);
 
     this.reportServiceIPCR.ReportIPCR(
       this.strategic_functions,
@@ -307,123 +349,64 @@ export class ViewIpcrComponent implements OnInit {
 
   calculateRatingSMPOR(data: any, data2: any) {
     data.map((a: any) => {
-      let dum_jan_julySum = 0;
-      let dum_feb_augSum = 0;
-      let dum_march_septSum = 0;
-      let dum_april_octSum = 0;
-      let dum_may_novSum = 0;
-      let dum_june_decSum = 0;
-      let dum_totalSum = 0;
-      let dum_jan_julyProdqlty = 0;
-      let dum_feb_augProdqlty = 0;
-      let dum_march_septProdqlty = 0;
-      let dum_april_octProdqlty = 0;
-      let dum_may_novProdqlty = 0;
-      let dum_june_decProdqlty = 0;
-      let dum_totalProdqlty = 0;
-      let dum_jan_julyProdtmly = 0;
-      let dum_feb_augProdtmly = 0;
-      let dum_march_septProdtmly = 0;
-      let dum_april_octProdtmly = 0;
-      let dum_may_novProdtmly = 0;
-      let dum_june_decProdtmly = 0;
-      let dum_totalProdtmly = 0;
-      let dum_ave = 0;
-      if (a.ipcrDataId.length != 0) {
-        a.ipcrDataId.map((z: any) => {
-          data2.map((b: any) => {
-            if (z.ipcrDataId == b.ipcrDataId) {
-              a.jan_julySum = b.jan_julySum + dum_jan_julySum;
-              dum_jan_julySum = a.jan_julySum;
+      a.ipcrDataId.map((b: any) => {
+        data2.map((c: any) => {
+          if (b.ipcrDataId == c.ipcrDataId) {
+            b.jan_julySum = c.jan_julySum;
+            b.feb_augSum = c.feb_augSum;
+            b.march_septSum = c.march_septSum;
+            b.april_octSum = c.april_octSum;
+            b.may_novSum = c.may_novSum;
+            b.june_decSum = c.june_decSum;
+            b.totalSum = c.totalSum;
 
-              a.feb_augSum = b.feb_augSum + dum_feb_augSum;
-              dum_feb_augSum = a.feb_augSum;
+            b.jan_julyProdqlty = c.jan_julyProdqlty;
+            b.feb_augProdqlty = c.feb_augProdqlty;
+            b.march_septProdqlty = c.march_septProdqlty;
+            b.april_octProdqlty = c.april_octProdqlty;
+            b.may_novProdqlty = c.may_novProdqlty;
+            b.june_decProdqlty = c.june_decProdqlty;
+            b.totalProdqlty = c.totalProdqlty;
 
-              a.march_septSum = b.march_septSum + dum_march_septSum;
-              dum_march_septSum = a.march_septSum;
+            b.jan_julyProdtmly = c.jan_julyProdtmly;
+            b.feb_augProdtmly = c.feb_augProdtmly;
+            b.march_septProdtmly = c.march_septProdtmly;
+            b.april_octProdtmly = c.april_octProdtmly;
+            b.may_novProdtmly = c.may_novProdtmly;
+            b.june_decProdtmly = c.june_decProdtmly;
+            b.totalProdtmly = c.totalProdtmly;
 
-              a.april_octSum = b.april_octSum + dum_april_octSum;
-              dum_april_octSum = a.april_octSum;
+            b.ave_qlty = (b.totalProdqlty / b.totalSum).toFixed(2);
+            b.ave_tmly = (b.totalProdtmly / b.totalSum).toFixed(2);
 
-              a.may_novSum = b.may_novSum + dum_may_novSum;
-              dum_may_novSum = a.may_novSum;
-
-              a.june_decSum = b.june_decSum + dum_june_decSum;
-              dum_june_decSum = a.june_decSum;
-
-              a.totalSum = b.totalSum + dum_totalSum;
-              dum_totalSum = a.totalSum;
-
-              a.jan_julyProdqlty = b.jan_julyProdqlty + dum_jan_julyProdqlty;
-              dum_jan_julyProdqlty = a.jan_julyProdqlty;
-
-              a.feb_augProdqlty = b.feb_augProdqlty + dum_feb_augProdqlty;
-              dum_feb_augProdqlty = a.feb_augProdqlty;
-
-              a.march_septProdqlty =
-                b.march_septProdqlty + dum_march_septProdqlty;
-              dum_march_septProdqlty = a.march_septProdqlty;
-
-              a.april_octProdqlty = b.april_octProdqlty + dum_april_octProdqlty;
-              dum_april_octProdqlty = a.april_octProdqlty;
-
-              a.may_novProdqlty = b.may_novProdqlty + dum_may_novProdqlty;
-              dum_may_novProdqlty = a.may_novProdqlty;
-
-              a.june_decProdqlty = b.june_decProdqlty + dum_june_decProdqlty;
-              dum_june_decProdqlty = a.june_decProdqlty;
-
-              a.totalProdqlty = b.totalProdqlty + dum_totalProdqlty;
-              dum_totalProdqlty = a.totalProdqlty;
-
-              a.jan_julyProdtmly = b.jan_julyProdtmly + dum_jan_julyProdtmly;
-              dum_jan_julyProdtmly = a.jan_julyProdtmly;
-
-              a.feb_augProdtmly = b.feb_augProdtmly + dum_feb_augProdtmly;
-              dum_feb_augProdtmly = a.feb_augProdtmly;
-
-              a.march_septProdtmly =
-                b.march_septProdtmly + dum_march_septProdtmly;
-              dum_march_septProdtmly = a.march_septProdtmly;
-
-              a.april_octProdtmly = b.april_octProdtmly + dum_april_octProdtmly;
-              dum_april_octProdtmly = a.april_octProdtmly;
-
-              a.may_novProdtmly = b.may_novProdtmly + dum_may_novProdtmly;
-              dum_may_novProdtmly = a.may_novProdtmly;
-
-              a.june_decProdtmly = b.june_decProdtmly + dum_june_decProdtmly;
-              dum_june_decProdtmly = a.june_decProdtmly;
-
-              a.totalProdtmly = b.totalProdtmly + dum_totalProdtmly;
-              dum_totalProdtmly = a.totalProdtmly;
-
-              a.ave_qlty = (dum_totalProdqlty / dum_totalSum).toFixed(2);
-              a.ave_tmly = (dum_totalProdtmly / dum_totalSum).toFixed(2);
-              if (z.qty5 <= dum_totalSum) {
-                a.ave = 5.0;
-              } else if (z.qty4 <= b.totalSum) {
-                a.ave = 4.0;
-              } else if (z.qty3 <= b.totalSum) {
-                a.ave = 3.0;
-              } else if (z.qty2 <= b.totalSum) {
-                a.ave = 2.0;
-              } else if (z.qty1 <= b.totalSum) {
-                a.ave = 1.0;
+            if (a.isSubTask == 0) {
+              if (b.qty5 <= b.totalSum) {
+                b.ave = '5.00';
+              } else if (b.qty4 <= b.totalSum) {
+                b.ave = '4.00';
+              } else if (b.qty3 <= b.totalSum) {
+                b.ave = '3.00';
+              } else if (b.qty2 <= b.totalSum) {
+                b.ave = '2.00';
+              } else if (b.qty1 <= b.totalSum) {
+                b.ave = '1.00';
               }
-              a.ave = a.ave + dum_ave;
-              dum_ave = a.ave;
+            } else {
+              if (b.data.qty5 <= b.totalSum) {
+                b.ave = '5.00';
+              } else if (b.data.qty4 <= b.totalSum) {
+                b.ave = '4.00';
+              } else if (b.data.qty3 <= b.totalSum) {
+                b.ave = '3.00';
+              } else if (b.data.qty2 <= b.totalSum) {
+                b.ave = '2.00';
+              } else if (b.data.qty1 <= b.totalSum) {
+                b.ave = '1.00';
+              }
             }
-          });
+          }
         });
-        console.log('dum_ave', dum_ave);
-        console.log('a.ipcrDataId.length', a.ipcrDataId.length);
-        let final_ave = (dum_ave / a.ipcrDataId.length).toFixed(2);
-        a.ave = final_ave;
-        console.log('finalave', final_ave);
-      } else {
-        a.data = {};
-      }
+      });
     });
     return data;
   }
@@ -438,12 +421,10 @@ export class ViewIpcrComponent implements OnInit {
     var smporData = data.smporData;
 
     smporList = this.calculateRatingSMPOR(smporList, smporData);
-    // smporSubtask = this.calculateRatingSMPOR(smporSubtask, smporData);
+    smporSubtask = this.calculateRatingSMPOR(smporSubtask, smporData);
 
     this.sortFunctionMPORorSMPOR(smporList);
-    // this.sortFunctionMPORorSMPOR(smporSubtask);
-
-    console.log(smporList);
+    this.sortFunctionMPORorSMPOR(smporSubtask);
 
     this.reportServiceSMPOR.ReportSMPOR(
       this.strategic_functions,
@@ -511,65 +492,65 @@ export class ViewIpcrComponent implements OnInit {
 
   calculateRatingMPOR(data: any, data2: any) {
     data.map((a: any, index: number) => {
-      let dumQtyWk1 = 0;
-      let dumQtyWk2 = 0;
-      let dumQtyWk3 = 0;
-      let dumQtyWk4 = 0;
-      let dumQltyWk1 = 0;
-      let dumQltyWk2 = 0;
-      let dumQltyWk3 = 0;
-      let dumQltyWk4 = 0;
-      let dumTimelyWk1 = 0;
-      let dumTimelyWk2 = 0;
-      let dumTimelyWk3 = 0;
-      let dumTimelyWk4 = 0;
-      a.ipcrDataId.map((z: any) => {
-        data2.map((b: any) => {
-          if (z.ipcrDataId == b.ipcrDataId) {
-            b.data.map((c: any) => {
-              if (c.qtyWk1 != null) {
-                a.qtyWk1 = c.qtyWk1 + dumQtyWk1;
-                dumQtyWk1 = a.qtyWk1;
-                a.qltyWk1 = c.qtyWk1 * c.qltyR + dumQltyWk1;
-                dumQltyWk1 = a.qltyWk1;
-                a.qltyWk1Percentage = (a.qltyWk1 / a.qtyWk1).toFixed(2); // Convert to fixed decimal
-                a.timelyWk1 = c.qtyWk1 * c.timelyR + dumTimelyWk1;
-                dumTimelyWk1 = a.timelyWk1;
-                a.timelyWk1Percentage = (a.timelyWk1 / a.qtyWk1).toFixed(2); // Convert to fixed decimal
+      a.ipcrDataId.map((b: any) => {
+        let dumQtyWk1 = 0;
+        let dumQtyWk2 = 0;
+        let dumQtyWk3 = 0;
+        let dumQtyWk4 = 0;
+        let dumQltyWk1 = 0;
+        let dumQltyWk2 = 0;
+        let dumQltyWk3 = 0;
+        let dumQltyWk4 = 0;
+        let dumTimelyWk1 = 0;
+        let dumTimelyWk2 = 0;
+        let dumTimelyWk3 = 0;
+        let dumTimelyWk4 = 0;
+        data2.map((c: any) => {
+          if (b.ipcrDataId == c.ipcrDataId) {
+            c.data.map((d: any) => {
+              if (d.qtyWk1 != null) {
+                b.qtyWk1 = d.qtyWk1 + dumQtyWk1;
+                dumQtyWk1 = b.qtyWk1;
+                b.qltyWk1 = d.qtyWk1 * d.qltyR + dumQltyWk1;
+                dumQltyWk1 = b.qltyWk1;
+                b.qltyWk1Percentage = (b.qltyWk1 / b.qtyWk1).toFixed(2); // Convert to fixed decimal
+                b.timelyWk1 = d.qtyWk1 * d.timelyR + dumTimelyWk1;
+                dumTimelyWk1 = b.timelyWk1;
+                b.timelyWk1Percentage = (b.timelyWk1 / b.qtyWk1).toFixed(2); // Convert to fixed decimal
               }
-              if (c.qtyWk2 != null) {
-                a.qtyWk2 = c.qtyWk2 + dumQtyWk2;
-                dumQtyWk2 = a.qtyWk2;
-                a.qltyWk2 = c.qtyWk2 * c.qltyR + dumQltyWk2;
-                dumQltyWk2 = a.qltyWk2;
-                a.qltyWk2Percentage = (a.qltyWk2 / a.qtyWk2).toFixed(2); // Convert to fixed decimal
-                a.timelyWk2 = c.qtyWk2 * c.timelyR + dumTimelyWk2;
-                dumTimelyWk2 = a.timelyWk2;
-                a.timelyWk2Percentage = (a.timelyWk2 / a.qtyWk2).toFixed(2); // Convert to fixed decimal
+              if (d.qtyWk2 != null) {
+                b.qtyWk2 = d.qtyWk2 + dumQtyWk2;
+                dumQtyWk2 = b.qtyWk2;
+                b.qltyWk2 = d.qtyWk2 * d.qltyR + dumQltyWk2;
+                dumQltyWk2 = b.qltyWk2;
+                b.qltyWk2Percentage = (b.qltyWk2 / b.qtyWk2).toFixed(2); // Convert to fixed decimal
+                b.timelyWk2 = d.qtyWk2 * d.timelyR + dumTimelyWk2;
+                dumTimelyWk2 = b.timelyWk2;
+                b.timelyWk2Percentage = (b.timelyWk2 / b.qtyWk2).toFixed(2); // Convert to fixed decimal
               }
-              if (c.qtyWk3 != null) {
-                a.qtyWk3 = c.qtyWk3 + dumQtyWk3;
-                dumQtyWk3 = a.qtyWk3;
-                a.qltyWk3 = c.qtyWk3 * c.qltyR + dumQltyWk3;
-                dumQltyWk3 = a.qltyWk3;
-                a.qltyWk3Percentage = (a.qltyWk3 / a.qtyWk3).toFixed(2); // Convert to fixed decimal
-                a.timelyWk3 = c.qtyWk3 * c.timelyR + dumTimelyWk3;
-                dumTimelyWk3 = a.timelyWk3;
-                a.timelyWk3Percentage = (a.timelyWk3 / a.qtyWk3).toFixed(2); // Convert to fixed decimal
+              if (d.qtyWk3 != null) {
+                b.qtyWk3 = d.qtyWk3 + dumQtyWk3;
+                dumQtyWk3 = b.qtyWk3;
+                b.qltyWk3 = d.qtyWk3 * d.qltyR + dumQltyWk3;
+                dumQltyWk3 = b.qltyWk3;
+                b.qltyWk3Percentage = (b.qltyWk3 / b.qtyWk3).toFixed(2); // Convert to fixed decimal
+                b.timelyWk3 = d.qtyWk3 * d.timelyR + dumTimelyWk3;
+                dumTimelyWk3 = b.timelyWk3;
+                b.timelyWk3Percentage = (b.timelyWk3 / b.qtyWk3).toFixed(2); // Convert to fixed decimal
               }
-              if (c.qtyWk4 != null) {
-                a.qtyWk4 = c.qtyWk4 + dumQtyWk4;
-                dumQtyWk4 = a.qtyWk4;
-                a.qltyWk4 = c.qtyWk4 * c.qltyR + dumQltyWk4;
-                dumQltyWk4 = a.qltyWk4;
-                a.qltyWk4Percentage = (a.qltyWk4 / a.qtyWk4).toFixed(2); // Convert to fixed decimal
-                a.timelyWk4 = c.qtyWk4 * c.timelyR + dumTimelyWk4;
-                dumTimelyWk4 = a.timelyWk4;
-                a.timelyWk4Percentage = (a.timelyWk4 / a.qtyWk4).toFixed(2); // Convert to fixed decimal
+              if (d.qtyWk4 != null) {
+                b.qtyWk4 = d.qtyWk4 + dumQtyWk4;
+                dumQtyWk4 = b.qtyWk4;
+                b.qltyWk4 = d.qtyWk4 * d.qltyR + dumQltyWk4;
+                dumQltyWk4 = b.qltyWk4;
+                b.qltyWk4Percentage = (b.qltyWk4 / b.qtyWk4).toFixed(2); // Convert to fixed decimal
+                b.timelyWk4 = d.qtyWk4 * d.timelyR + dumTimelyWk4;
+                dumTimelyWk4 = b.timelyWk4;
+                b.timelyWk4Percentage = (b.timelyWk4 / b.qtyWk4).toFixed(2); // Convert to fixed decimal
               }
-              a.total = dumQtyWk1 + dumQtyWk2 + dumQtyWk3 + dumQtyWk4;
-              a.totalQlty = dumQltyWk1 + dumQltyWk2 + dumQltyWk3 + dumQltyWk4;
-              a.totalTimely =
+              b.total = dumQtyWk1 + dumQtyWk2 + dumQtyWk3 + dumQtyWk4;
+              b.totalQlty = dumQltyWk1 + dumQltyWk2 + dumQltyWk3 + dumQltyWk4;
+              b.totalTimely =
                 dumTimelyWk1 + dumTimelyWk2 + dumTimelyWk3 + dumTimelyWk4;
             });
           }
@@ -599,15 +580,14 @@ export class ViewIpcrComponent implements OnInit {
     this.core_functions = [];
     this.support_functions = [];
     var mporList = data.mporList;
-    console.log(mporList);
     var mporData = data.mporData;
     var mporSubtask = data.mporSubtask;
 
     mporList = this.calculateRatingMPOR(mporList, mporData);
-    // mporSubtask = this.calculateRatingMPOR(mporSubtask, mporData);
+    mporSubtask = this.calculateRatingMPOR(mporSubtask, mporData);
 
     this.sortFunctionMPORorSMPOR(mporList);
-    // this.sortFunctionMPORorSMPOR(mporSubtask);
+    this.sortFunctionMPORorSMPOR(mporSubtask);
 
     let month: string | any = '';
     for (let i = 1; i <= 12; i++) {

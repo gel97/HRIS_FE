@@ -14,7 +14,7 @@ export class MenuService {
     error: false,
     isLoading: false,
   });
- 
+
   userId: string | null = localStorage.getItem('userId');
   userMenu: any | null = localStorage.getItem('user_menu');
 
@@ -25,47 +25,41 @@ export class MenuService {
   ) {}
 
   GetMenu() {
-    if(this.userMenu !== null){
+    if (this.userMenu !== null) {
       this.menu.mutate((a) => {
-        (a.data = JSON.parse(this.userMenu))
+        a.data = JSON.parse(this.userMenu);
       });
-      console.log(this.userMenu)
-    }else{
-    this.menu.mutate((a) => (a.isLoading = true));
-    this.http
-      .get<any[]>(api + this.url.get_utility_user_role(this.userId ?? ''), {
-        responseType: `json`,
-      })
-      .subscribe({
-        next: (response: any = {}) => {
-          setTimeout(() => {
-            this.menu.mutate((a) => {
-              (a.data = response),
-                (a.isLoading = false),
-                (a.error = false),
-                (a.errorStatus = null);
+    } else {
+      this.menu.mutate((a) => (a.isLoading = true));
+      this.http
+        .get<any[]>(api + this.url.get_utility_user_role(this.userId ?? ''), {
+          responseType: `json`,
+        })
+        .subscribe({
+          next: (response: any = {}) => {
+            setTimeout(() => {
+              this.menu.mutate((a) => {
+                (a.data = response),
+                  (a.isLoading = false),
+                  (a.error = false),
+                  (a.errorStatus = null);
+              });
+              localStorage.setItem('user_menu', JSON.stringify(response));
+            }, 500);
+
+            this.errorService.error.mutate((a) => {
+              (a.error = false), (a.errorStatus = null);
             });
-            localStorage.setItem('user_menu', JSON.stringify(response));
-            console.log(response)
+          },
+          error: (error: any) => {
+            this.menu.mutate((a) => (a.isLoading = false));
 
-          }, 500);
-          
-
-          this.errorService.error.mutate((a) => {
-            (a.error = false), (a.errorStatus = null);
-          });
-        },
-        error: (error: any) => {
-          this.menu.mutate((a) => (a.isLoading = false));
-
-          this.errorService.error.mutate((a) => {
-            (a.error = true), (a.errorStatus = error.status);
-          });
-        },
-        complete: () => {
-        },
-      });
+            this.errorService.error.mutate((a) => {
+              (a.error = true), (a.errorStatus = error.status);
+            });
+          },
+          complete: () => {},
+        });
     }
   }
-
 }

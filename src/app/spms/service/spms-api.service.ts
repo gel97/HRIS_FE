@@ -6,6 +6,9 @@ import { api } from 'src/app/connection';
 })
 export class SpmsApiService {
   constructor() {}
+
+  get_dashboard_mfo_target_offices = () => '/tPMDashboard/target/mfo/offices';
+
   get_employee_list = () => '/vPMEmployee';
 
   get_mfoes = (officeId: string, type: number) =>
@@ -54,6 +57,7 @@ export class SpmsApiService {
   post_ipcrData = () => `/tPMIpcrDatas`;
   put_ipcrData = () => `/tPMIpcrDatas`;
   put_ipcrdata_sortby_mfo = (ipcrId: string) => `/tPMIpcrDatas/${ipcrId}/sortIpcrMfoes`;
+  get_ipcr_actual_report = (ipcrId: string) => `/tPMIpcrDatas/GetIpcrReport/${ipcrId}`;
 
   put_ipcrSubData = () => `/tPMIpcrDataSubTasks`;
   post_ipcrSubData = () => `/tPMIpcrDataSubTasks`;
@@ -100,7 +104,7 @@ export class SpmsApiService {
   ) =>
     `/tPMDpcrData/searchMfoes/${officeId}/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
   put_dpcrdata_sortby_mfo = (dpcrId: string) => `/tPMDpcrData/${dpcrId}/sortDpcrMfoes`;
-
+  get_dpcr_data_target_report = (dpcrId: string) => `/tPMDpcrData/GetDpcrTargetReport/${dpcrId}`;
 
   get_dpcr_data_mfoes_division = (
     officeId: string,

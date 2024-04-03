@@ -119,7 +119,10 @@ export class OpcrService {
         error: () => {
           // this.alertService.error();
         },
-        complete: () => {},
+        complete: () => {
+          this.opcrDetails.mutate((a: any) => (a.isLoading = false));
+
+        },
       });
   }
 
@@ -273,7 +276,9 @@ export class OpcrService {
         complete: () => {
           this.GetOPCRs(data.year, data.officeId);
           this.alertService.save();
+          this.opcr.mutate((a) => (a.isLoading = false));
         },
+        
       });
   }
 
@@ -298,6 +303,7 @@ export class OpcrService {
         complete: () => {
           this.StorageOPCRDetails(data.opcrId);
           this.alertService.save();
+          this.opcrData.mutate((a) => (a.isLoading = false));
         },
       });
   }
@@ -326,6 +332,8 @@ export class OpcrService {
         complete: () => {
           // this.closebutton.nativeElement.click();
           this.alertService.update();
+          this.opcrDetails.mutate((a) => (a.isLoading = false));
+
         },
       });
   }
@@ -353,6 +361,7 @@ export class OpcrService {
         complete: () => {
           // this.closebutton.nativeElement.click();
           this.alertService.update();
+          this.opcr.mutate((a) => (a.isLoading = false));
         },
       });
   }
@@ -380,6 +389,7 @@ export class OpcrService {
         complete: () => {
           // this.closebutton.nativeElement.click();
           this.alertService.update();
+          this.opcr.mutate((a) => (a.isLoading = false));
         },
       });
   }

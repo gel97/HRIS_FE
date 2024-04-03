@@ -12,7 +12,6 @@ import { SpinnerComponent } from './components/spinner.component';
 import { LinearLoadingComponent } from './components/linear-loading/linear-loading.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { UtilityComponent } from './pages/utility/utility.component';
-
 import {
   CdkDrag,
   CdkDragDrop,
@@ -21,7 +20,6 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { OpcrActualSkeletonComponent } from './pages/opcr/opcr-actual/components/opcr-actual-skeleton.component';
 import { OpcrTargetSkeletonComponent } from './pages/opcr/opcr-target/components/opcr-target-skeleton.component';
 import { IpcrTargetSkeletonComponent } from './pages/ipcr/ipcr-target/components/ipcr-target-skeleton.component';
@@ -76,7 +74,6 @@ import { ViewOpcrActualDataComponent } from './pages/opcr/opcr-actual/components
     CdkDrag,
     CdkDropList,
     CdkDropListGroup,
-    MatTooltipModule,
     NgxSkeletonLoaderModule,
     MatPaginatorModule,
     SharedModule

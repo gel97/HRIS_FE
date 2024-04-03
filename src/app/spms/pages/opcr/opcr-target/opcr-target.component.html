@@ -1,5 +1,5 @@
 <!-- OPCR-->
-<app-loading [loading]="opcr().isLoading"/>
+<app-loading [loading]="opcr().isLoading" />
 <ng-container>
     <div class="card">
         <div class="row">
@@ -175,17 +175,18 @@
                 <div class="">
                     <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
                         <div cdkDropList (cdkDropListDropped)="drop($event)">
-                            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index" cdkDrag>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <h1 class="card-title" style="color: blue">
-                                            {{ data.mfo }}
-                                        </h1>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="btn-group float-end">
-                                            <small class="badge rounded-pill float-end pointer" [ngClass]="
+                            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index"
+                                cdkDrag>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <h1 class="card-title" style="color: blue">
+                                                {{ data.mfo }}
+                                            </h1>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="btn-group float-end">
+                                                <small class="badge rounded-pill float-end pointer" [ngClass]="
                         data.categoryId == '1'
                           ? 'bg-label-success'
                           : data.categoryId == '2'
@@ -194,132 +195,132 @@
                           ? 'bg-label-warning'
                           : 'bg-label-secondary'
                       " data-bs-toggle="dropdown" aria-expanded="false">
-                                                {{ displayCatergory(data.categoryId) }}
-                                            </small>
-                                            <ul class="dropdown-menu dropdown-menu-end pointer">
-                                                <li *ngIf="data.isCommon == 0">
-                                                    <a (click)="
+                                                    {{ displayCatergory(data.categoryId) }}
+                                                </small>
+                                                <ul class="dropdown-menu dropdown-menu-end pointer">
+                                                    <li *ngIf="data.isCommon == 0">
+                                                        <a (click)="
                             PutMFOCategory(data.mfoId, 1); data.categoryId = 1
                           " class="dropdown-item">STRATEGIC</a>
-                                                </li>
-                                                <li>
-                                                    <a (click)="
+                                                    </li>
+                                                    <li>
+                                                        <a (click)="
                             PutMFOCategory(data.mfoId, 2); data.categoryId = 2
                           " class="dropdown-item">CORE
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a (click)="
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a (click)="
                             PutMFOCategory(data.mfoId, 3); data.categoryId = 3
                           " class="dropdown-item">SUPPORT
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Accordion -->
-                                <div class="row">
-                                    <div class="col-md mb-4 mb-md-0">
-                                        <div class="accordion mt-3" id="accordionExample">
-                                            <div class="card accordion-item bg-lightest thick-border"
-                                                *ngFor="let si of data.si; let i = index">
-                                                <h2 class="accordion-header" id="heading{{ parent }}{{ i }}">
-                                                    <button type="button" class="accordion-button collapsed"
-                                                        data-bs-toggle="collapse"
-                                                        [attr.data-bs-target]="'#accordion' + parent + i"
-                                                        aria-expanded="false"
-                                                        [attr.aria-controls]="'accordion' + parent + i">
-                                                        <i class="bx bx-label"></i>
-                                                        <strong style="color: #697a8d">&nbsp;<span
-                                                                style="color: black">{{
-                                                                si.qty
-                                                                }}{{si.qtyUnit? '%':''}}</span>&nbsp;{{ si.indicator
-                                                            }}</strong>
-                                                    </button>
-                                                    <h4 *ngIf="si.isShared == 1" style="margin-left: 50px">
-                                                        <i class="bx bx-carousel"></i>&nbsp;{{
-                                                        si.sharedDiv
-                                                        }}
-                                                    </h4>
-                                                </h2>
-                                                <div id="accordion{{ parent }}{{ i }}"
-                                                    class="accordion-collapse collapse"
-                                                    [attr.aria-labelledby]="'heading' + parent + i"
-                                                    data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
-                                                        <!-- Bordered Table -->
-                                                        <div class="table-responsive text-nowrap">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>RATING</th>
-                                                                        <th>QUANTITY</th>
-                                                                        <th>QUALITY</th>
-                                                                        <th>TIMELINESS</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>{{ "5" }}</td>
-                                                                        <td>{{ si.qty5 }}</td>
-                                                                        <td>{{ si.qlty5 }}</td>
-                                                                        <td>{{ si.timely5 }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>{{ "4" }}</td>
-                                                                        <td>{{ si.qty4 }}</td>
-                                                                        <td>{{ si.qlty4 }}</td>
-                                                                        <td>{{ si.timely4 }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>{{ "3" }}</td>
-                                                                        <td>{{ si.qty3 }}</td>
-                                                                        <td>{{ si.qlty3 }}</td>
-                                                                        <td>{{ si.timely3 }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>{{ "2" }}</td>
-                                                                        <td>{{ si.qty2 }}</td>
-                                                                        <td>{{ si.qlty2 }}</td>
-                                                                        <td>{{ si.timely2 }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>{{ "1" }}</td>
-                                                                        <td>{{ si.qty1 }}</td>
-                                                                        <td>{{ si.qlty1 }}</td>
-                                                                        <td>{{ si.timely1 }}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
+                                    <!-- Accordion -->
+                                    <div class="row">
+                                        <div class="col-md mb-4 mb-md-0">
+                                            <div class="accordion mt-3" id="accordionExample">
+                                                <div class="card accordion-item bg-lightest thick-border"
+                                                    *ngFor="let si of data.si; let i = index">
+                                                    <h2 class="accordion-header" id="heading{{ parent }}{{ i }}">
+                                                        <button type="button" class="accordion-button collapsed"
+                                                            data-bs-toggle="collapse"
+                                                            [attr.data-bs-target]="'#accordion' + parent + i"
+                                                            aria-expanded="false"
+                                                            [attr.aria-controls]="'accordion' + parent + i">
+                                                            <i class="bx bx-label"></i>
+                                                            <strong style="color: #697a8d">&nbsp;<span
+                                                                    style="color: black">{{
+                                                                    si.qty
+                                                                    }}{{si.qtyUnit? '%':''}}</span>&nbsp;{{ si.indicator
+                                                                }}</strong>
+                                                        </button>
+                                                        <h4 *ngIf="si.isShared == 1" style="margin-left: 50px">
+                                                            <i class="bx bx-carousel"></i>&nbsp;{{
+                                                            si.sharedDiv
+                                                            }}
+                                                        </h4>
+                                                    </h2>
+                                                    <div id="accordion{{ parent }}{{ i }}"
+                                                        class="accordion-collapse collapse"
+                                                        [attr.aria-labelledby]="'heading' + parent + i"
+                                                        data-bs-parent="#accordionExample">
+                                                        <div class="accordion-body">
+                                                            <!-- Bordered Table -->
+                                                            <div class="table-responsive text-nowrap">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>RATING</th>
+                                                                            <th>QUANTITY</th>
+                                                                            <th>QUALITY</th>
+                                                                            <th>TIMELINESS</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>{{ "5" }}</td>
+                                                                            <td>{{ si.qty5 }}</td>
+                                                                            <td>{{ si.qlty5 }}</td>
+                                                                            <td>{{ si.timely5 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{ "4" }}</td>
+                                                                            <td>{{ si.qty4 }}</td>
+                                                                            <td>{{ si.qlty4 }}</td>
+                                                                            <td>{{ si.timely4 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{ "3" }}</td>
+                                                                            <td>{{ si.qty3 }}</td>
+                                                                            <td>{{ si.qlty3 }}</td>
+                                                                            <td>{{ si.timely3 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{ "2" }}</td>
+                                                                            <td>{{ si.qty2 }}</td>
+                                                                            <td>{{ si.qlty2 }}</td>
+                                                                            <td>{{ si.timely2 }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>{{ "1" }}</td>
+                                                                            <td>{{ si.qty1 }}</td>
+                                                                            <td>{{ si.qlty1 }}</td>
+                                                                            <td>{{ si.timely1 }}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <!--/ Bordered Table -->
                                                         </div>
-                                                        <!--/ Bordered Table -->
                                                     </div>
-                                                </div>
-                                                <div *ngIf="opcr_details_status != 2">
-                                                    <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
-                                                        class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
-                                                        <span class="tf-icons bx bx-trash"></span>
-                                                    </button>
-                                                    <button (click)="checker(si.qtyUnit)" type="button"
-                                                        data-bs-toggle="modal" (click)="
+                                                    <div *ngIf="opcr_details_status != 2">
+                                                        <button (click)="DeleteOPCRDetails(si.opcrDataId)" type="button"
+                                                            class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
+                                                            <span class="tf-icons bx bx-trash"></span>
+                                                        </button>
+                                                        <button (click)="checker(si.qtyUnit)" type="button"
+                                                            data-bs-toggle="modal" (click)="
                             editopcrDetails = si;
                             editMFODetails = data;
                             displayDivision(si.sharedDiv); editcalculateRating()
                           " data-bs-target="#editDetails"
-                                                        class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
-                                                        <span class="tf-icons bx bx-pencil"></span>
-                                                    </button>
+                                                            class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
+                                                            <span class="tf-icons bx bx-pencil"></span>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <!--/ Accordion -->
                                 </div>
-                                <!--/ Accordion -->
                             </div>
                         </div>
-                        </div>
-                        
+
                     </ng-container>
                     <ng-template #isLoading>
                         <app-opcr-target-skeleton></app-opcr-target-skeleton>

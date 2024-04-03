@@ -56,6 +56,7 @@
     [dpcrMFOData]="dpcrMFOData" 
     [dpcrSIData]="dpcrSIData" 
     [error]="dpcrData.error" 
+    [addType]="addType"
     (submit)="AddDpcrData()"
 />
 
@@ -74,4 +75,5 @@
     [dpcrDataMfoes]="dpcrDataMfoes"
     (hideCanvasOpcrMfoes)="isShowCanvasOpcrMfoes=$event"
     (setDpcrDataObj)="setDpcrDataObj($event)" 
+    (addType)="addType=$event"
 />

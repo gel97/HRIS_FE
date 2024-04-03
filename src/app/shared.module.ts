@@ -4,6 +4,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { FirstLetterUppercasePipe } from './pipe/first-letter-uppercase.pipe';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { LoadingComponent } from './spms/components/loading.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,
@@ -20,12 +22,14 @@ import { LoadingComponent } from './spms/components/loading.component';
       animationDuration: 300,
     }),
     NgxSpinnerModule,
+    MatTooltipModule
   ],
   exports: [
     NgCircleProgressModule,
     FirstLetterUppercasePipe,
     NgxSpinnerModule,
     LoadingComponent,
+    MatTooltipModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
