@@ -6,6 +6,9 @@ import { api } from 'src/app/connection';
 })
 export class SpmsApiService {
   constructor() {}
+
+  get_dashboard_mfo_target_offices = () => '/tPMDashboard/target/mfo/offices';
+
   get_employee_list = () => '/vPMEmployee';
 
   get_mfoes = (officeId: string, type: number) =>
