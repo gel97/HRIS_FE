@@ -7,7 +7,7 @@ import { api } from 'src/app/connection';
 export class SpmsApiService {
   constructor() {}
 
-  get_overview_mfo_target_offices = () => '/tPMDashboard/target/mfo/offices';
+  get_overview_mfo_target_offices = () => '/Overview/target/mfo/offices';
 
   get_employee_list = () => '/vPMEmployee';
 
