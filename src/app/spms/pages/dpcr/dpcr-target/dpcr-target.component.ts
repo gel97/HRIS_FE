@@ -49,6 +49,9 @@ export class DpcrTargetComponent implements OnInit{
 
   AddDpcrData(){
     this.dpcrSIData.isSubTask = 0;
+    this.dpcrSIData.MFOId = this.dpcrMFOData.mfoId ?? null; 
+    this.dpcrSIData.categoryId = this.dpcrMFOData.categoryId ?? null;
+
     this.dpcrService.AddDpcrData(this.dpcrSIData);
   }
 
@@ -88,6 +91,7 @@ export class DpcrTargetComponent implements OnInit{
   else if(!value){
       this.dpcrService.storageIsShowDpcrData.set(0);
       localStorage.setItem('isShowDpcrData', '0');
+      this.dpcrService.GetDpcr();
   }
 
   }

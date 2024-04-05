@@ -88,6 +88,7 @@ export class SpmsApiService {
     `/tPMDpcrData/actual/list/${dpcrId}`;
   post_dpcr_data = () => `/tPMDpcrData`;
   put_dpcr_data = () => `/tPMDpcrData`;
+  put_dpcr_data_update_mfo_category = (dpcrId: string, MFOId:string, category:number) => `/tPMDpcrData/update/${dpcrId}/${MFOId}/${category}/dpcr_mfo_category`;
   delete_dpcr_data = (dpcrDataId: string) => `/tPMDpcrData/${dpcrDataId}`;
   get_dpcr_data_mfoes = (
     officeId: string,
