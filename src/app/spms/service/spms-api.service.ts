@@ -45,8 +45,8 @@ export class SpmsApiService {
     `/tPMIpcrs/${year}/${divisionId}/${userId}`;
   post_ipcr = () => `/tPMIpcrs`;
   put_ipcr_status = () => `/tPMIpcrs/Status`;
-  view_get_dpcr_ipcr = (divisionId: string, isCommon: number) =>
-    `/vPMDpcr_Ipcr/${divisionId}/${isCommon}`;
+  view_get_dpcr_ipcr = (ipcrId: string, divisionId: string, isCommon: number) =>
+    `/vPMDpcr_Ipcr/${ipcrId}/${divisionId}/${isCommon}`;
 
   get_ipcrdetails = (ipcrId: string) => `/vPMIpcrDatas/${ipcrId}`;
   get_ipcrdetails_remaining = (dpcrDataId: string) =>
@@ -65,6 +65,7 @@ export class SpmsApiService {
   delete_ipcrdata = (ipcrDataId: string) => `/tPMIpcrDatas/${ipcrDataId}`;
   delete_ipcrdata_st = (ipcrSubtaskId: string) =>
     `/tPMIpcrDataSubTasks/${ipcrSubtaskId}`;
+  put_ipcr_data_update_mfo_category = (ipcrId: string, MFOId:string, category:number) => `/tPMIpcrDatas/update/${ipcrId}/${MFOId}/${category}/ipcr_mfo_category`;
 
   get_ipcr_data_actual = (ipcrId: string) =>
     `/tPMIpcrDatas/actual/list/${ipcrId}`;

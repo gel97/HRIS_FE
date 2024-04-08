@@ -151,6 +151,35 @@ height: 100%;
                                                             data-bs-toggle="dropdown" aria-expanded="false">
                                                             {{displayCatergory(data.categoryId) }}
                                                         </small>
+                                                        <ul class="dropdown-menu dropdown-menu-end pointer">
+                                                            <li *ngIf="data.categoryId !== 1">
+                                                              <a
+                                                                (click)="
+                                                                  PutMFOFromIpcrCategory(data.si[0].ipcrId,data.mfoId, 1); data.categoryId = 1
+                                                                "
+                                                                class="dropdown-item"
+                                                                >STRATEGIC</a
+                                                              >
+                                                            </li>
+                                                            <li *ngIf="data.categoryId !== 2">
+                                                              <a
+                                                                (click)="
+                                                                  PutMFOFromIpcrCategory(data.si[0].ipcrId,data.mfoId, 2); data.categoryId = 2
+                                                                "
+                                                                class="dropdown-item"
+                                                                >CORE
+                                                              </a>
+                                                            </li>
+                                                            <li *ngIf="data.categoryId !== 3">
+                                                              <a
+                                                                (click)="
+                                                                  PutMFOFromIpcrCategory(data.si[0].ipcrId,data.mfoId, 3); data.categoryId = 3
+                                                                "
+                                                                class="dropdown-item"
+                                                                >SUPPORT
+                                                              </a>
+                                                            </li>
+                                                          </ul>
                                                     </div>
                                                 </div>
                                             </div>

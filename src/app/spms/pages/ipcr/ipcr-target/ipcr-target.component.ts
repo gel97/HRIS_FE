@@ -79,6 +79,11 @@ export class IpcrTargetComponent implements OnInit {
     console.log(sortData);
   }
 
+  
+  PutMFOFromIpcrCategory( ipcrId: string, MFOId: string, categoryId: number) {
+    this.ipcrService.EditIpcrDataMfoCategory(ipcrId, MFOId , categoryId);
+  }
+
   printData: any = [];
   printIpcr(data: any = {}) {
     this.ipcrService.storageIpcrId.set(data.ipcrId);

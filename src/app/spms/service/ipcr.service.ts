@@ -174,7 +174,7 @@ export class IpcrService {
     this.http
       .get<any[]>(
         api +
-          this.url.view_get_dpcr_ipcr(this.divisionId ?? '', this.isCommon()),
+          this.url.view_get_dpcr_ipcr(this.storageIpcrId() ?? '', this.divisionId ?? '', this.isCommon()),
         {
           responseType: `json`,
         }
@@ -259,6 +259,22 @@ export class IpcrService {
         complete: () => {
           this.alertService.save();
         },
+      });
+  }
+
+  EditIpcrDataMfoCategory(ipcrId: string, MFOId: string, categoryId: number) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcr_data_update_mfo_category(ipcrId, MFOId, categoryId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {},
       });
   }
 
