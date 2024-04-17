@@ -151,7 +151,7 @@ height: 100%;
                                                             data-bs-toggle="dropdown" aria-expanded="false">
                                                             {{displayCatergory(data.categoryId) }}
                                                         </small>
-                                                        <ul class="dropdown-menu dropdown-menu-end pointer">
+                                                        <ul *ngIf="!data.isIpcrMfo" class="dropdown-menu dropdown-menu-end pointer">
                                                             <li *ngIf="data.categoryId !== 1">
                                                               <a
                                                                 (click)="
@@ -188,7 +188,7 @@ height: 100%;
                                                     <div class="accordion mt-3" id="accordionExample">
                                                         <div class="card accordion-item bg-lightest thick-border"
                                                             *ngFor="let si of data.si; let i =index">
-                                                            <ng-container *ngIf="si.isSubTask == 0 ; else subTaskData">
+                                                            <ng-container *ngIf="si.isSubTask == 0 || si.isSubTask == null ; else subTaskData">
                                                                 <h2 class="accordion-header"
                                                                     id="heading{{parent}}{{i}}">
                                                                     <button type="button"
@@ -265,7 +265,7 @@ height: 100%;
                                                                         class="btn rounded-pill btn-icon btn-outline-danger border-0 float-end">
                                                                         <span class="tf-icons bx bx-trash"></span>
                                                                     </button>
-                                                                    <button (click)="ipcrDetails = si"
+                                                                    <button (click)="si.sortByMFO = data.sortByMFO;si.isIpcrMfo = data.isIpcrMfo;ipcrDetails = si"
                                                                         (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId); returnQty = ipcrDetails.qty; promptEdit = false"
                                                                         type="button" data-bs-toggle="modal"
                                                                         data-bs-target="#modalEdit"
@@ -392,12 +392,12 @@ height: 100%;
                             <img src="assets/img/document.png" alt="" width="200" height="200"
                                 style="display: block; margin: 0 auto" />
                             <span style="
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-        ">
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                        height: 100%;
+                                            ">
                                 <div>
                                     <label style="margin-bottom: 10px;"><strong>No Data Found!</strong></label>
                                 </div>
@@ -483,7 +483,7 @@ height: 100%;
                 </li>
             </ul>
             <br>
-            <div class="">
+            <div *ngIf="ipcrService.isCommon() === 0" class="">
                 <ng-container>
                     <ng-container *ngIf="dpcr_ipcr.isLoadingSave != true; else isLoading">
                         <ng-container *ngIf="dpcr_ipcr.data.length >0 && dpcr_ipcr.isNoData; else noData">
@@ -612,6 +612,130 @@ height: 100%;
                                 </ng-template>
                             </table>
                         </ng-container>
+                    </ng-container>
+                    <ng-template #isLoading><app-mfo-skeleton></app-mfo-skeleton></ng-template>
+                </ng-container>
+                <ng-template #nosidata>
+                    <div class="text-center" style="margin-top: 30px;">
+                        <label><strong>No Data Found!</strong></label>
+                    </div>
+                </ng-template>
+                <ng-template #noData>
+                    <div class="text-center" style="margin-top: 30px;">
+                        <label><strong>No Data Found!</strong></label>
+                    </div>
+                </ng-template>
+            </div>
+            <div *ngIf="ipcrService.isCommon() === 1" class="">
+                <ng-container>
+                    <ng-container *ngIf="dpcr_ipcr.isLoadingSave != true; else isLoading">
+                        <ng-container *ngIf="dpcr_ipcr.data.length >0 && dpcr_ipcr.isNoData || ipcrMfoesFixed.data.length > 0; else noData">
+                            <table class="table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 100px; color: blue;">Indicator
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let data of dpcr_ipcr.data" class="table-border-bottom-0">
+                                    <ng-container *ngIf="data.si.length >0">
+                                        <tr class="text-justify" style="color: blue; white-space: normal;">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
+                                                </div>
+                                                <div class="col-4">
+                                                    <small class="badge rounded-pill float-end"
+                                                        [ngClass]="data.dpcrCategoryId == '1' ? 'bg-label-success': data.dpcrCategoryId == '2' ? 'bg-label-primary': data.dpcrCategoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {{displayCatergory(data.dpcrCategoryId)}}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <ng-container *ngFor="let si of data.si">
+                                            <tr>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-10 text-justify" style="white-space: normal;">
+                                                            <i class='bx bx-chevron-right'></i>
+                                                            &nbsp;
+                                                            {{si.indicator}}
+                                                        </div>
+                                                        <div *ngIf="si.st.length==0 && si.isSubTask == 0" class="col-1"
+                                                            style="margin-left: 20px;">
+                                                            <button
+                                                                (click)="ipcrDetails = si; dpcrQuantity = ipcrDetails.qty"
+                                                                (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId);prompt = false ; quantity = ''"
+                                                                type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#modalAdd"
+                                                                class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                <span class="tf-icons bx bx bx-plus"></span></button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                </tbody>
+                                <!-- <ng-container *ngIf="ipcrMfoesFixed.data.length > 0">
+                                    <table class="table">
+                                        <tbody *ngFor="let data of ipcrMfoesFixed.data" class="table-border-bottom-0">
+                                            <ng-container *ngIf="data.si.length >0">
+                                                <tr class="text-justify" style="color: blue; white-space: normal;">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <strong><i class='bx bx-label'></i>&nbsp;{{data.mfo}}</strong>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <small class="badge rounded-pill float-end"
+                                                                [ngClass]="data.categoryId == '1' ? 'bg-label-success': data.categoryId == '2' ? 'bg-label-primary': data.categoryId == '3' ? 'bg-label-warning': 'bg-label-secondary'"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                {{displayCatergory(data.categoryId)}}
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </tr>
+                                                <ng-container *ngFor="let si of data.si">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-10 text-justify" style="white-space: normal;">
+                                                                    <i class='bx bx-chevron-right'></i>
+                                                                    &nbsp;
+                                                                    {{si.indicator}}
+                                                                </div>
+                                                                <div class="col-1"
+                                                                    style="margin-left: 20px;">
+                                                                    <button
+                                                                        (click)="ipcrDetails = si; dpcrQuantity = ipcrDetails.qty"
+                                                                        (click)="GetIPCRDetailsRemaining(ipcrDetails.dpcrDataId);prompt = false ; quantity = ''"
+                                                                        type="button" data-bs-toggle="modal"
+                                                                        data-bs-target="#modalAddIpcrCommon"
+                                                                        class="btn rounded-pill btn-icon btn-primary float-end">
+                                                                        <span class="tf-icons bx bx bx-plus"></span></button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tbody>
+                                        <ng-template #noSIInput>
+                                            <div class="text-center" style="margin-top: 30px;">
+                                                <label><strong>No Data Found!</strong></label>
+                                            </div>
+                                        </ng-template>
+                                    </table>
+                                </ng-container> -->
+                                <ng-template #noSIInput>
+                                    <div class="text-center" style="margin-top: 30px;">
+                                        <label><strong>No Data Found!</strong></label>
+                                    </div>
+                                </ng-template>
+                            </table>
+                        </ng-container>
+
                     </ng-container>
                     <ng-template #isLoading><app-mfo-skeleton></app-mfo-skeleton></ng-template>
                 </ng-container>
@@ -971,6 +1095,7 @@ height: 100%;
                     <div class="row">
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">Quantity</label>
+                            <span *ngIf="ipcrDetails.isIpcrMfo" class="badge rounded-pill bg-success">{{quantityLabeler(ipcrDetails.qtyUnit)}}</span>
                             <input [(ngModel)]="ipcrDetails.qty" (ngModelChange)="calculateRatingEdit()" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
@@ -980,13 +1105,14 @@ height: 100%;
                                 [(ngModel)]="qtyRemaining" type="number" class="form-control"
                                 id="basic-default-fullname" placeholder="" />
                         </div>
-                        <div class="col-4">
+                        <div *ngIf="!ipcrDetails.isIpcrMfo" class="col-4">
                             <label class="form-label" for="basic-default-fullname">DPCR Total Quantity</label>&nbsp;
                             <span class="badge rounded-pill bg-success">{{quantityLabeler(ipcrDetails.qtyUnit)}}</span>
                             <input disabled [(ngModel)]="ipcrDetails.totalIpcrQuantity" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" />
                         </div>
-                        <div class="col-12"><br>
+                        
+                        <div *ngIf="!ipcrDetails.isIpcrMfo" class="col-12"><br>
                             <div *ngIf="promptEdit">
                                 <div class="alert alert-danger" role="alert"><i
                                         class='bx bxs-x-square'></i>&nbsp;Quantity must not exceed to
@@ -1275,6 +1401,144 @@ height: 100%;
                 </button>
                 <button (click)="EditIPCRSubDetails()" type="button" class="btn btn-primary">
                     Save Details
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal IPCR COMMON MFO  -->
+<div class="modal fade" id="modalAddIpcrCommon" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalScrollableTitle">
+                    {{ ipcrDetails.indicator }}
+                </h5>
+                <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row">
+                <ng-container *ngIf="ipcrDetails.qtyUnit === 1; else showQty">
+                    <div>
+                        <h3>Quantity: <strong>{{ipcrDetails.qty}}%</strong></h3>
+                    </div>
+                </ng-container>
+                <ng-template #showQty>
+                    <div class="form-floating px-2 col-4">
+                        <input type="number" class="form-control" id="quantity" [(ngModel)]="ipcrDetails.qty"
+                            [max]="ipcrDetails.qtyOpcr - ipcrDetails.qtyCommitted" (ngModelChange)="calculateRatingNew()"
+                            placeholder="Quantity" aria-describedby="quantity" />
+                        <label for="quantity">Quantity</label>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-check form-check-inline mt-3">
+                            <input class="form-check-input" type="radio" name="inlineRadio1Options" id="inline1Radio1"
+                                [value]="false" [(ngModel)]="isPrcntUnit" />
+                            <label class="form-check-label" for="inline1Radio1">Numeric</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadio2Options" id="inline2Radio2"
+                                [value]="true" [(ngModel)]="isPrcntUnit" />
+                            <label class="form-check-label" for="inline2Radio2">Percentage</label>
+                        </div>
+                    </div>
+                </ng-template>
+                <div class="table-responsive text-wrap">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th [width]="10">Rating</th>
+                                <th>Quantity</th>
+                                <th>Quality</th>
+                                <th>Timeliness</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            <tr>
+                                <td>
+                                    <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
+                                    <strong>5</strong>
+                                </td>
+                                <td>
+                                    <input type="number" [(ngModel)]="ipcrDetails.qty5" class="form-control" />
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.qlty5 }}
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.timely5 }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
+                                    <strong>4</strong>
+                                </td>
+                                <td>
+                                    <input type="number" [(ngModel)]="ipcrDetails.qty4" class="form-control" />
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.qlty4 }}
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.timely4 }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
+                                    <strong>3</strong>
+                                </td>
+                                <td>
+                                    <input type="number" [(ngModel)]="ipcrDetails.qty3" class="form-control" />
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.qlty3 }}
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.timely3 }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
+                                    <strong>2</strong>
+                                </td>
+                                <td>
+                                    <input type="number" [(ngModel)]="ipcrDetails.qty2" class="form-control" />
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.qlty2 }}
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.timely2 }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>
+                                    <strong>1</strong>
+                                </td>
+                                <td>
+                                    <input type="number" [(ngModel)]="ipcrDetails.qty1" class="form-control" />
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.qlty1 }}
+                                </td>
+                                <td>
+                                    {{ ipcrDetails.timely1 }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" (click)="PostIPCRMfoFixed()" class="btn btn-primary">
+                    Submit
                 </button>
             </div>
         </div>

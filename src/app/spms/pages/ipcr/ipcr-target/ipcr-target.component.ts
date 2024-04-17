@@ -27,6 +27,9 @@ export class IpcrTargetComponent implements OnInit {
   dpcr_ipcr = this.ipcrService.dpcr_ipcr();
   ipcr_rem = this.ipcrService.ipcr_rem();
   ipcrST_rem = this.ipcrService.ipcrST_rem();
+  ipcrMfoesFixed = this.ipcrService.ipcr_mfoes_fixed();
+  isPrcntUnit:boolean = false;
+
   loading = this.ipcrService.loading;
 
   isShow: number | any = this.ipcrService.storageIsShow;
@@ -56,6 +59,7 @@ export class IpcrTargetComponent implements OnInit {
   ngOnInit(): void {
     this.divisionName = localStorage.getItem('divisionName');
     this.ipcrYear();
+    this.ipcrService.GetIPCRMfoesFixed();
     this.localStorage();
   }
 
@@ -218,6 +222,10 @@ export class IpcrTargetComponent implements OnInit {
   }
 
   EditIPCRDetails() {
+    if(this.ipcrDetails.isIpcrMfo){
+      this.ipcrService.PutIPCRData(this.ipcrDetails);
+      this.closebuttonEdit.nativeElement.click();
+    }
     if (!this.promptEdit) {
       this.ipcrService.PutIPCRData(this.ipcrDetails);
       this.closebuttonEdit.nativeElement.click();
@@ -251,6 +259,18 @@ export class IpcrTargetComponent implements OnInit {
       this.ipcrService.AddIPCRSubData(this.ipcrSTDetails);
       this.closebuttonST.nativeElement.click();
     }
+  }
+
+  PostIPCRMfoFixed() {
+      if(this.isPrcntUnit){
+        this.ipcrDetails.qtyUnit = 1;
+      }else{
+        this.ipcrDetails.qtyUnit = 2;
+      }
+      this.ipcrDetails.ipcrId = localStorage.getItem('ipcrId');
+      console.log(this.ipcrDetails);
+      this.ipcrService.AddIPCRData(this.ipcrDetails);
+      //this.closebuttonST.nativeElement.click();
   }
 
   DeleteIPCRDetails(value: any) {
@@ -646,5 +666,58 @@ export class IpcrTargetComponent implements OnInit {
     setTimeout(() => {
       this.ipcrService.sortExcist();
     }, 0);
+  }
+
+  calculateRatingNew() {
+    if (this.ipcrDetails.qty >= 7) {
+      this.ipcrDetails.qty5 = Math.floor(this.ipcrDetails.qty * 0.3 + this.ipcrDetails.qty);
+      this.ipcrDetails.qty4 = Math.floor(this.ipcrDetails.qty * 0.15 + this.ipcrDetails.qty);
+      this.ipcrDetails.qty3 = Math.floor(this.ipcrDetails.qty);
+      this.ipcrDetails.qty2 = Math.floor(this.ipcrDetails.qty / 2 + 1);
+      this.ipcrDetails.qty1 = Math.floor(this.ipcrDetails.qty / 2);
+    } else if (this.ipcrDetails.qty === 6) {
+      this.ipcrDetails.qty5 = 8;
+      this.ipcrDetails.qty4 = 7;
+      this.ipcrDetails.qty3 = 6;
+      this.ipcrDetails.qty2 = 5;
+      this.ipcrDetails.qty1 = 4;
+    } else if (this.ipcrDetails.qty === 5) {
+      this.ipcrDetails.qty5 = 7;
+      this.ipcrDetails.qty4 = 6;
+      this.ipcrDetails.qty3 = 5;
+      this.ipcrDetails.qty2 = 4;
+      this.ipcrDetails.qty1 = 3;
+    } else if (this.ipcrDetails.qty === 4) {
+      this.ipcrDetails.qty5 = 6;
+      this.ipcrDetails.qty4 = 5;
+      this.ipcrDetails.qty3 = 4;
+      this.ipcrDetails.qty2 = 3;
+      this.ipcrDetails.qty1 = 1;
+    } else if (this.ipcrDetails.qty === 3) {
+      this.ipcrDetails.qty5 = 5;
+      this.ipcrDetails.qty4 = 4;
+      this.ipcrDetails.qty3 = 3;
+      this.ipcrDetails.qty2 = 2;
+      this.ipcrDetails.qty1 = 1;
+    } else if (this.ipcrDetails.qty === 2) {
+      this.ipcrDetails.qty5 = 4;
+      this.ipcrDetails.qty4 = 3;
+      this.ipcrDetails.qty3 = 2;
+      this.ipcrDetails.qty2 = 1;
+      this.ipcrDetails.qty1 = 0;
+    } else if (this.ipcrDetails.qty === 1) {
+      this.ipcrDetails.qty5 = 1;
+      this.ipcrDetails.qty4 = null;
+      this.ipcrDetails.qty3 = null;
+      this.ipcrDetails.qty2 = null;
+      this.ipcrDetails.qty1 = 0;
+    } else {
+      this.ipcrDetails.qty5 = null;
+      this.ipcrDetails.qty4 = null;
+      this.ipcrDetails.qty3 = null;
+      this.ipcrDetails.qty2 = null;
+      this.ipcrDetails.qty1 = null;
+    }
+
   }
 }

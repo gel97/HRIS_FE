@@ -62,10 +62,36 @@ export class IpcrService {
     isNoData: false,
   });
 
+  ipcr_mfoes_fixed = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+    isLoadingSave: false,
+    isNoData: false,
+  });
+
   loading: boolean = false;
 
   GetIpcrActualReport(ipcrId: string) {
     this.ipcrActualReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_actual_report(ipcrId));
+  }
+
+  GetIPCRMfoesFixed() {
+    this.ipcr_mfoes_fixed.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_mfoes_ipcr(), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.ipcr_mfoes_fixed.mutate((a) => (a.data = response));
+          this.ipcr_mfoes_fixed.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {},
+      });
   }
 
   GetIPCRs(year: string, divisionId: string, userId: string) {
@@ -186,7 +212,10 @@ export class IpcrService {
         error: () => {
           this.alertService.error();
         },
-        complete: () => {},
+        complete: () => {
+          this.dpcr_ipcr.mutate((a) => (a.isLoading = false));
+          this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
+        },
       });
   }
 
@@ -349,15 +378,15 @@ export class IpcrService {
     setTimeout(() => {
       this.loading = true;
       for (let a of this.dpcr_ipcr().data) {
-        for (let b_dpcr_ipcr of a.si) {
+        for (let b_dpcr_ipcr of a?.si) {
           for (let x of this.ipcrDetails().data) {
-            for (let y_ipcrDetails of x.si) {
+            for (let y_ipcrDetails of x?.si) {
               if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
                 if (b_dpcr_ipcr.isSubTask == 0) {
                   this.counter += 1;
                 } else {
-                  for (let j of b_dpcr_ipcr.st) {
-                    for (let k of y_ipcrDetails.st) {
+                  for (let j of b_dpcr_ipcr?.st) {
+                    for (let k of y_ipcrDetails?.st) {
                       if (j.subTaskId == k.subTaskId) {
                         this.counter += 1;
                       }
@@ -373,9 +402,9 @@ export class IpcrService {
       while (this.counter != 0) {
         this.counter -= 1;
         for (let a of this.dpcr_ipcr().data) {
-          for (let b_dpcr_ipcr of a.si) {
+          for (let b_dpcr_ipcr of a?.si) {
             for (let x of this.ipcrDetails().data) {
-              for (let y_ipcrDetails of x.si) {
+              for (let y_ipcrDetails of x?.si) {
                 if (b_dpcr_ipcr.indicatorId == y_ipcrDetails.indicatorId) {
                   if (b_dpcr_ipcr.isSubTask == 0) {
                     const indexToRemove = a.si.indexOf(b_dpcr_ipcr);
@@ -383,8 +412,8 @@ export class IpcrService {
                       a.si.splice(indexToRemove, 1);
                     }
                   } else {
-                    for (let j of b_dpcr_ipcr.st) {
-                      for (let k of y_ipcrDetails.st) {
+                    for (let j of b_dpcr_ipcr?.st) {
+                      for (let k of y_ipcrDetails?.st) {
                         if (j.subTaskId == k.subTaskId) {
                           const indexToRemove = b_dpcr_ipcr.st.indexOf(j);
                           if (indexToRemove !== -1) {
