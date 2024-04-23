@@ -1,0 +1,14 @@
+<div class="card">
+    <app-header-target 
+        [isShowIpcrData]="ipcrService.storageIsShow()"
+        (isAddIpcr)="isAddIpcr=$event; ipcrObj={}" 
+        (handleShowIpcrData)="handleShowIpcrData($event)"
+    />
+
+    <app-table-ipcr *ngIf="!ipcrService.storageIsShow()"/>
+</div>
+
+<app-table-ipcr-data *ngIf="ipcrService.storageIsShow()"/>
+
+<app-canvas-target-mfoes/>
+

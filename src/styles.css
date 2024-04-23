@@ -15,6 +15,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #EEEEEE
 }
 
+.bg-custom-ligth-gray {
+  background-color: #f8f8f8
+}
+
+.bg-custom-black {
+  background-color: #000000
+}
+
 .bg-custom-light-violet {
   background-color: #D0A2F7
 }
@@ -41,4 +49,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .gradient-success {
   background: linear-gradient(to right, #38E54D, #5BB318); /* Replace colors as needed */
+}
+
+.x-space-between{
+  display:flex; justify-content: space-between;align-items: center;
 }

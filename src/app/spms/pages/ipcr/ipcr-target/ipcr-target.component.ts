@@ -154,11 +154,7 @@ export class IpcrTargetComponent implements OnInit {
       }, 0);
       this.ipcr_details_status = localStorage.getItem('ipcrFinalStatus');
     } else {
-      this.ipcrService.GetIPCRs(
-        this.getYear,
-        this.divisionId ?? '',
-        this.userId ?? ''
-      );
+      this.ipcrService.GetIPCRs();
       this.ipcrService.storageIsShow.set(0);
     }
   }
@@ -286,7 +282,7 @@ export class IpcrTargetComponent implements OnInit {
     this.post_ipcr.semester = this.sem;
     this.post_ipcr.divisionId = this.divisionId;
     this.post_ipcr.userId = this.userId;
-    this.ipcrService.AddIPCR(this.post_ipcr);
+    this.ipcrService.AddIPCR();
     this.post_ipcr = {};
   }
 
@@ -403,7 +399,7 @@ export class IpcrTargetComponent implements OnInit {
   // }
 
   onChangeYear(year: any) {
-    this.ipcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
+    this.ipcrService.GetIPCRs();
   }
 
   ipcrYear() {

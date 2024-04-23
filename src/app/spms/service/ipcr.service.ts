@@ -25,6 +25,8 @@ export class IpcrService {
 
   isCommon = signal<number>(0);
   divisionId: string | null = localStorage.getItem('divisionId');
+  userId: string | null = localStorage.getItem('userId');
+  year = signal<string>(new Date().getFullYear().toString());
 
   isLoadingIpcr: boolean = false;
 
@@ -94,10 +96,10 @@ export class IpcrService {
       });
   }
 
-  GetIPCRs(year: string, divisionId: string, userId: string) {
+  GetIPCRs() {
     this.ipcr.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_ipcrs(year, divisionId, userId), {
+      .get<any[]>(api + this.url.get_ipcrs(this.year().toString(), this.divisionId ?? "", this.userId ?? ""), {
         responseType: `json`,
       })
       .subscribe({
@@ -215,18 +217,19 @@ export class IpcrService {
         complete: () => {
           this.dpcr_ipcr.mutate((a) => (a.isLoading = false));
           this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
+          console.log(this.dpcr_ipcr().data)
         },
       });
   }
 
-  AddIPCR(data: any) {
+  AddIPCR() {
     this.http
-      .post<any[]>(api + this.url.post_ipcr(), data, {
+      .post<any[]>(api + this.url.post_ipcr(), {
         responseType: `json`,
       })
       .subscribe({
         next: (response: any = {}) => {
-          this.GetIPCRs(data.year, data.divisionId, data.userId);
+          this.GetIPCRs();
         },
         error: (error: any) => {
           if (error.status == 409) {
@@ -244,7 +247,7 @@ export class IpcrService {
 
             Toast.fire({
               icon: 'warning',
-              title: 'IPCR-coded for this semester',
+              title: 'IPCR already exist for this semester',
             });
           } else if (error.status == 500) {
             const Toast = Swal.mixin({
@@ -280,7 +283,6 @@ export class IpcrService {
         next: (response: any = {}) => {
           this.GetIPCRDetails();
           this.ViewGetDPCR_IPCR();
-          this.sortExcist();
         },
         error: (error: any) => {
           this.alertService.error();
@@ -319,6 +321,36 @@ export class IpcrService {
           this.alertService.update();
         },
       });
+  }
+
+  async SetDpcrActive(ipcr: any) {
+    try {
+      switch (ipcr.active) {
+        case 1:
+          ipcr.success = 'This ipcr has been set to open';
+          ipcr.message = 'You want to set this ipcr to open';
+
+          break;
+        case 2:
+          ipcr.success = 'This ipcr has been set to final';
+          ipcr.message = 'You want to set this ipcr to final';
+
+          break;
+        default:
+          break;
+      }
+      ipcr.url = this.url.put_ipcr_setactive(ipcr.ipcrId, ipcr.active);
+      let setData = await this.alertService.customUpdate(ipcr);
+
+      // if (setData) {
+      //   this.GetDpcr();
+      // } else {
+      // }
+      this.GetIPCRs();
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 
   PutIPCRData(data: any) {
@@ -490,80 +522,112 @@ export class IpcrService {
       });
   }
 
-  DeleteIPCR(data: any = {}) {
-    this.http.delete<any[]>(api + this.url.delete_ipcr(data.ipcrId)).subscribe({
-      next: (response: any = {}) => {
-        this.GetIPCRs(data.year, data.divisionId, data.userId);
-      },
-      error: () => {
-        this.alertService.error();
-      },
-      complete: () => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-start',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-          },
-        });
+  async DeleteIpcr(dpcrId: string) {
+    try {
+      let deleteData = await this.alertService.delete(
+        this.url.delete_ipcr(dpcrId)
+      );
 
-        Toast.fire({
-          icon: 'success',
-          title: 'Deleted successfully',
-        });
-      },
-    });
-  }
-
-  DeleteIPCRDetails(ipcrDataId: string) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.http
-          .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
-          .subscribe({
-            next: (response: any = {}) => {
-              this.GetIPCRDetails();
-              this.ViewGetDPCR_IPCR();
-              this.sortExcist();
-            },
-            error: () => {
-              this.alertService.error();
-            },
-            complete: () => {
-              this.ipcr_rem.set(0);
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-start',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer);
-                  toast.addEventListener('mouseleave', Swal.resumeTimer);
-                },
-              });
-
-              Toast.fire({
-                icon: 'success',
-                title: 'Deleted successfully',
-              });
-            },
-          });
+      if (deleteData) {
+        this.GetIPCRs();
+      } else {
       }
-    });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
+
+  // DeleteIPCR(data: any = {}) {
+  //   this.http.delete<any[]>(api + this.url.delete_ipcr(data.ipcrId)).subscribe({
+  //     next: (response: any = {}) => {
+  //       this.GetIPCRs(data.year);
+  //     },
+  //     error: () => {
+  //       this.alertService.error();
+  //     },
+  //     complete: () => {
+  //       const Toast = Swal.mixin({
+  //         toast: true,
+  //         position: 'top-start',
+  //         showConfirmButton: false,
+  //         timer: 3000,
+  //         timerProgressBar: true,
+  //         didOpen: (toast) => {
+  //           toast.addEventListener('mouseenter', Swal.stopTimer);
+  //           toast.addEventListener('mouseleave', Swal.resumeTimer);
+  //         },
+  //       });
+
+  //       Toast.fire({
+  //         icon: 'success',
+  //         title: 'Deleted successfully',
+  //       });
+  //     },
+  //   });
+  // }
+
+
+  async DeleteIPCRDetails(ipcrDataId: string) {
+    try {
+      let deleteData = await this.alertService.delete(
+        this.url.delete_ipcrdata(ipcrDataId)
+      );
+
+      if (deleteData) {
+        this.GetIPCRDetails();
+        this.ViewGetDPCR_IPCR();
+      } else {
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  // DeleteIPCRDetails(ipcrDataId: string) {
+  //   Swal.fire({
+  //     title: 'Are you sure?',
+  //     text: "You won't be able to revert this!",
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, delete it!',
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       this.http
+  //         .delete<any[]>(api + this.url.delete_ipcrdata(ipcrDataId))
+  //         .subscribe({
+  //           next: (response: any = {}) => {
+  //             this.GetIPCRDetails();
+  //             this.ViewGetDPCR_IPCR();
+  //             this.sortExcist();
+  //           },
+  //           error: () => {
+  //             this.alertService.error();
+  //           },
+  //           complete: () => {
+  //             this.ipcr_rem.set(0);
+  //             const Toast = Swal.mixin({
+  //               toast: true,
+  //               position: 'top-start',
+  //               showConfirmButton: false,
+  //               timer: 3000,
+  //               timerProgressBar: true,
+  //               didOpen: (toast) => {
+  //                 toast.addEventListener('mouseenter', Swal.stopTimer);
+  //                 toast.addEventListener('mouseleave', Swal.resumeTimer);
+  //               },
+  //             });
+
+  //             Toast.fire({
+  //               icon: 'success',
+  //               title: 'Deleted successfully',
+  //             });
+  //           },
+  //         });
+  //     }
+  //   });
+  // }
 
   DeleteMFO(ipcrDataId: string) {
     this.ipcrDetails.mutate((a) => (a.completeLoading = true));
@@ -582,50 +646,20 @@ export class IpcrService {
       });
   }
 
-  DeleteIPCRSTDetails(ipcrSubtaskId: string) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.ipcrDetails.mutate((a) => (a.completeLoading = true));
-        this.http
-          .delete<any[]>(api + this.url.delete_ipcrdata_st(ipcrSubtaskId))
-          .subscribe({
-            next: (response: any = {}) => {
-              this.GetIPCRDetails();
-              this.ViewGetDPCR_IPCR();
-              this.sortExcist();
-            },
-            error: () => {
-              this.alertService.error();
-            },
-            complete: () => {
-              this.ipcrST_rem.set(0);
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-start',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer);
-                  toast.addEventListener('mouseleave', Swal.resumeTimer);
-                },
-              });
+  async DeleteIPCRSTDetails(ipcrSubtaskId: string) {
+    try {
+      let deleteData = await this.alertService.delete(
+        this.url.delete_ipcrdata_st(ipcrSubtaskId)
+      );
 
-              Toast.fire({
-                icon: 'success',
-                title: 'Deleted successfully',
-              });
-            },
-          });
+      if (deleteData) {
+        this.GetIPCRDetails();
+        this.ViewGetDPCR_IPCR();
+      } else {
       }
-    });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
+
 }

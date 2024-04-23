@@ -53,6 +53,11 @@ const routes: Routes = [
         loadChildren: () => import('./pages/utility/utility.module')
         .then(m => m.UtilityModule),
       },
+      {
+        path:'ipcr',
+        loadChildren: () => import('./pages/ipcr/ipcr.module')
+        .then(m => m.IpcrModule),
+      },
     ],
   },
 ];

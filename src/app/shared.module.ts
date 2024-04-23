@@ -6,6 +6,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { LoadingComponent } from './spms/components/loading.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoadingSquareJellyBoxComponent } from './spms/components/loading-square-jelly-box.component';
+
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,

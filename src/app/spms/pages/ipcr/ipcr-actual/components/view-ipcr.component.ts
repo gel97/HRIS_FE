@@ -610,11 +610,7 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   GetIpcr() {
-    this.ipcrService.GetIPCRs(
-      this.currentYear.toString(),
-      localStorage.getItem('divisionId') ?? '',
-      localStorage.getItem('userId') ?? ''
-    );
+    this.ipcrService.GetIPCRs();
   }
 
   setIpcrDetails(data: any) {
@@ -632,7 +628,8 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
-    this.ipcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
+    this.ipcrService.year.set(year)
+    this.ipcrService.GetIPCRs();
   }
 
   semester(year: number) {
