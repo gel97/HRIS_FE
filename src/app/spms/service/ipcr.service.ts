@@ -162,7 +162,6 @@ export class IpcrService {
 
   // rem
   GetIPCRDetailsRemaining(data: any) {
-    this.ipcrDetails.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(api + this.url.get_ipcrdetails_remaining(data), {
         responseType: `json`,
@@ -180,7 +179,6 @@ export class IpcrService {
 
   //remST
   GetIPCRDetailsRemainingST(data: any) {
-    this.ipcrDetails.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(api + this.url.get_ipcrdetails_remainingST(data), {
         responseType: `json`,

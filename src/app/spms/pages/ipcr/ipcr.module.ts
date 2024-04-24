@@ -13,6 +13,13 @@ import { ModalAddMfoComponent } from './v2/ipcr-target/components/modal-add-mfo.
 import { ModalAddSubtaskComponent } from './v2/ipcr-target/components/modal-add-subtask.component';
 import { ModalEditMfoComponent } from './v2/ipcr-target/components/modal-edit-mfo.component';
 import { ModalEditSubtaskComponent } from './v2/ipcr-target/components/modal-edit-subtask.component';
+import { SkeletonLoadingComponent } from './v2/ipcr-target/components/skeleton-loading.component';
+import {
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+} from '@angular/cdk/drag-drop';
+
 @NgModule({
   declarations: [
     IpcrTargetComponent,
@@ -23,7 +30,8 @@ import { ModalEditSubtaskComponent } from './v2/ipcr-target/components/modal-edi
     ModalAddMfoComponent,
     ModalAddSubtaskComponent,
     ModalEditMfoComponent,
-    ModalEditSubtaskComponent
+    ModalEditSubtaskComponent,
+    SkeletonLoadingComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +39,10 @@ import { ModalEditSubtaskComponent } from './v2/ipcr-target/components/modal-edi
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    CdkDrag,
+    CdkDropList,
+    CdkDropListGroup,
 
   ],
 })

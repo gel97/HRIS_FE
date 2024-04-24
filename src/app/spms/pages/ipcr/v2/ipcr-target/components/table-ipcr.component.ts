@@ -5,6 +5,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 @Component({
   selector: 'app-table-ipcr',
   template: `
+    <app-loading [loading]="ipcr.isLoading" />
     <div class="card-body">
       <div>
       <select

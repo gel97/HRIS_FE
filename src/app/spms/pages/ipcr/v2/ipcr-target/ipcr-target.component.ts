@@ -9,9 +9,9 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
 export class IpcrTargetComponent implements OnInit{
   ipcrService = inject(IpcrService);
 
-  ipcrObj:any ={};
-
-  isAddIpcr:boolean = false;
+  ipcrObj   : any     = {};
+  isExpand  : boolean = false;
+  isAddIpcr : boolean = false;
 
   ngOnInit(): void {
     this.localStorage();
@@ -33,6 +33,13 @@ export class IpcrTargetComponent implements OnInit{
     } else {
       localStorage.setItem('isShow_ipcr', '0');
       this.ipcrService.storageIsShow.set(0);
+    }
+  }
+
+  handleExpand(){
+    this.isExpand = !this.isExpand;
+
+    if(!this.isExpand){
     }
   }
 }

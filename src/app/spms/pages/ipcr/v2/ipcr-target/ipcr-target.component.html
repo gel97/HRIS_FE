@@ -8,7 +8,16 @@
     <app-table-ipcr *ngIf="!ipcrService.storageIsShow()"/>
 </div>
 
-<app-table-ipcr-data *ngIf="ipcrService.storageIsShow()"/>
+<ng-container *ngIf="ipcrService.storageIsShow()">
+    <app-table-ipcr-data 
+        [isExpand]="isExpand"
+        (handleExpand)="handleExpand()"
+    />
 
-<app-canvas-target-mfoes/>
+    <app-canvas-target-mfoes
+        (handleExpand)="handleExpand()"
+    />
+</ng-container>
+
+
 
