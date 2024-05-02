@@ -50,6 +50,7 @@ export class SpmsApiService {
   put_ipcrData = () => `/tPMIpcrDatas`;
   put_ipcrdata_sortby_mfo = (ipcrId: string) => `/tPMIpcrDatas/${ipcrId}/sortIpcrMfoes`;
   get_ipcr_actual_report = (ipcrId: string) => `/tPMIpcrDatas/GetIpcrReport/${ipcrId}`;
+  get_ipcr_target_report = (ipcrId: string) => `/tPMIpcrDatas/GetIpcrTargetReport/${ipcrId}`;
 
   put_ipcrSubData = () => `/tPMIpcrDataSubTasks`;
   post_ipcrSubData = () => `/tPMIpcrDataSubTasks`;

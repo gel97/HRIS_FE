@@ -5,10 +5,10 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 @Component({
   selector: 'app-table-ipcr',
   template: `
-    <app-loading [loading]="ipcr.isLoading" />
+    <!-- <app-loading [loading]="ipcr.isLoading" /> -->
     <div class="card-body">
       <div>
-      <select
+        <select
           (change)="onChangeYear($event)"
           class="form-select"
           aria-label="Default select example"
@@ -25,104 +25,106 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
       <br />
       <!-- Bordered Table -->
       <div class="table-responsive text-nowrap">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Details</th>
-                <th>Sem</th>
-                <th>Year</th>
-                <th>Date Created</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of ipcr.data">
-                <td class="cursor-pointer" (click)="SetIsShowIpcrData(item)">
-                  <a
-                    ><strong>{{ item.details }}</strong></a
-                  >
-                </td>
-                <td>{{ Semester(item.semester) }}</td>
-                <td>
-                  <span class="badge bg-label-primary me-1">{{
-                    item.year
-                  }}</span>
-                </td>
-                <td>
-                  {{ item.transDT | date : 'MMM. dd, yyyy' }}
-                </td>
-                <td>
-                  <div [ngSwitch]="item.active">
-                    <div *ngSwitchCase="'0'">
-                      <span class="badge bg-label-danger me-1">Draft </span>
-                    </div>
-                    <div *ngSwitchCase="'1'">
-                      <span class="badge bg-label-primary me-1">Open</span>
-                    </div>
-                    <div *ngSwitchCase="'2'">
-                      <span class="badge bg-label-success me-1">Final</span>
-                    </div>
-                    <div *ngSwitchDefault><span class="badge bg-label-danger me-1">Draft </span></div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Details</th>
+              <th>Sem</th>
+              <th>Year</th>
+              <th>Date Created</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ipcr.data">
+              <td class="cursor-pointer" (click)="SetIsShowIpcrData(item)">
+                <a
+                  ><strong>{{ item.details }}</strong></a
+                >
+              </td>
+              <td>{{ Semester(item.semester) }}</td>
+              <td>
+                <span class="badge bg-label-primary me-1">{{ item.year }}</span>
+              </td>
+              <td>
+                {{ item.transDT | date : 'MMM. dd, yyyy' }}
+              </td>
+              <td>
+                <div [ngSwitch]="item.active">
+                  <div *ngSwitchCase="'0'">
+                    <span class="badge bg-label-danger me-1">Draft </span>
                   </div>
-                </td>
-                <td>
-                  <div class="dropdown position-static">
-                    <button
-                      type="button"
-                      class="btn p-0 dropdown-toggle hide-arrow"
-                      data-bs-toggle="dropdown"
-                    >
-                      <i class="bx bx-dots-vertical-rounded"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                      <div [ngSwitch]="item.active">
-                        <div *ngSwitchCase="'0'">
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            (click)="SetIpcrActive(item, 1)"
-                            ><i class="bx bx-paperclip me-1 "></i> Open</a
-                          >
-                        </div>
-                        <div *ngSwitchCase="'1'">
-                          <a
-                            class="dropdown-item cursor-pointer"
-                            (click)="SetIpcrActive(item, 2)"
-                            ><i class="bx bxs-flag-alt me-1 "></i> Final</a
-                          >
-                        </div>
-                        <div *ngSwitchDefault><a
-                            class="dropdown-item cursor-pointer"
-                            (click)="SetIpcrActive(item, 1)"
-                            ><i class="bx bx-paperclip me-1 "></i> Open</a
-                          ></div>
+                  <div *ngSwitchCase="'1'">
+                    <span class="badge bg-label-primary me-1">Open</span>
+                  </div>
+                  <div *ngSwitchCase="'2'">
+                    <span class="badge bg-label-success me-1">Final</span>
+                  </div>
+                  <div *ngSwitchDefault>
+                    <span class="badge bg-label-danger me-1">Draft </span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="dropdown position-static">
+                  <button
+                    type="button"
+                    class="btn p-0 dropdown-toggle hide-arrow"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <div [ngSwitch]="item.active">
+                      <div *ngSwitchCase="'0'">
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          (click)="SetIpcrActive(item, 1)"
+                          ><i class="bx bx-paperclip me-1 "></i> Open</a
+                        >
                       </div>
-                      <!-- <a
+                      <div *ngSwitchCase="'1'">
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          (click)="SetIpcrActive(item, 2)"
+                          ><i class="bx bxs-flag-alt me-1 "></i> Final</a
+                        >
+                      </div>
+                      <div *ngSwitchDefault>
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          (click)="SetIpcrActive(item, 1)"
+                          ><i class="bx bx-paperclip me-1 "></i> Open</a
+                        >
+                      </div>
+                    </div>
+                    <a
                           class="dropdown-item"
-                          (click)="dpcrService.GetIpcrTargetReport(item.ipcrId)"
-                          data-bs-target="#modalDpcrTargetReport"
+                          (click)="ipcrService.GetIpcrTargetReport(item.ipcrId)"
+                          data-bs-target="#modalIpcrTargetReport"
                           data-bs-toggle="modal"
                           ><i class="bx bx-printer me-1"></i> Print IPCR</a
-                        > -->
-                      <!-- <a
+                    >
+                    <!-- <a
                         class="dropdown-item cursor-pointer"
                         (click)="SetDpcr(item); HandleDpcr()"
                         data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasDpcr"
                         ><i class="bx bx-edit-alt me-1"></i> Edit</a
                       > -->
-                      <a
-                        class="dropdown-item cursor-pointer"
-                        (click)="DeleteIpcr(item.ipcrId)"
-                        ><i class="bx bx-trash me-1"></i> Delete</a
-                      >
-                    </div>
+                    <a
+                      class="dropdown-item cursor-pointer"
+                      (click)="DeleteIpcr(item.ipcrId)"
+                      ><i class="bx bx-trash me-1"></i> Delete</a
+                    >
                   </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div *ngIf="ipcrService.ipcr().data.length <= 0">
         <img
           src="assets/img/document.png"
@@ -143,14 +145,62 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
       </div>
       <!--/ Bordered Table -->
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalIpcrTargetReport"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <ng-container *ngIf="ipcrService.loadReportIpcrTgt(); else ShowReport">
+              <app-loading-square-jelly-box
+                [loading]="ipcrService.loadReportIpcrTgt()"
+              />
+            </ng-container>
+            <ng-template #ShowReport>
+              <iframe
+                [src]="ipcrService.ipcrTargetReportUrl"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
-export class TableIpcrComponent implements OnInit{
+export class TableIpcrComponent implements OnInit {
   ipcrService = inject(IpcrService);
   dpcrService = inject(DpcrService);
 
   get_ipcrDetails = this.ipcrService.ipcrDetails();
-
 
   prevYear = new Date().getFullYear() - 1;
   yearNow = new Date().getFullYear();
@@ -176,7 +226,7 @@ export class TableIpcrComponent implements OnInit{
   }
 
   DeleteIpcr(ipcrId: string) {
-    this.ipcrService.DeleteIpcr(ipcrId)
+    this.ipcrService.DeleteIpcr(ipcrId);
   }
 
   HandleDpcr() {
@@ -186,7 +236,6 @@ export class TableIpcrComponent implements OnInit{
   SetIpcrActive(item: any, status: number) {
     item.active = status;
     this.ipcrService.SetDpcrActive(item);
-
   }
 
   SetIsShowIpcrData(item: any) {

@@ -27,7 +27,7 @@ const routes: Routes = [
         component: OpcrActualComponent,
       },
       {
-        path: 'ipcr/target',
+        path: 'ipcr/v1/target',
         component: IpcrTargetComponent,
       },
       {

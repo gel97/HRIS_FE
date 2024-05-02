@@ -99,7 +99,7 @@ import {
             <div class="card-body">
               <ng-container *ngFor="let b of a.si; let y = index">
                 <div
-                  *ngIf="b.isSubTask === 0; else showSubtask"
+                  *ngIf="b.isSubTask === 0 || b.isSubTask === null; else showSubtask"
                   class="accordion"
                   id="accordionExample"
                 >

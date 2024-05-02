@@ -11,7 +11,15 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
             <td [width]="10"></td>
             <th [width]="10">#</th>
             <th>MFO</th>
-            <th [width]="10" *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId">Actions</th>
+            <th
+              [width]="10"
+              *ngIf="
+                !mfoService.isCommon() ||
+                (mfoService.isCommon() && hrFocal === officeId)
+              "
+            >
+              Actions
+            </th>
           </tr>
         </thead>
         <ng-container *ngIf="mfo.isLoading && mfo.data.length === 0">
@@ -25,14 +33,20 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
         </ng-container>
         <tbody class="table-border-bottom-0">
           <ng-container *ngFor="let a of mfo.data; let i = index">
-            <tr [ngClass]="a.si.length === 0 ? 'bg-custom-gray' : ''" [@rowState]="a">
+            <tr
+              [ngClass]="a.si.length === 0 ? 'bg-custom-gray' : ''"
+              [@rowState]="a"
+            >
               <td
                 style="max-width: 5px;"
                 (click)="
                   expandedRow == i ? (expandedRow = null) : (expandedRow = i)
                 "
               >
-                <i *ngIf="!mfo.isLoading; else LoadingIcon" class="bx bx-chevron-right cursor-pointer"></i>
+                <i
+                  *ngIf="!mfo.isLoading; else LoadingIcon"
+                  class="bx bx-chevron-right cursor-pointer"
+                ></i>
                 <ng-template #LoadingIcon>
                   <ngx-skeleton-loader
                     count="1"
@@ -69,25 +83,71 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
                 "
               >
                 <div *ngIf="!mfo.isLoading; else LoadingMfo">
-                  <div *ngIf="a.si.length === 0; else hasSI" class="row">
-                    <div class="col-9">
-                      {{ a.mfo }}
-                    </div>
-                    <div class="col-3">
-                      <button
-                        *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId"
-                        (click)="SetMfoData(a); ClearSIData(); IsAdd(true)"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasSI"
-                        class="btn btn-primary"
+                  <div class="x-space-between">
+                    <div>{{ a.mfo }}</div>
+                    <div class="x-space-between">
+                      <div *ngIf="a.si.length === 0">
+                        <button
+                          *ngIf="
+                            !mfoService.isCommon() ||
+                            (mfoService.isCommon() && hrFocal === officeId)
+                          "
+                          (click)="SetMfoData(a); ClearSIData(); IsAdd(true)"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasSI"
+                          class="btn btn-primary"
+                        >
+                          Create success indicator
+                        </button>
+                      </div>
+                       <small
+                        *ngIf="mfoService.isCommon()"
+                        class="badge rounded-pill float-end"
+                        [ngClass]="
+                          a.categoryId == '1'
+                            ? 'bg-label-success'
+                            : a.categoryId == '2'
+                            ? 'bg-label-primary'
+                            : a.categoryId == '3'
+                            ? 'bg-label-warning'
+                            : 'bg-label-secondary'
+                        "
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
                       >
-                        Create success indicator
-                      </button>
+                        {{ displayCatergory(a.categoryId) }}
+                      </small>
+                      <ul class="dropdown-menu dropdown-menu-end pointer">
+                        <li *ngIf="a.categoryId !== 1">
+                          <a
+                            (click)="
+                              PutCMFOCategory(a.mfoId, 1); a.categoryId = 1
+                            "
+                            class="dropdown-item"
+                            >STRATEGIC</a
+                          >
+                        </li>
+                        <li *ngIf="a.categoryId !== 2">
+                          <a
+                            (click)="
+                              PutCMFOCategory(a.mfoId, 2); a.categoryId = 2
+                            "
+                            class="dropdown-item"
+                            >CORE
+                          </a>
+                        </li>
+                        <li *ngIf="a.categoryId !== 3">
+                          <a
+                            (click)="
+                              PutCMFOCategory(a.mfoId, 3); a.categoryId = 3
+                            "
+                            class="dropdown-item"
+                            >SUPPORT
+                          </a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
-                  <ng-template #hasSI>
-                    {{ a.mfo }}
-                  </ng-template>
                 </div>
                 <ng-template #LoadingMfo>
                   <ngx-skeleton-loader
@@ -98,8 +158,16 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
                   ></ngx-skeleton-loader>
                 </ng-template>
               </td>
-              <td *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId">
-                <div class="dropdown position-static" *ngIf="!mfo.isLoading; else LoadingActions">
+              <td
+                *ngIf="
+                  !mfoService.isCommon() ||
+                  (mfoService.isCommon() && hrFocal === officeId)
+                "
+              >
+                <div
+                  class="dropdown position-static"
+                  *ngIf="!mfo.isLoading; else LoadingActions"
+                >
                   <button
                     type="button"
                     class="btn p-0 dropdown-toggle hide-arrow"
@@ -165,7 +233,13 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
                           {{ b.indicator }}
                         </div>
                       </div>
-                      <div class="col-6" *ngIf="!mfoService.isCommon() || mfoService.isCommon() && hrFocal === officeId">
+                      <div
+                        class="col-6"
+                        *ngIf="
+                          !mfoService.isCommon() ||
+                          (mfoService.isCommon() && hrFocal === officeId)
+                        "
+                      >
                         <div class="float-end">
                           <button
                             (click)="SetSIData(a, b); IsAdd(false)"
@@ -290,14 +364,10 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
   animations: [
     trigger('rowState', [
       state('void', style({ opacity: 0 })),
-      transition(':enter', [
-        animate('0.5s', style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate('0.1s', style({ opacity: 0 }))
-      ])
-    ])
-  ]
+      transition(':enter', [animate('0.5s', style({ opacity: 1 }))]),
+      transition(':leave', [animate('0.1s', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class TableMfoComponent {
   mfoService = inject(MfoService);
@@ -314,7 +384,7 @@ export class TableMfoComponent {
 
   @Output() clearSIData = new EventEmitter<any>();
 
-  hrFocal:string = "OFFPHRMONZ3WT7D";
+  hrFocal: string = 'OFFPHRMONZ3WT7D';
   officeId = localStorage.getItem('officeId');
   isCommon = this.mfoService.isCommon();
   expandedRow: any;
@@ -343,5 +413,28 @@ export class TableMfoComponent {
 
   ClearSIData() {
     this.clearSIData.emit('Clear SI data');
+  }
+
+  PutCMFOCategory( MFOId: string, categoryId: number) {
+    this.mfoService.EditMfoCategory(MFOId,categoryId);
+  }
+
+  displayCatergory(cat: number) {
+    let catName = '';
+    switch (cat) {
+      case 1:
+        catName = 'STRATEGIC';
+        break;
+      case 2:
+        catName = 'CORE';
+        break;
+      case 3:
+        catName = 'SUPPORT';
+        break;
+      default:
+        break;
+    }
+
+    return catName ? catName + '' : 'NO FUNCTION';
   }
 }

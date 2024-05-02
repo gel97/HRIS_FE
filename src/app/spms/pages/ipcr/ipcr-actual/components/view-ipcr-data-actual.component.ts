@@ -145,7 +145,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
                   <td>
                     <span class="text-success"
-                      ><strong>{{ b.qty }}</strong></span
+                      ><strong>{{ b.qty }}{{b.qtyUnit? '%':''}}</strong></span
                     >
                     {{ b.indicator }}
                   </td>

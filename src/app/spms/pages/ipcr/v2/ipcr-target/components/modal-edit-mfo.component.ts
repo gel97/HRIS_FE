@@ -53,7 +53,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                     placeholder=""
                   />
                 </div>
-                <div *ngIf="mfo.qtyUnit == 0" class="col-4">
+                <div *ngIf="mfo.qtyUnit == 0 && !mfo.isIpcrMfo" class="col-4">
                   <label class="form-label" for="basic-default-fullname"
                     >DPCR Quantity Remaining</label
                   >

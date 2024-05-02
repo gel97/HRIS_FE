@@ -154,15 +154,17 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       {{ i + 1 }}.&nbsp;{{ a.mfo }}</strong
                                     >
                                     <ng-template #LoadingMfo>
-                                      <ngx-skeleton-loader
-                                        count="1"
-                                        animation="pulse"
-                                        appearance="line"
-                                        [theme]="{ margin: '0px' }"
-                                      ></ngx-skeleton-loader>
+                                      <div class="col-12">
+                                        <ngx-skeleton-loader
+                                          count="1"
+                                          animation="pulse"
+                                          appearance="line"
+                                          [theme]="{ margin: '0px' }"
+                                        ></ngx-skeleton-loader>
+                                      </div>                                                                   
                                     </ng-template>
                                   </div>
-                                  <div>
+                                  <div *ngIf="!mfoes.isSearchLoading && !mfoes.isLoading;">
                                     <small
                                       class="badge rounded-pill float-end cursor-pointer"
                                       [ngClass]="
@@ -392,16 +394,35 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                           >
                             <tr class="text-justify">
                               <td colspan="2">
-                                <strong
-                                  *ngIf="
+                                <div class="x-space-between" *ngIf="
                                     !mfoes.isSearchLoading &&
                                       !mfoes.isLoading;
                                     else LoadingMfo
-                                  "
+                                  ">
+                                <strong
                                   class="text-primary"
                                 >
                                   {{ i + 1 }}.&nbsp;{{ a.mfo }}</strong
                                 >
+                                <small
+                                      class="badge rounded-pill float-end cursor-pointer"
+                                      [ngClass]="
+                                        a.categoryId == '1'
+                                          ? 'bg-label-success'
+                                          : a.categoryId == '2'
+                                          ? 'bg-label-primary'
+                                          : a.categoryId == '3'
+                                          ? 'bg-label-warning'
+                                          : 'bg-label-secondary'
+                                      "
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      {{ displayCatergory(a.categoryId) }}
+                                    </small>
+
+                                </div>
+                                
                                 <ng-template #LoadingMfo>
                                   <ngx-skeleton-loader
                                     count="1"
@@ -423,7 +444,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                   class="col-12 text-justify"
                                 >
                                   <i class="bx bx-chevron-right"></i
-                                  ><strong
+                                  ><strong *ngIf="!a.isIpcrMfo"
                                     >{{ b.qtyOpcr
                                     }}{{ b.qtyUnit ? '%' : '' }}</strong
                                   >&nbsp;{{ b.indicator }}
@@ -537,19 +558,22 @@ export class CanvasTargetMfoesComponent implements OnInit {
     this.submit.emit('Submit');
   }
 
-  SetIpcrDataObj(
+  async SetIpcrDataObj(
     mfoData: any,
     siData: any,
     indexMfo: number,
     indexSI: number
   ) {
-    this.ipcrService.GetIPCRDetailsRemaining(siData.dpcrDataId);
+    await this.ipcrService.GetIPCRDetailsRemaining(siData.dpcrDataId);
 
     this.mfo = siData;
     this.mfo.dpcrQuantity = siData.qty;
     //this.mfo.qty          = "";
     this.mfo.prompt = false;
-    this.mfo.qty_rem = siData.qty - this.ipcrService.ipcr_rem();
+    this.mfo.qty_rem = siData.qty;
+    this.mfo.isIpcrMfo = mfoData.isIpcrMfo;
+
+    console.log(this.mfo)
   }
 
   SetIpcrDataSubtaskObj(st: any) {

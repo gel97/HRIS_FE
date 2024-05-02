@@ -74,8 +74,20 @@ export class IpcrService {
 
   loading: boolean = false;
 
+  ipcrTargetReportUrl:SafeResourceUrl = "";
+  loadReportIpcrTgt = signal<boolean>(false);
+
   GetIpcrActualReport(ipcrId: string) {
     this.ipcrActualReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_actual_report(ipcrId));
+  }
+
+  GetIpcrTargetReport(ipcrId: string) {
+    this.ipcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_target_report(ipcrId));
+    this.loadReportIpcrTgt.set(true);
+    setTimeout(() => {
+      this.loadReportIpcrTgt.set(false);
+    }, 1000);
+    
   }
 
   GetIPCRMfoesFixed() {

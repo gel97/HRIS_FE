@@ -330,6 +330,35 @@ export class MfoService {
       });
   }
 
+  EditMfoCategory(MFOId: string, categoryId:number) {
+    this.mfo.mutate((a) => (a.isLoadingSave = true));
+
+    this.http
+      .put<any[]>(api + this.url.put_mfo_category(MFOId, categoryId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+        },
+        complete: () => {
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+        },
+      });
+  }
+
   async DeleteSI(indicatorId: string) {
     try {
       let deleteData = await this.alertService.delete(

@@ -4,7 +4,7 @@ import { IpcrComponent } from './ipcr.component';
 import { IpcrTargetComponent } from './v2/ipcr-target/ipcr-target.component';
 const routes: Routes = [
   {
-    path:'v2',
+    path:'',
     component: IpcrComponent,
     children:[
         {
