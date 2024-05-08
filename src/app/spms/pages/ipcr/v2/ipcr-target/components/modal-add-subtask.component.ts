@@ -27,7 +27,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     <div class="row">
                         <div class="col-4">
                             <label class="form-label" for="basic-default-fullname">Quantity</label>
-                            <input [(ngModel)]="quantity" (ngModelChange)="trapRemaining()" type="number"
+                            <input [(ngModel)]="subtask.quantity" (ngModelChange)="trapRemaining()" type="number"
                                 class="form-control" id="basic-default-fullname" placeholder="" min="1"/><br>
                         </div>
                         <div *ngIf="subtask.qtyUnit == 0" class="col-4">
@@ -186,7 +186,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     }
 
     dpcrQuantity     : number | any;
-    quantity         : number | any;
     add_qty_rem      : number | any;
 
     prompt           : boolean = false;
@@ -206,7 +205,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         }
 
         if (!this.buttonTrap) {     
-            this.subtask.qty = this.quantity;
+            this.subtask.qty = this.subtask.quantity;
             this.subtask.ipcrId = localStorage.getItem('ipcrId');
             this.ipcrService.AddIPCRData(this.subtask);
             this.ipcrService.AddIPCRSubData(this.subtask);
@@ -230,15 +229,15 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     }
 
     trapRemaining() {
-        if (this.subtask.qtyUnit == 0 && this.quantity > 0) {
+        if (this.subtask.qtyUnit == 0 && this.subtask.quantity > 0) {
           this.subtask.qty_rem =
-            this.subtask.dpcrQuantity - this.quantity - this.ipcrService.ipcr_rem();
+            this.subtask.dpcrQuantity - this.subtask.quantity - this.ipcrService.ipcr_rem();
     
-          this.subtask.qty5 = Math.floor(this.quantity * 0.3 + this.quantity);
-          this.subtask.qty4 = Math.floor(this.quantity * 0.15 + this.quantity);
-          this.subtask.qty3 = Math.floor(this.quantity);
-          this.subtask.qty2 = Math.floor(this.quantity / 2 + 1);
-          this.subtask.qty1 = Math.floor(this.quantity / 2);
+          this.subtask.qty5 = Math.floor(this.subtask.quantity * 0.3 + this.subtask.quantity);
+          this.subtask.qty4 = Math.floor(this.subtask.quantity * 0.15 + this.subtask.quantity);
+          this.subtask.qty3 = Math.floor(this.subtask.quantity);
+          this.subtask.qty2 = Math.floor(this.subtask.quantity / 2 + 1);
+          this.subtask.qty1 = Math.floor(this.subtask.quantity / 2);
     
           if (this.subtask.qty3 >= 4 && this.subtask.qty3 <= 6) {
             this.subtask.qty4 += 1;
@@ -266,15 +265,15 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           }
     
           if (
-            this.quantity > this.subtask.dpcrQuantity - this.ipcrService.ipcr_rem() ||
-            this.quantity < 0
+            this.subtask.quantity > this.subtask.dpcrQuantity - this.ipcrService.ipcr_rem() ||
+            this.subtask.quantity < 0
           ) {
             this.subtask.prompt = true;
           } else {
             this.subtask.prompt = false;
           }
         } else {
-          if (this.quantity > this.subtask.dpcrQuantity || this.quantity < 0) {
+          if (this.subtask.quantity > this.subtask.dpcrQuantity || this.subtask.quantity < 0) {
             this.subtask.prompt = true;
           } else {
             this.subtask.prompt = false;

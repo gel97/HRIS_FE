@@ -41,7 +41,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
               aria-label="Close"
             ></button>
           </div>
-          <div class=" mx-0 py-0 flex-grow-0">
+          <div class="offcanvas-body px-0 mx-0 py-0 flex-grow-0">
             <div class="col-xl-12">
               <div class="nav-align-top mb-4">
                 <div class="sticky-top bg-white">
@@ -133,7 +133,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                     id="navs-pills-justified-home"
                     role="tabpanel"
                   >
-                    <div>
+                    <div class="table-responsive text-wrap">
                       <table class="table table-hover">
                         <tbody class="table-border-bottom-0">
                           <ng-container
@@ -343,7 +343,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       >
                                         <button
                                           type="button"
-                                          (click)="SetIpcrDataSubtaskObj(c)"
+                                          (click)="SetIpcrDataSubtaskObj(c, true)"
                                           data-bs-toggle="modal"
                                           data-bs-target="#modalAddSubtask"
                                           class="btn rounded-pill btn-icon btn-primary float-end"
@@ -363,6 +363,89 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       </ng-template>
                                     </td>
                                   </tr>
+                                </ng-container>
+                                <ng-container
+                                  *ngFor="let c of b.stCmfo; let l = index"
+                                >
+                                  <tr class="bg-custom-ligth-gray">
+                                      <td colspan="2">
+                                        <strong
+                                          class="text-secondary"
+                                          *ngIf="
+                                            !mfoes.isSearchLoading &&
+                                              !mfoes.isLoading;
+                                            else LoadingStCMfo
+                                          "
+                                        >
+                                          {{ i + 1 }}.{{b.st.length + l + 1 }}&nbsp;{{
+                                            c.mfo
+                                          }}
+                                        </strong>
+                                        <ng-template #LoadingStCMfo>
+                                          <ngx-skeleton-loader
+                                            count="1"
+                                            animation="pulse"
+                                            appearance="line"
+                                            [theme]="{ margin: '0px' }"
+                                          ></ngx-skeleton-loader>
+                                        </ng-template>
+                                      </td>
+                                    </tr>
+                                    <tr *ngFor="let d of c.si; let ll = index" class="bg-custom-ligth-gray">
+                                      <td>
+                                        <div
+                                          *ngIf="
+                                            !mfoes.isSearchLoading &&
+                                              !mfoes.isLoading;
+                                            else LoadingStCmfoSi
+                                          "
+                                        >
+                                          <i class="bx bx-chevron-right"></i>
+                                          <strong
+                                        >{{ d.qty
+                                        }}{{ d.qtyUnit ? '%' : '' }} </strong
+                                      >&nbsp;
+                                          {{ d.indicator }}
+                                        </div>
+                                        <ng-template #LoadingStCmfoSi>
+                                          <ngx-skeleton-loader
+                                            count="1"
+                                            animation="pulse"
+                                            appearance="line"
+                                            [theme]="{ margin: '0px' }"
+                                          ></ngx-skeleton-loader>
+                                        </ng-template>
+                                      </td>
+                                      <td>
+                                        <ng-container
+                                          *ngIf="
+                                            !mfoes.isSearchLoading &&
+                                              !mfoes.isLoading;
+                                            else LoadingBtnStCmfo
+                                          "
+                                        >
+                                          <button
+                                            type="button"
+                                            (click)="SetIpcrDataSubtaskObj(d, false)"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalAddSubtask"
+                                            class="btn rounded-pill btn-icon btn-primary float-end"
+                                          >
+                                            <span
+                                              class="tf-icons bx bx bx-plus"
+                                            ></span>
+                                          </button>
+                                        </ng-container>
+                                        <ng-template #LoadingBtnStCmfo>
+                                          <ngx-skeleton-loader
+                                            count="1"
+                                            animation="pulse"
+                                            appearance="circle"
+                                            [theme]="{ margin: '0px' }"
+                                          ></ngx-skeleton-loader>
+                                        </ng-template>
+                                      </td>
+                                    </tr>    
                                 </ng-container>
                               </ng-container>
                             </ng-container>
@@ -517,7 +600,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
         </div>
       </div>
     </div>
-    <app-modal-add-mfo [mfo]="mfo" />
+    <app-modal-add-mfo [mfo]="mfo"/>
     <app-modal-add-subtask [subtask]="subtask" />
   `,
 })
@@ -535,9 +618,10 @@ export class CanvasTargetMfoesComponent implements OnInit {
     this.ipcrService.ViewGetDPCR_IPCR();
   }
 
-  search  : any = '';
-  mfo     : any = {};
-  subtask : any = {};
+  search   : any = '';
+  mfo      : any = {};
+  subtask  : any = {};
+  quantity : number | any;
 
   SearchMFO() {
     //   if (this.search === '' || this.search === null) {
@@ -559,31 +643,34 @@ export class CanvasTargetMfoesComponent implements OnInit {
   }
 
   async SetIpcrDataObj(
-    mfoData: any,
-    siData: any,
-    indexMfo: number,
-    indexSI: number
+    mfoData  : any,
+    siData   : any,
+    indexMfo : number,
+    indexSI  : number
   ) {
+    
     await this.ipcrService.GetIPCRDetailsRemaining(siData.dpcrDataId);
 
-    this.mfo = siData;
+    this.mfo              = siData;
     this.mfo.dpcrQuantity = siData.qty;
-    //this.mfo.qty          = "";
-    this.mfo.prompt = false;
-    this.mfo.qty_rem = siData.qty;
-    this.mfo.isIpcrMfo = mfoData.isIpcrMfo;
+    this.mfo.quantity     = null;
+    this.mfo.prompt       = false;
+    this.mfo.qty_rem      = siData.qty;
+    this.mfo.isIpcrMfo    = mfoData.isIpcrMfo;
 
     console.log(this.mfo)
   }
 
-  SetIpcrDataSubtaskObj(st: any) {
+  SetIpcrDataSubtaskObj(st: any, isST:boolean) {
     this.ipcrService.GetIPCRDetailsRemainingST(st.subTaskId);
 
-    this.subtask = st;
+    this.subtask              = st;
     this.subtask.dpcrQuantity = st.qty;
-    this.subtask.indicator = st.stIndicator;
-    this.subtask.prompt = false;
-    this.subtask.qty_rem = st.qty - this.ipcrService.ipcrST_rem();
+    this.subtask.indicator    = isST ? st.stIndicator : st.indicator;
+    this.subtask.prompt       = false;
+    this.subtask.qty_rem      = st.qty - this.ipcrService.ipcrST_rem();
+    this.subtask.quantity     = null;
+    this.subtask.isIpcrMfo    = 0;
 
     console.log(this.subtask);
   }

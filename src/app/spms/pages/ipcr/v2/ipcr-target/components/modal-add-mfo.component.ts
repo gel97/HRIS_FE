@@ -57,7 +57,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   </div>
                   
                   <input
-                    [(ngModel)]="quantity"
+                    [(ngModel)]="mfo.quantity"
                     (ngModelChange)="trapRemaining()"
                     type="number"
                     class="form-control"
@@ -268,12 +268,11 @@ export class ModalAddMfoComponent implements OnInit {
     //this.mfo.qty_rem = this.mfo.qty_rem - this.ipcrService.ipcr_rem();
   }
 
-  dpcrQuantity: number | any;
-  quantity: number | any;
-  add_qty_rem: number | any;
+  dpcrQuantity : number | any;
+  add_qty_rem  : number | any;
 
-  prompt: boolean = false;
-  buttonTrap: boolean = false;
+  prompt       : boolean = false;
+  buttonTrap   : boolean = false;
 
   PostIPCRDetails() {
     if (
@@ -289,7 +288,7 @@ export class ModalAddMfoComponent implements OnInit {
     }
 
     if (!this.buttonTrap) {
-      this.mfo.qty = this.quantity;
+      this.mfo.qty = this.mfo.quantity;
       this.mfo.ipcrId = localStorage.getItem('ipcrId');
       this.ipcrService.AddIPCRData(this.mfo);
       this.closebutton.nativeElement.click();
@@ -313,21 +312,21 @@ export class ModalAddMfoComponent implements OnInit {
 
   trapRemaining() {
     console.log(this.mfo)
-    if (this.quantity >= 0) {
+    if (this.mfo.quantity >= 0) {
       this.mfo.qty_rem =
-        this.mfo.dpcrQuantity - this.quantity - this.ipcrService.ipcr_rem();
-      if(this.quantity === 0 || this.quantity === null){
+        this.mfo.dpcrQuantity - this.mfo.quantity - this.ipcrService.ipcr_rem();
+      if(this.mfo.quantity === 0 || this.mfo.quantity === null){
         this.mfo.qty5 = null;
         this.mfo.qty4 = null;
         this.mfo.qty3 = null;
         this.mfo.qty2 = null;
         this.mfo.qty1 = null;
       }else{
-        this.mfo.qty5 = Math.floor(this.quantity * 0.3 + this.quantity);
-        this.mfo.qty4 = Math.floor(this.quantity * 0.15 + this.quantity);
-        this.mfo.qty3 = Math.floor(this.quantity);
-        this.mfo.qty2 = Math.floor(this.quantity / 2 + 1);
-        this.mfo.qty1 = Math.floor(this.quantity / 2);
+        this.mfo.qty5 = Math.floor(this.mfo.quantity * 0.3 + this.mfo.quantity);
+        this.mfo.qty4 = Math.floor(this.mfo.quantity * 0.15 + this.mfo.quantity);
+        this.mfo.qty3 = Math.floor(this.mfo.quantity);
+        this.mfo.qty2 = Math.floor(this.mfo.quantity / 2 + 1);
+        this.mfo.qty1 = Math.floor(this.mfo.quantity / 2);
   
         if (this.mfo.qty3 >= 4 && this.mfo.qty3 <= 6) {
           this.mfo.qty4 += 1;
@@ -352,15 +351,15 @@ export class ModalAddMfoComponent implements OnInit {
       
 
       if (
-        this.quantity > this.mfo.dpcrQuantity - this.ipcrService.ipcr_rem() && this.mfo.isIpcrMfo === 0 ||
-        this.quantity < 0 && this.mfo.isIpcrMfo === 0
+        this.mfo.quantity > this.mfo.dpcrQuantity - this.ipcrService.ipcr_rem() && this.mfo.isIpcrMfo === 0 ||
+        this.mfo.quantity < 0 && this.mfo.isIpcrMfo === 0
       ) {
         this.mfo.prompt = true;
       } else {
         this.mfo.prompt = false;
       }
     } else {
-      if (this.quantity > this.mfo.dpcrQuantity && this.mfo.isIpcrMfo === 0 || this.quantity < 0 && this.mfo.isIpcrMfo === 0) {
+      if (this.mfo.quantity > this.mfo.dpcrQuantity && this.mfo.isIpcrMfo === 0 || this.mfo.quantity < 0 && this.mfo.isIpcrMfo === 0) {
         this.mfo.prompt = true;
       } else {
         this.mfo.prompt = false;

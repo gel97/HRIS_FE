@@ -133,6 +133,71 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                   </td>
                                 </tr>
                               </ng-container>
+                              <ng-container
+                                *ngFor="let c of b.stCmfo; let z = index"
+                              >
+                                <tr>
+                                  <td></td>
+                                  <td>
+                                    <strong class="text-secondaary"
+                                      >{{ i + 1 }}.{{ b.st.length + z + 1 }}
+                                      {{ c.mfo }}</strong
+                                    >
+                                  </td>
+                                  <td></td>
+                                </tr>
+                                <tr *ngFor="let d of c.si; let zz = index">
+                                  <td></td>
+                                  <td>
+                                    <i
+                                      class="bx bx-chevron-right cursor-pointer text-secondary"
+                                    ></i>
+                                    <strong class="text-primary"
+                                      ><u
+                                        >{{ d.qty
+                                        }}{{ d.qtyUnit ? '%' : '' }}</u
+                                      ></strong
+                                    >
+                                    {{ d.indicator }}
+                                  </td>
+                                  <td>
+                                    <button
+                                      (click)="
+                                      setOtsData({
+                                        mfo: c.mfo,
+                                        mfoId: c.mfoId,
+                                        subtaskId: d.subTaskId,
+                                        indicator: d.indicator,
+                                        indicatorId: d.indicatorId,
+                                        qty: d.qty,
+                                        dpcrDataId: d.dpcrDataId,
+                                        ipcrDataId: d.ipcrDataId,
+                                        ipcrId: d.ipcrId,
+                                        isSubTask: d.isSubTask,
+                                        opcrDataId: d.opcrDataId,
+                                        qtyUnit: d.qtyUnit,
+                                        qlty5: d.qlty5,
+                                        qlty4: d.qlty4,
+                                        qlty3: d.qlty3,
+                                        qlty2: d.qlty2,
+                                        qlty1: d.qlty1,
+                                        timely5: d.timely5,
+                                        timely4: d.timely4,
+                                        timely3: d.timely3,
+                                        timely2: d.timely2,
+                                        timely1: d.timely1,
+                                      })
+                                    "
+                                      class="btn btn-primary"
+                                    >
+                                      <span
+                                        class="tf-icons bx bx bx-plus"
+                                      ></span>
+                                    </button>
+                                  </td>
+                                </tr>
+
+                              </ng-container>
                             </ng-container>
                             <ng-template #showNotSubtask>
                               <tr>

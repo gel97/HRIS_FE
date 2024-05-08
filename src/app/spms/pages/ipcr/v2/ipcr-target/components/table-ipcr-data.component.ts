@@ -331,6 +331,128 @@ import {
                       </div>
                     </div>               
                   </ng-container>
+                  <ng-container *ngFor="let d of b.stCmfo; let x = index">
+                    <div class="x-space-between m-2 ">
+                        <div>
+                          <b class="text-secondary"
+                            >{{ i + 1 }}.{{ b.st.length + x + 1 }}. {{ d.mfo }}</b
+                          >
+                        </div>
+                        <div>
+                          <small
+                            class="badge rounded-pill"
+                            style="background-color: black;"
+                          >
+                            SUBTASK MFO
+                          </small>
+                        </div>
+                      </div>
+                      <div  *ngFor="let e of d.si; let xx = index" class="accordion my-1" id="accordionExampleStCmfo">
+                        <div class="card accordion-item">
+                          <h2
+                            class="accordion-header"
+                            id="headingStCmfo{{ xx }}"
+                            style="margin-right: 10px;"
+                          >
+                            <button
+                              type="button"
+                              class="accordion-button collapsed"
+                              data-bs-toggle="collapse"
+                              [attr.data-bs-target]="'#accordionStCmfo' + xx"
+                              aria-expanded="false"
+                              [attr.aria-controls]="'accordionStCmfo' + xx"
+                            >
+                              <i class="bx bx-label"></i>
+                              &nbsp;
+                              <strong class="text-success">
+                                <u> {{ e.qty }}{{ e.qtyUnit ? '%' : '' }} </u>
+                              </strong>
+                              &nbsp;
+                              {{ e.indicator }}
+                            </button>
+                            <div
+                              class="dropdown"
+                              style="position: absolute; right: 0px; top: 20px; z-index: 3;"
+                            >
+                              <button
+                                type="button"
+                                class="btn p-0 dropdown-toggle hide-arrow"
+                                data-bs-toggle="dropdown"
+                              >
+                                <i
+                                  class="bx bx-dots-vertical-rounded text-primary"
+                                  style="position: absolute; right: 0px; top: 0px; z-index: 3;"
+                                ></i>
+                              </button>
+                              <div class="dropdown-menu">
+                                <a
+                                  class="dropdown-item cursor-pointer"
+                                  (click)="EditIPCRSubtaskDetails(e)"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#modalEditSubtask"
+                                  ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                >
+                                <a class="dropdown-item cursor-pointer" (click)="DeleteIPCRSTDetails(e.ipcrSubtaskId)"
+                                  ><i class="bx bx-trash me-1"></i> Delete</a
+                                >
+                              </div>
+                            </div>
+                          </h2>
+                          <div
+                            id="accordionStCmfo{{ xx }}"
+                            class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExampleStCmfo"
+                          >
+                            <div class="accordion-body">
+                              <div class="table-responsive text-nowrap">
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th>RATING</th>
+                                      <th>QUANTITY</th>
+                                      <th>QUALITY</th>
+                                      <th>TIMELINESS</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>{{ '5' }}</td>
+                                      <td>{{ e.qty5 }}</td>
+                                      <td>{{ e.qlty5 }}</td>
+                                      <td>{{ e.timely5 }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>{{ '4' }}</td>
+                                      <td>{{ e.qty4 }}</td>
+                                      <td>{{ e.qlty4 }}</td>
+                                      <td>{{ e.timely4 }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>{{ '3' }}</td>
+                                      <td>{{ e.qty3 }}</td>
+                                      <td>{{ e.qlty3 }}</td>
+                                      <td>{{ e.timely3 }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>{{ '2' }}</td>
+                                      <td>{{ e.qty2 }}</td>
+                                      <td>{{ e.qlty2 }}</td>
+                                      <td>{{ e.timely2 }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>{{ '1' }}</td>
+                                      <td>{{ e.qty1 }}</td>
+                                      <td>{{ e.qlty1 }}</td>
+                                      <td>{{ e.timely1 }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>     
+                  </ng-container>
                 </ng-template>
               </ng-container>
             </div>
