@@ -382,6 +382,27 @@ export class OpcrTargetComponent implements OnInit {
     this.sortExcist();
   }
 
+  SubmitOpcr(opcrId:string,submitAt:any){
+    if(submitAt){
+      Swal.fire({
+        title: 'OPCR Already submitted',
+        text: "Do you want to submit it again?" ,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, submit it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.opcrService.PutOpcrSubmit(opcrId);
+          this.opcrService.GetOPCRs(this.getYear, this.officeId ?? '');
+        }
+      });
+    }else{
+      this.opcrService.PutOpcrSubmit(opcrId);
+    }
+  }
+
   DeleteOPCRDetails(opcrDataId: string) {
     Swal.fire({
       title: 'Are you sure?',

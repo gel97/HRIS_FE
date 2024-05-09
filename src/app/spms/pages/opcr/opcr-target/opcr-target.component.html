@@ -59,6 +59,7 @@
                                 <th>Year</th>
                                 <th>Date Created</th>
                                 <th>Status</th>
+                                <th>Date submitted</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -103,6 +104,9 @@
                                     </td>
                                 </ng-container>
                                 <td>
+                                    {{ data_opcr.submitAt | date : "MMM. dd, yyyy hh:mm a" }}
+                                </td>
+                                <td>
                                     <div class="dropdown position-static pointer">
                                         <button
                                             (click)="show_uncommited_division_list(data_opcr.year); uncommited_division_boolean=false"
@@ -121,6 +125,9 @@
                                             <a (click)="ReportOPCR(data_opcr)" class="dropdown-item"><i
                                                     class="bx bx-printer me-1"></i> Print
                                                 OPCR</a>
+                                            <a (click)="SubmitOpcr(data_opcr.opcrId, data_opcr.submitAt)"
+                                                class="dropdown-item"><i class="bx bx-send"></i>
+                                                Submit</a>
                                             <a (click)="data = data_opcr" class="dropdown-item" type="button"
                                                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
                                                 aria-controls="offcanvasScroll"><i class="bx bx-edit-alt me-1"></i>

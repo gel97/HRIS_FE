@@ -23,7 +23,7 @@ export class OverviewService {
 
   ) {}
 
-  GetOverviewMfoTargetOffices() {
+  async GetOverviewMfoTargetOffices() {
     this.mfoesTgt.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(api + this.url.get_overview_mfo_target_offices(), {

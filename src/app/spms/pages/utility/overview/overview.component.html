@@ -1,29 +1,64 @@
 
 <!-- Total Revenue -->
 <app-loading [loading]="mfoesTgt.isLoading" />
-<ng-container *ngFor="let office of mfoesTgt.data">
+<!-- <button (click)="filterBySubmitted()">Filter</button> -->
+<div *ngIf="!mfoesTgt.isLoading && filterData.length > 0" class="x-space-between">
+  <div class="col-md">
+    <p class="text-light fw-semibold">Filter office by:</p>
+    <div class="form-check form-check-inline mt-3">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="inlineRadio1"
+        (change)="submittedOffices()"
+        value="true"
+      />
+      <label class="form-check-label" for="inlineRadio1">Submitted</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="inlineRadio2"
+        (change)="unsubmittedOffices()"
+        value="false"
+      />
+      <label class="form-check-label" for="inlineRadio2">Not submitted</label>
+    </div>
+  </div>
+  <p class="text-light fw-semibold d-block">Offices: {{filterData.length}}</p>
+</div>
+<ng-container *ngFor="let office of filterData">
     <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
         <div class="card">
           <div class="row row-bordered g-0">
             <div class="col-md-9">
               <div class="card-header m-0 me-2 pb-1" style="display:flex; justify-content: space-between;align-items: center;">
                 <h5 class="card-header m-0 me-2 pb-1"><h1 class="text-primary">{{office.officeNameShort}}</h1></h5>
-                <div *ngIf="office?.opcr?.countOpcrMfo">
-                  <div [ngSwitch]="office?.opcr?.active">
-                      <div *ngSwitchCase="'0'">
-                          <span class="badge bg-label-danger me-1">Draft </span>
-                      </div>
-                      <div *ngSwitchCase="'1'">
-                          <span class="badge bg-label-primary me-1" data-bs-toggle="tooltip" matTooltip="OPCR TARGET STATUS"
-                          matTooltipPosition="above">Open</span>
-                      </div>
-                      <div *ngSwitchCase="'2'">
-                          <span class="badge bg-label-success me-1">Final</span>
-                      </div>
-                      <div *ngSwitchDefault></div>
-                  </div>
-              </div>
-
+                  <div *ngIf="office?.opcr?.countOpcrMfo" style="display:flex; justify-content: space-between;align-items: center;">
+                    <div [ngSwitch]="office?.opcr?.active">
+                        <div *ngSwitchCase="'0'">
+                            <span class="badge bg-label-danger me-1">Draft </span>
+                        </div>
+                        <div *ngSwitchCase="'1'">
+                            <span class="badge bg-label-primary me-1" data-bs-toggle="tooltip" matTooltip="OPCR TARGET STATUS"
+                            matTooltipPosition="above">Open</span>
+                        </div>
+                        <div *ngSwitchCase="'2'">
+                            <span class="badge bg-label-success me-1">Final</span>
+                        </div>
+                        <div *ngSwitchDefault></div>
+                    </div>
+                    <div *ngIf="office?.opcr?.submitAt; else Notsubmmited">
+                      <span class="badge bg-label-success me-1">submitted</span>
+                    </div>
+                    <ng-template #Notsubmmited>
+                        <span class="badge bg-label-danger me-1">not submitted</span>
+                    </ng-template>
+                    
+                  </div>            
               </div>
               <!-- Bordered Table -->
               <div *ngIf="office?.opcr; else noOpcrData" class="card">
@@ -159,7 +194,10 @@
                     <div><b class="text-primary">TOTAL MFO</b></div>
                     <div><b class="text-primary">{{office?.opcr?.countOpcrMfo}}</b></div>
                   </div>
-
+                  <div *ngIf="office?.opcr?.submitAt" class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                    <div><b class="text-primary">DATE SUBMITTED</b></div>
+                    <div><b class="text-primary">{{office?.opcr?.submitAt | date : "MMM. dd, yyyy hh:mm a" }}</b></div>
+                  </div>
                 </div>
                 <ng-template #noCountOpcr>
                   <div class="text-center fw-semibold pt-3">

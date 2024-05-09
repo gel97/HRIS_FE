@@ -32,6 +32,7 @@ export class SpmsApiService {
   get_opcrs = (year: string, officeId: string) => `/tPMOpcrs/${year},${officeId}`;
   post_opcr = () => `/tPMOpcrs`;
   put_opcr = () => `/tPMOpcrs/Active`;
+  put_opcr_submit = (opcrId: string) => `/tPMOpcrs/submit_opcr/${opcrId}`;
   edit_opcr_details = () => `/tPMOpcrs/Details`;
   delete_opcr = (opcrId: string) => `/tPMOpcrs/${opcrId}`;
   get_uncommited_division = (year: any, officeId: string) => `/tPMOpcrs/UncommitedDivision/${year},${officeId}`;

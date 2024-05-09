@@ -160,6 +160,36 @@ export class OpcrService {
       });
   }
 
+  PutOpcrSubmit(opcrId: string) {
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to submit this OPCR?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http
+        .put<any[]>(api + this.url.put_opcr_submit(opcrId), {
+          responseType: `json`,
+        })
+        .subscribe({
+          next: (response: any = {}) => {},
+          error: () => {
+            this.alertService.error();
+          },
+          complete: () => {
+            this.alertService.update();
+          },
+        });
+      }
+    });
+
+  }
+
   
   PutOpcrDataSortByMfo(data: any) {
     this.http
