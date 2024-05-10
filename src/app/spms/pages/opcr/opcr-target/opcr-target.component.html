@@ -2,9 +2,9 @@
 <app-loading [loading]="opcr().isLoading" />
 <ng-container>
     <div class="card">
-        <div class="row">
-            <div class="col-8">
-                <div class="card-header p-3">
+        <div class="card-header x-space-between">
+            <div class="">
+                <div class="">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-style1 m-0">
                             <li class="breadcrumb-item">
@@ -23,22 +23,29 @@
                     </nav>
                 </div>
             </div>
-            <div *ngIf="isShow() == 1" class="col-4">
-                <br />
-                <a class="pointer float-end">
-                    <span class="row px-4" (click)="removelocalStorage()">
-                        <i class="bx bx-arrow-back"></i>
-                    </span>
-                </a>
-            </div>
-            <div *ngIf="isShow() == 0 && opcr().data.length == 0" class="col-4">
-                <div class="pt-4" style="margin-right: 5px">
-                    <button (click)="flag_opcr = true " class="btn btn-primary float-end" type="button"
-                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
-                        <i class="bx bx-plus"></i>OPCR
-                    </button>
+            <div>
+                <div *ngIf="isShow() == 1">
+                    <a class="pointer">
+                        <span class="row" (click)="removelocalStorage()">
+                            <i class="bx bx-arrow-back"></i>
+                        </span>
+                    </a>
                 </div>
-            </div>
+                <div *ngIf="isShow() == 0" class=" x-space-between">
+                    <div *ngIf="opcr().data.length == 0"  style="margin-right: 5px">
+                        <button (click)="flag_opcr = true " class="btn btn-primary" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                            <i class="bx bx-plus"></i>OPCR
+                        </button>
+                    </div>
+                    <div class="">
+                        <button (click)="flag_opcr = true " class="btn btn-primary " type="button"
+                            data-bs-toggle="modal" data-bs-target="#modalImport">
+                            <i class='bx bx-import'></i>IMPORT
+                        </button>
+                    </div>
+                </div>
+            </div>      
         </div>
         <div *ngIf="isShow() == 0" class="card-body">
             <div>
@@ -411,6 +418,88 @@
         <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">
             Cancel
         </button>
+    </div>
+</div>
+
+<!-- Modal Import-->
+<div class="modal fade" id="modalImport" tabindex="-1" aria-hidden="true" style="z-index: 5000">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="modalCenterTitle">
+                    Import OPCR
+                </h1>
+                <button #closebutton type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="p-1">
+                        <label>From year:</label>
+                        <select [(ngModel)]="import_year_from" class="form-select" aria-label="Default select example">
+                            <ng-container *ngFor="let year of years_submitted.data; let i =index">
+                                <option *ngIf="year !== getYear && getYear >= year" [value]="year">
+                                    {{ year }}
+                                </option>
+                            </ng-container>
+                            
+                        </select>
+                    </div>
+                    <div class="p-1">
+                        To year: <b>{{getYear}}</b>
+                    </div>
+
+
+                    <label class="p-1 mt-2">Do you want to overwrite data?</label>
+                    <div class="row mt-2">
+                        <div class="form-check col-3">
+                            <input
+                              (click)="isOverwrite = 1"
+                              [checked]="isOverwrite === 1"
+                              class="form-check-input"
+                              type="radio"
+                              name="inlineRadioOptions"
+                              id="inlineRadio11"
+                              value="1"
+                            />
+                            <label class="form-check-label" for="inlineRadio11"
+                              >Yes</label
+                            >
+                        </div>
+                        <div class="form-check col-3">
+                            <input
+                              (click)="isOverwrite = 0"
+                              [checked]="isOverwrite === 0"
+                              class="form-check-input"
+                              type="radio"
+                              name="inlineRadioOptions"
+                              id="inlineRadio22"
+                              value="0"
+                            />
+                            <label class="form-check-label" for="inlineRadio22"
+                              >No</label
+                            >
+                        </div>
+                        <div *ngIf="isOverwrite" class="col-12">
+                            <span class="badge bg-label-danger">
+                                <i class='bx bx-info-circle' ></i>
+                                This will overwrite the existing data per MFO 
+                            </span>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button (click)="importOpcr()" type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <span>Submit</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

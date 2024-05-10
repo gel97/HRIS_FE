@@ -36,6 +36,8 @@ export class SpmsApiService {
   edit_opcr_details = () => `/tPMOpcrs/Details`;
   delete_opcr = (opcrId: string) => `/tPMOpcrs/${opcrId}`;
   get_uncommited_division = (year: any, officeId: string) => `/tPMOpcrs/UncommitedDivision/${year},${officeId}`;
+  get_opcrs_years_submitted = (officeId: string) => `/tPMOpcrs/years_submitted/${officeId}`;
+  post_opcr_import = (isOverwrite:number, officeId: string, year_from:number, year_to:number) => `/tPMOpcrs/import_opcr/${isOverwrite}/${officeId}/${year_from}/${year_to}`;
 
   get_ipcrs = (year: string, divisionId: string, userId: string) => `/tPMIpcrs/${year}/${divisionId}/${userId}`;
   post_ipcr = () => `/tPMIpcrs`;

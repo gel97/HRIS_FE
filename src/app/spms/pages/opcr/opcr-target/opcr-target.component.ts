@@ -48,6 +48,9 @@ export class OpcrTargetComponent implements OnInit {
   division: any = [];
   flag_opcr: boolean = false;
   isExpandMfoes: boolean = false;
+  years_submitted = this.opcrService.opcr_years_submitted();
+  isOverwrite:number = 0;
+  import_year_from: any = null;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
@@ -61,6 +64,7 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
     this.GetOfficeDivision();
     this.opcrYear();
+    this.opcrService.GetOPCRYearsSubmitted();
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -475,9 +479,18 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
+    console.log(year)
+
     this.flag_opcr = false;
     this.data = {};
     this.opcrService.GetOPCRs(year, this.officeId ?? '');
+  }
+
+  importOpcr(){
+    console.log(this.import_year_from)
+    if(this.import_year_from !== null){
+      this.opcrService.PostOpcrImport(this.isOverwrite, this.import_year_from, parseInt(this.getYear));
+    }
   }
 
   EditOPCRData() {
