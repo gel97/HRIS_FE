@@ -277,7 +277,6 @@ export class OpcrTargetComponent implements OnInit {
      }
 
      this.mfoService.EditIsFiveStandard(_data);
-     this.localStorage()
    }
 
   GetOPCRs() {

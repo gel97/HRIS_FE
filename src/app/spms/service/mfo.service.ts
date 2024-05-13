@@ -6,7 +6,7 @@ import { ErrorService } from './error.service';
 import { api } from 'src/app/connection';
 import { AlertService } from './alert.service';
 import Swal from 'sweetalert2';
-
+import { OpcrService } from './opcr.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,6 +35,7 @@ export class MfoService {
   constructor(
     private errorService: ErrorService,
     private alertService: AlertService,
+    private opcrService: OpcrService,
     private http: HttpClient,
     private url: SpmsApiService
   ) {}
@@ -208,6 +209,7 @@ export class MfoService {
         next: (response: any = {}) => {
           this.mfo.mutate((a) => {
             a.isLoadingSave = false;
+            this.opcrService.GetOPCRDetails();
             a.error = false;
           });
 
