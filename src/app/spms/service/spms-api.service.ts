@@ -25,6 +25,7 @@ export class SpmsApiService {
   post_success_indicator = () => `/tPMMFOIndicators`;
   put_success_indicator = () => `/tPMMFOIndicators`;
   delete_success_indicator = (indicatorId: string) => `/tPMMFOIndicators/${indicatorId}`;
+  put_is_five_standard = (indicatorId:string, isFiveStndrd:number) => `/tPMMFOIndicators/update/is_five_standard/${indicatorId}/${isFiveStndrd}`;
 
   post_standard = () => `/tPMMFOStandards`;
   put_standard = () => `/tPMMFOStandards`;

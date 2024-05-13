@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { MonthRangeService } from 'src/app/spms/service/month-range.service';
 import { SignatoriesService } from 'src/app/spms/service/signatories.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-
 @Component({
   selector: 'app-opcr-target',
   templateUrl: './opcr-target.component.html',
@@ -268,6 +267,18 @@ export class OpcrTargetComponent implements OnInit {
       }
     }
   }
+
+  handleIsFiveStandard(e:any, _data:any){
+    // console.log(e.target.checked)
+     if(e.target.checked){
+       _data.isFiveStndrd = 1;
+     }else{
+       _data.isFiveStndrd = 0;
+     }
+
+     this.mfoService.EditIsFiveStandard(_data);
+     this.localStorage()
+   }
 
   GetOPCRs() {
     this.opcr.mutate((a: any) => (a.isLoading = true));

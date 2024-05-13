@@ -199,6 +199,31 @@ export class MfoService {
       });
   }
 
+  EditIsFiveStandard(indicatorData: any) {
+    this.mfo.mutate((a) => (a.isLoadingSave = true));
+
+    this.http
+      .put<any[]>(api + this.url.put_is_five_standard(indicatorData.indicatorId, indicatorData.isFiveStndrd), { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
   async DeleteMfo(mfoId: string) {
     try {
       let deleteData = await this.alertService.delete(

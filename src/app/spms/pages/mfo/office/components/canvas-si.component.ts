@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Output, Input, ViewChild, inject  } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { MfoService } from 'src/app/spms/service/mfo.service';
 @Component({
   selector: 'app-canvas-si',
@@ -45,7 +52,20 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
               class="form-control"
               placeholder="Enter Success Indicator"
             ></textarea>
+            <div class="form-check mt-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="defaultCheck1"
+                [checked]="siData.isFiveStndrd"
+                (change)="handleIsFiveStandard($event)"
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                Set standard to five rating
+              </label>
+            </div>
             <br />
+
             <div *ngIf="mfoService.isCommon()" class=" my-1">
               <div class="form-check">
                 <input
@@ -183,7 +203,7 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
   `,
 })
 export class CanvasSIComponent {
-  mfoService = inject(MfoService)
+  mfoService = inject(MfoService);
   @ViewChild('closebuttonSI')
   closebuttonSI!: { nativeElement: { click: () => void } };
 
@@ -199,6 +219,19 @@ export class CanvasSIComponent {
   Submit() {
     this.submit.emit('Add or Edit');
     this.handleStatus();
+  }
+
+  handleIsFiveStandard(e:any){
+   // console.log(e.target.checked)
+    if(e.target.checked){
+      this.siData.isFiveStndrd = 1;
+    }else{
+      this.siData.isFiveStndrd = 0;
+    }
+  }
+
+  EditIsFiveStandard(){
+    this.mfoService.EditIsFiveStandard(this.siData);
   }
 
   // onChangeUnit(event: Event) {

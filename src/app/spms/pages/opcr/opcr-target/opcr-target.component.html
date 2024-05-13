@@ -264,6 +264,18 @@
                                                         data-bs-parent="#accordionExample">
                                                         <div class="accordion-body">
                                                             <!-- Bordered Table -->
+                                                            <div class="form-check mt-3">
+                                                                <input
+                                                                  class="form-check-input"
+                                                                  type="checkbox"
+                                                                  id="defaultCheck1"
+                                                                  [checked]="si.isFiveStndrd"
+                                                                  (change)="handleIsFiveStandard($event, si)"
+                                                                />
+                                                                <label class="form-check-label" for="defaultCheck1">
+                                                                  Set standard to five rating
+                                                                </label>
+                                                              </div>
                                                             <div class="table-responsive text-nowrap">
                                                                 <table class="table table-bordered">
                                                                     <thead>
@@ -320,7 +332,7 @@
                                                             data-bs-toggle="modal" (click)="
                             editopcrDetails = si;
                             editMFODetails = data;
-                            displayDivision(si.sharedDiv); editcalculateRating()
+                            displayDivision(si.sharedDiv);
                           " data-bs-target="#editDetails"
                                                             class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
                                                             <span class="tf-icons bx bx-pencil"></span>
