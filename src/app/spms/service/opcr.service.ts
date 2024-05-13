@@ -232,7 +232,7 @@ export class OpcrService {
       });
   }
 
-  PutOpcrSubmit(opcrId: string) {
+  PutOpcrSubmit(opcrId: string, year:string, officeId:string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to submit this OPCR?',
@@ -248,7 +248,10 @@ export class OpcrService {
             responseType: `json`,
           })
           .subscribe({
-            next: (response: any = {}) => {},
+            next: (response: any = {}) => {
+              this.GetOPCRs(year,officeId);
+
+            },
             error: () => {
               this.alertService.error();
             },

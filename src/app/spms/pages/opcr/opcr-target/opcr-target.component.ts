@@ -408,12 +408,11 @@ export class OpcrTargetComponent implements OnInit {
         confirmButtonText: 'Yes, submit it!',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.opcrService.PutOpcrSubmit(opcrId);
-          this.opcrService.GetOPCRs(this.getYear, this.officeId ?? '');
+          this.opcrService.PutOpcrSubmit(opcrId,this.getYear, this.officeId ?? '');
         }
       });
     }else{
-      this.opcrService.PutOpcrSubmit(opcrId);
+      this.opcrService.PutOpcrSubmit(opcrId,this.getYear, this.officeId ?? '');
     }
   }
 

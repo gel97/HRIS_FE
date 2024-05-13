@@ -33,7 +33,7 @@ import {
           </button>
         </div>
       </div>
-      <div class="table-responsive text-nowrap">
+      <div class="table-responsive text-wrap">
         <table class="table table-hover">
           <thead>
             <tr>
