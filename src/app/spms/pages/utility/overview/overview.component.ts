@@ -17,6 +17,11 @@ export class OverviewComponent {
     this.initData()
   }
 
+  handleClear(){
+    this.isSubmitted = null;
+    this.initData();
+  }
+
   filterBySubmitted(event:any){
     let data:any = [];
     console.log(event.target.value)
@@ -61,6 +66,13 @@ export class OverviewComponent {
     this.isSubmitted = false;
     this.filterData = [];
     this.overviewService.mfoesTgt().data.forEach((a:any) => {
+
+      if(a!.opcr !== null){
+        if(a!.opcr!.submitAt === null){
+          this.filterData.push(a)
+        }
+      }
+
       if(a!.opcr === null){
         this.filterData.push(a)
       }

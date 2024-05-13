@@ -2,7 +2,7 @@
 <!-- Total Revenue -->
 <app-loading [loading]="mfoesTgt.isLoading" />
 <!-- <button (click)="filterBySubmitted()">Filter</button> -->
-<div *ngIf="!mfoesTgt.isLoading && filterData.length > 0" class="x-space-between">
+<div *ngIf="!mfoesTgt.isLoading" class="x-space-between">
   <div class="col-md">
     <p class="text-light fw-semibold">Filter office by:</p>
     <div class="form-check form-check-inline mt-3">
@@ -26,6 +26,9 @@
         value="false"
       />
       <label class="form-check-label" for="inlineRadio2">Not submitted</label>
+    </div>
+    <div *ngIf="isSubmitted !== null" class="badge rounded-pill bg-label-danger shadow-sm">
+      <i class='bx bx-x' (click)="handleClear()"></i>clear
     </div>
   </div>
   <p class="text-light fw-semibold d-block">Offices: {{filterData.length}}</p>
