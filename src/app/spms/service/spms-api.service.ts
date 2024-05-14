@@ -71,6 +71,7 @@ export class SpmsApiService {
   post_opcrdata = () => `/tPMOpcrDatas`;
   get_opcrdetails = (opcrId: string) => `/tPMOpcrDatas/${opcrId}`;
   get_opcr_data_actual = (opcrId: string) => `/tPMOpcrDatas/actual/list/${opcrId}/try`;
+  get_opcr_target_report = (opcrId: string) => `/tPMOpcrDatas/GetOpcrTargetReport/${opcrId}`;
 
   post_dpcr = () => `/tPMDpcr`;
   put_dpcr = () => `/tPMDpcr`;
@@ -174,4 +175,7 @@ export class SpmsApiService {
   post_print_smpor = () => `/tPMIpcrDatas/PrintSMPOR`;
   post_print_ipcr = () => `/tPMIpcrDatas/PrintIPCR`;
   post_print_mpor_officeHead = () => `/tPMIpcrDatas/OfficeHead`;
+
+  post_alloted_budget = () => `/tPMMFOAlloted`;
+
 }

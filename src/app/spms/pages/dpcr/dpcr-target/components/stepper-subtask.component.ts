@@ -19,7 +19,13 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
           <ng-template matStepLabel>Sub-task name</ng-template>
           <mat-form-field style="width: 100%;">
             <mat-label>MFO</mat-label>
-            <input matInput [(ngModel)]="data.stMfo" class="" formControlName="firstCtrl" required />
+            <input
+              matInput
+              [(ngModel)]="data.stMfo"
+              class=""
+              formControlName="firstCtrl"
+              required
+            />
           </mat-form-field>
           <div>
             <button mat-button matStepperNext>Next</button>
@@ -30,7 +36,12 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         <form [formGroup]="secondFormGroup">
           <mat-form-field style="width: 100%;">
             <mat-label>Success Indicator</mat-label>
-            <input matInput [(ngModel)]="data.stIndicator" formControlName="secondCtrl" required />
+            <input
+              matInput
+              [(ngModel)]="data.stIndicator"
+              formControlName="secondCtrl"
+              required
+            />
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>
@@ -54,7 +65,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 />
               </mat-form-field>
             </div>
-            <div class="col-4">
+            <div class="col-2">
               <div class="form-check mt-3">
                 <input
                   name="default-radio-1"
@@ -83,6 +94,18 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   Percentage
                 </label>
               </div>
+            </div>
+            <div class="col-4 form-check mt-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="defaultCheck1"
+                [checked]="data.isFiveStndrd"
+                (change)="handleIsFiveStandard($event)"
+              />
+              <label class="form-check-label" for="defaultCheck1">
+                Set standard to five rating
+              </label>
             </div>
           </div>
           <div class="table-responsive text-nowrap">
@@ -308,6 +331,15 @@ export class StepperSubtaskComponent implements OnInit {
     if (this.data.qtyUnit >= 0) {
     } else {
       this.data.qtyUnit = 0;
+    }
+  }
+
+  handleIsFiveStandard(e: any) {
+    // console.log(e.target.checked)
+    if (e.target.checked) {
+      this.data.isFiveStndrd = 1;
+    } else {
+      this.data.isFiveStndrd = 0;
     }
   }
 

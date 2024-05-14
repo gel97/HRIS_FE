@@ -70,7 +70,7 @@ import { FormBuilder, Validators } from '@angular/forms';
                     />
                   </mat-form-field>
                 </div>
-                <div class="col-6">
+                <div class="col-2">
                   <div class="form-check mt-3">
                     <input
                       name="default-radio-1"
@@ -99,6 +99,18 @@ import { FormBuilder, Validators } from '@angular/forms';
                       Percentage
                     </label>
                   </div>
+                </div>
+                <div class="col-4 form-check mt-3">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="defaultCheck1"
+                    [checked]="data.isFiveStndrd"
+                    (change)="handleIsFiveStandard($event)"
+                  />
+                  <label class="form-check-label" for="defaultCheck1">
+                    Set standard to five rating
+                  </label>
                 </div>
               </div>
             </form>
@@ -310,6 +322,15 @@ export class ModalEditSubTaskComponent {
         this.closeModal.nativeElement.click();
       }
     }, 500);
+  }
+
+  handleIsFiveStandard(e: any) {
+    // console.log(e.target.checked)
+    if (e.target.checked) {
+      this.data.isFiveStndrd = 1;
+    } else {
+      this.data.isFiveStndrd = 0;
+    }
   }
 
   calculateRating() {

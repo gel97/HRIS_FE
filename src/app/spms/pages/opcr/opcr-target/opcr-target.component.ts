@@ -34,6 +34,8 @@ export class OpcrTargetComponent implements OnInit {
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
   opcrData: any = this.opcrService.opcrData;
+  opcrTargetReport: any = this.opcrService.opcrReport();
+
   opcrName: string | any = '';
   flag: number = 0;
   data: any = {};
@@ -309,22 +311,26 @@ export class OpcrTargetComponent implements OnInit {
     });
   }
 
-  ReportOPCR(data: any) {
-    this.opcrService.storageOpcrId.set(data.opcrId);
-    this.opcrService.GetOPCRDetails();
-    this.reportActualService.triggerSwitch(1);
+  // ReportOPCR(data: any) {
+  //   this.opcrService.storageOpcrId.set(data.opcrId);
+  //   this.opcrService.GetOPCRDetails();
+  //   this.reportActualService.triggerSwitch(1);
 
-    this.monthRangeService.setMonthRange({
-      type: 'opcr',
-      isActual: false,
-      year: parseInt(data.year),
-      semester: data.semester,
-    });
-    this.reportActualService.get_signatories(data.opcrId);
-    setTimeout(() => {
-      this.reportActualService.triggerSwitch(1);
-      this.reportActualService.ReportActual(this.opcrDetails().data);
-    }, 1000);
+  //   this.monthRangeService.setMonthRange({
+  //     type: 'opcr',
+  //     isActual: false,
+  //     year: parseInt(data.year),
+  //     semester: data.semester,
+  //   });
+  //   this.reportActualService.get_signatories(data.opcrId);
+  //   setTimeout(() => {
+  //     this.reportActualService.triggerSwitch(1);
+  //     this.reportActualService.ReportActual(this.opcrDetails().data);
+  //   }, 1000);
+  // }
+
+  ReportOPCR(data: any) {
+    this.opcrService.GetOpcrTargetReport(data.opcrId);
   }
 
   GetMFOs() {

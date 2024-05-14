@@ -4,6 +4,8 @@ import { SpmsApiService } from './spms-api.service';
 import { api } from 'src/app/connection';
 import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,7 +13,8 @@ export class OpcrService {
   constructor(
     private http: HttpClient,
     private url: SpmsApiService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public sanitizer: DomSanitizer
   ) {}
 
   // @ViewChild('closebutton')
@@ -69,6 +72,13 @@ export class OpcrService {
     data: [],
     error: false,
     isLoading: false,
+  });
+
+  opcrTargetReportUrl:SafeResourceUrl = "";
+  opcrReport = signal<any>({
+    data: null,
+    error: false,
+    isLoadingReport: false,
   });
 
   GetOPCRYearsSubmitted() {
@@ -310,6 +320,32 @@ export class OpcrService {
       });
   }
 
+  GetOpcrTargetReport(opcrId: string) {
+
+    this.opcrReport.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_opcr_target_report(opcrId), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.opcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.opcrReport.mutate((a) => (a.data = this.opcrTargetReportUrl));
+          this.opcrReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.opcrReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.opcrReport())
+          this.opcrReport.mutate((a) => (a.isLoadingReport = false));
+
+        },
+      });
+  }
+
   DeleteOPCRDetails(opcrDataId: string) {
     this.http
       .delete<any[]>(api + this.url.delete_opcrdata(opcrDataId))
@@ -391,6 +427,7 @@ export class OpcrService {
   }
 
   AddOPCRData(data: any) {
+    this.AddAllotedBudget(data.alloted,data.indicatorId);
     this.opcrData.mutate((a) => (a.isLoading = true));
     this.http
       .post<any[]>(api + this.url.post_opcrdata(), data, {
@@ -416,7 +453,25 @@ export class OpcrService {
       });
   }
 
+  AddAllotedBudget(alloted:number, indicatorId:string){
+    var year = localStorage.getItem('currentYear');
+    this.http
+      .post<any[]>(api + this.url.post_alloted_budget(), {alloted: alloted, indicatorId: indicatorId, year:year}, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+        },
+        error: (error: any) => {
+        },
+        complete: () => {
+        },
+      });
+  }
+
   EditOPCRData(opcrData: any) {
+    this.AddAllotedBudget(opcrData.alloted,opcrData.indicatorId);
+
     this.opcrDetails.mutate((a) => (a.isLoading = true));
 
     this.http
