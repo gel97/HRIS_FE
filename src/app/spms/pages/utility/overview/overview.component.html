@@ -1,0 +1,214 @@
+
+<!-- Total Revenue -->
+<app-loading [loading]="mfoesTgt.isLoading" />
+<!-- <button (click)="filterBySubmitted()">Filter</button> -->
+<div *ngIf="!mfoesTgt.isLoading" class="x-space-between">
+  <div class="col-md">
+    <p class="text-light fw-semibold">Filter office by:</p>
+    <div class="form-check form-check-inline mt-3">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="inlineRadio1"
+        (change)="submittedOffices()"
+        value="true"
+      />
+      <label class="form-check-label" for="inlineRadio1">Submitted</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="inlineRadio2"
+        (change)="unsubmittedOffices()"
+        value="false"
+      />
+      <label class="form-check-label" for="inlineRadio2">Not submitted</label>
+    </div>
+    <div *ngIf="isSubmitted !== null" class="badge rounded-pill bg-label-danger shadow-sm">
+      <i class='bx bx-x' (click)="handleClear()"></i>clear
+    </div>
+  </div>
+  <p class="text-light fw-semibold d-block">Offices: {{filterData.length}}</p>
+</div>
+<ng-container *ngFor="let office of filterData">
+    <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+        <div class="card">
+          <div class="row row-bordered g-0">
+            <div class="col-md-9">
+              <div class="card-header m-0 me-2 pb-1" style="display:flex; justify-content: space-between;align-items: center;">
+                <h5 class="card-header m-0 me-2 pb-1"><h1 class="text-primary">{{office.officeNameShort}}</h1></h5>
+                  <div *ngIf="office?.opcr?.countOpcrMfo" style="display:flex; justify-content: space-between;align-items: center;">
+                    <div [ngSwitch]="office?.opcr?.active">
+                        <div *ngSwitchCase="'0'">
+                            <span class="badge bg-label-danger me-1">Draft </span>
+                        </div>
+                        <div *ngSwitchCase="'1'">
+                            <span class="badge bg-label-primary me-1" data-bs-toggle="tooltip" matTooltip="OPCR TARGET STATUS"
+                            matTooltipPosition="above">Open</span>
+                        </div>
+                        <div *ngSwitchCase="'2'">
+                            <span class="badge bg-label-success me-1">Final</span>
+                        </div>
+                        <div *ngSwitchDefault></div>
+                    </div>
+                    <div *ngIf="office?.opcr?.submitAt; else Notsubmmited">
+                      <span class="badge bg-label-success me-1">submitted</span>
+                    </div>
+                    <ng-template #Notsubmmited>
+                        <span class="badge bg-label-danger me-1">not submitted</span>
+                    </ng-template>
+                    
+                  </div>            
+              </div>
+              <!-- Bordered Table -->
+              <div *ngIf="office?.opcr; else noOpcrData" class="card">
+                <h5 class="card-header">List of divisions</h5>
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th [width]="5">#</th>
+                        <th>Name</th>
+                        <th>Details</th>
+                        <th>Semester</th>
+                        <th>Status</th>
+                        <th>MFO ADDED IN DPCR TARGET</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let division of office.opcr.divisions; let divIndex = index">
+                        <td>{{divIndex+1}}</td>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{division?.divisionName}}</strong></td>
+                        <td>{{division?.dpcrSem1?.details}}</td>
+                        <td>
+                            <div [ngSwitch]="division?.dpcrSem1?.semester">
+                                <div *ngSwitchCase="'1'">
+                                  <span class="badge bg-label-primary me-1">1st Sem</span>
+                                </div>
+                                <div *ngSwitchCase="'2'">
+                                  <span class="badge bg-label-success me-1">2nd Sem</span>
+                                </div>
+                                <div *ngSwitchDefault></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div [ngSwitch]="division?.dpcrSem1?.active">
+                                <div *ngSwitchCase="'0'">
+                                <span class="badge bg-label-danger me-1">Draft </span>
+                                </div>
+                                <div *ngSwitchCase="'1'">
+                                <span class="badge bg-label-primary me-1">Open</span>
+                                </div>
+                                <div *ngSwitchCase="'2'">
+                                <span class="badge bg-label-success me-1">Final</span>
+                                </div>
+                                <div *ngSwitchDefault>
+                                    <span *ngIf="division?.dpcrSem1?.details" class="badge bg-label-danger me-1">Draft </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{division?.dpcrSem1?.countDpcr}}</td>
+                      </tr>             
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <ng-template #noOpcrData>
+                <div style="display:flex; align-items: center;justify-content: center;">
+                    <strong class="badge rounded-pill bg-label-danger shadow-sm" >no data</strong>
+                </div>
+              </ng-template>
+            </div>
+            <div class="col-md-3">
+                <div class="card-body">
+                </div>         
+                <div class="px-4" *ngIf="office?.officeMfoes?.count; else noCountMFO">
+                  <div class="text-center">
+                    <h3><b>MAJOR FINAL OUTPUT ENCODED</b></h3>
+                  </div>
+                  <ng-container *ngFor="let mfoCat of office?.officeMfoes?.categories">
+                    <div [ngSwitch]="mfoCat.categoryId">
+                        <div *ngSwitchCase="'1'">
+                          <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                            <div>STRATEGIC FUNCTIONS</div>
+                            <div><b>{{mfoCat.count}}</b></div>
+                          </div>
+
+                        </div>
+                        <div *ngSwitchCase="'2'">
+                          <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                            <div>CORE FUNCTIONS</div>
+                            <div><b>{{mfoCat.count}}</b></div>
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="'3'">
+                          <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                            <div>SUPPORT FUNCTIONS</div>
+                            <div><b>{{mfoCat.count}}</b></div>
+                          </div>
+                        </div>
+                        <div *ngSwitchDefault></div>
+                    </div>
+                  </ng-container>
+                  <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                    <div><b class="text-primary">TOTAL MFO</b></div>
+                    <div><b class="text-primary">{{office?.officeMfoes?.count}}</b></div>
+                  </div>
+
+                </div>
+                <ng-template #noCountMFO>
+                  <div class="text-center fw-semibold pt-3">
+                      <h4 class="text-danger">NO MAJOR FINAL OUTPUT ENCODED</h4>
+                  </div>
+                </ng-template>
+                <div class="py-3"></div>
+                <div class="px-4" *ngIf="office?.opcr?.countOpcrMfo; else noCountOpcr">
+                  <div class="text-center">
+                    <h3><b>MFO ADDED IN OPCR TARGET {{office?.opcr?.year}}</b></h3>
+                  </div>
+                  <ng-container *ngFor="let mfoCat of office?.opcr?.categories">
+                    <div [ngSwitch]="mfoCat.categoryId">
+                        <div *ngSwitchCase="'1'">
+                          <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                            <div>STRATEGIC FUNCTIONS</div>
+                            <div><b>{{mfoCat.countCat}}</b></div>
+                          </div>
+
+                        </div>
+                        <div *ngSwitchCase="'2'">
+                          <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                            <div>CORE FUNCTIONS</div>
+                            <div><b>{{mfoCat.countCat}}</b></div>
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="'3'">
+                          <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                            <div>SUPPORT FUNCTIONS</div>
+                            <div><b>{{mfoCat.countCat}}</b></div>
+                          </div>
+                        </div>
+                        <div *ngSwitchDefault></div>
+                    </div>
+                  </ng-container>
+                  <div class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                    <div><b class="text-primary">TOTAL MFO</b></div>
+                    <div><b class="text-primary">{{office?.opcr?.countOpcrMfo}}</b></div>
+                  </div>
+                  <div *ngIf="office?.opcr?.submitAt" class="py-2" style="display:flex; justify-content: space-between;align-items: center;">
+                    <div><b class="text-primary">DATE SUBMITTED</b></div>
+                    <div><b class="text-primary">{{office?.opcr?.submitAt | date : "MMM. dd, yyyy hh:mm a" }}</b></div>
+                  </div>
+                </div>
+                <ng-template #noCountOpcr>
+                  <div class="text-center fw-semibold pt-3">
+                      <h4 class="text-danger">NO OPCR TARGET DATA</h4>
+                  </div>
+                </ng-template>
+            </div>
+          </div>
+        </div>
+    </div>
+</ng-container>

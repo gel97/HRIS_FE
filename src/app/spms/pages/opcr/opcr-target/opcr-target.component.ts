@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { MonthRangeService } from 'src/app/spms/service/month-range.service';
 import { SignatoriesService } from 'src/app/spms/service/signatories.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-
 @Component({
   selector: 'app-opcr-target',
   templateUrl: './opcr-target.component.html',
@@ -35,6 +34,8 @@ export class OpcrTargetComponent implements OnInit {
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
   opcrData: any = this.opcrService.opcrData;
+  opcrTargetReport: any = this.opcrService.opcrReport();
+
   opcrName: string | any = '';
   flag: number = 0;
   data: any = {};
@@ -48,6 +49,9 @@ export class OpcrTargetComponent implements OnInit {
   division: any = [];
   flag_opcr: boolean = false;
   isExpandMfoes: boolean = false;
+  years_submitted = this.opcrService.opcr_years_submitted();
+  isOverwrite:number = 0;
+  import_year_from: any = null;
   @ViewChild('closebutton')
   closebutton!: { nativeElement: { click: () => void } };
 
@@ -61,6 +65,7 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOPCRs();
     this.GetOfficeDivision();
     this.opcrYear();
+    this.opcrService.GetOPCRYearsSubmitted();
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -265,6 +270,17 @@ export class OpcrTargetComponent implements OnInit {
     }
   }
 
+  handleIsFiveStandard(e:any, _data:any){
+    // console.log(e.target.checked)
+     if(e.target.checked){
+       _data.isFiveStndrd = 1;
+     }else{
+       _data.isFiveStndrd = 0;
+     }
+
+     this.mfoService.EditIsFiveStandard(_data);
+   }
+
   GetOPCRs() {
     this.opcr.mutate((a: any) => (a.isLoading = true));
     setTimeout(() => {
@@ -295,22 +311,26 @@ export class OpcrTargetComponent implements OnInit {
     });
   }
 
-  ReportOPCR(data: any) {
-    this.opcrService.storageOpcrId.set(data.opcrId);
-    this.opcrService.GetOPCRDetails();
-    this.reportActualService.triggerSwitch(1);
+  // ReportOPCR(data: any) {
+  //   this.opcrService.storageOpcrId.set(data.opcrId);
+  //   this.opcrService.GetOPCRDetails();
+  //   this.reportActualService.triggerSwitch(1);
 
-    this.monthRangeService.setMonthRange({
-      type: 'opcr',
-      isActual: false,
-      year: parseInt(data.year),
-      semester: data.semester,
-    });
-    this.reportActualService.get_signatories(data.opcrId);
-    setTimeout(() => {
-      this.reportActualService.triggerSwitch(1);
-      this.reportActualService.ReportActual(this.opcrDetails().data);
-    }, 1000);
+  //   this.monthRangeService.setMonthRange({
+  //     type: 'opcr',
+  //     isActual: false,
+  //     year: parseInt(data.year),
+  //     semester: data.semester,
+  //   });
+  //   this.reportActualService.get_signatories(data.opcrId);
+  //   setTimeout(() => {
+  //     this.reportActualService.triggerSwitch(1);
+  //     this.reportActualService.ReportActual(this.opcrDetails().data);
+  //   }, 1000);
+  // }
+
+  ReportOPCR(data: any) {
+    this.opcrService.GetOpcrTargetReport(data.opcrId);
   }
 
   GetMFOs() {
@@ -380,6 +400,26 @@ export class OpcrTargetComponent implements OnInit {
   searchMfoOffice() {
     this.mfoService.SearchMfoOffice(this.search);
     this.sortExcist();
+  }
+
+  SubmitOpcr(opcrId:string,submitAt:any){
+    if(submitAt){
+      Swal.fire({
+        title: 'OPCR Already submitted',
+        text: "Do you want to submit it again?" ,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, submit it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.opcrService.PutOpcrSubmit(opcrId,this.getYear, this.officeId ?? '');
+        }
+      });
+    }else{
+      this.opcrService.PutOpcrSubmit(opcrId,this.getYear, this.officeId ?? '');
+    }
   }
 
   DeleteOPCRDetails(opcrDataId: string) {
@@ -454,9 +494,18 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
+    console.log(year)
+
     this.flag_opcr = false;
     this.data = {};
     this.opcrService.GetOPCRs(year, this.officeId ?? '');
+  }
+
+  importOpcr(){
+    console.log(this.import_year_from)
+    if(this.import_year_from !== null){
+      this.opcrService.PostOpcrImport(this.isOverwrite, this.import_year_from, parseInt(this.getYear));
+    }
   }
 
   EditOPCRData() {

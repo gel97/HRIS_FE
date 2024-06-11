@@ -4,6 +4,8 @@ import { SpmsApiService } from './spms-api.service';
 import { api } from 'src/app/connection';
 import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,7 +13,8 @@ export class OpcrService {
   constructor(
     private http: HttpClient,
     private url: SpmsApiService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public sanitizer: DomSanitizer
   ) {}
 
   // @ViewChild('closebutton')
@@ -23,7 +26,9 @@ export class OpcrService {
 
   storageIsShowDpcrData = signal<any>(localStorage.getItem('isShowOpcrData'));
   storageOpcrIdActual = signal<any>(localStorage.getItem('opcrIdActual'));
-  storageOpcrDetailsActual = signal<any>(localStorage.getItem('opcrDetailsActual'));
+  storageOpcrDetailsActual = signal<any>(
+    localStorage.getItem('opcrDetailsActual')
+  );
   isShowOpcrDataActual = signal<number>(0);
   officeName = localStorage.getItem('officeName');
   year = signal<number>(0);
@@ -63,6 +68,84 @@ export class OpcrService {
     isLoading: false,
   });
 
+  opcr_years_submitted = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+  opcrTargetReportUrl:SafeResourceUrl = "";
+  opcrReport = signal<any>({
+    data: null,
+    error: false,
+    isLoadingReport: false,
+  });
+
+  GetOPCRYearsSubmitted() {
+    this.opcr_years_submitted.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(
+        api + this.url.get_opcrs_years_submitted(this.officeId ?? ''),
+        {
+          responseType: `json`,
+        }
+      )
+      .subscribe({
+        next: (response: any = {}) => {
+          this.opcr_years_submitted.mutate((a) => (a.data = response));
+          this.opcr_years_submitted.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          console.log(this.opcr_years_submitted().data);
+        },
+      });
+  }
+
+  importLoading = signal<boolean>(false);
+  PostOpcrImport(isOverwrite: number, year_from: number, year_to: number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to import OPCR?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.importLoading.set(true);
+        this.http
+          .post<any[]>(
+            api +
+              this.url.post_opcr_import(
+                isOverwrite,
+                this.officeId ?? '',
+                year_from,
+                year_to
+              ),
+            {
+              responseType: `json`,
+            }
+          )
+          .subscribe({
+            next: (response: any = {}) => {
+              this.alertService.customUpdateWmessage('Imported Successfully');
+              this.GetOPCRs(year_to.toString(), this.officeId ?? '');
+            },
+            error: (error: any) => {
+              this.alertService.error();
+            },
+            complete: () => {
+              this.importLoading.set(false);
+            },
+          });
+      }
+    });
+  }
+
   GetOPCRs(year: string, officeId: string) {
     this.opcr.mutate((a) => (a.isLoading = true));
     this.http
@@ -100,7 +183,7 @@ export class OpcrService {
           this.alertService.error();
         },
         complete: () => {
-          console.log("OPCR Actual: ", this.opcrDataActual());
+          console.log('OPCR Actual: ', this.opcrDataActual());
         },
       });
   }
@@ -121,7 +204,6 @@ export class OpcrService {
         },
         complete: () => {
           this.opcrDetails.mutate((a: any) => (a.isLoading = false));
-
         },
       });
   }
@@ -160,23 +242,60 @@ export class OpcrService {
       });
   }
 
-  
+  PutOpcrSubmit(opcrId: string, year:string, officeId:string) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to submit this OPCR?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, submit it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http
+          .put<any[]>(api + this.url.put_opcr_submit(opcrId), {
+            responseType: `json`,
+          })
+          .subscribe({
+            next: (response: any = {}) => {
+              this.GetOPCRs(year,officeId);
+
+            },
+            error: () => {
+              this.alertService.error();
+            },
+            complete: () => {
+              this.alertService.update();
+            },
+          });
+      }
+    });
+  }
+
   PutOpcrDataSortByMfo(data: any) {
     this.http
-      .put<any[]>(api + this.url.put_opcrdata_sortby_mfo(this.storageOpcrId()), data, {})
+      .put<any[]>(
+        api + this.url.put_opcrdata_sortby_mfo(this.storageOpcrId()),
+        data,
+        {}
+      )
       .subscribe({
         next: (response: any = {}) => {},
         error: () => {
-          this.alertService.customError("Error: Something went wrong!");
+          this.alertService.customError('Error: Something went wrong!');
         },
-        complete: () => {   
-          this.alertService.customUpdateWmessage("Sorted Successfully");
+        complete: () => {
+          this.alertService.customUpdateWmessage('Sorted Successfully');
         },
       });
   }
 
-  get_uncommited_division(year: any){
-    return this.http.get<any[]>(api + this.url.get_uncommited_division(year, this.officeId ?? ''), {responseType: `json`});
+  get_uncommited_division(year: any) {
+    return this.http.get<any[]>(
+      api + this.url.get_uncommited_division(year, this.officeId ?? ''),
+      { responseType: `json` }
+    );
   }
 
   // post_signatories(typeId:any){
@@ -198,6 +317,32 @@ export class OpcrService {
           this.alertService.error();
         },
         complete: () => {},
+      });
+  }
+
+  GetOpcrTargetReport(opcrId: string) {
+
+    this.opcrReport.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_opcr_target_report(opcrId), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.opcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.opcrReport.mutate((a) => (a.data = this.opcrTargetReportUrl));
+          this.opcrReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.opcrReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.opcrReport())
+          this.opcrReport.mutate((a) => (a.isLoadingReport = false));
+
+        },
       });
   }
 
@@ -278,11 +423,11 @@ export class OpcrService {
           this.alertService.save();
           this.opcr.mutate((a) => (a.isLoading = false));
         },
-        
       });
   }
 
   AddOPCRData(data: any) {
+    this.AddAllotedBudget(data.alloted,data.indicatorId);
     this.opcrData.mutate((a) => (a.isLoading = true));
     this.http
       .post<any[]>(api + this.url.post_opcrdata(), data, {
@@ -308,7 +453,25 @@ export class OpcrService {
       });
   }
 
+  AddAllotedBudget(alloted:number, indicatorId:string){
+    var year = localStorage.getItem('currentYear');
+    this.http
+      .post<any[]>(api + this.url.post_alloted_budget(), {alloted: alloted, indicatorId: indicatorId, year:year}, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+        },
+        error: (error: any) => {
+        },
+        complete: () => {
+        },
+      });
+  }
+
   EditOPCRData(opcrData: any) {
+    this.AddAllotedBudget(opcrData.alloted,opcrData.indicatorId);
+
     this.opcrDetails.mutate((a) => (a.isLoading = true));
 
     this.http
@@ -333,7 +496,6 @@ export class OpcrService {
           // this.closebutton.nativeElement.click();
           this.alertService.update();
           this.opcrDetails.mutate((a) => (a.isLoading = false));
-
         },
       });
   }

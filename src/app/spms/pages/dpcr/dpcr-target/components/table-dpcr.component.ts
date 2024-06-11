@@ -132,7 +132,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     </div>
 
         <!-- Modal -->
-        <div
+    <div
       class="modal fade"
       id="modalDpcrTargetReport"
       tabindex="-1"
@@ -153,12 +153,17 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-            <iframe
-              [src]="dpcrService.dpcrTargetReportUrl"
-              width="100%"
-              height="100%"
-              frameborder="0"
-            ></iframe>
+            <ng-container *ngIf="dpcrService.loadReportTgt(); else ShowReport">
+              <app-loading-square-jelly-box [loading]="dpcrService.loadReportTgt()"/>
+            </ng-container>
+            <ng-template #ShowReport>
+              <iframe
+                [src]="dpcrService.dpcrTargetReportUrl"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
           </div>
           <div class="modal-footer">
             <button

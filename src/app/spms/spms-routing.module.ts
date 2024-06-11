@@ -27,7 +27,7 @@ const routes: Routes = [
         component: OpcrActualComponent,
       },
       {
-        path: 'ipcr/target',
+        path: 'ipcr/v1/target',
         component: IpcrTargetComponent,
       },
       {
@@ -52,6 +52,11 @@ const routes: Routes = [
         path:'utility',
         loadChildren: () => import('./pages/utility/utility.module')
         .then(m => m.UtilityModule),
+      },
+      {
+        path:'ipcr',
+        loadChildren: () => import('./pages/ipcr/ipcr.module')
+        .then(m => m.IpcrModule),
       },
     ],
   },

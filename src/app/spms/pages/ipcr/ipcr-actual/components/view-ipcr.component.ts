@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   selector: 'app-view-ipcr',
   styleUrls: ['../ipcr-actual.component.css'],
   template: `
-    <app-loading [loading]="ipcr.isLoading" />
+    <!-- <app-loading [loading]="ipcr.isLoading" /> -->
     <div class="card">
       <div class="row">
         <div class="card-body">
@@ -111,7 +111,9 @@ import { DomSanitizer } from '@angular/platform-browser';
                         >
                         <a
                           class="dropdown-item"
-                          (click)="reportSMPOR = data; printSMPOR()"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalSMPORReport"
+                          (click)="ReportSMPOR(data)"
                           ><i class="bx bx-printer me-1"></i> Print SMPOR</a
                         >
                         <a
@@ -200,6 +202,8 @@ import { DomSanitizer } from '@angular/platform-browser';
             </button>
             <button
               (click)="ReportMPOR()"
+              data-bs-toggle="modal"
+              data-bs-target="#modalMPORReport"
               type="button"
               class="btn btn-primary"
             >
@@ -251,43 +255,152 @@ import { DomSanitizer } from '@angular/platform-browser';
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalMPORReport"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <ng-container
+              *ngIf="ipcrMporReport.isLoadingReport; else ShowReport"
+            >
+              <app-loading-square-jelly-box
+                [loading]="ipcrMporReport.isLoadingReport"
+              />
+            </ng-container>
+            <ng-template #ShowReport>
+              <iframe
+                [src]="ipcrMporReport.data"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalSMPORReport"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <ng-container
+              *ngIf="ipcrSmporReport.isLoadingReport; else ShowReportSmpor"
+            >
+              <app-loading-square-jelly-box
+                [loading]="ipcrSmporReport.isLoadingReport"
+              />
+            </ng-container>
+            <ng-template #ShowReportSmpor>
+              <iframe
+                [src]="ipcrSmporReport.data"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class ViewIpcrComponent implements OnInit {
   constructor(private datePipe: DatePipe) {}
 
-  ipcrService = inject(IpcrService);
-  reportService = inject(ReportMporService);
+  ipcrService        = inject(IpcrService);
+  reportService      = inject(ReportMporService);
   reportServiceSMPOR = inject(ReportSmporService);
-  reportServiceIPCR = inject(ReportIpcrService);
-  years: number[] = [];
-  divisionId: string | null = localStorage.getItem('divisionId');
-  userId: string | null = localStorage.getItem('userId');
-  isShow: number | any = this.ipcrService.storageIsShow;
-  ipcrData: string | any = this.ipcrService.storageIpcrData;
-  currentDate: Date = new Date();
-  currentYear: number = this.currentDate.getFullYear();
-  months: { month: string; monthNum: number }[] = [];
-  selectedMonth: number | any; // Initialize with a default value
-  sem: number | any;
-  reportMPOR: any = {};
-  reportMPOR_officeHead: any = {};
-  get_MPOR_data: any = [];
-  strategic_functions: any = [];
-  core_functions: any = [];
-  support_functions: any = [];
+  reportServiceIPCR  = inject(ReportIpcrService);
 
-  ipcr: any = this.ipcrService.ipcr();
+  years       : number[] = [];
+  divisionId  : string | null = localStorage.getItem('divisionId');
+  userId      : string | null = localStorage.getItem('userId');
+  isShow      : number | any = this.ipcrService.storageIsShow;
+  ipcrData    : string | any = this.ipcrService.storageIpcrData;
+  currentDate : Date = new Date();
+  currentYear : number = this.currentDate.getFullYear();
+  months      : { month: string; monthNum: number }[] = [];
 
-  reportSMPOR: any = {};
-  get_SPMOR_data: any = [];
+  selectedMonth : number | any; // Initialize with a default value
+  sem           : number | any;
 
-  reportIPCR: any = {};
-  get_IPCR_data: any = [];
+  reportMPOR   : any = {};
+  reportMPOR_officeHead : any = {};
+  get_MPOR_data         : any = [];
+  strategic_functions   : any = [];
+  core_functions        : any = [];
+  support_functions     : any = [];
+
+  ipcr : any = this.ipcrService.ipcr();
+
+  reportSMPOR    : any = {};
+  get_SPMOR_data : any = [];
+
+  reportIPCR     : any = {};
+  get_IPCR_data  : any = [];
+
+  ipcrMporReport : any = this.ipcrService.ipcrMPOR();
+  ipcrSmporReport: any = this.ipcrService.ipcrSMPOR();
 
   ngOnInit(): void {
     this.ipcrYear();
     this.GetIpcr();
+
   }
 
   printIPCR() {
@@ -436,6 +549,7 @@ export class ViewIpcrComponent implements OnInit {
   selectMonth(month: number) {
     this.reportMPOR.monthNum = month;
     this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
+    console.log(month)
   }
 
   getMonths() {
@@ -462,33 +576,44 @@ export class ViewIpcrComponent implements OnInit {
     }
   }
 
-  ReportMPOR() {
-    if (this.reportMPOR.monthNum == null) {
-      this.reportMPOR.monthNum = 1;
-    }
-    this.reportMPOR_officeHead.officeId = localStorage.getItem('officeId');
-    this.reportMPOR_officeHead.divisionId = localStorage.getItem('divisionId');
-    this.reportMPOR_officeHead.officeRoleId = '1';
+  ReportSMPOR(data:any){
+    this.ipcrService.GetIpcrSMPOReport(data.ipcrId, data.year, data.semester)
 
-    this.reportService
-      .post_print_mpor_officeHead(this.reportMPOR_officeHead)
-      .subscribe({
-        next: (response: any) => {
-          localStorage.setItem('officeHeadName', response.officeHead);
-        },
-        error: () => {},
-        complete: () => {},
-      });
-
-    this.reportService.post_print_mpor(this.reportMPOR).subscribe({
-      next: (response: any) => {
-        this.get_MPOR_data = response;
-        this.PdfMPOR(this.get_MPOR_data);
-      },
-      error: () => {},
-      complete: () => {},
-    });
   }
+
+  ReportMPOR(){
+    this.ipcrService.GetIpcrMPOReport(this.reportMPOR.ipcrId, this.reportMPOR.year, this.reportMPOR.monthNum)
+
+  }
+  // ReportMPOR() { //DAVE
+  //   if (this.reportMPOR.monthNum == null) {
+  //     this.reportMPOR.monthNum = 1;
+  //   }
+  //   this.reportMPOR_officeHead.officeId = localStorage.getItem('officeId');
+  //   this.reportMPOR_officeHead.divisionId = localStorage.getItem('divisionId');
+  //   this.reportMPOR_officeHead.officeRoleId = '1';
+
+  //   this.reportService
+  //     .post_print_mpor_officeHead(this.reportMPOR_officeHead)
+  //     .subscribe({
+  //       next: (response: any) => {
+  //         localStorage.setItem('officeHeadName', response.officeHead);
+  //       },
+  //       error: () => {},
+  //       complete: () => {},
+  //     });
+
+  //   this.reportService.post_print_mpor(this.reportMPOR).subscribe({
+  //     next: (response: any) => {
+  //       this.get_MPOR_data = response;
+  //       this.PdfMPOR(this.get_MPOR_data);
+  //     },
+  //     error: () => {},
+  //     complete: () => {},
+  //   });
+  // }
+
+
 
   calculateRatingMPOR(data: any, data2: any) {
     data.map((a: any, index: number) => {
@@ -610,11 +735,7 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   GetIpcr() {
-    this.ipcrService.GetIPCRs(
-      this.currentYear.toString(),
-      localStorage.getItem('divisionId') ?? '',
-      localStorage.getItem('userId') ?? ''
-    );
+    this.ipcrService.GetIPCRs();
   }
 
   setIpcrDetails(data: any) {
@@ -632,7 +753,8 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   onChangeYear(year: any) {
-    this.ipcrService.GetIPCRs(year, this.divisionId ?? '', this.userId ?? '');
+    this.ipcrService.year.set(year);
+    this.ipcrService.GetIPCRs();
   }
 
   semester(year: number) {

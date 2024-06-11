@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UtilityComponent } from './utility.component';
 import { UserDivisionComponent } from './user-division/user-division.component';
 import { UtilityFocalComponent } from './utility-focal/utility-focal.component';
-
+import { OverviewComponent } from './overview/overview.component';
 const routes: Routes = [
   {
     path:'',
@@ -17,6 +17,10 @@ const routes: Routes = [
       {
         path: 'utility-focal',
         component: UtilityFocalComponent,
+      },
+      {
+        path: 'overview',
+        component: OverviewComponent,
       },
     ]
   }

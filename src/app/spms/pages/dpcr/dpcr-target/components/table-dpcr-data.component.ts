@@ -33,7 +33,7 @@ import {
           </button>
         </div>
       </div>
-      <div class="table-responsive text-nowrap">
+      <div class="table-responsive text-wrap">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -55,48 +55,89 @@ import {
                       <small
                         class="badge rounded-pill float-end"
                         [ngClass]="
-                          a.categoryId == '1'
+                          a.dpcrCategoryId == '1'
                             ? 'bg-label-success'
-                            : a.categoryId == '2'
+                            : a.dpcrCategoryId == '2'
                             ? 'bg-label-primary'
-                            : a.categoryId == '3'
+                            : a.dpcrCategoryId == '3'
                             ? 'bg-label-warning'
                             : 'bg-label-secondary'
                         "
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        {{ displayCatergory(a.categoryId) }}
+                        {{ displayCatergory(a.dpcrCategoryId) }}
                       </small>
-                      <ul *ngIf="a.si[0].isDpcrMfo" class="dropdown-menu dropdown-menu-end pointer">
-                        <li>
+
+                      <ul *ngIf="a.si[0].isDpcrMfo; else ShowFromOpcrCat" class="dropdown-menu dropdown-menu-end pointer">
+                        <li *ngIf="a.dpcrCategoryId !== 1">
                           <a
                             (click)="
-                              PutMFOCategory(a.mfoId, 1); a.categoryId = 1
+                              PutMFOFromOpcrCategory(a.si[0].dpcrId,a.mfoId, 1); a.dpcrCategoryId = 1
                             "
                             class="dropdown-item"
                             >STRATEGIC</a
                           >
                         </li>
-                        <li>
+                        <li *ngIf="a.dpcrCategoryId !== 2">
                           <a
                             (click)="
-                              PutMFOCategory(a.mfoId, 2); a.categoryId = 2
+                              PutMFOFromOpcrCategory(a.si[0].dpcrId,a.mfoId, 2); a.dpcrCategoryId = 2
                             "
                             class="dropdown-item"
                             >CORE
                           </a>
                         </li>
-                        <li>
+                        <li *ngIf="a.dpcrCategoryId !== 3">
                           <a
                             (click)="
-                              PutMFOCategory(a.mfoId, 3); a.categoryId = 3
+                              PutMFOFromOpcrCategory(a.si[0].dpcrId,a.mfoId, 3); a.dpcrCategoryId = 3
                             "
                             class="dropdown-item"
                             >SUPPORT
                           </a>
                         </li>
                       </ul>
+                      <ng-template #ShowFromOpcrCat>
+                        <ul class="dropdown-menu dropdown-menu-end pointer">
+                          <li *ngIf="a.dpcrCategoryId !== 1">
+                            <a
+                              (click)="
+                                PutMFOFromOpcrCategory(a.si[0].dpcrId,a.mfoId, 1); a.dpcrCategoryId = 1
+                              "
+                              class="dropdown-item"
+                              >STRATEGIC</a
+                            >
+                          </li>
+                          <li *ngIf="a.dpcrCategoryId !== 2">
+                            <a
+                              (click)="
+                                PutMFOFromOpcrCategory(a.si[0].dpcrId,a.mfoId, 2); a.dpcrCategoryId = 2
+                              "
+                              class="dropdown-item"
+                              >CORE
+                            </a>
+                          </li>
+                          <li *ngIf="a.dpcrCategoryId !== 3">
+                            <a
+                              (click)="
+                                PutMFOFromOpcrCategory(a.si[0].dpcrId,a.mfoId, 3); a.dpcrCategoryId = 3
+                              "
+                              class="dropdown-item"
+                              >SUPPORT
+                            </a>
+                          </li>
+                          <li *ngIf="a.dpcrCategoryId !== a.categoryId">
+                            <a
+                              (click)="
+                                PutMFOFromOpcrCategory(a.si[0].dpcrId,a.mfoId, a.categoryId); a.dpcrCategoryId = a.categoryId
+                              "
+                              class="dropdown-item"
+                              ><span class="text-danger"><b>NOTE</b></span>: This MFO has been set to <b>{{a.categoryId == 1? "STRATEGIC": a.categoryId == 2? "CORE": "SUPPORT"}}</b> in OPCR. Press here to revert.
+                            </a>
+                          </li>
+                        </ul>
+                      </ng-template>
                     </div>
                   </div>
                 </td>
@@ -447,5 +488,9 @@ export class TableDpcrDataComponent {
 
   PutMFOCategory(mfoId: string, categoryId: number) {
     this.opcrService.PutMFOCategory(mfoId, categoryId);
+  }
+
+  PutMFOFromOpcrCategory( dpcrId: string, MFOId: string, categoryId: number) {
+    this.dpcrService.EditDpcrDataMfoCategory(dpcrId, MFOId , categoryId);
   }
 }

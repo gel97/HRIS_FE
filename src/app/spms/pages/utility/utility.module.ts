@@ -31,13 +31,16 @@ import {MatTableModule} from '@angular/material/table';
 import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions, MatCheckboxModule} from '@angular/material/checkbox';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { OverviewComponent } from './overview/overview.component';
+import { SharedModule } from 'src/app/shared.module';
 @NgModule({
   declarations: [
     UserDivisionComponent,
     TableEmployeeNoDivComponent,
     TableEmployeeDivComponent,
     TableOfficeDivisionComponent,
-    UtilityFocalComponent
+    UtilityFocalComponent,
+    OverviewComponent
 
   ],
   imports: [
@@ -70,7 +73,8 @@ import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
     MatTabsModule,
     NgxMatSelectSearchModule,
     CdkDropList,
-    CdkDrag
+    CdkDrag,
+    SharedModule
   ]
 })
 export class UtilityModule { }

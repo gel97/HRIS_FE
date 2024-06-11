@@ -6,7 +6,7 @@ import { ErrorService } from './error.service';
 import { api } from 'src/app/connection';
 import { AlertService } from './alert.service';
 import Swal from 'sweetalert2';
-
+import { OpcrService } from './opcr.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,6 +35,7 @@ export class MfoService {
   constructor(
     private errorService: ErrorService,
     private alertService: AlertService,
+    private opcrService: OpcrService,
     private http: HttpClient,
     private url: SpmsApiService
   ) {}
@@ -199,6 +200,32 @@ export class MfoService {
       });
   }
 
+  EditIsFiveStandard(indicatorData: any) {
+    this.mfo.mutate((a) => (a.isLoadingSave = true));
+
+    this.http
+      .put<any[]>(api + this.url.put_is_five_standard(indicatorData.indicatorId, indicatorData.isFiveStndrd), { responseType: `json` })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+            this.opcrService.GetOPCRDetails();
+            a.error = false;
+          });
+
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
   async DeleteMfo(mfoId: string) {
     try {
       let deleteData = await this.alertService.delete(
@@ -327,6 +354,35 @@ export class MfoService {
           });
         },
         complete: () => {},
+      });
+  }
+
+  EditMfoCategory(MFOId: string, categoryId:number) {
+    this.mfo.mutate((a) => (a.isLoadingSave = true));
+
+    this.http
+      .put<any[]>(api + this.url.put_mfo_category(MFOId, categoryId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+        },
+        complete: () => {
+          this.mfo.mutate((a) => {
+            a.isLoadingSave = false;
+          });
+        },
       });
   }
 

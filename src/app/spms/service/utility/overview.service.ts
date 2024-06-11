@@ -2,13 +2,13 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { api } from 'src/app/connection';
-import { ErrorService } from './error.service';
-import { AlertService } from './alert.service';
-import { SpmsApiService } from './spms-api.service';
+import { ErrorService } from 'src/app/spms/service/error.service';
+import { AlertService } from 'src/app/spms/service/alert.service';
+import { SpmsApiService } from 'src/app/spms/service/spms-api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class DashboardService {
+export class OverviewService {
   mfoesTgt = signal<any>({
     data: [],
     error: false,
@@ -23,10 +23,10 @@ export class DashboardService {
 
   ) {}
 
-  GetDashboardMfoTargetOffices() {
+  async GetOverviewMfoTargetOffices() {
     this.mfoesTgt.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_dashboard_mfo_target_offices(), {
+      .get<any[]>(api + this.url.get_overview_mfo_target_offices(), {
         responseType: `json`,
       })
       .subscribe({

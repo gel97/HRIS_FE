@@ -5,11 +5,13 @@ import { FirstLetterUppercasePipe } from './pipe/first-letter-uppercase.pipe';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { LoadingComponent } from './spms/components/loading.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { LoadingSquareJellyBoxComponent } from './spms/components/loading-square-jelly-box.component';
 
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,
-    LoadingComponent
+    LoadingComponent,
+    LoadingSquareJellyBoxComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FirstLetterUppercasePipe,
     NgxSpinnerModule,
     LoadingComponent,
-    MatTooltipModule
+    MatTooltipModule,
+    LoadingSquareJellyBoxComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

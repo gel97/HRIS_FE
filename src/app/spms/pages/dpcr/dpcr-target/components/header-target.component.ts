@@ -67,6 +67,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
 
     SetIsShowDpcrData(){
         this.handleShowDpcrData.emit(false);
+        localStorage.removeItem('dpcrId');
+        localStorage.removeItem('dpcrDetails');
     }
 
     HandleDpcr(){

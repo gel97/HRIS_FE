@@ -69,9 +69,15 @@ export class DpcrService {
   ) {}
 
   dpcrTargetReportUrl:SafeResourceUrl = "";
+  loadReportTgt = signal<boolean>(false);
 
   GetDpcrTargetReport(dpcrId: string) {
     this.dpcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_dpcr_data_target_report(dpcrId));
+    this.loadReportTgt.set(true);
+    setTimeout(() => {
+      this.loadReportTgt.set(false);
+    }, 1000);
+    
   }
 
   GetDpcrMfoOts(dpcrDataId:string) {
@@ -243,7 +249,7 @@ export class DpcrService {
     dpcrData.dpcrId = this.storageDpcrId();
 
     this.http
-      .post<any[]>(api + this.url.post_dpcr_data(), dpcrData, {
+      .post<any[]>(api + this.url.post_dpcr_data(), dpcrData,  {
         responseType: `json`,
       })
       .subscribe({
@@ -351,6 +357,25 @@ export class DpcrService {
           } else {
             this.alertService.error();
           }
+          this.dpcrData.mutate((a) => {
+            a.error = true;
+          });
+        },
+        complete: () => {},
+      });
+  }
+
+  EditDpcrDataMfoCategory(dpcrId: string, MFOId: string, categoryId: number) {
+    this.http
+      .put<any[]>(api + this.url.put_dpcr_data_update_mfo_category(dpcrId, MFOId, categoryId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.alertService.update();
+        },
+        error: (error: any) => {
+          this.alertService.error();
           this.dpcrData.mutate((a) => {
             a.error = true;
           });
