@@ -15,7 +15,7 @@ export class IpcrService {
     private http: HttpClient,
     private url: SpmsApiService,
     private alertService: AlertService,
-    public sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {}
 
   storageIsShow = signal<any>(localStorage.getItem('isShow_ipcr'));
@@ -76,6 +76,71 @@ export class IpcrService {
 
   ipcrTargetReportUrl:SafeResourceUrl = "";
   loadReportIpcrTgt = signal<boolean>(false);
+
+  ipcrSmporReportUrl:SafeResourceUrl = "";
+  ipcrSMPOR = signal<any>({
+    data: null,
+    error: false,
+    isLoadingReport: false,
+  });
+
+  ipcrMporReportUrl:SafeResourceUrl = "";
+  ipcrMPOR = signal<any>({
+    data: null,
+    error: false,
+    isLoadingMPORReport: false,
+  });
+
+  GetIpcrMPOReport(ipcrId: string, year:number, monthNo:number) {
+    this.ipcrMPOR.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_mpor_report(ipcrId,  year, monthNo === undefined? 1: monthNo), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.ipcrMporReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.ipcrMPOR.mutate((a) => (a.data = this.ipcrMporReportUrl));
+          this.ipcrMPOR.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.ipcrMPOR.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.ipcrMPOR())
+          this.ipcrMPOR.mutate((a) => (a.isLoadingReport = false));
+
+        },
+      });
+  }
+
+  GetIpcrSMPOReport(ipcrId: string, year:number, monthNo:number) {
+    this.ipcrSMPOR.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_smpor_report(ipcrId,  year, monthNo === undefined? 1: monthNo), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.ipcrSmporReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.ipcrSMPOR.mutate((a) => (a.data = this.ipcrSmporReportUrl));
+          this.ipcrSMPOR.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.ipcrSMPOR.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.ipcrSMPOR())
+          this.ipcrSMPOR.mutate((a) => (a.isLoadingReport = false));
+
+        },
+      });
+  }
+
 
   GetIpcrActualReport(ipcrId: string) {
     this.ipcrActualReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_actual_report(ipcrId));
