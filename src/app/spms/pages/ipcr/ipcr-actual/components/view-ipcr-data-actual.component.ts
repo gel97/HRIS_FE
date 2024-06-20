@@ -1,5 +1,8 @@
 import { Component, OnInit , inject } from '@angular/core';
 import { IpcrService } from 'src/app/spms/service/ipcr.service';
+import { OtsService } from 'src/app/spms/service/ots.service';
+import { PageEvent } from '@angular/material/paginator';
+
 @Component({
   selector: 'app-view-ipcr-data-actual',
   template: `
@@ -141,17 +144,17 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
             </thead>
             <tbody>
               <ng-container *ngFor="let b of a.si; let y = index">
-                <tr (click)="setSIindex(i, y)">
+                <tr>
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
-                  <td>
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
                     <span class="text-success"
                       ><strong>{{ b.qty }}{{b.qtyUnit? '%':''}}</strong></span
                     >
                     {{ b.indicator }}
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
                     <span *ngIf="b.actual; else noActual" class="text-primary"
-                      ><strong>{{ b.actual?.totalQty ?? 0 }}</strong></span
+                      ><strong>{{ b.actual?.totalQty ?? 0 }}{{b.qtyUnit? '%':''}}</strong></span
                     >
                     {{ b.actual?.actualAc ?? '' }}
                     <ng-template #noActual>
@@ -163,7 +166,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                       </div>
                     </ng-template>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
                     <div class="d-flex justify-content-center">
                       <circle-progress
                         [percent]="b.actual?.qtyPrcnt ?? 0"
@@ -177,7 +180,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                       ></circle-progress>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuantiy">
                         <strong class="text-primary">{{
@@ -192,7 +195,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuality">
                         <strong class="text-primary">{{
@@ -207,7 +210,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimely">
                         <strong class="text-primary">{{
@@ -222,7 +225,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td>
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noAve">
                         <strong class="text-success">{{
@@ -237,14 +240,49 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                       </ng-template>
                     </div>
                   </td>
+                  <td >
+                    <div class="dropdown position-static float-end">
+                      <button
+                        type="button"
+                        class="btn p-0 dropdown-toggle hide-arrow"
+                        data-bs-toggle="dropdown"
+                      >
+                        <i class="bx bx-dots-vertical-rounded text-primary"></i>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          (click)="isViewStandard=true"
+                          ><i class="bx bx-show-alt me-1"></i> View Standard</a
+                        >
+                        <a 
+                          *ngIf="b.qtyUnit"
+                          (click)="data = b"
+                          class="dropdown-item cursor-pointer"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalIpcrActualQty"
+                          ><i class="bx bx-show-alt me-1"></i> Actual Target</a
+                        >
+                      </div>
+                    </div>
+                  </td>
                 </tr>
                 <tr
-                  *ngIf="currentSIindex === y && currentMfoindex === i"
+                  *ngIf="currentSIindex === y && currentMfoindex === i && isViewStandard"
                   style="background-color: #f5f5f9;"
                 >
-                  <td colspan="7">
+                  <td colspan="8">
                     <div class="card">
-                      <div class="card-body">
+                      <div class="card-hearer">
+                        <button
+                            type="button"
+                            class="btn-close"
+                            style="float: right;"
+                            aria-label="Close"
+                            (click)="isViewStandard=false"
+                        ></button>
+                      </div>    
+                      <div class="card-body">              
                         <div class="table-responsive text-nowrap">
                           <table class="table table-bordered">
                             <thead>
@@ -293,31 +331,373 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                     </div>
                   </td>
                 </tr>
+                <tr *ngIf="currentSIindex === y && currentMfoindex === i" style="background-color: #f5f5f9;">
+                  <td colspan="8">
+                  <div class="nav-align-top mb-4">
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                      <li class="nav-item">
+                        <button
+                          type="button"
+                          class="nav-link active"
+                          role="tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#navs-justified-home"
+                          aria-controls="navs-justified-home"
+                          aria-selected="true"
+                          (click)="handleOtsTab(1)"
+                        >
+                          OTS
+                        </button>
+                      </li>
+                      <li class="nav-item">
+                        <button
+                          type="button"
+                          class="nav-link"
+                          role="tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#navs-justified-profile"
+                          aria-controls="navs-justified-profile"
+                          aria-selected="false"
+                          (click)="handleOtsTab(0)"
+                        >
+                          PENDING
+                          <span *ngIf="otsMfo.data.metadata.totalItemsUnapproved > 0" class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger">{{otsMfo.data.metadata.totalItemsUnapproved}}</span>
+                        </button>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
+                        <div style="max-width: 150px;">
+                          <div class="form-floating py-1">
+                              <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                                  [(ngModel)]="monthNo" (ngModelChange)="handleMonth($event)">
+                                  <option selected disabled hidden>Open this select menu</option>
+                                  <option *ngFor="let month of months" [value]="month.id">{{ month.month }}
+                                  </option>
+                              </select>
+                              <label for="floatingSelect"><i class='bx bx-calendar'></i>&nbsp;Months</label>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="otsMfo.data.items.length > 0; else noOts">
+                          <div class="table-responsive text-nowrap col-8">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th [width]="150">Date</th>
+                                  <th [width]="10">Quantity</th>
+                                  <th [width]="10">Quality</th>
+                                  <th [width]="10">Timeliness</th>
+                                  <th >Description</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <ng-container *ngFor="let ots of otsMfo.data.items">
+                                  <tr>
+                                    <td class="text-center"><strong>{{ots.dateDone | date:'MMM. dd, yyyy' }}</strong></td>
+                                    <td class="text-center">{{ ots.qtyR }}</td>
+                                    <td class="text-center">{{ ots.qltyR }}</td>
+                                    <td class="text-center">{{ ots.timelyR }}</td>  
+                                    <td >{{ ots.description }}</td>                                                                             
+                                  </tr> 
+                                </ng-container>                        
+                              </tbody>
+                              <tfoot class="table-border-bottom-0">
+                                  <tr>
+                                      <th colspan="8">
+                                          <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)"
+                                              [length]="otsMfo.data.metadata.totalItems" [pageSize]="otsMfo.data.metadata.pageSize" [disabled]="false"
+                                              [showFirstLastButtons]="true"
+                                              [pageSizeOptions]="true ? pageSizeOptions : []"
+                                              [hidePageSize]="false" [pageIndex]="otsMfo.data.metadata.pageNumber - 1 "
+                                              aria-label="Select page">
+                                          </mat-paginator>
+                                      </th>
+                                  </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                          <div class="table-responsive text-nowrap col-4">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th colspan="5">MPOR</th>                         
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th colspan="5" class="text-center">QUANTITY</th>                         
+                                </tr>
+                                <tr>                                
+                                  <td >Week 1</td>  
+                                  <td >Week 2</td>  
+                                  <td >Week 3</td>                                                                             
+                                  <td >Week 4</td>  
+                                  <td >Total</td>  
+                                </tr> 
+                                <tr>                                
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qtyWk1}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qtyWk2}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qtyWk3}}</b></td>                                                                             
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qtyWk4}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qtyTotal}}</b></td>  
+                                </tr> 
+                                <tr>
+                                  <th colspan="5" class="text-center">QUALITY</th>                         
+                                </tr>
+                                <tr>                                
+                                  <td >Week 1</td>  
+                                  <td >Week 2</td>  
+                                  <td >Week 3</td>                                                                             
+                                  <td >Week 4</td>  
+                                  <td >Total</td>  
+                                </tr> 
+                                <tr>                                
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qltyWk1}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qltyWk2}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qltyWk3}}</b></td>                                                                             
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qltyWk4}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.qltyTotal}}</b></td>  
+                                </tr> 
+                                <tr>
+                                  <th colspan="5" class="text-center">TIMELINESS</th>                         
+                                </tr>
+                                <tr>                                
+                                  <td >Week 1</td>  
+                                  <td >Week 2</td>  
+                                  <td >Week 3</td>                                                                             
+                                  <td >Week 4</td>  
+                                  <td >Total</td>  
+                                </tr>
+                                <tr>                                
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.timelyWk1}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.timelyWk2}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.timelyWk3}}</b></td>                                                                             
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.timelyWk4}}</b></td>  
+                                  <td class="text-center"><b class="text-primary">{{otsMfo.data.rating.timelyTotal}}</b></td>  
+                                </tr>  
+                              </tbody>                       
+                            </table>
+                          </div>
+                        </div>  
+                        <ng-template #noOts>
+                          <div class="d-flex justify-content-center">
+                            <strong
+                              class="badge rounded-pill bg-label-danger shadow-sm"
+                              >no data
+                            </strong>
+                          </div>
+                        </ng-template>                  
+                      </div>
+                      <div class="tab-pane fade" id="navs-justified-profile" role="tabpanel">
+                        <table class="table table-bordered" *ngIf="otsMfo.data.items.length > 0; else noPendingOts">
+                          <thead>
+                            <tr>
+                              <th [width]="150">Date</th>
+                              <th [width]="10">Quantity</th>
+                              <th [width]="10">Quality</th>
+                              <th [width]="10">Timeliness</th>
+                              <th >Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <ng-container *ngFor="let ots of otsMfo.data.items">
+                              <tr>
+                                <td class="text-center"><strong>{{ots.dateDone | date:'MMM. dd, yyyy' }}</strong></td>
+                                <td class="text-center">{{ ots.qtyR }}</td>
+                                <td class="text-center">{{ ots.qltyR }}</td>
+                                <td class="text-center">{{ ots.timelyR }}</td>  
+                                <td >{{ ots.description }}</td>                                                    
+                              </tr> 
+                            </ng-container>                        
+                          </tbody>
+                          <tfoot class="table-border-bottom-0">
+                              <tr>
+                                  <th colspan="8">
+                                      <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)"
+                                          [length]="otsMfo.data.metadata.totalItems" [pageSize]="otsMfo.data.metadata.pageSize" [disabled]="false"
+                                          [showFirstLastButtons]="true"
+                                          [pageSizeOptions]="true ? pageSizeOptions : []"
+                                          [hidePageSize]="false" [pageIndex]="otsMfo.data.metadata.pageNumber - 1 "
+                                          aria-label="Select page">
+                                      </mat-paginator>
+                                  </th>
+                              </tr>
+                          </tfoot>
+                        </table>
+                        <ng-template #noPendingOts>
+                          <div class="d-flex justify-content-center">
+                            <strong
+                              class="badge rounded-pill bg-label-danger shadow-sm"
+                              >no data
+                            </strong>
+                          </div>
+                        </ng-template> 
+                      </div>    
+                    </div>
+                  </div>
+                  </td>
+                </tr>
               </ng-container>
             </tbody>
           </table>
         </div>
       </div>
     </ng-container>
+    <!-- Small Modal IPCR Actual Target-->
+    <div class="modal fade" id="modalIpcrActualQty" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel2"> Set Actual Target</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating px-2">
+              <input
+                type="number"
+                class="form-control"
+                id="target"
+                [(ngModel)] = "data.prcntActualQty"
+                aria-describedby="target"
+              />
+              <label for="target">Target</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              (click)="SaveActualTarget()"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class ViewIpcrDataActualComponent implements OnInit {
-  ipcrService = inject(IpcrService);
+  pageEvent: PageEvent | undefined;
+
+  ipcrService    = inject(IpcrService);
+  otsService     = inject(OtsService);
+
   ipcrDataActual = this.ipcrService.ipcrDataActual();
+  otsMfo         = this.otsService.otsMfo();
 
-  currentSIindex: any = null;
-  currentMfoindex: any = null;
+  currentSIindex  : any = null;
+  currentMfoindex : any = null;
 
-  sex: string | null = localStorage.getItem('sex');
-  firstName: string | null = localStorage.getItem('firstName');
+  sex       : string | null = localStorage.getItem('sex');
+  firstName : string | null = localStorage.getItem('firstName');
 
-  firstWord: string = '';
-  secondWord: string = '';
+  firstWord  : string = '';
+  secondWord : string = '';
+
+  data     : any = {};
+  paginate : any = {};
+
+  ipcrDataId : string = '';
+  subtaskId  : string = '';
+  otsStatus  : number = 1;
+
+  isViewStandard  : boolean = false;
+
+  pageSizeOptions = [5, 10, 50, 100];
+
+  page: any = {
+    pageNumber: 1,
+    pageSize: 10,
+  };
+
+  monthNo:number = new Date().getMonth() + 1;
+
+  months: any = [
+    {id: 1,  month: "January"},
+    {id: 2,  month: "Febuary"},
+    {id: 3,  month: "March"},
+    {id: 4,  month: "April"},
+    {id: 5,  month: "May"},
+    {id: 6,  month: "June"},
+    {id: 7,  month: "July"},
+    {id: 8,  month: "August"},
+    {id: 9,  month: "September"},
+    {id: 10, month: "October"},
+    {id: 11, month: "November"},
+    {id: 12, month: "December"},
+  ]
 
   ngOnInit(): void {
   }
 
+  GetMfoOts(ipcrDataId:string){
+    this.otsService.GetMfoOts(ipcrDataId);
+  }
+
+  GetMfoOtsPaginate(ipcrDataId:string, subtaskId:string){
+    this.ipcrDataId = ipcrDataId;
+    this.subtaskId  = subtaskId;
+
+    this.paginate.ipcrDataId = ipcrDataId;
+    this.paginate.subTaskId  = subtaskId;
+    this.paginate.status     = this.otsStatus;
+    this.paginate.monthNo    = this.monthNo;
+    this.paginate.pageNumber = 1;
+    this.paginate.pageSize   = 10;
+
+    this.otsService.GetMfoOtsPaginated(this.paginate);
+  }
+
+  handleOtsTab(otsStatus:number){
+    this.paginate.ipcrDataId = this.ipcrDataId;
+    this.paginate.subTaskId  = this.subtaskId;
+    this.paginate.status     = otsStatus;
+    this.paginate.monthNo    = this.monthNo;
+    this.paginate.pageNumber = 1;
+    this.paginate.pageSize   = 10;
+
+    this.otsService.GetMfoOtsPaginated(this.paginate);
+  }
+
+  handleMonth(value:any){
+    this.monthNo = value;
+
+    this.paginate.ipcrDataId = this.ipcrDataId;
+    this.paginate.subTaskId  = this.subtaskId;
+    this.paginate.status     = this.otsStatus;
+    this.paginate.monthNo    = value;
+    this.paginate.pageNumber = 1;
+    this.paginate.pageSize   = 10;
+
+    this.otsService.GetMfoOtsPaginated(this.paginate);  }
+
+  handlePageEvent(e: PageEvent) {
+    this.page.pageNumber = e.pageIndex + 1;
+    this.page.pageSize = e.pageSize;
+    //this.post_all_logs();
+  }
+
+  SaveActualTarget(){
+    //console.log(this.data)
+    this.ipcrService.PutIPCRSPrcntActualQty(this.data);
+  }
+
   setSIindex(i: number, y: number) {
+    this.monthNo = new Date().getMonth() + 1;
+
     if (this.currentMfoindex === i && this.currentSIindex === y) {
       this.currentSIindex = null;
       this.currentMfoindex = null;

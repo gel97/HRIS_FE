@@ -53,12 +53,14 @@ export class SpmsApiService {
   get_ipcrdetails_remainingST = (subTaskId: string)  => `/tPMIpcrDataSubTasks/remainingSt/${subTaskId}`;
   get_ipcrdetails_wSub        = (ipcrId: string)     => `/tPMIpcrDatas/list/${ipcrId}`;
   put_ipcrdata_sortby_mfo     = (ipcrId: string)     => `/tPMIpcrDatas/${ipcrId}/sortIpcrMfoes`;
+  put_ipcrdata_actual_qty     = ()                   => `/tPMIpcrDatas/update/percentage_actual_target`;
   get_ipcr_actual_report      = (ipcrId: string)     => `/tPMIpcrDatas/GetIpcrReport/${ipcrId}`;
   get_ipcr_target_report      = (ipcrId: string)     => `/tPMIpcrDatas/GetIpcrTargetReport/${ipcrId}`;
   get_ipcr_mpor_report        = (ipcrId: string, year:number, monthNo:number) => `/tPMIpcrDatas/GetMPORReport/${ipcrId}/${year}/${monthNo}`;
   get_ipcr_smpor_report       = (ipcrId: string, year:number, sem:number)     => `/tPMIpcrDatas/GetSMPORReport/${ipcrId}/${year}/${sem}`;
 
   put_ipcrSubData                   = () => `/tPMIpcrDataSubTasks`;
+  put_ipcrSubData_actual_qty        = () => `/tPMIpcrDataSubTasks/update/percentage_actual_target`;
   post_ipcrSubData                  = () => `/tPMIpcrDataSubTasks`;
 
   delete_ipcr                       = (ipcrId: string)        => `/tPMIpcrs/${ipcrId}`;
@@ -118,7 +120,9 @@ export class SpmsApiService {
   post_ots_get_list_user_mfo = () => `/tPMOts/get_list_user_mfo`;
   post_ots_group             = () => `/tPMOts/GroupOts`;
   post_ots_request           = () => `/tPMOts/OtsRequest`;
+  post_ots_mfo_paginate      = () => `/tPMOts/mfo/ots`;
   get_ots_request_summary    = () => `/tPMOts/Summary/${localStorage.getItem('officeRoleId')}`;
+  get_mfo_ots                = (ipcrDataId:string) => `/tPMOts/mfo/ots/${ipcrDataId}`;
 
   get_ots_mfo_group = (opcrDataId: string, dpcrDataId: string, subtaskId: string) => `/tPMOts/ots/${opcrDataId}/${dpcrDataId}/${subtaskId}/mfo_group`;
   delete_ots        = (otsId: string) => `/tPMOts/${otsId}`;

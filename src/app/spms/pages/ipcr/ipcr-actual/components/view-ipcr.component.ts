@@ -742,6 +742,7 @@ export class ViewIpcrComponent implements OnInit {
     this.ipcrService.isShowIpcrDataActual.set(1);
     localStorage.setItem('ipcrIdActual', data.ipcrId);
     localStorage.setItem('ipcrDetailsActual', data.details);
+    localStorage.setItem('ipcrDetailsActualYear', data.year);
 
     this.ipcrService.GetIPCRDataActual(data.ipcrId);
   }

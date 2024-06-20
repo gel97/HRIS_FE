@@ -256,7 +256,7 @@ import {
                       <td>
                         &nbsp; <i class="m-2 bx bx-subdirectory-right"></i
                         ><strong
-                          ><u>{{ c.qty }}</u></strong
+                          ><u>{{ c.qty }}{{c.qtyUnit == 1? '%' :''}}</u></strong
                         >
                         {{ c.stIndicator }}
                       </td>

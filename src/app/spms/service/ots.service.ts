@@ -11,47 +11,53 @@ import { IpcrService } from './ipcr.service';
   providedIn: 'root',
 })
 
-
-
 export class OtsService {
   constructor(
-    private http: HttpClient,
-    private url: SpmsApiService,
+    private http        : HttpClient,
+    private url         : SpmsApiService,
     private alertService: AlertService,
     private errorService: ErrorService,
-    private ipcrService: IpcrService
+    private ipcrService : IpcrService
 
   ) {}
 
   ots = signal<any>({
-    data: [],
-    error: false,
+    data     : [],
+    error    : false,
+    isLoading: false,
+  });
+
+  otsMfo = signal<any>({
+    data     : [],
+    error    : false,
     isLoading: false,
   });
 
   otsMfoes = signal<any>({
-    data: [],
-    error: false,
+    data     : [],
+    error    : false,
     isLoading: false,
     startDate: '',
-    endDate: ''
+    endDate  : ''
   });
 
   otsGetListUserMfo = signal<any>({
-    data: [],
-    error: false,
+    data     : [],
+    error    : false,
     isLoading: false,
   });
 
   otsGetMfoGroup = signal<any>({
-    data: [],
-    error: false,
+    data     : [],
+    error    : false,
     isLoading: false,
   });
 
-  otsData:any=[];
-  dataSource: DataSource | any;
-  storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
+  otsData    :any=[];
+  dataSource : DataSource | any;
+
+  storageIpcrId   = signal<any>(localStorage.getItem('ipcrId'));
+  storageIpcrYear = signal<any>(localStorage.getItem('ipcrDetailsActualYear'));
 
    GetCheckUserOpenIpcr(){
     this.otsMfoes.mutate((a) => (a.isLoading = true));
@@ -293,6 +299,59 @@ export class OtsService {
         },
         complete: () => {
 
+        },
+      });
+  }
+
+  GetMfoOts(ipcrDataId:string) {
+    this.otsMfo.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_mfo_ots(ipcrDataId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.otsMfo.mutate((a) => (a.data = response));
+        },
+        error: (error) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.otsMfo.mutate((a) => (a.isLoading = false));
+        },
+      });
+  }
+
+  GetMfoOtsPaginated(data:any) {
+    data.year = this.storageIpcrYear();
+    this.otsMfo.mutate((a) => (a.isLoading = true));
+    this.http
+      .post<any[]>(api + this.url.post_ots_mfo_paginate(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.otsMfo.mutate((a) => {
+            ( a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.otsMfo.mutate((a) => (a.isLoading = false));
+          this.otsMfo.mutate((a) => (a.data = []));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          this.otsMfo.mutate((a) => (a.isLoading = false));
         },
       });
   }

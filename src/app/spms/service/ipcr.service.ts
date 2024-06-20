@@ -398,6 +398,34 @@ export class IpcrService {
       });
   }
 
+  PutIPCRSPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcrdata_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
+  PutIPCRSubtaskPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcrSubData_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
   async SetDpcrActive(ipcr: any) {
     try {
       switch (ipcr.active) {

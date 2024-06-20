@@ -573,18 +573,18 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   `,
 })
 export class ViewDpcrActualDataComponent implements OnInit {
-  dpcrService = inject(DpcrService);
+  dpcrService    = inject(DpcrService);
   dpcrDataActual = this.dpcrService.dpcrDataActual();
 
-  currentSIindex: any = null;
+  currentSIindex : any = null;
   currentMfoindex: any = null;
 
   currentMfoindexSt: any = null;
 
-  sex: string | null = localStorage.getItem('sex');
+  sex      : string | null = localStorage.getItem('sex');
   firstName: string | null = localStorage.getItem('firstName');
 
-  firstWord: string = '';
+  firstWord : string = '';
   secondWord: string = '';
 
   ngOnInit(): void {

@@ -39,7 +39,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
               <app-warning />
             </ng-container>
             <ng-template #showOts>
-              <div [ngClass]="ots.mfo === undefined ? 'col-12' : 'col-6'">
+              <div [ngClass]="ots.mfo === undefined ? 'col-12' : 'col-6'" style="height: 700px;overflow: auto;">
                 <ng-container
                   *ngIf="otsGetMfoGroup.data.length === 0; else ShowOtsGroup"
                 >
@@ -91,7 +91,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                                     <strong class="text-primary"
                                       ><u
                                         >{{ c.qty
-                                        }}{{ b.qtyUnit ? '%' : '' }}</u
+                                        }}{{ c.qtyUnit ? '%' : '' }}</u
                                       ></strong
                                     >
                                     {{ c.stIndicator }}
