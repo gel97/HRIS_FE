@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Output, Input, inject, OnInit } from '@angular/core';
 import { IpcrService } from 'src/app/spms/service/ipcr.service';
 import { DpcrService } from 'src/app/spms/service/dpcr.service';
+import { UtlityService } from 'src/app/spms/service/utility.service';
+import { SignatoriesService } from 'src/app/spms/service/signatories.service';
 
 @Component({
   selector: 'app-table-ipcr',
@@ -115,6 +117,13 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       > -->
                     <a
                       class="dropdown-item cursor-pointer"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalSignatory"
+                      (click)="GetSignatoryIpcr(item.ipcrId)"
+                      ><i class="bx bx-edit me-1"></i> Signatory</a
+                    >
+                    <a
+                      class="dropdown-item cursor-pointer"
                       (click)="DeleteIpcr(item.ipcrId)"
                       ><i class="bx bx-trash me-1"></i> Delete</a
                     >
@@ -194,32 +203,215 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalSignatory"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-sm "
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            SIGNATORY
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div class="form-floating">
+                <input
+                  [(ngModel)]="signatory.reviewedBy"
+                  type="text"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder=""
+                  aria-describedby="floatingInputHelp"
+                  (ngModelChange)="handleOnChangeReviewedBy()"
+                  (blur)="handleOnBlurReviewedBy()"
+
+                />
+                <label for="floatingInput">Reviewed by</label>
+              </div>
+              <div *ngIf="isShowReviewedBy" class="card shadow-lg" style="position: absolute; width: 90%; z-index: 2000">
+                  <div class="card-body " style="max-height: 160px; overflow:auto">
+                      <ul *ngFor="let item of search_employee_list">
+                        <li class="menu-item cursor-pointer text-hover" (click)="setReviewedBy(item)">
+                          {{item.fullNameFirst}}
+                        </li>
+                      </ul>
+                      <p *ngIf="search_employee_list.length === 0"><b>no data . . .</b></p>
+                  </div>
+              </div>
+            </div>
+            <br>
+            <div class="form-floating">
+              <input
+                [(ngModel)]="signatory.approvedBy"
+                type="text"
+                class="form-control"
+                id="floatingInput"
+                placeholder=""
+                aria-describedby="floatingInputHelp"
+                (ngModelChange)="handleOnChangeApprovedBy()"
+                (blur)="handleOnBlurApprovedBy()"
+
+              />
+              <label for="floatingInput">Approved by</label>
+            </div>
+            <div *ngIf="isShowApprovedBy" class="card shadow-lg" style="position: absolute; width: 90%;">
+                <div class="card-body " style="max-height: 160px; overflow:auto">
+                    <ul *ngFor="let item of search_employee_list_approved_by">
+                      <li class="menu-item cursor-pointer text-hover" (click)="setApprovedBy(item)">
+                        {{item.fullNameFirst}}
+                      </li>
+                    </ul>
+                    <p *ngIf="search_employee_list_approved_by.length === 0"><b>no data . . .</b></p>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              (click)="SaveSignatory()"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class TableIpcrComponent implements OnInit {
-  ipcrService = inject(IpcrService);
-  dpcrService = inject(DpcrService);
+  ipcrService      = inject(IpcrService);
+  dpcrService      = inject(DpcrService);
+  utilService      = inject(UtlityService);
+  signatoryService = inject(SignatoriesService);
 
   get_ipcrDetails = this.ipcrService.ipcrDetails();
 
   prevYear = new Date().getFullYear() - 1;
-  yearNow = new Date().getFullYear();
-  listYear: any = [];
+  yearNow  = new Date().getFullYear();
+  listYear : any = [];
+  
+  employee_list       : any = [];
+  search_employee_list: any = [];
+  search_employee_list_approved_by: any = []; 
 
-  divisionId: string | null = localStorage.getItem('divisionId');
-  userId: string | null = localStorage.getItem('userId');
+  signatory: any = {};
+
+  divisionId : string | null = localStorage.getItem('divisionId');
+  userId     : string | null = localStorage.getItem('userId');
 
   ipcr = this.ipcrService.ipcr();
+
+  isShowReviewedBy: boolean = false;
+  isShowApprovedBy: boolean = false;
 
   ngOnInit(): void {
     for (let index = 3; index > 0; index--) {
       this.listYear.push(this.prevYear++);
     }
     this.ipcrService.GetIPCRs();
+    this.GetEmployeeList();
   }
 
   @Output() isAddDpcr = new EventEmitter<boolean>();
   @Output() setDpcr = new EventEmitter<any>();
+
+  GetEmployeeList(){
+    this.utilService.get_employee_list().subscribe(
+      (response: any) => {
+        this.employee_list = response.filter(
+          (employee: any) => employee.salaryGrade >= 18 && employee.salaryGrade <= 26
+        );
+
+        console.log(this.employee_list);
+      },
+      (err) => {
+        alert('error');
+      },
+    );
+  }
+
+  GetSignatoryIpcr(ipcrId:any) {
+    this.signatory.typeId = ipcrId;
+    this.signatoryService.get_signatories_ipcr(ipcrId).subscribe(
+      (request:any) => {
+        this.signatory = request;
+        console.log(request)
+      },
+      (err) => {
+      }
+    );
+  }
+
+  SaveSignatory(){
+    this.signatoryService.put_signatories_ipcr(this.signatory);
+  }
+
+  handleOnChangeReviewedBy(){
+    this.isShowReviewedBy = true;
+    this.search_employee_list = this.employee_list.filter(
+      (employee: any) => (employee.firstName + " " + employee.lastName).toLowerCase().includes(this.signatory.reviewedBy.toLowerCase()));
+  }
+
+  setReviewedBy(value:any){
+    this.isShowReviewedBy       = false;
+    this.signatory.reviewedBy   = value.fullNameFirst;
+    this.signatory.reviewedById = value.eic;
+  }
+
+  handleOnBlurReviewedBy(){
+    setTimeout(() => {
+      if(this.signatory.reviewedById === null || this.signatory.reviewedById === undefined || this.signatory.reviewedBy === ""){
+        this.isShowReviewedBy = false;
+        this.signatory.reviewedBy = null;
+        this.signatory.reviewedById = null;
+
+      }
+    }, 1000);
+  }
+
+  handleOnChangeApprovedBy(){
+    this.isShowApprovedBy = true;
+    this.search_employee_list_approved_by = this.employee_list.filter(
+      (employee: any) => (employee.firstName + " " + employee.lastName).toLowerCase().includes(this.signatory.approvedBy.toLowerCase()));
+  }
+
+  setApprovedBy(value:any){
+    this.isShowApprovedBy       = false;
+    this.signatory.approvedBy   = value.fullNameFirst;
+    this.signatory.approvedById = value.eic;
+  }
+
+  handleOnBlurApprovedBy(){
+    setTimeout(() => {
+      if(this.signatory.approvedById === null || this.signatory.approvedById === undefined || this.signatory.approvedBy === ""){
+        this.isShowApprovedBy = false;
+        this.signatory.approvedBy = null;
+        this.signatory.approvedById = null;      }
+    }, 1000);
+
+  }
 
   SetDpcr(item: any) {
     this.setDpcr.emit(item);

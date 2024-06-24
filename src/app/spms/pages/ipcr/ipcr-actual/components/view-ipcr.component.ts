@@ -164,7 +164,7 @@ import { DomSanitizer } from '@angular/platform-browser';
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel2">Print MPOR</h5>
+            <h5 class="modal-title" id="exampleModalLabel2">MPOR</h5>
             <button
               type="button"
               class="btn-close"
@@ -207,7 +207,7 @@ import { DomSanitizer } from '@angular/platform-browser';
               type="button"
               class="btn btn-primary"
             >
-              Print MPOR
+              Submit
             </button>
           </div>
         </div>
@@ -270,6 +270,7 @@ import { DomSanitizer } from '@angular/platform-browser';
       >
         <div class="modal-content">
           <div class="modal-header">
+            <h4><b>MPOR</b></h4>
             <button
               type="button"
               class="btn-close"
@@ -278,6 +279,26 @@ import { DomSanitizer } from '@angular/platform-browser';
             ></button>
           </div>
           <div class="modal-body row">
+            <div class="mb-2" style="display: flex;">
+              <div style="margin-top: 10px; ">
+                <label for="exampleFormControlSelect1" class="form-label"
+                  >Month:</label
+                >
+              </div>
+              <div style="margin-left: 10px">
+                <select
+                  class="form-select col-2"
+                  id="exampleFormControlSelect1"
+                  aria-label="Default select example"
+                  [ngModel]="selectedMonth"
+                  (ngModelChange)="selectMonthOnChange($event)"
+                >
+                  <option *ngFor="let i of months" [value]="i.monthNum">
+                    {{ i.month }}
+                  </option>
+                </select>
+              </div>         
+            </div>
             <ng-container
               *ngIf="ipcrMporReport.isLoadingReport; else ShowReport"
             >
@@ -288,8 +309,8 @@ import { DomSanitizer } from '@angular/platform-browser';
             <ng-template #ShowReport>
               <iframe
                 [src]="ipcrMporReport.data"
-                width="100%"
-                height="100%"
+                width="95%"
+                height="90%"
                 frameborder="0"
               ></iframe>
             </ng-template>
@@ -550,6 +571,12 @@ export class ViewIpcrComponent implements OnInit {
     this.reportMPOR.monthNum = month;
     this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
     console.log(month)
+  }
+
+  selectMonthOnChange(month: number) {
+    this.reportMPOR.monthNum = month;
+    this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
+    this.ReportMPOR();
   }
 
   getMonths() {

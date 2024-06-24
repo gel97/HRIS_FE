@@ -6,15 +6,24 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { LoadingComponent } from './spms/components/loading.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoadingSquareJellyBoxComponent } from './spms/components/loading-square-jelly-box.component';
+import { ModalOtsComponent } from './spms/pages/ots/main/components/modal-ots.component';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,
     LoadingComponent,
-    LoadingSquareJellyBoxComponent
+    LoadingSquareJellyBoxComponent,
+    ModalOtsComponent,
+
   ],
   imports: [
     CommonModule,
+    FormsModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,
@@ -24,7 +33,11 @@ import { LoadingSquareJellyBoxComponent } from './spms/components/loading-square
       animationDuration: 300,
     }),
     NgxSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    NgxMatSelectSearchModule
   ],
   exports: [
     NgCircleProgressModule,
@@ -32,7 +45,13 @@ import { LoadingSquareJellyBoxComponent } from './spms/components/loading-square
     NgxSpinnerModule,
     LoadingComponent,
     MatTooltipModule,
-    LoadingSquareJellyBoxComponent
+    LoadingSquareJellyBoxComponent,
+    ModalOtsComponent,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    NgxMatSelectSearchModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

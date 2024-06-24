@@ -367,15 +367,22 @@ import { PageEvent } from '@angular/material/paginator';
                     </ul>
                     <div class="tab-content">
                       <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
-                        <div style="max-width: 150px;">
-                          <div class="form-floating py-1">
-                              <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
-                                  [(ngModel)]="monthNo" (ngModelChange)="handleMonth($event)">
-                                  <option selected disabled hidden>Open this select menu</option>
-                                  <option *ngFor="let month of months" [value]="month.id">{{ month.month }}
-                                  </option>
-                              </select>
-                              <label for="floatingSelect"><i class='bx bx-calendar'></i>&nbsp;Months</label>
+                        <div style="display: flex;">
+                          <div style="max-width: 150px;">
+                            <div class="form-floating py-1">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                                    [(ngModel)]="monthNo" (ngModelChange)="handleMonth($event)">
+                                    <option selected disabled hidden>Open this select menu</option>
+                                    <option *ngFor="let month of months" [value]="month.id">{{ month.month }}
+                                    </option>
+                                </select>
+                                <label for="floatingSelect"><i class='bx bx-calendar'></i>&nbsp;Months</label>
+                            </div>
+                          </div>
+                          <div class="m-3">
+                            <button class="btn btn-primary" (click)="setOtsData(a,b)" data-bs-toggle="modal" data-bs-target="#modalOts">
+                              <i class='bx bx-plus'></i>OTS
+                            </button>
                           </div>
                         </div>
                         <div class="row" *ngIf="otsMfo.data.items.length > 0; else noOts">
@@ -497,6 +504,8 @@ import { PageEvent } from '@angular/material/paginator';
                               <th [width]="10">Quality</th>
                               <th [width]="10">Timeliness</th>
                               <th >Description</th>
+                              <th [width]="110">Action</th>
+
                             </tr>
                           </thead>
                           <tbody>
@@ -506,7 +515,11 @@ import { PageEvent } from '@angular/material/paginator';
                                 <td class="text-center">{{ ots.qtyR }}</td>
                                 <td class="text-center">{{ ots.qltyR }}</td>
                                 <td class="text-center">{{ ots.timelyR }}</td>  
-                                <td >{{ ots.description }}</td>                                                    
+                                <td >{{ ots.description }}</td> 
+                                <td>
+                                  <i class="bx bx-edit-alt me-1 cursor-pointer px-1 icon-hover-edit" (click)="setOtsUpdate(ots);setOtsData(a,b)" data-bs-toggle="modal" data-bs-target="#modalUpdateOts"></i>
+                                  <i class="bx bx-trash cursor-pointer me-1 px-1 icon-hover-delete" (click)="DeleteOts(ots.otsId)"></i>
+                                </td>                                                   
                               </tr> 
                             </ng-container>                        
                           </tbody>
@@ -587,6 +600,220 @@ import { PageEvent } from '@angular/material/paginator';
         </div>
       </div>
     </div>
+    <app-modal-ots otsMfoes="[]" [isShowMfoes]="false" [ots]="ots"/>
+    <div
+      class="modal fade"
+      id="modalUpdateOts"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-m"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalScrollableTitle">
+              <strong>UPDATE OUTPUT TRACKING SHEET</strong>
+            </h5>
+            <button
+              #closeModal
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <div >
+              <div class="card bg-primary text-white mb-2">
+                <div class="card-body p-3">
+                  <h5 class="card-title text-white">MFO</h5>
+                  <p class="card-text">{{ots?.mfo}}</p>
+                  <!--  -->
+                </div>
+              </div>
+              <div class="card bg-success text-white mb-2">
+                <div class="card-body p-3">
+                  <h5 class="card-title text-white">SUCCESS INDICATOR</h5>
+                  <p class="card-text flex">
+                    <strong class="text-white"
+                      ><u>{{  ots.qty }}{{ ots.qtyUnit ? '%' : '' }}</u>
+                    </strong>
+                    {{ots?.indicator}}     
+                  </p>
+                </div>
+              </div>
+              <div class="form-floating">
+                <textarea
+                  class="form-control mb-4"
+                  id="description"
+                  placeholder="Description"
+                  ria-describedby="description"
+                  [(ngModel)]="ots.description"
+                ></textarea>
+                <label for="description">Description</label>
+              </div>
+              <div class="form-floating">
+                <input
+                  type="number"
+                  class="form-control mb-2"
+                  id="quantity"
+                  [min]="0"
+                  placeholder="Quantity"
+                  aria-describedby="quantity"
+                  [(ngModel)]="ots.qtyR"
+                />
+                <label for="quantity">Quantity</label>
+              </div>
+              <label class="col-form-label">Quality</label>
+              <div class="row mb-2">
+                <div class="col-2">
+                  <button
+                    (click)="setQuality(5)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.qltyR == 5 ? 'active' : ''"
+                    [disabled]="!ots.qlty5"
+                  >
+                    5
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setQuality(4)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.qltyR == 4 ? 'active' : ''"
+                    [disabled]="!ots.qlty4"
+                  >
+                    4
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setQuality(3)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.qltyR == 3 ? 'active' : ''"
+                    [disabled]="!ots.qlty3"
+                  >
+                    3
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setQuality(2)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.qltyR == 2 ? 'active' : ''"
+                    [disabled]="!ots.qlty2"
+                  >
+                    2
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setQuality(1)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.qltyR == 1 ? 'active' : ''"
+                    [disabled]="!ots.qlty1"
+                  >
+                    1
+                  </button>
+                </div>
+              </div>
+              <label class="col-form-label">Timeliness</label>
+              <div class="row mb-4">
+                <div class="col-2">
+                  <button
+                    (click)="setTimeliness(5)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.timelyR == 5 ? 'active' : ''"
+                    [disabled]="!ots.timely5"
+                  >
+                    5
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setTimeliness(4)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.timelyR == 4 ? 'active' : ''"
+                    [disabled]="!ots.timely4"
+                  >
+                    4
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setTimeliness(3)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.timelyR == 3 ? 'active' : ''"
+                    [disabled]="!ots.timely3"
+                  >
+                    3
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setTimeliness(2)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.timelyR == 2 ? 'active' : ''"
+                    [disabled]="!ots.timely2"
+                  >
+                    2
+                  </button>
+                </div>
+                <div class="col-2">
+                  <button
+                    (click)="setTimeliness(1)"
+                    type="button"
+                    class="btn rounded-pill btn-icon btn-outline-primary"
+                    [ngClass]="ots.timelyR == 1 ? 'active' : ''"
+                    [disabled]="!ots.timely1"
+                  >
+                    1
+                  </button>
+                </div>
+              </div>
+              <div class="mb-2">
+                <label
+                  for="html5-datetime-local-input"
+                  class="col-md-4 col-form-label"
+                  >Date Accomplished</label
+                >
+                <input
+                  class="form-control"
+                  type="datetime-local"
+                  [(ngModel)]="ots.dateDone"
+                  id="html5-datetime-local-input"
+                  min="2023-11-1T08:00 | date:'yyyy-MM-ddTHH:mm'"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" (click)="UpdateOts()" class="btn btn-primary" data-bs-dismiss="modal">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   `,
 })
 export class ViewIpcrDataActualComponent implements OnInit {
@@ -609,6 +836,7 @@ export class ViewIpcrDataActualComponent implements OnInit {
 
   data     : any = {};
   paginate : any = {};
+  ots      : any = {};
 
   ipcrDataId : string = '';
   subtaskId  : string = '';
@@ -693,6 +921,70 @@ export class ViewIpcrDataActualComponent implements OnInit {
   SaveActualTarget(){
     //console.log(this.data)
     this.ipcrService.PutIPCRSPrcntActualQty(this.data);
+  }
+
+  UpdateOts(){
+    this.otsService.EditOts(this.ots);
+    this.otsService.GetMfoOtsPaginated(this.paginate);
+
+  }
+
+  DeleteOts(otsId:string){
+    this.otsService.DeleteOts(otsId);
+    setTimeout(() => {
+      this.otsService.GetMfoOtsPaginated(this.paginate);
+    }, 1000);
+
+  }
+
+  setOtsData(mfo:any, si:any){
+    this.ots.mfo         = mfo.mfo;
+    this.ots.mfoId       = mfo.mfoId;
+    this.ots.indicator   = si.indicator;
+    this.ots.indicatorId = si.indicatorId;
+    this.ots.qty         = si.qty;
+    this.ots.dpcrDataId  = si.dpcrDataId;
+    this.ots.ipcrDataId  = si.ipcrDataId;
+    this.ots.ipcrId      = si.ipcrId;
+    this.ots.isSubTask   = si.isSubTask;
+    this.ots.opcrDataId  = si.opcrDataId;
+    this.ots.qtyUnit     = si.qtyUnit;
+    this.ots.qlty5       = si.qlty5;
+    this.ots.qlty4       = si.qlty4;
+    this.ots.qlty3       = si.qlty3;
+    this.ots.qlty2       = si.qlty2;
+    this.ots.qlty1       = si.qlty1;
+    this.ots.timely5     = si.timely5;
+    this.ots.timely4     = si.timely4;
+    this.ots.timely3     = si.timely3;
+    this.ots.timely2     = si.timely2;
+    this.ots.timely1     = si.timely1;
+  }
+
+  setOtsUpdate(otsData:any){
+    this.ots.qtyR        = otsData.qtyR;
+    this.ots.qltyR       = otsData.qltyR;
+    this.ots.timelyR     = otsData.timelyR;
+
+    this.ots.dateDone    = otsData.dateDone;
+    this.ots.description = otsData.description;
+    this.ots.userId      = otsData.userId;
+    this.ots.otsGroupId  = otsData.otsGroupId;
+    this.ots.recNo       = otsData.recNo;
+    this.ots.ipcrDataId  = otsData.ipcrDataId;
+    this.ots.subTaskId   = otsData.subTaskId;
+    this.ots.otsId       = otsData.otsId;
+    this.ots.tag         = otsData.tag;
+    this.ots.status      = otsData.status;
+
+  }
+
+  setQuality(rating: number) {
+    this.ots.qltyR = rating;
+  }
+
+  setTimeliness(rating: number) {
+    this.ots.timelyR = rating;
   }
 
   setSIindex(i: number, y: number) {
