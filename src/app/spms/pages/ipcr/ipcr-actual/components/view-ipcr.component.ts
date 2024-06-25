@@ -100,6 +100,13 @@ import { DomSanitizer } from '@angular/platform-browser';
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
+                          data-bs-target="#modalStandard"
+                          (click)="ReportStandard(data)"
+                          ><i class="bx bx-printer me-1"></i> Print Standard</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
                           data-bs-target="#printMPOR"
                           (click)="
                             sem = data.semester;
@@ -378,6 +385,57 @@ import { DomSanitizer } from '@angular/platform-browser';
         </div>
       </div>
     </div>
+
+     <!-- Modal -->
+     <div
+      class="modal fade"
+      id="modalStandard"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <ng-container
+              *ngIf="ipcrStandardReport.isLoadingReport; else ShowReportStandard"
+            >
+              <app-loading-square-jelly-box
+                [loading]="ipcrStandardReport.isLoadingReport"
+              />
+            </ng-container>
+            <ng-template #ShowReportStandard>
+              <iframe
+                [src]="ipcrStandardReport.data"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class ViewIpcrComponent implements OnInit {
@@ -417,6 +475,7 @@ export class ViewIpcrComponent implements OnInit {
 
   ipcrMporReport : any = this.ipcrService.ipcrMPOR();
   ipcrSmporReport: any = this.ipcrService.ipcrSMPOR();
+  ipcrStandardReport: any = this.ipcrService.ipcrStandard();
 
   ngOnInit(): void {
     this.ipcrYear();
@@ -605,6 +664,11 @@ export class ViewIpcrComponent implements OnInit {
 
   ReportSMPOR(data:any){
     this.ipcrService.GetIpcrSMPOReport(data.ipcrId, data.year, data.semester)
+
+  }
+
+  ReportStandard(data:any){
+    this.ipcrService.GetIpcrStandardReport(data.ipcrId, data.year, data.semester)
 
   }
 

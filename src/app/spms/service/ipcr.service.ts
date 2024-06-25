@@ -84,6 +84,13 @@ export class IpcrService {
     isLoadingReport: false,
   });
 
+  ipcrStandardReportUrl:SafeResourceUrl = "";
+  ipcrStandard = signal<any>({
+    data: null,
+    error: false,
+    isLoadingReport: false,
+  });
+
   ipcrMporReportUrl:SafeResourceUrl = "";
   ipcrMPOR = signal<any>({
     data: null,
@@ -136,6 +143,31 @@ export class IpcrService {
         complete: () => {
           console.log(this.ipcrSMPOR())
           this.ipcrSMPOR.mutate((a) => (a.isLoadingReport = false));
+
+        },
+      });
+  }
+
+  GetIpcrStandardReport(ipcrId: string, year:number, monthNo:number) {
+    this.ipcrStandard.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_standard_report(ipcrId,  year, monthNo === undefined? 1: monthNo), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.ipcrStandardReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.ipcrStandard.mutate((a) => (a.data = this.ipcrStandardReportUrl));
+          this.ipcrStandard.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.ipcrStandard.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.ipcrStandard())
+          this.ipcrStandard.mutate((a) => (a.isLoadingReport = false));
 
         },
       });

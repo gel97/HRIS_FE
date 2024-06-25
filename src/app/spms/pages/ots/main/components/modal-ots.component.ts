@@ -741,6 +741,8 @@ export class ModalOtsComponent implements OnInit {
     } else {
       this.otsService.AddOts(this.ots);
     }
+
+    this.submit.emit();
   }
 
   fiterGroupOts() {

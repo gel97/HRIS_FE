@@ -58,6 +58,7 @@ export class SpmsApiService {
   get_ipcr_target_report      = (ipcrId: string)     => `/tPMIpcrDatas/GetIpcrTargetReport/${ipcrId}`;
   get_ipcr_mpor_report        = (ipcrId: string, year:number, monthNo:number) => `/tPMIpcrDatas/GetMPORReport/${ipcrId}/${year}/${monthNo}`;
   get_ipcr_smpor_report       = (ipcrId: string, year:number, sem:number)     => `/tPMIpcrDatas/GetSMPORReport/${ipcrId}/${year}/${sem}`;
+  get_ipcr_standard_report    = (ipcrId: string, year:number, sem:number)     => `/tPMIpcrDatas/GetIpcrStandardReport/${ipcrId}/${year}/${sem}`;
 
   put_ipcrSubData                   = () => `/tPMIpcrDataSubTasks`;
   put_ipcrSubData_actual_qty        = () => `/tPMIpcrDataSubTasks/update/percentage_actual_target`;

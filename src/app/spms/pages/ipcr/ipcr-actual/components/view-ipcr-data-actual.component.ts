@@ -395,6 +395,8 @@ import { PageEvent } from '@angular/material/paginator';
                                   <th [width]="10">Quality</th>
                                   <th [width]="10">Timeliness</th>
                                   <th >Description</th>
+                                  <th >Action</th>
+
                                 </tr>
                               </thead>
                               <tbody>
@@ -404,7 +406,11 @@ import { PageEvent } from '@angular/material/paginator';
                                     <td class="text-center">{{ ots.qtyR }}</td>
                                     <td class="text-center">{{ ots.qltyR }}</td>
                                     <td class="text-center">{{ ots.timelyR }}</td>  
-                                    <td >{{ ots.description }}</td>                                                                             
+                                    <td >{{ ots.description }}</td>  
+                                    <td>
+                                      <i class="bx bx-edit-alt me-1 cursor-pointer px-1 icon-hover-edit" (click)="setOtsUpdate(ots);setOtsData(a,b)" data-bs-toggle="modal" data-bs-target="#modalUpdateOts"></i>
+                                      <i class="bx bx-trash cursor-pointer me-1 px-1 icon-hover-delete" (click)="DeleteOts(ots.otsId)"></i>
+                                    </td>                                                                            
                                   </tr> 
                                 </ng-container>                        
                               </tbody>
@@ -600,7 +606,7 @@ import { PageEvent } from '@angular/material/paginator';
         </div>
       </div>
     </div>
-    <app-modal-ots otsMfoes="[]" [isShowMfoes]="false" [ots]="ots"/>
+    <app-modal-ots otsMfoes="[]" [isShowMfoes]="false" [ots]="ots" (submit)="submitOts()"/>
     <div
       class="modal fade"
       id="modalUpdateOts"
@@ -871,6 +877,10 @@ export class ViewIpcrDataActualComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  GetIPCRActual(){
+    this.ipcrService.GetIPCRDataActual(localStorage.getItem('ipcrIdActual') ?? "");
+  }
+
   GetMfoOts(ipcrDataId:string){
     this.otsService.GetMfoOts(ipcrDataId);
   }
@@ -887,6 +897,11 @@ export class ViewIpcrDataActualComponent implements OnInit {
     this.paginate.pageSize   = 10;
 
     this.otsService.GetMfoOtsPaginated(this.paginate);
+  }
+
+  submitOts(){
+    this.GetMfoOtsPaginate(this.ipcrDataId, this.subtaskId);
+    this.GetIPCRActual();
   }
 
   handleOtsTab(otsStatus:number){
@@ -926,6 +941,7 @@ export class ViewIpcrDataActualComponent implements OnInit {
   UpdateOts(){
     this.otsService.EditOts(this.ots);
     this.otsService.GetMfoOtsPaginated(this.paginate);
+    this.GetIPCRActual();
 
   }
 
@@ -933,6 +949,8 @@ export class ViewIpcrDataActualComponent implements OnInit {
     this.otsService.DeleteOts(otsId);
     setTimeout(() => {
       this.otsService.GetMfoOtsPaginated(this.paginate);
+      this.GetIPCRActual();
+
     }, 1000);
 
   }
