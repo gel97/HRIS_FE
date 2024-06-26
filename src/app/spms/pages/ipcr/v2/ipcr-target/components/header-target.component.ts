@@ -33,7 +33,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         </div>
         <div *ngIf="isShowIpcrData == 0; else ShowIpcrData" class="col-3">
             <div class="pt-2" style="margin-right:5px;">
-                <button (click)="HandleIpcr()" class="btn btn-primary float-end" type="button" aria-controls="offcanvasIpcr">
+                <button class="btn btn-primary float-end" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasIpcr" aria-controls="offcanvasIpcr">
                     <i class='bx bx-plus'></i>IPCR
                 </button>
             </div>
@@ -67,7 +68,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     }
 
     HandleIpcr(){
-        this.ipcrService.AddIPCR();
+        this.ipcrService.AddIPCR({});
     }
 
   }

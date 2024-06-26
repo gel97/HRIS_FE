@@ -298,6 +298,11 @@ import { SignatoriesService } from 'src/app/spms/service/signatories.service';
         </div>
       </div>
     </div>
+    <app-canvas-target-ipcr
+    [ipcrObj]="ipcrObj" 
+    [isAddIpcr]="isAddIpcr"
+    (submit)="isAddIpcr? AddIpcr(): EditIpcr()"
+/>
   `,
 })
 export class TableIpcrComponent implements OnInit {
@@ -312,6 +317,9 @@ export class TableIpcrComponent implements OnInit {
   yearNow  = new Date().getFullYear();
   listYear : any = [];
   
+  ipcrObj  : any = {};
+  isAddIpcr: boolean = true;
+
   employee_list       : any = [];
   search_employee_list: any = [];
   search_employee_list_approved_by: any = []; 
@@ -417,6 +425,15 @@ export class TableIpcrComponent implements OnInit {
     this.setDpcr.emit(item);
   }
 
+  AddIpcr() {
+    //console.log(this.ipcrObj)
+    this.ipcrObj.year = this.ipcrObj.year.toString();
+    this.ipcrService.AddIPCR(this.ipcrObj);
+  }
+
+  EditIpcr() {
+  }
+
   DeleteIpcr(ipcrId: string) {
     this.ipcrService.DeleteIpcr(ipcrId);
   }
@@ -439,6 +456,9 @@ export class TableIpcrComponent implements OnInit {
 
     this.ipcrService.storageIsShow.set(1);
     localStorage.setItem('isShow_ipcr', '1');
+
+    this.ipcrService.storageIpcrDetailsActual.set(item.details);
+    localStorage.setItem('ipcrDetailsActual', item.details);
   }
 
   Semester(value: number) {

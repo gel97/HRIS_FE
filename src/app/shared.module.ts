@@ -12,7 +12,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,

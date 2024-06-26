@@ -19,7 +19,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
 import { DatePipe } from '@angular/common';
 import { SharedModule } from './shared.module';
-
 @NgModule({
   declarations: [
     AppComponent,

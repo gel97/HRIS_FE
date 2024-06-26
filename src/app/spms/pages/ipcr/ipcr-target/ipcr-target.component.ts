@@ -282,7 +282,7 @@ export class IpcrTargetComponent implements OnInit {
     this.post_ipcr.semester = this.sem;
     this.post_ipcr.divisionId = this.divisionId;
     this.post_ipcr.userId = this.userId;
-    this.ipcrService.AddIPCR();
+    this.ipcrService.AddIPCR({});
     this.post_ipcr = {};
   }
 

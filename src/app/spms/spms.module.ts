@@ -65,7 +65,7 @@ import { IpcrComponent } from './pages/ipcr/ipcr.component';
     HeaderOpcrActualComponent,
     ViewOpcrActualComponent,
     ViewOpcrActualDataComponent,
-    IpcrComponent
+    IpcrComponent,
    // FirstLetterUppercasePipe
   ],
   imports: [

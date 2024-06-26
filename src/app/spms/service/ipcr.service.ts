@@ -18,15 +18,17 @@ export class IpcrService {
     private sanitizer: DomSanitizer,
   ) {}
 
-  storageIsShow = signal<any>(localStorage.getItem('isShow_ipcr'));
-  storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
-  storageIpcrData = signal<any>(localStorage.getItem('ipcrData'));
-  isShowIpcrDataActual = signal<number>(0);
+  storageIsShow            = signal<any>(localStorage.getItem('isShow_ipcr'));
+  storageIpcrId            = signal<any>(localStorage.getItem('ipcrId'));
+  storageIpcrData          = signal<any>(localStorage.getItem('ipcrData'));
+  isShowIpcrDataActual     = signal<any>(localStorage.getItem('isShow_ipcrActual'));
+  storageIpcrDetailsActual = signal<any>(localStorage.getItem('ipcrDetailsActual'));
 
   isCommon = signal<number>(0);
   divisionId: string | null = localStorage.getItem('divisionId');
   userId: string | null = localStorage.getItem('userId');
   year = signal<string>(new Date().getFullYear().toString());
+
 
   isLoadingIpcr: boolean = false;
 
@@ -329,9 +331,9 @@ export class IpcrService {
       });
   }
 
-  AddIPCR() {
+  AddIPCR(data:any) {
     this.http
-      .post<any[]>(api + this.url.post_ipcr(), {
+      .post<any[]>(api + this.url.post_ipcr(), data ,{
         responseType: `json`,
       })
       .subscribe({

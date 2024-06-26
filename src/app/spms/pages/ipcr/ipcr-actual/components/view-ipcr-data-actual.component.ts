@@ -146,13 +146,13 @@ import { PageEvent } from '@angular/material/paginator';
               <ng-container *ngFor="let b of a.si; let y = index">
                 <tr>
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
-                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <span class="text-success"
                       ><strong>{{ b.qty }}{{b.qtyUnit? '%':''}}</strong></span
                     >
                     {{ b.indicator }}
                   </td>
-                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <span *ngIf="b.actual; else noActual" class="text-primary"
                       ><strong>{{ b.actual?.totalQty ?? 0 }}{{b.qtyUnit? '%':''}}</strong></span
                     >
@@ -166,7 +166,7 @@ import { PageEvent } from '@angular/material/paginator';
                       </div>
                     </ng-template>
                   </td>
-                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <div class="d-flex justify-content-center">
                       <circle-progress
                         [percent]="b.actual?.qtyPrcnt ?? 0"
@@ -180,7 +180,7 @@ import { PageEvent } from '@angular/material/paginator';
                       ></circle-progress>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuantiy">
                         <strong class="text-primary">{{
@@ -195,7 +195,7 @@ import { PageEvent } from '@angular/material/paginator';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuality">
                         <strong class="text-primary">{{
@@ -210,7 +210,7 @@ import { PageEvent } from '@angular/material/paginator';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimely">
                         <strong class="text-primary">{{
@@ -225,7 +225,7 @@ import { PageEvent } from '@angular/material/paginator';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, '')">
+                  <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noAve">
                         <strong class="text-success">{{
@@ -900,8 +900,10 @@ export class ViewIpcrDataActualComponent implements OnInit {
   }
 
   submitOts(){
-    this.GetMfoOtsPaginate(this.ipcrDataId, this.subtaskId);
-    this.GetIPCRActual();
+    setTimeout(() => {
+      this.GetMfoOtsPaginate(this.ipcrDataId, this.subtaskId);
+      this.GetIPCRActual();
+    }, 1000);
   }
 
   handleOtsTab(otsStatus:number){
@@ -925,7 +927,8 @@ export class ViewIpcrDataActualComponent implements OnInit {
     this.paginate.pageNumber = 1;
     this.paginate.pageSize   = 10;
 
-    this.otsService.GetMfoOtsPaginated(this.paginate);  }
+    this.otsService.GetMfoOtsPaginated(this.paginate);  
+  }
 
   handlePageEvent(e: PageEvent) {
     this.page.pageNumber = e.pageIndex + 1;
@@ -940,8 +943,11 @@ export class ViewIpcrDataActualComponent implements OnInit {
 
   UpdateOts(){
     this.otsService.EditOts(this.ots);
-    this.otsService.GetMfoOtsPaginated(this.paginate);
-    this.GetIPCRActual();
+    setTimeout(() => {
+      this.otsService.GetMfoOtsPaginated(this.paginate);
+      this.GetIPCRActual();
+    }, 1000);
+
 
   }
 
@@ -965,6 +971,7 @@ export class ViewIpcrDataActualComponent implements OnInit {
     this.ots.ipcrDataId  = si.ipcrDataId;
     this.ots.ipcrId      = si.ipcrId;
     this.ots.isSubTask   = si.isSubTask;
+    this.ots.subTaskId   = si.subTaskId;
     this.ots.opcrDataId  = si.opcrDataId;
     this.ots.qtyUnit     = si.qtyUnit;
     this.ots.qlty5       = si.qlty5;

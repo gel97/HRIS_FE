@@ -99,10 +99,24 @@ import { DomSanitizer } from '@angular/platform-browser';
                       <div class="dropdown-menu">
                         <a
                           class="dropdown-item"
+                          (click)="ipcrService.GetIpcrActualReport(data.ipcrId)"
+                          data-bs-target="#modalIpcrActualReport"
+                          data-bs-toggle="modal"
+                          ><i class="bx bx-printer me-1"></i> IPCR</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          (click)="ipcrService.GetIpcrTargetReport(data.ipcrId)"
+                          data-bs-target="#modalIpcrTargetReportActual"
+                          data-bs-toggle="modal"
+                          ><i class="bx bx-printer me-1"></i> IPCR Target</a
+                        >
+                        <a
+                          class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#modalStandard"
                           (click)="ReportStandard(data)"
-                          ><i class="bx bx-printer me-1"></i> Print Standard</a
+                          ><i class="bx bx-printer me-1"></i> Standard</a
                         >
                         <a
                           class="dropdown-item"
@@ -114,21 +128,14 @@ import { DomSanitizer } from '@angular/platform-browser';
                             months = [];
                             getMonths()
                           "
-                          ><i class="bx bx-printer me-1"></i> Print MPOR</a
+                          ><i class="bx bx-printer me-1"></i> MPOR</a
                         >
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#modalSMPORReport"
                           (click)="ReportSMPOR(data)"
-                          ><i class="bx bx-printer me-1"></i> Print SMPOR</a
-                        >
-                        <a
-                          class="dropdown-item"
-                          (click)="ipcrService.GetIpcrActualReport(data.ipcrId)"
-                          data-bs-target="#modalIpcrActualReport"
-                          data-bs-toggle="modal"
-                          ><i class="bx bx-printer me-1"></i> Print IPCR</a
+                          ><i class="bx bx-printer me-1"></i> SMPOR</a
                         >
                       </div>
                     </div>
@@ -418,6 +425,56 @@ import { DomSanitizer } from '@angular/platform-browser';
             <ng-template #ShowReportStandard>
               <iframe
                 [src]="ipcrStandardReport.data"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalIpcrTargetReportActual"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <ng-container *ngIf="ipcrService.loadReportIpcrTgt(); else ShowReportTargetActual">
+              <app-loading-square-jelly-box
+                [loading]="ipcrService.loadReportIpcrTgt()"
+              />
+            </ng-container>
+            <ng-template #ShowReportTargetActual>
+              <iframe
+                [src]="ipcrService.ipcrTargetReportUrl
+                "
                 width="100%"
                 height="100%"
                 frameborder="0"
@@ -831,9 +888,13 @@ export class ViewIpcrComponent implements OnInit {
 
   setIpcrDetails(data: any) {
     this.ipcrService.isShowIpcrDataActual.set(1);
+    this.ipcrService.storageIpcrDetailsActual.set(data.details);
+
     localStorage.setItem('ipcrIdActual', data.ipcrId);
     localStorage.setItem('ipcrDetailsActual', data.details);
     localStorage.setItem('ipcrDetailsActualYear', data.year);
+    localStorage.setItem('isShow_ipcrActual', '1');
+    localStorage.setItem('ipcrDetailsActualSem', data.semester);
 
     this.ipcrService.GetIPCRDataActual(data.ipcrId);
   }
