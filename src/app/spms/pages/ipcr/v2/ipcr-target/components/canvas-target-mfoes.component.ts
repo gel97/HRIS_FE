@@ -343,7 +343,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       >
                                         <button
                                           type="button"
-                                          (click)="SetIpcrDataSubtaskObj(c, true)"
+                                          (click)="SetIpcrDataSubtaskObj(c, true, b.categoryId)"
                                           data-bs-toggle="modal"
                                           data-bs-target="#modalAddSubtask"
                                           class="btn rounded-pill btn-icon btn-primary float-end"
@@ -426,7 +426,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                         >
                                           <button
                                             type="button"
-                                            (click)="SetIpcrDataSubtaskObj(d, false)"
+                                            (click)="SetIpcrDataSubtaskObj(d, false, b.categoryId)"
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalAddSubtask"
                                             class="btn rounded-pill btn-icon btn-primary float-end"
@@ -661,7 +661,7 @@ export class CanvasTargetMfoesComponent implements OnInit {
     console.log(this.mfo)
   }
 
-  SetIpcrDataSubtaskObj(st: any, isST:boolean) {
+  SetIpcrDataSubtaskObj(st: any, isST:boolean, categoryId:number) {
     this.ipcrService.GetIPCRDetailsRemainingST(st.subTaskId);
 
     this.subtask              = st;
@@ -671,6 +671,8 @@ export class CanvasTargetMfoesComponent implements OnInit {
     this.subtask.qty_rem      = st.qty - this.ipcrService.ipcrST_rem();
     this.subtask.quantity     = null;
     this.subtask.isIpcrMfo    = 0;
+    this.subtask.categoryId   = categoryId;
+
 
     console.log(this.subtask);
   }

@@ -488,6 +488,7 @@ import {
               aria-controls="offcanvasScroll"
               type="button"
               class="btn btn-primary"
+              (click)="handleExpandCard()"
             >
             <i class="bx bx-plus"></i>
               MAJOR FINAL OUTPUT
