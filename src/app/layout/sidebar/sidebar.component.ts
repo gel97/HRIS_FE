@@ -1,13 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MenuService } from 'src/app/service/menu.service';
-
+import { UtilsService } from 'src/app/service/utils.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  menuService = inject(MenuService);
+  menuService  = inject(MenuService);
+  utilsService = inject(UtilsService);
+
+  isShowSidebar = this.utilsService.isShowSidebar();
+
   menu = this.menuService.menu();
   sample: number = 0;
   sample1: number = 0;
@@ -16,6 +20,10 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSPMSMenu();
+  }
+
+  setSidebarMobileView(){
+    this.utilsService.isShowSidebar.set(!this.utilsService.isShowSidebar())
   }
 
   getSPMSMenu(){
