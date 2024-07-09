@@ -276,7 +276,7 @@ import {
                               class="dropdown-item cursor-pointer"
                               data-bs-toggle="modal"
                               data-bs-target="#modalEditSubTask"
-                              (click)="subtaskData = c"
+                              (click)="subtaskData = c; subtaskData.stIndicator = c.stIndicatorTemp"
                             >
                               <i
                                 class="bx bxs-edit text-label cursor-pointer"

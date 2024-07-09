@@ -938,7 +938,11 @@ export class ViewIpcrDataActualComponent implements OnInit {
 
   SaveActualTarget(){
     //console.log(this.data)
-    this.ipcrService.PutIPCRSPrcntActualQty(this.data);
+    if(this.data.isSubTask === 1){
+      this.ipcrService.PutIPCRSubtaskPrcntActualQty(this.data);
+    }else{
+      this.ipcrService.PutIPCRSPrcntActualQty(this.data);
+    }
   }
 
   UpdateOts(){

@@ -211,10 +211,10 @@ export class IpcrTargetComponent implements OnInit {
     this.ipcrService.GetIPCRDetailsRemaining(data);
   }
 
-  GetIPCRDetailsRemainingST(data: any) {
+  GetIPCRDetailsRemainingST(subTaskId: string, dpcrDataId: string) {
     this.add_qtyRemainingST =
       this.dpcrSTQuantity - this.ipcrService.ipcrST_rem();
-    this.ipcrService.GetIPCRDetailsRemainingST(data);
+    this.ipcrService.GetIPCRDetailsRemainingST(subTaskId,dpcrDataId);
   }
 
   EditIPCRDetails() {

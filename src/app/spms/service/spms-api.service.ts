@@ -50,7 +50,7 @@ export class SpmsApiService {
 
   get_ipcrdetails             = (ipcrId: string)     => `/vPMIpcrDatas/${ipcrId}`;
   get_ipcrdetails_remaining   = (dpcrDataId: string) => `/tPMIpcrDatas/remaining/${dpcrDataId}`;
-  get_ipcrdetails_remainingST = (subTaskId: string)  => `/tPMIpcrDataSubTasks/remainingSt/${subTaskId}`;
+  get_ipcrdetails_remainingST = ()  => `/tPMIpcrDataSubTasks/remaining/subtask`;
   get_ipcrdetails_wSub        = (ipcrId: string)     => `/tPMIpcrDatas/list/${ipcrId}`;
   put_ipcrdata_sortby_mfo     = (ipcrId: string)     => `/tPMIpcrDatas/${ipcrId}/sortIpcrMfoes`;
   put_ipcrdata_actual_qty     = ()                   => `/tPMIpcrDatas/update/percentage_actual_target`;

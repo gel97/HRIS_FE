@@ -662,7 +662,7 @@ export class CanvasTargetMfoesComponent implements OnInit {
   }
 
   SetIpcrDataSubtaskObj(st: any, isST:boolean, categoryId:number) {
-    this.ipcrService.GetIPCRDetailsRemainingST(st.subTaskId);
+    this.ipcrService.GetIPCRDetailsRemainingST(st.subTaskId, st.dpcrDataId);
 
     this.subtask              = st;
     this.subtask.dpcrQuantity = st.qty;

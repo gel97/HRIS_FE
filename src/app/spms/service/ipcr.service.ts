@@ -289,16 +289,17 @@ export class IpcrService {
   }
 
   //remST
-  GetIPCRDetailsRemainingST(data: any) {
+  GetIPCRDetailsRemainingST(subTaskId: string, dpcrDataId:string) {
     this.http
-      .get<any[]>(api + this.url.get_ipcrdetails_remainingST(data), {
-        responseType: `json`,
+      .post<any[]>(api + this.url.get_ipcrdetails_remainingST(), {subTaskId:subTaskId, dpcrDataId:dpcrDataId}, {
+        responseType: `json`
       })
       .subscribe({
         next: (response: any) => {
           this.ipcrST_rem.set(response);
         },
-        error: () => {
+        error: (err:any) => {
+          console.log(err)
           this.alertService.error();
         },
         complete: () => {},

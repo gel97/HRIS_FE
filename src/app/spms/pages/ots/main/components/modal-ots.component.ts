@@ -351,9 +351,11 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         placeholder="Quantity"
                         aria-describedby="quantity"
                         [(ngModel)]="ots.qtyR"
+                        (keyup)="isEmptyQtyR = false"
                       />
                       <label for="quantity">Quantity</label>
                     </div>
+                    <p *ngIf="isEmptyQtyR" class="text-danger">Quantity is required.</p>
                     <label class="col-form-label">Quality</label>
                     <div class="row mb-2">
                       <div class="col-2">
@@ -412,6 +414,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         </button>
                       </div>
                     </div>
+                    <p *ngIf="isEmptyQltyR" class="text-danger">Quality is required.</p>
                     <label class="col-form-label">Timeliness</label>
                     <div class="row mb-4">
                       <div class="col-2">
@@ -470,7 +473,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         </button>
                       </div>
                     </div>
-
+                    <p *ngIf="isEmptyTimelyR" class="text-danger">Timeliness is required.</p>
                     <div class="mb-2">
                       <label
                         for="html5-datetime-local-input"
@@ -483,8 +486,10 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         [(ngModel)]="ots.dateDone"
                         id="html5-datetime-local-input"
                         min="2023-11-1T08:00 | date:'yyyy-MM-ddTHH:mm'"
+                        (keypress)="isEmptyDateDone = false"
                       />
                     </div>
+                    <p *ngIf="isEmptyDateDone" class="text-danger">Date accomplished is required.</p>
                     <div class="form-check">
                       <input
                         class="form-check-input"
@@ -701,18 +706,23 @@ export class ModalOtsComponent implements OnInit {
   closeModal!: { nativeElement: { click: () => void } };
 
   dpcrService = inject(DpcrService);
-  otsService = inject(OtsService);
+  otsService  = inject(OtsService);
   sample: any = '';
   //ots: any = {};
-  isGroupOts: boolean = false;
-  isCheckAll: boolean = false;
+  isGroupOts : boolean = false;
+  isCheckAll : boolean = false;
+
+  isEmptyDateDone: boolean = false;
+  isEmptyQtyR    : boolean = false;
+  isEmptyQltyR   : boolean = false;
+  isEmptyTimelyR : boolean = false;
 
   quantity: any = {};
 
   otsGetListUserMfo = this.otsService.otsGetListUserMfo();
   otsGetMfoGroup = this.otsService.otsGetMfoGroup();
 
-  otsGroup: any = [];
+  otsGroup    : any = [];
   otsGroupData: any = {};
 
   @Input() otsMfoes   : any;
@@ -734,15 +744,34 @@ export class ModalOtsComponent implements OnInit {
     // this.ots.startDate = this.otsMfoes.startDate;
     // this.ots.endDate = this.otsMfoes.endDate;
     // this.ots.dateDone = this.otsMfoes.dateDone;
-
-    if (this.isGroupOts) {
-      this.fiterGroupOts();
-      this.otsService.AddGroupOts({ ots: this.ots, users: this.otsGroup });
-    } else {
-      this.otsService.AddOts(this.ots);
+    console.log(this.ots);
+    if(this.ots.qtyR > 0 && this.ots.dateDone !== null && this.ots.qltyR > 0 && this.ots.timelyR > 0){
+      if (this.isGroupOts) {
+        this.fiterGroupOts();
+        this.otsService.AddGroupOts({ ots: this.ots, users: this.otsGroup });
+      } else {
+        this.otsService.AddOts(this.ots);
+      }
+  
+      this.submit.emit();
+    }else{
+      this.validateFields(this.ots);
     }
+  }
 
-    this.submit.emit();
+  validateFields(ots:any){
+    if(!ots.qtyR){
+      this.isEmptyQtyR = true;
+    }
+    if(!ots.dateDone){
+      this.isEmptyDateDone = true;
+    }
+    if(!ots.qltyR){
+      this.isEmptyQltyR = true;
+    }
+    if(!ots.timelyR){
+      this.isEmptyTimelyR = true;
+    }
   }
 
   fiterGroupOts() {
@@ -794,10 +823,13 @@ export class ModalOtsComponent implements OnInit {
 
   setQuality(rating: number) {
     this.ots.qltyR = rating;
+    this.isEmptyQltyR = false;
   }
 
   setTimeliness(rating: number) {
     this.ots.timelyR = rating;
+    this.isEmptyTimelyR = false;
+
   }
 
   initialDate() {

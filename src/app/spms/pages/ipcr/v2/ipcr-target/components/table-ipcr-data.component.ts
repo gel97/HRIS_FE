@@ -566,7 +566,7 @@ export class TableIpcrDataComponent implements OnInit {
   EditIPCRSubtaskDetails(c:any){
    // GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId); returnQtyST = ipcrSTDetails.qty; promptEditST = false"
     this.mfo.add_qtyRemainingST = this.mfo.dpcrSTQuantity - this.ipcrService.ipcrST_rem();
-    this.ipcrService.GetIPCRDetailsRemainingST(c.subTaskId);   
+    this.ipcrService.GetIPCRDetailsRemainingST(c.subTaskId, c.dpcrDataId);   
     this.subtask              = c;
     this.subtask.returnQtyST  = c.qty;
     this.subtask.promptEditST = false;
