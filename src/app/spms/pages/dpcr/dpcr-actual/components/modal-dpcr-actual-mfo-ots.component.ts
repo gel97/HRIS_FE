@@ -259,19 +259,28 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 <table class="table table-sm">
                   <thead>
                     <tr>
+                      <th [width]="10">#</th>
                       <th [width]="160">Date</th>
                       <th>Quantity</th>
                       <th>Quality</th>
                       <th>Timeliness</th>
+                      <th>Employee</th>
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
                     <ng-container *ngFor="let a of mfoOts.data; let i = index">
                       <tr (click)="setSIIndex(i)" class="cursor-pointer">
+                        <td>{{i+1}}</td>
                         <td>{{ a.dateDone | date : 'MMM. dd, yyyy' }}</td>
-                        <td>{{ a.qtyR }}</td>
-                        <td>{{ a.qltyR }}</td>
-                        <td>{{ a.timelyR }}</td>
+                        <td class="text-center">{{ a.qtyR }}</td>
+                        <td class="text-center">{{ a.qltyR }}</td>
+                        <td class="text-center">{{ a.timelyR }}</td>
+                        <td>
+                          <ng-container *ngIf="a.details.length == 1">
+                            {{a.details[0].fullNameFirst}}
+                          </ng-container>
+                        </td>
+
                       </tr>
                       <ng-container *ngIf="currentSIIndex === i">
                         <tr *ngFor="let b of a.details; let y = index">

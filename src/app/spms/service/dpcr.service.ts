@@ -6,6 +6,7 @@ import { MfoService } from './mfo.service';
 import { ErrorService } from './error.service';
 import { AlertService } from './alert.service';
 import { SpmsApiService } from './spms-api.service';
+import { UtlityService } from './utility.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Injectable({
   providedIn: 'root',
@@ -46,6 +47,12 @@ export class DpcrService {
     isLoading: false,
   });
 
+  dpcrMfoEmployee = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
   officeId: string | null = localStorage.getItem('officeId');
   divisionId: string | null = localStorage.getItem('divisionId');
   divisionName: string | null = localStorage.getItem('divisionName');
@@ -57,19 +64,66 @@ export class DpcrService {
   storageDpcrId = signal<any>(localStorage.getItem('dpcrId'));
   storageDpcrDetails = signal<any>(localStorage.getItem('dpcrDetails'));
   isShowDpcrDataActual = signal<number>(0);
-
+ 
   constructor(
     private mfoService: MfoService,
     private errorService: ErrorService,
     private alertService: AlertService,
     private http: HttpClient,
     private url: SpmsApiService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    public utilsSerivce: UtlityService
 
   ) {}
 
   dpcrTargetReportUrl:SafeResourceUrl = "";
   loadReportTgt = signal<boolean>(false);
+
+  GetDpcrMfoEmployee(subtaskId:string, dpcrDataId:string) {
+    this.dpcrMfoEmployee.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_mfo_employee(subtaskId,dpcrDataId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+
+           response.employee.forEach((a:any) => {
+            this.utilsSerivce.get_profile_picture(a.eic).subscribe(
+              (request) => {
+                a.profile = (<any>request).imageDataURL;
+              },
+              (err) => {
+                // alert('error')
+              }
+            );
+          });
+
+          console.log(response)
+
+          this.dpcrMfoEmployee.mutate((a) => {
+            (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.dpcrMfoEmployee.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          console.log("DpcrMfo: ", this.dpcrMfoEmployee().data)
+        },
+      });
+  }
 
   GetDpcrTargetReport(dpcrId: string) {
     this.dpcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_dpcr_data_target_report(dpcrId));

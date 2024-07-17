@@ -179,7 +179,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               <ng-container *ngFor="let b of a.si; let y = index">
                 <tr>
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.actual.dpcrDataId);setSIindex(i, y)">
                     <span class="text-success"
                       ><strong
                         ><u>{{ b.qty }}</u></strong
@@ -294,69 +294,138 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                           (click)="GetMfoOts(b?.actual?.dpcrDataId??null)"
                           ><i class="bx bx-show-alt me-1"></i> View OTS</a
                         >
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          (click)="isViewStandard = true"
+                          ><i class="bx bx-show-alt me-1"></i> View Standard</a
+                        >
                       </div>
                     </div>
                   </td>
                 </tr>
-                <tr
-                  *ngIf="currentSIindex === y && currentMfoindex === i"
-                  style="background-color: #f5f5f9;"
-                >
-                  <td colspan="8">
-                    <div class="card">
-                      <div class="card-body">
-                        <div class="table-responsive text-nowrap">
-                          <table class="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th [width]="10">Rating</th>
-                                <th [width]="10">Quantity</th>
-                                <th>Quality</th>
-                                <th>Timeliness</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td class="text-center"><strong>5</strong></td>
-                                <td class="text-center">{{ b.qty5 }}</td>
-                                <td>{{ b.qlty5 }}</td>
-                                <td>{{ b.timely5 }}</td>
-                              </tr>
-                              <tr>
-                                <td class="text-center"><strong>4</strong></td>
-                                <td class="text-center">{{ b.qty4 }}</td>
-                                <td>{{ b.qlty4 }}</td>
-                                <td>{{ b.timely4 }}</td>
-                              </tr>
-                              <tr>
-                                <td class="text-center"><strong>3</strong></td>
-                                <td class="text-center">{{ b.qty3 }}</td>
-                                <td>{{ b.qlty3 }}</td>
-                                <td>{{ b.timely3 }}</td>
-                              </tr>
-                              <tr>
-                                <td class="text-center"><strong>2</strong></td>
-                                <td class="text-center">{{ b.qty2 }}</td>
-                                <td>{{ b.qlty2 }}</td>
-                                <td>{{ b.timely2 }}</td>
-                              </tr>
-                              <tr>
-                                <td class="text-center"><strong>1</strong></td>
-                                <td class="text-center">{{ b.qty1 }}</td>
-                                <td>{{ b.qlty1 }}</td>
-                                <td>{{ b.timely1 }}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                <ng-container *ngIf="currentSIindex === y && currentMfoindex === i">
+                  <tr *ngIf="isViewStandard"     
+                    style="background-color: #f5f5f9;"
+                  >
+                    <td colspan="8">
+                      <div class="card">
+                        <div class="card-hearer">
+                          <button
+                              type="button"
+                              class="btn-close"
+                              style="float: right;"
+                              aria-label="Close"
+                              (click)="isViewStandard=false"
+                          ></button>
+                        </div>   
+                        <div class="card-body">
+                          <div class="table-responsive text-nowrap">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th [width]="10">Rating</th>
+                                  <th [width]="10">Quantity</th>
+                                  <th>Quality</th>
+                                  <th>Timeliness</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td class="text-center"><strong>5</strong></td>
+                                  <td class="text-center">{{ b.qty5 }}</td>
+                                  <td>{{ b.qlty5 }}</td>
+                                  <td>{{ b.timely5 }}</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center"><strong>4</strong></td>
+                                  <td class="text-center">{{ b.qty4 }}</td>
+                                  <td>{{ b.qlty4 }}</td>
+                                  <td>{{ b.timely4 }}</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center"><strong>3</strong></td>
+                                  <td class="text-center">{{ b.qty3 }}</td>
+                                  <td>{{ b.qlty3 }}</td>
+                                  <td>{{ b.timely3 }}</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center"><strong>2</strong></td>
+                                  <td class="text-center">{{ b.qty2 }}</td>
+                                  <td>{{ b.qlty2 }}</td>
+                                  <td>{{ b.timely2 }}</td>
+                                </tr>
+                                <tr>
+                                  <td class="text-center"><strong>1</strong></td>
+                                  <td class="text-center">{{ b.qty1 }}</td>
+                                  <td>{{ b.qlty1 }}</td>
+                                  <td>{{ b.timely1 }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                  <tr *ngIf="b.subTasks === null"    
+                    style="background-color: #f5f5f9;"
+                  >
+                    <td colspan="8">
+                      <!-- Striped Rows -->
+                        <div class="card">
+                          <h3 class="card-header"></h3>
+                          <div class="table-responsive text-nowrap">
+                            <table class="table table-hover">
+                              <thead>
+                                <tr>
+                                  <th colspan="2">Employee</th>
+                                  <th class="text-center">Target Committed</th>
+                                  <th class="text-center">Target Accomplished</th>
+                                </tr>
+                              </thead>
+                              <tbody class="table-border-bottom-0">
+                                <ng-container *ngFor="let emp of dpcrMfoEmployee.data.employee">
+                                  <tr>
+                                    <td [width]="10">
+                                      <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                        <li
+                                          data-bs-toggle="tooltip"
+                                          data-popup="tooltip-custom"
+                                          data-bs-placement="top"
+                                          class="avatar avatar-xs pull-up ml-2"
+                                          title="Lilian Fuller"
+                                        >
+                                          <img [src]="emp.profile" loading="lazy" onerror="this.src='./assets/img/avatars/user_picture.png'"/>
+                                        </li>
+                                      
+                                      </ul>
+                                    </td>
+                                    <td ><strong>{{emp.fullNameFirst}}</strong></td>
+                                    <td class="text-center">
+                                      {{emp.qty}}
+                                    </td>
+                                    <td class="text-center"><span class="">{{emp.actualQty}}</span></td>
+                                  </tr>   
+                                  
+                                </ng-container>   
+                                <tr style="background-color: #B3E2A7;">
+                                    <td colspan="2"><b>TOTAL</b></td>
+                                    <td class="text-center"><h5><b>{{dpcrMfoEmployee.data.total.totalQty}}</b></h5></td>
+                                    <td class="text-center"><b>{{dpcrMfoEmployee.data.total.totalActualQty}}</b></td>
+                                  </tr>          
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      <!--/ Striped Rows -->
+                    </td>
+                  </tr>
+                </ng-container>
+                
                 <ng-container *ngFor="let c of b.subTasks; let w = index">
                   <tr
                     style="background-color: #f5f5f9;"
-                    (click)="setStMfoIndex(w)"
+                    (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)"
                   >
                     <td colspan="8">
                       <div class="card">
@@ -500,68 +569,132 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                       </div>
                     </td>
                   </tr>
-                  <tr *ngIf="currentMfoindexSt === w">
-                    <td colspan="8" style="background-color: #f5f5f9;">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="table-responsive text-nowrap">
-                            <table class="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th [width]="10">Rating</th>
-                                  <th [width]="10">Quantity</th>
-                                  <th>Quality</th>
-                                  <th>Timeliness</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>5</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty5 }}</td>
-                                  <td>{{ c.qlty5 }}</td>
-                                  <td>{{ c.timely5 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>4</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty4 }}</td>
-                                  <td>{{ c.qlty4 }}</td>
-                                  <td>{{ c.timely4 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>3</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty3 }}</td>
-                                  <td>{{ c.qlty3 }}</td>
-                                  <td>{{ c.timely3 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>2</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty2 }}</td>
-                                  <td>{{ c.qlty2 }}</td>
-                                  <td>{{ c.timely2 }}</td>
-                                </tr>
-                                <tr>
-                                  <td class="text-center">
-                                    <strong>1</strong>
-                                  </td>
-                                  <td class="text-center">{{ c.qty1 }}</td>
-                                  <td>{{ c.qlty1 }}</td>
-                                  <td>{{ c.timely1 }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
+                  <ng-container *ngIf="currentMfoindexSt === w && currentMfoindex == i">
+                    <tr *ngIf="isViewStandardSt">
+                      <td colspan="8" style="background-color: #f5f5f9;">
+                        <div class="card">
+                          <div class="card-hearer">
+                            <button
+                                type="button"
+                                class="btn-close"
+                                style="float: right;"
+                                aria-label="Close"
+                                (click)="isViewStandardSt=false"
+                            ></button>
+                          </div>   
+                          <div class="card-body">
+                            <div class="table-responsive text-nowrap">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th [width]="10">Rating</th>
+                                    <th [width]="10">Quantity</th>
+                                    <th>Quality</th>
+                                    <th>Timeliness</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="text-center">
+                                      <strong>5</strong>
+                                    </td>
+                                    <td class="text-center">{{ c.qty5 }}</td>
+                                    <td>{{ c.qlty5 }}</td>
+                                    <td>{{ c.timely5 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">
+                                      <strong>4</strong>
+                                    </td>
+                                    <td class="text-center">{{ c.qty4 }}</td>
+                                    <td>{{ c.qlty4 }}</td>
+                                    <td>{{ c.timely4 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">
+                                      <strong>3</strong>
+                                    </td>
+                                    <td class="text-center">{{ c.qty3 }}</td>
+                                    <td>{{ c.qlty3 }}</td>
+                                    <td>{{ c.timely3 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">
+                                      <strong>2</strong>
+                                    </td>
+                                    <td class="text-center">{{ c.qty2 }}</td>
+                                    <td>{{ c.qlty2 }}</td>
+                                    <td>{{ c.timely2 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="text-center">
+                                      <strong>1</strong>
+                                    </td>
+                                    <td class="text-center">{{ c.qty1 }}</td>
+                                    <td>{{ c.qlty1 }}</td>
+                                    <td>{{ c.timely1 }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
+                    <tr     
+                    style="background-color: #f5f5f9;"
+                    >
+                      <td colspan="8">
+                        <!-- Striped Rows -->
+                          <div class="card">
+                            <h3 class="card-header"></h3>
+                            <div class="table-responsive text-nowrap">
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th colspan="2">Employee</th>
+                                    <th class="text-center">Target Committed</th>
+                                    <th class="text-center">Target Accomplished</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                  <ng-container *ngFor="let emp of dpcrMfoEmployee.data.employee">
+                                    <tr>
+                                      <td [width]="10">
+                                        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                          <li
+                                            data-bs-toggle="tooltip"
+                                            data-popup="tooltip-custom"
+                                            data-bs-placement="top"
+                                            class="avatar avatar-xs pull-up ml-2"
+                                            title="Lilian Fuller"
+                                          >
+                                            <img [src]="emp.profile" loading="lazy" onerror="this.src='./assets/img/avatars/user_picture.png'"/>
+                                          </li>
+                                        
+                                        </ul>
+                                      </td>
+                                      <td ><strong>{{emp.fullNameFirst}}</strong></td>
+                                      <td class="text-center">
+                                        {{emp.qty}}
+                                      </td>
+                                      <td class="text-center"><span class="">{{emp.actualQty}}</span></td>
+                                    </tr>   
+                                    
+                                  </ng-container>   
+                                  <tr style="background-color: #B3E2A7;">
+                                      <td colspan="2"><b>TOTAL</b></td>
+                                      <td class="text-center"><h5><b>{{dpcrMfoEmployee.data.total.totalQty}}</b></h5></td>
+                                      <td class="text-center"><b>{{dpcrMfoEmployee.data.total.totalActualQty}}</b></td>
+                                    </tr>          
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        <!--/ Striped Rows -->
+                      </td>
+                    </tr>
+                  </ng-container> 
                 </ng-container>
               </ng-container>
             </tbody>
@@ -573,8 +706,9 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
   `,
 })
 export class ViewDpcrActualDataComponent implements OnInit {
-  dpcrService    = inject(DpcrService);
-  dpcrDataActual = this.dpcrService.dpcrDataActual();
+  dpcrService     = inject(DpcrService);
+  dpcrDataActual  = this.dpcrService.dpcrDataActual();
+  dpcrMfoEmployee = this.dpcrService.dpcrMfoEmployee();
 
   currentSIindex : any = null;
   currentMfoindex: any = null;
@@ -587,7 +721,14 @@ export class ViewDpcrActualDataComponent implements OnInit {
   firstWord : string = '';
   secondWord: string = '';
 
+  isViewStandard  : boolean = false;
+  isViewStandardSt: boolean = false;
+
   ngOnInit(): void {
+  }
+
+  GetDpcrMfoEmployee(subtaskId:string, dpcrDataId:string){
+    this.dpcrService.GetDpcrMfoEmployee(subtaskId, dpcrDataId);
   }
 
   GetMfoOts(dpcrDataId:string){
@@ -602,14 +743,19 @@ export class ViewDpcrActualDataComponent implements OnInit {
       this.currentMfoindex = i;
       this.currentSIindex = y;
     }
+    this.currentMfoindexSt = null;
   }
 
-  setStMfoIndex(w: number) {
+  setStMfoIndex(w: number, i: number) {
+    this.currentMfoindex = i;
+
     if (this.currentMfoindexSt === w) {
       this.currentMfoindexSt = null;
     } else {
       this.currentMfoindexSt = w;
     }
+
+    this.currentSIindex = null;
   }
 
   getImageSource(categoryId: number): string {
