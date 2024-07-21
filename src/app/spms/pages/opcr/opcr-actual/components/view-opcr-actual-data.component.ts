@@ -370,10 +370,10 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                             <thead>
                               <tr>
                                 <th
-                                  class=""
+                                  class="text-center"
                                   *ngFor="let c of b.dpcr; let w = index"
                                 >
-                                  {{ c.divisionName }}
+                                  {{ c.divisionName }} - {{c.semester}} Sem 
                                 </th>
                                 <ng-container *ngIf="!b.qtyUnit">
                                   <th class="text-center">
@@ -386,7 +386,7 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                             <tbody>
                               <tr>
                                 <td
-                                  class=""
+                                  class="text-center"
                                   *ngFor="let c of b.dpcr; let w = index"
                                 >
                                   <span

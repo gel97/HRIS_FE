@@ -166,6 +166,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                   </div>
                                   <div *ngIf="!mfoes.isSearchLoading && !mfoes.isLoading;">
                                     <small
+                                    *ngIf="a.categoryId !== null; else showDpcrCat"
                                       class="badge rounded-pill float-end cursor-pointer"
                                       [ngClass]="
                                         a.categoryId == '1'
@@ -179,8 +180,26 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       data-bs-toggle="dropdown"
                                       aria-expanded="false"
                                     >
-                                      {{ displayCatergory(a.categoryId) }}
+                                      {{ displayCatergory(a.categoryId ) }}
                                     </small>
+                                    <ng-template #showDpcrCat>
+                                      <small                                     
+                                        class="badge rounded-pill float-end cursor-pointer"
+                                        [ngClass]="
+                                          a.dpcrCategoryId == '1'
+                                            ? 'bg-label-success'
+                                            : a.dpcrCategoryId == '2'
+                                            ? 'bg-label-primary'
+                                            : a.dpcrCategoryId == '3'
+                                            ? 'bg-label-warning'
+                                            : 'bg-label-secondary'
+                                        "
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        {{ displayCatergory(a.dpcrCategoryId) }}
+                                      </small>
+                                    </ng-template>
                                   </div>
                                 </div>
                               </td>
@@ -343,7 +362,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       >
                                         <button
                                           type="button"
-                                          (click)="SetIpcrDataSubtaskObj(c, true, b.categoryId)"
+                                          (click)="SetIpcrDataSubtaskObj(c, true, b.categoryId ?? a.dpcrCategoryId)"
                                           data-bs-toggle="modal"
                                           data-bs-target="#modalAddSubtask"
                                           class="btn rounded-pill btn-icon btn-primary float-end"
@@ -657,6 +676,7 @@ export class CanvasTargetMfoesComponent implements OnInit {
     this.mfo.prompt       = false;
     this.mfo.qty_rem      = siData.qty;
     this.mfo.isIpcrMfo    = mfoData.isIpcrMfo;
+    this.mfo.categoryId   = mfoData.categoryId ?? mfoData.dpcrCategoryId;
 
     console.log(this.mfo)
   }

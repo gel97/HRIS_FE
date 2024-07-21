@@ -62,6 +62,3 @@
 .cdk-global-overlay-wrapper, .cdk-overlay-container {
   z-index: 99999 !important;
 }
-::ng-deep .cdk-overlay-container {
-  z-index: 9999;
-}

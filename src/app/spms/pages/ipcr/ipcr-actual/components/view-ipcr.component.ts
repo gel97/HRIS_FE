@@ -5,6 +5,8 @@ import { DatePipe } from '@angular/common';
 import { ReportSmporService } from 'src/app/spms/service/report-smpor.service';
 import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import Swal from 'sweetalert2'
+
 @Component({
   selector: 'app-view-ipcr',
   styleUrls: ['../ipcr-actual.component.css'],
@@ -38,11 +40,12 @@ import { DomSanitizer } from '@angular/platform-browser';
                   <th>Sem</th>
                   <th>Year</th>
                   <th>Date Created</th>
+                  <th>Date Submitted</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody *ngFor="let data of ipcr.data">
+              <tbody *ngFor="let data of ipcr.data; let i = index">
                 <tr>
                   <td class="pointer">
                     <a (click)="setIpcrDetails(data)" class="cursor-pointer"
@@ -71,6 +74,9 @@ import { DomSanitizer } from '@angular/platform-browser';
                   </td>
                   <td>
                     {{ data.transDT | date : 'MMM. dd, yyyy' }}
+                  </td>
+                  <td>
+                    {{ data.actualSubmitAt | date : 'MMM. dd, yyyy' }}
                   </td>
                   <td>
                     <span
@@ -137,6 +143,13 @@ import { DomSanitizer } from '@angular/platform-browser';
                           (click)="ReportSMPOR(data)"
                           ><i class="bx bx-printer me-1"></i> SMPOR</a
                         >
+                        <a
+                          class="dropdown-item cursor-pointer"
+                          data-bs-target="#submitActual"
+                          data-bs-toggle="modal"
+                          (click)="actualSubmit.index = i; actualSubmit.ipcrId = data.ipcrId; actualSubmit.currentActualSubmitted = data.actualSubmitAt"
+                        ><i class="bx bx-send"></i> Submit Actual</a
+                        >
                       </div>
                     </div>
                   </td>
@@ -169,6 +182,47 @@ import { DomSanitizer } from '@angular/platform-browser';
             </span>
           </div>
           <!--/ Bordered Table -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Small Modal -->
+    <div class="modal fade" id="submitActual" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content" style="z-index: 1;">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLabel2">SELECT DATE</h3>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col mb-3">
+                <input
+                  class="form-control"
+                  type="date"
+                  [(ngModel)]="actualSubmit.actualSubmitAt"
+                  id="html5-datetime-local-input"
+                  min="2023-11-1T08:00 | date:'yyyy-MM-ddTHH:mm'"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="actualSubmit.actualSubmitAt === undefined"
+            (click)="SubmitActual()">Submit Actual</button>
+          </div>
         </div>
       </div>
     </div>
@@ -534,11 +588,63 @@ export class ViewIpcrComponent implements OnInit {
   ipcrSmporReport: any = this.ipcrService.ipcrSMPOR();
   ipcrStandardReport: any = this.ipcrService.ipcrStandard();
 
+  actualSubmit:any = {};
+
   ngOnInit(): void {
     this.ipcrYear();
     this.GetIpcr();
 
   }
+
+  SubmitActual(){
+    if(this.actualSubmit.actualSubmitAt !== undefined){
+      if(this.actualSubmit.currentActualSubmitted !== null){
+
+        let _currentActualSubmitted = this.formatDate(this.actualSubmit.currentActualSubmitted);
+        let _actualSubmitAt = this.formatDate(this.actualSubmit.actualSubmitAt);
+
+        let _text ="Your actual IPCR was already submitted on '" + _currentActualSubmitted +"'. Continuing will overwrite it with '" +_actualSubmitAt+  "'";
+
+        if(_currentActualSubmitted  === _actualSubmitAt){
+           _text ="You selected '" + _currentActualSubmitted +"', the same date that was already submitted. Please choose a different date.";
+        }
+        Swal.fire({
+          title: 'Are you sure?',
+          text: _text,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, submit it!',
+          showClass: {
+            popup: 'z-5'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.ipcr.data[this.actualSubmit.index].actualSubmitAt = this.actualSubmit.actualSubmitAt;
+            this.ipcrService.PutSubmitActual(this.actualSubmit);
+          } 
+        });
+      }else{
+        this.ipcrService.PutSubmitActual(this.actualSubmit);
+      }
+    }
+  }
+
+  formatDate = (date: Date): string => {
+    const validDate = new Date(date);
+    if (isNaN(validDate.getTime())) {
+      throw new Error('Invalid date');
+    }
+  
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric'
+    };
+  
+    return validDate.toLocaleDateString('en-US', options).replace(',', '');
+  };
 
   printIPCR() {
     this.reportServiceIPCR.post_print_ipcr(this.reportIPCR).subscribe({

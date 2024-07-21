@@ -5,6 +5,7 @@ import { DpcrTargetComponent } from './dpcr-target/dpcr-target.component';
 import { DpcrActualComponent } from './dpcr-actual/dpcr-actual.component';
 import { DivisionMfoComponent } from './division-mfo/division-mfo.component';
 import { OtsRequestComponent } from './ots-request/ots-request/ots-request.component';
+import { EmployeeRatingComponent } from './employee-rating/employee-rating.component';
 const routes: Routes = [
   {
     path:'',
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'ots-request',
         component: OtsRequestComponent,
+      },
+      {
+        path: 'employee/rating',
+        component: EmployeeRatingComponent,
       }
     ]
   }

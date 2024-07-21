@@ -36,6 +36,18 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
               placeholder="Enter MFO"
             />
             <br />
+            <div class="form-check mt-1 mb-3" *ngIf="mfoService.isCommon()">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="defaultCheck1"
+                  [checked]="mfoData.isIpcrShow"
+                  (change)="handleIsIpcrShow($event)"
+                />
+                <label class="form-check-label" for="defaultCheck1">
+                  Specify if MFO is directly displayed in the IPCR
+                </label>
+            </div>
             <button
               [disabled]="isLoading"
               type="button"
@@ -78,10 +90,21 @@ export class CanvasMFOComponent {
   @Output() submit = new EventEmitter<any>();
   @Output() onChange = new EventEmitter<any>();
 
+  mfoService = inject(MfoService);
+
   Submit() {
     this.submit.emit('Add or Edit');
     this.handleStatus();
   }
+
+  handleIsIpcrShow(e:any){
+    // console.log(e.target.checked)
+     if(e.target.checked){
+       this.mfoData.isIpcrShow = 1;
+     }else{
+       this.mfoData.isIpcrShow = 0;
+     }
+   }
 
   OnChange(){
     this.onChange.emit('');

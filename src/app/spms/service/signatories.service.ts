@@ -13,7 +13,7 @@ export class SignatoriesService {
     constructor(
         private http: HttpClient,
         private url: SpmsApiService,
-        private alertService: AlertService
+        private alertService: AlertService,
       ) {}
 
       officeId: string | null = localStorage.getItem('officeId');

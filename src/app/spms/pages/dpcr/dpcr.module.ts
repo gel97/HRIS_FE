@@ -47,6 +47,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { EmployeeRatingComponent } from './employee-rating/employee-rating.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -75,7 +76,8 @@ import {
     ViewDpcrActualComponent,
     HeaderDpcrActualComponent,
     ViewDpcrActualDataComponent,
-    ModalDpcrActualMfoOtsComponent
+    ModalDpcrActualMfoOtsComponent,
+    EmployeeRatingComponent
   ],
   imports: [
     CommonModule,

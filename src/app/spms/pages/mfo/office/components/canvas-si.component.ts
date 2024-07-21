@@ -66,20 +66,7 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
             </div>
             <br />
 
-            <div *ngIf="mfoService.isCommon()" class=" my-1">
-              <div class="form-check mt-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="defaultCheck1"
-                  [checked]="siData.isIpcrShow"
-                  (change)="handleIsIpcrShow($event)"
-                />
-                <label class="form-check-label" for="defaultCheck1">
-                  Set if mfo directly shows in IPCR
-                </label>
-              </div>
-              <br />
+            <div *ngIf="mfoService.isCommon()" class=" my-1">           
               <div class="form-check">
                 <input
                   name="default-radio-1"

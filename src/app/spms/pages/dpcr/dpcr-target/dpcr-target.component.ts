@@ -28,6 +28,7 @@ export class DpcrTargetComponent implements OnInit{
   currentYear: number = new Date().getFullYear();
 
   ngOnInit(): void {
+    this.dpcrService.isCommonDivision.set(0);
     this.dpcrService.year.set(this.currentYear);
     this.dpcrService.GetDpcr();
     this.localStorage();

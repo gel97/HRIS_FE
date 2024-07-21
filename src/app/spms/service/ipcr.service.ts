@@ -38,6 +38,12 @@ export class IpcrService {
     isLoading: false,
   });
 
+  ipcr_user = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
   ipcrDataActual = signal<any>({
     data: [],
     rating: [],
@@ -217,6 +223,24 @@ export class IpcrService {
         next: (response: any = {}) => {
           this.ipcr.mutate((a) => (a.data = response));
           this.ipcr.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {},
+      });
+  }
+
+  GetIPCRUser(ipcrId:string) {
+    this.ipcr_user.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_user(ipcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.ipcr_user.mutate((a) => (a.data = response));
+          this.ipcr_user.mutate((a) => (a.isLoading = false));
         },
         error: () => {
           this.alertService.error();
@@ -429,6 +453,38 @@ export class IpcrService {
         error: (error: any) => {},
         complete: () => {
           this.alertService.update();
+        },
+      });
+  }
+
+  PutSubmitTarget(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcr_target_submit(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.save();
+        },
+      });
+  }
+
+  PutSubmitActual(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcr_actual_submit(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.save();
         },
       });
   }
@@ -798,6 +854,36 @@ export class IpcrService {
     } catch (error) {
       console.error('Error:', error);
     }
+  }
+
+  async checkIfIpcrIdIsFromCurrentUser(ipcrId: string) : Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      this.http
+      .get<any[]>(api + this.url.get_ipcr_user(ipcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.ipcr_user.mutate((a) => (a.data = response));
+          this.ipcr_user.mutate((a) => (a.isLoading = false));
+          console.log('response:', response);
+
+          if(response !== null){
+            if(response.userId === this.userId){
+              resolve(true);
+            }else{
+              resolve(false);
+            }
+          }else{
+            resolve(false);
+          }         
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {},
+      });
+    });
   }
 
 }
