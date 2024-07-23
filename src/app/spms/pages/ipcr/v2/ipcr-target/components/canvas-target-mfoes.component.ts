@@ -216,11 +216,13 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       else LoadingSI
                                     "
                                     class="col-12 text-justify"
+                                    style="margin-left: 20px;"
                                   >
+                                    <b>{{i+1}}.{{j+1}}</b>
                                     <i class="bx bx-chevron-right"></i
                                     ><strong
-                                      >{{ b.qty
-                                      }}{{ b.qtyUnit ? '%' : '' }} </strong
+                                      ><u>{{ b.qty
+                                      }}{{ b.qtyUnit ? '%' : '' }} </u></strong
                                     >&nbsp;{{ b.indicator }}
                                   </div>
                                   <ng-template #LoadingSI>
@@ -288,6 +290,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                           !mfoes.isLoading;
                                         else LoadingST
                                       "
+                                      style="margin-left: 50px;"
                                       >SUBTASK MFO</b
                                     >
                                     <ng-template #LoadingST>
@@ -312,8 +315,9 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                             !mfoes.isLoading;
                                           else LoadingStMfo
                                         "
+                                        style="margin-left: 50px;"
                                       >
-                                        {{ i + 1 }}.{{ l + 1 }}&nbsp;{{
+                                        {{ i + 1 }}.{{j+1}}.{{ l + 1 }}&nbsp;{{
                                           c.stMfo
                                         }}
                                       </strong>
@@ -335,11 +339,12 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                             !mfoes.isLoading;
                                           else LoadingStSi
                                         "
+                                        style="margin-left: 60px;"
                                       >
                                         <i class="bx bx-chevron-right"></i>
                                         <strong
-                                      >{{ c.qty
-                                      }}{{ c.qtyUnit ? '%' : '' }} </strong
+                                      ><u>{{ c.qty
+                                      }}{{ c.qtyUnit ? '%' : '' }} </u></strong
                                     >&nbsp;
                                         {{ c.stIndicator }}
                                       </div>

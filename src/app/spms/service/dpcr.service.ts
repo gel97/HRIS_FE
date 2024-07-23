@@ -216,7 +216,7 @@ export class DpcrService {
           this.alertService.save();
         },
         error: (error: any) => {
-          this.alertService.error();
+          this.alertService.customError(error.error);
           this.dpcr.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
