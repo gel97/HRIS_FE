@@ -45,6 +45,81 @@ import {
               <div>
                 <b class="text-primary">{{ i + 1 }}. {{ a.mfo }}</b>
               </div>
+              <div>
+                <small
+                  class="badge rounded-pill float-end cursor-pointer"
+                  [ngClass]="
+                    a.categoryId == '1'
+                      ? 'bg-label-success'
+                      : a.categoryId == '2'
+                      ? 'bg-label-primary'
+                      : a.categoryId == '3'
+                      ? 'bg-label-warning'
+                      : 'bg-label-secondary'
+                  "
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {{ displayCatergory(a.categoryId) }}
+                </small>
+                <ul
+                  *ngIf="!a.isIpcrMfo"
+                  class="dropdown-menu dropdown-menu-end pointer"
+                >
+                  <li *ngIf="a.categoryId !== 1">
+                    <a
+                      (click)="
+                        PutMFOFromIpcrCategory(a.si[0].ipcrId, a.mfoId, 1);
+                        a.categoryId = 1
+                      "
+                      class="dropdown-item"
+                      >STRATEGIC</a
+                    >
+                  </li>
+                  <li *ngIf="a.categoryId !== 2">
+                    <a
+                      (click)="
+                        PutMFOFromIpcrCategory(a.si[0].ipcrId, a.mfoId, 2);
+                        a.categoryId = 2
+                      "
+                      class="dropdown-item"
+                      >CORE
+                    </a>
+                  </li>
+                  <li *ngIf="a.categoryId !== 3">
+                    <a
+                      (click)="
+                        PutMFOFromIpcrCategory(a.si[0].ipcrId, a.mfoId, 3);
+                        a.categoryId = 3
+                      "
+                      class="dropdown-item"
+                      >SUPPORT
+                    </a>
+                  </li>
+                </ul>
+                <div
+                  class="dropdown"
+                  style="position: absolute; right: 0px; top: 20px; z-index: 3;"
+                >
+                  <button
+                    type="button"
+                    class="btn p-0 dropdown-toggle hide-arrow"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i
+                      class="bx bx-dots-vertical-rounded text-primary"
+                      style="position: absolute; right: 0px; top: 0px; z-index: 3;"
+                    ></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a
+                      class="dropdown-item cursor-pointer"
+                      (click)="DeleteIPCRDetails(a.ipcrDataId)"
+                      ><i class="bx bx-trash me-1"></i> Delete</a
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="card-body">
               <ng-container *ngFor="let b of a.si; let y = index">

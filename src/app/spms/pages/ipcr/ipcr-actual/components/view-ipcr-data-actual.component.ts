@@ -150,11 +150,21 @@ import { PageEvent } from '@angular/material/paginator';
                     <span class="text-success"
                       ><strong>{{ b.qty }}{{b.qtyUnit? '%':''}}</strong></span
                     >
+                    <span class="text-success" *ngIf="b.qtyUnit && b.prcntActualQty > 0"
+                      ><strong
+                        >&nbsp;({{b.prcntActualQty}})</strong
+                      ></span
+                    >
                     {{ b.indicator }}
                   </td>
                   <td (click)="setSIindex(i, y);GetMfoOtsPaginate(b.ipcrDataId, b.subTaskId)">
                     <span *ngIf="b.actual; else noActual" class="text-primary"
                       ><strong>{{ b.actual?.totalQty ?? 0 }}{{b.qtyUnit? '%':''}}</strong></span
+                    >
+                    <span class="text-primary" *ngIf="b.qtyUnit && b.actual?.qtyPrcntActual > 0"
+                      ><strong
+                        >&nbsp;({{b.actual.qtyPrcntActual ?? 0}})</strong
+                      ></span
                     >
                     {{ b.actual?.actualAc ?? '' }}
                     <ng-template #noActual>
@@ -186,6 +196,7 @@ import { PageEvent } from '@angular/material/paginator';
                         <strong class="text-primary">{{
                           b.actual?.totalQtyRating ?? 0
                         }}</strong>
+
                       </h2>
                       <ng-template #noQuantiy>
                         <strong

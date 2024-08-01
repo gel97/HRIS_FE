@@ -53,6 +53,15 @@ export class DpcrService {
     isLoading: false,
   });
 
+  dpcrEmployeeRating = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+  selectedDprcId = signal<string>("");
+
+
   officeId: string | null = localStorage.getItem('officeId');
   divisionId: string | null = localStorage.getItem('divisionId');
   divisionName: string | null = localStorage.getItem('divisionName');
@@ -63,6 +72,7 @@ export class DpcrService {
   storageIsShowDpcrData = signal<any>(localStorage.getItem('isShowDpcrData'));
   storageDpcrId = signal<any>(localStorage.getItem('dpcrId'));
   storageDpcrDetails = signal<any>(localStorage.getItem('dpcrDetails'));
+  storageDpcrIdActual = signal<any>(localStorage.getItem('dpcrIdActual'));
   isShowDpcrDataActual = signal<number>(0);
  
   constructor(
@@ -78,6 +88,38 @@ export class DpcrService {
 
   dpcrTargetReportUrl:SafeResourceUrl = "";
   loadReportTgt = signal<boolean>(false);
+
+  PutDPCRSPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_dpcr_data_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDPCRDataActual(this.storageDpcrIdActual());
+        },
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
+  PutSubtaskPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_subtask_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDPCRDataActual(this.storageDpcrIdActual());
+        },
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
 
   GetDpcrMfoEmployee(subtaskId:string, dpcrDataId:string) {
     this.dpcrMfoEmployee.mutate((a) => (a.isLoading = true));
@@ -121,6 +163,28 @@ export class DpcrService {
         },
         complete: () => {
           console.log("DpcrMfo: ", this.dpcrMfoEmployee().data)
+        },
+      });
+  }
+
+  GetDpcrEmployeeRating(dpcrId: string) {
+    this.dpcrEmployeeRating.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_employee_rating(dpcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          
+          this.dpcrEmployeeRating.mutate((a) => (a.data   = response));
+          this.dpcrEmployeeRating.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          console.log("DPCR Employee Rating: ", this.dpcrEmployeeRating().data);
+          this.dpcrEmployeeRating.mutate((a) => (a.isLoading = false));
         },
       });
   }
@@ -193,6 +257,41 @@ export class DpcrService {
           });
         },
         complete: () => {
+        },
+      });
+  }
+
+  GetDpcrDivisions() {
+    this.dpcr.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr(0, this.divisionId ?? ''), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          let dpcr = response.find((a:any) => a.active === 1);
+          this.selectedDprcId.set(dpcr.dpcrId);
+
+          this.dpcr.mutate((a) => {
+            (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.dpcr.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {          
+          this.GetDpcrEmployeeRating(this.selectedDprcId());
         },
       });
   }

@@ -182,7 +182,12 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <td (click)="GetDpcrMfoEmployee('null', b.actual.dpcrDataId);setSIindex(i, y)">
                     <span class="text-success"
                       ><strong
-                        ><u>{{ b.qty }}</u></strong
+                        ><u>{{ b.qty }}{{b.qtyUnit ? '%': ''}}</u></strong
+                      ></span
+                    >
+                    <span class="text-success" *ngIf="b.qtyUnit && b.prcntActualQty > 0"
+                      ><strong
+                        >&nbsp;({{b.prcntActualQty}})</strong
                       ></span
                     >
                     {{ b.indicator }}
@@ -190,7 +195,12 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   <td (click)="setSIindex(i, y)">
                     <span *ngIf="b.actual; else noActualSt" class="text-primary"
                       ><strong
-                        ><u>{{ b.actual?.totalQty ?? 0 }}</u></strong
+                        ><u>{{ b.actual?.totalQty ?? 0 }}{{b.qtyUnit ? '%': ''}}</u></strong
+                      ></span
+                    >
+                    <span class="text-primary" *ngIf="b.qtyUnit && b.actual?.qtyPrcntActual > 0"
+                      ><strong
+                        >&nbsp;({{b.actual.qtyPrcntActual ?? 0}})</strong
                       ></span
                     >
                     {{ b.actual?.actualAc ?? '' }}
@@ -298,6 +308,14 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                           class="dropdown-item cursor-pointer"
                           (click)="isViewStandard = true"
                           ><i class="bx bx-show-alt me-1"></i> View Standard</a
+                        >
+                        <a 
+                          *ngIf="b.qtyUnit"
+                          (click)="data = b"
+                          class="dropdown-item cursor-pointer"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalDpcrActualQty"
+                          ><i class="bx bx-show-alt me-1"></i> Actual Target</a
                         >
                       </div>
                     </div>
@@ -425,19 +443,25 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 <ng-container *ngFor="let c of b.subTasks; let w = index">
                   <tr
                     style="background-color: #f5f5f9;"
-                    (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)"
+                    
                   >
                     <td colspan="8">
                       <div class="card">
                         <div class="card-header">
                           <div class="row">
-                            <div class="col-12">
-                              <h3>
-                                <strong class="text-secondary"
-                                  >{{ i + 1 }}.{{ w + 1 }}.
-                                  {{ c.stMfo }}</strong
-                                >
-                              </h3>
+                            <div class="col-12 x-space-between">
+                              <div class="">
+                                <h3>
+                                  <strong class="text-secondary"
+                                    >{{ i + 1 }}.{{ w + 1 }}.
+                                    {{ c.stMfo }}</strong
+                                  >
+                                </h3>
+                              </div>
+                              <div>
+                                <span
+                                class="badge bg-dark">SUBTASK MFO</span>
+                              </div>                 
                             </div>
                           </div>
                         </div>
@@ -456,26 +480,32 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                 <th class="text-center">Quality</th>
                                 <th class="text-center">Timeliness</th>
                                 <th class="text-center">Average</th>
+                                <th></th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <td>
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
                                   <span class="text-success"
                                     ><strong
-                                      ><u>{{ c.qty }}</u></strong
+                                      ><u>{{ c.qty }}{{c.qtyUnit ? '%': ''}}</u></strong
+                                    ></span
+                                  >
+                                  <span class="text-success" *ngIf="c.qtyUnit && c.prcntActualQty > 0"
+                                    ><strong
+                                      >&nbsp;({{c.prcntActualQty}})</strong
                                     ></span
                                   >
                                   {{ c.stIndicator }}
                                 </td>
-                                <td>
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
                                   <span
                                     *ngIf="c.actual; else noActualSt"
                                     class="text-primary"
                                     ><strong
                                       ><u>{{
                                         c.actual?.totalQty ?? 0
-                                      }}</u></strong
+                                      }}{{c.qtyUnit ? '%': ''}}</u></strong
                                     ></span
                                   >
                                   {{ c.actual?.actualAc ?? '' }}
@@ -488,7 +518,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                     </div>
                                   </ng-template>
                                 </td>
-                                <td>
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <circle-progress
                                       [percent]="c.actual?.qtyPrcnt ?? 0"
@@ -502,7 +532,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                     ></circle-progress>
                                   </div>
                                 </td>
-                                <td>
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noQuantiySt">
                                       <strong class="text-primary">{{
@@ -517,7 +547,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                     </ng-template>
                                   </div>
                                 </td>
-                                <td>
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noQualitySt">
                                       <strong class="text-primary">{{
@@ -532,7 +562,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                     </ng-template>
                                   </div>
                                 </td>
-                                <td>
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noTimelySt">
                                       <strong class="text-primary">{{
@@ -547,7 +577,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                     </ng-template>
                                   </div>
                                 </td>
-                                <td>
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noAveSt">
                                       <strong class="text-success">{{
@@ -560,6 +590,32 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                         >no data</strong
                                       >
                                     </ng-template>
+                                  </div>
+                                </td>
+                                <td >
+                                  <div class="dropdown position-static float-end">
+                                    <button
+                                      type="button"
+                                      class="btn p-0 dropdown-toggle hide-arrow"
+                                      data-bs-toggle="dropdown"
+                                    >
+                                      <i class="bx bx-dots-vertical-rounded text-primary"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                      <!-- <a
+                                        class="dropdown-item cursor-pointer"
+                                        (click)="isViewStandard = true"
+                                        ><i class="bx bx-show-alt me-1"></i> View Standard</a
+                                      > -->
+                                      <a 
+                                        *ngIf="c.qtyUnit"
+                                        (click)="setSTData(b,c)"
+                                        class="dropdown-item cursor-pointer"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalDpcrActualQty"
+                                        ><i class="bx bx-show-alt me-1"></i> Actual Target</a
+                                      >
+                                    </div>
                                   </div>
                                 </td>
                               </tr>
@@ -679,8 +735,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                                         {{emp.qty}}
                                       </td>
                                       <td class="text-center"><span class="">{{emp.actualQty}}</span></td>
-                                    </tr>   
-                                    
+                                    </tr>                                    
                                   </ng-container>   
                                   <tr style="background-color: #B3E2A7;">
                                       <td colspan="2"><b>TOTAL</b></td>
@@ -703,6 +758,50 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
       </div>
     </ng-container>
     <app-modal-dpcr-actual-mfo-ots />
+    <!-- Small Modal IPCR Actual Target-->
+    <div class="modal fade" id="modalDpcrActualQty" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel2"> Set Actual Target</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating px-2">
+              <input
+                type="number"
+                class="form-control"
+                id="target"
+                [(ngModel)] = "data.prcntActualQty"
+                aria-describedby="target"
+              />
+              <label for="target">Target</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              (click)="SaveActualTarget()"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class ViewDpcrActualDataComponent implements OnInit {
@@ -724,7 +823,26 @@ export class ViewDpcrActualDataComponent implements OnInit {
   isViewStandard  : boolean = false;
   isViewStandardSt: boolean = false;
 
+  data  :any = {};
+  stData:any = {};
+
   ngOnInit(): void {
+  }
+
+  setSTData(b:any,c:any){
+    this.data = b;
+    this.data.prcntActualQty = c.prcntActualQty;
+    this.data.dpcrDataId = c.actual.dpcrDataId;
+    this.data.subTaskId = c.subTaskId;
+  }
+
+  SaveActualTarget(){
+    if(this.data.isSubTask === 1){
+      this.dpcrService.PutSubtaskPrcntActualQty(this.data);
+    }else{
+      this.data.dpcrDataId = this.data.actual.dpcrDataId
+      this.dpcrService.PutDPCRSPrcntActualQty(this.data);
+    }
   }
 
   GetDpcrMfoEmployee(subtaskId:string, dpcrDataId:string){

@@ -89,13 +89,16 @@ export class SpmsApiService {
   put_dpcr_setactive = (dpcrId: string, status: number)   => `/tPMDpcr/setactive/${dpcrId}/${status}`;
   delete_dpcr        = (dpcrId: string)                   => `/tPMDpcr/${dpcrId}`;
   get_dpcr           = (year: number, divisionId: string) => `/tPMDpcr/list/${year}/${divisionId}`;
-
+  
   post_dpcr_data     = () => `/tPMDpcrData`;
   put_dpcr_data      = () => `/tPMDpcrData`;
+
+  put_dpcr_data_actual_qty = () => `/tPMDpcrData/update/percentage_actual_target`;
 
   get_dpcr_data_actual              = (dpcrId: string)                                => `/tPMDpcrData/actual/list/${dpcrId}`;
   put_dpcr_data_update_mfo_category = (dpcrId: string, MFOId:string, category:number) => `/tPMDpcrData/update/${dpcrId}/${MFOId}/${category}/dpcr_mfo_category`;
   delete_dpcr_data                  = (dpcrDataId: string)                            => `/tPMDpcrData/${dpcrDataId}`;
+  get_dpcr_employee_rating          = (dpcrId: string)                                => `/tPMDpcrData/dpcr_employee_rating/${dpcrId}`;
 
   get_dpcr_data_mfoes         = (officeId: string, dpcrId: string, divisionName: string, mfoType: number)                    => `/tPMDpcrData/mfoes/${officeId}/${dpcrId}/${divisionName}/${mfoType}`;
   get_dpcr_data_search_mfoes  = (officeId: string, dpcrId: string, divisionName: string, mfoType: number, searchMfo: string) =>  `/tPMDpcrData/searchMfoes/${officeId}/${dpcrId}/${divisionName}/${mfoType}/${searchMfo}`;
@@ -112,6 +115,7 @@ export class SpmsApiService {
   post_subtask                = () => `/tPMSubTask`;
   post_subtask_add_common_mfo = () => `/tPMSubTask/add/common_mfo`;
   put_subtask                 = () => `/tPMSubTask`;
+  put_subtask_actual_qty      = () => `/tPMSubTask/update/percentage_actual_target`;
   delete_subtask              = (subTaskId: string) => `/tPMSubTask/${subTaskId}`;
 
   post_ots = () => `/tPMOts`;

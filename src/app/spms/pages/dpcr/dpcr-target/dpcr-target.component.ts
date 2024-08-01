@@ -57,7 +57,8 @@ export class DpcrTargetComponent implements OnInit{
   }
 
   EditDpcrData(){
-    this.dpcrService.EditDpcrData(this.dpcrSIData);
+    console.log(this.dpcrSIData)
+    //this.dpcrService.EditDpcrData(this.dpcrSIData);
   }
 
 
