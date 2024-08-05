@@ -5,7 +5,7 @@ import {
   Input,
   ViewChild,
   inject,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { IpcrService } from 'src/app/spms/service/ipcr.service';
 
@@ -51,9 +51,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                         (click)="setMFOs(0)"
                         type="button"
                         class="nav-link"
-                        [ngClass]="
-                          ipcrService.isCommon() === 0 ? 'active' : ''
-                        "
+                        [ngClass]="ipcrService.isCommon() === 0 ? 'active' : ''"
                         role="tab"
                         data-bs-toggle="tab"
                         data-bs-target="#navs-pills-justified-home"
@@ -76,9 +74,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                         (click)="setMFOs(1)"
                         type="button"
                         class="nav-link"
-                        [ngClass]="
-                          ipcrService.isCommon() === 1 ? 'active' : ''
-                        "
+                        [ngClass]="ipcrService.isCommon() === 1 ? 'active' : ''"
                         role="tab"
                         data-bs-toggle="tab"
                         data-bs-target="#navs-pills-justified-profile"
@@ -161,12 +157,19 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                           appearance="line"
                                           [theme]="{ margin: '0px' }"
                                         ></ngx-skeleton-loader>
-                                      </div>                                                                   
+                                      </div>
                                     </ng-template>
                                   </div>
-                                  <div *ngIf="!mfoes.isSearchLoading && !mfoes.isLoading;">
+                                  <div
+                                    *ngIf="
+                                      !mfoes.isSearchLoading && !mfoes.isLoading
+                                    "
+                                  >
                                     <small
-                                    *ngIf="a.categoryId !== null; else showDpcrCat"
+                                      *ngIf="
+                                        a.categoryId !== null;
+                                        else showDpcrCat
+                                      "
                                       class="badge rounded-pill float-end cursor-pointer"
                                       [ngClass]="
                                         a.categoryId == '1'
@@ -180,10 +183,10 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       data-bs-toggle="dropdown"
                                       aria-expanded="false"
                                     >
-                                      {{ displayCatergory(a.categoryId ) }}
+                                      {{ displayCatergory(a.categoryId) }}
                                     </small>
                                     <ng-template #showDpcrCat>
-                                      <small                                     
+                                      <small
                                         class="badge rounded-pill float-end cursor-pointer"
                                         [ngClass]="
                                           a.dpcrCategoryId == '1'
@@ -204,9 +207,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                 </div>
                               </td>
                             </tr>
-                            <ng-container
-                              *ngFor="let b of a.si; let j = index"
-                            >
+                            <ng-container *ngFor="let b of a.si; let j = index">
                               <tr>
                                 <td>
                                   <div
@@ -218,11 +219,12 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                     class="col-12 text-justify"
                                     style="margin-left: 20px;"
                                   >
-                                    <b>{{i+1}}.{{j+1}}</b>
+                                    <b>{{ i + 1 }}.{{ j + 1 }}</b>
                                     <i class="bx bx-chevron-right"></i
                                     ><strong
-                                      ><u>{{ b.qty
-                                      }}{{ b.qtyUnit ? '%' : '' }} </u></strong
+                                      ><u
+                                        >{{ b.qty }}{{ b.qtyUnit ? '%' : '' }}
+                                      </u></strong
                                     >&nbsp;{{ b.indicator }}
                                   </div>
                                   <ng-template #LoadingSI>
@@ -317,9 +319,9 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                         "
                                         style="margin-left: 50px;"
                                       >
-                                        {{ i + 1 }}.{{j+1}}.{{ l + 1 }}&nbsp;{{
-                                          c.stMfo
-                                        }}
+                                        {{ i + 1 }}.{{ j + 1 }}.{{
+                                          l + 1
+                                        }}&nbsp;{{ c.stMfo }}
                                       </strong>
                                       <ng-template #LoadingStMfo>
                                         <ngx-skeleton-loader
@@ -343,9 +345,11 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       >
                                         <i class="bx bx-chevron-right"></i>
                                         <strong
-                                      ><u>{{ c.qty
-                                      }}{{ c.qtyUnit ? '%' : '' }} </u></strong
-                                    >&nbsp;
+                                          ><u
+                                            >{{ c.qty
+                                            }}{{ c.qtyUnit ? '%' : '' }}
+                                          </u></strong
+                                        >&nbsp;
                                         {{ c.stIndicator }}
                                       </div>
                                       <ng-template #LoadingStSi>
@@ -367,7 +371,13 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                       >
                                         <button
                                           type="button"
-                                          (click)="SetIpcrDataSubtaskObj(c, true, b.categoryId ?? a.dpcrCategoryId)"
+                                          (click)="
+                                            SetIpcrDataSubtaskObj(
+                                              c,
+                                              true,
+                                              b.categoryId ?? a.dpcrCategoryId
+                                            )
+                                          "
                                           data-bs-toggle="modal"
                                           data-bs-target="#modalAddSubtask"
                                           class="btn rounded-pill btn-icon btn-primary float-end"
@@ -392,84 +402,93 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                                   *ngFor="let c of b.stCmfo; let l = index"
                                 >
                                   <tr class="bg-custom-ligth-gray">
-                                      <td colspan="2">
+                                    <td colspan="2">
+                                      <strong
+                                        class="text-secondary"
+                                        *ngIf="
+                                          !mfoes.isSearchLoading &&
+                                            !mfoes.isLoading;
+                                          else LoadingStCMfo
+                                        "
+                                      >
+                                        {{ i + 1 }}.{{
+                                          b.st.length + l + 1
+                                        }}&nbsp;{{ c.mfo }}
+                                      </strong>
+                                      <ng-template #LoadingStCMfo>
+                                        <ngx-skeleton-loader
+                                          count="1"
+                                          animation="pulse"
+                                          appearance="line"
+                                          [theme]="{ margin: '0px' }"
+                                        ></ngx-skeleton-loader>
+                                      </ng-template>
+                                    </td>
+                                  </tr>
+                                  <tr
+                                    *ngFor="let d of c.si; let ll = index"
+                                    class="bg-custom-ligth-gray"
+                                  >
+                                    <td>
+                                      <div
+                                        *ngIf="
+                                          !mfoes.isSearchLoading &&
+                                            !mfoes.isLoading;
+                                          else LoadingStCmfoSi
+                                        "
+                                      >
+                                        <i class="bx bx-chevron-right"></i>
                                         <strong
-                                          class="text-secondary"
-                                          *ngIf="
-                                            !mfoes.isSearchLoading &&
-                                              !mfoes.isLoading;
-                                            else LoadingStCMfo
+                                          >{{ d.qty
+                                          }}{{ d.qtyUnit ? '%' : '' }} </strong
+                                        >&nbsp;
+                                        {{ d.indicator }}
+                                      </div>
+                                      <ng-template #LoadingStCmfoSi>
+                                        <ngx-skeleton-loader
+                                          count="1"
+                                          animation="pulse"
+                                          appearance="line"
+                                          [theme]="{ margin: '0px' }"
+                                        ></ngx-skeleton-loader>
+                                      </ng-template>
+                                    </td>
+                                    <td>
+                                      <ng-container
+                                        *ngIf="
+                                          !mfoes.isSearchLoading &&
+                                            !mfoes.isLoading;
+                                          else LoadingBtnStCmfo
+                                        "
+                                      >
+                                        <button
+                                          type="button"
+                                          (click)="
+                                            SetIpcrDataSubtaskObj(
+                                              d,
+                                              false,
+                                              b.categoryId
+                                            )
                                           "
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#modalAddSubtask"
+                                          class="btn rounded-pill btn-icon btn-primary float-end"
                                         >
-                                          {{ i + 1 }}.{{b.st.length + l + 1 }}&nbsp;{{
-                                            c.mfo
-                                          }}
-                                        </strong>
-                                        <ng-template #LoadingStCMfo>
-                                          <ngx-skeleton-loader
-                                            count="1"
-                                            animation="pulse"
-                                            appearance="line"
-                                            [theme]="{ margin: '0px' }"
-                                          ></ngx-skeleton-loader>
-                                        </ng-template>
-                                      </td>
-                                    </tr>
-                                    <tr *ngFor="let d of c.si; let ll = index" class="bg-custom-ligth-gray">
-                                      <td>
-                                        <div
-                                          *ngIf="
-                                            !mfoes.isSearchLoading &&
-                                              !mfoes.isLoading;
-                                            else LoadingStCmfoSi
-                                          "
-                                        >
-                                          <i class="bx bx-chevron-right"></i>
-                                          <strong
-                                        >{{ d.qty
-                                        }}{{ d.qtyUnit ? '%' : '' }} </strong
-                                      >&nbsp;
-                                          {{ d.indicator }}
-                                        </div>
-                                        <ng-template #LoadingStCmfoSi>
-                                          <ngx-skeleton-loader
-                                            count="1"
-                                            animation="pulse"
-                                            appearance="line"
-                                            [theme]="{ margin: '0px' }"
-                                          ></ngx-skeleton-loader>
-                                        </ng-template>
-                                      </td>
-                                      <td>
-                                        <ng-container
-                                          *ngIf="
-                                            !mfoes.isSearchLoading &&
-                                              !mfoes.isLoading;
-                                            else LoadingBtnStCmfo
-                                          "
-                                        >
-                                          <button
-                                            type="button"
-                                            (click)="SetIpcrDataSubtaskObj(d, false, b.categoryId)"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#modalAddSubtask"
-                                            class="btn rounded-pill btn-icon btn-primary float-end"
-                                          >
-                                            <span
-                                              class="tf-icons bx bx bx-plus"
-                                            ></span>
-                                          </button>
-                                        </ng-container>
-                                        <ng-template #LoadingBtnStCmfo>
-                                          <ngx-skeleton-loader
-                                            count="1"
-                                            animation="pulse"
-                                            appearance="circle"
-                                            [theme]="{ margin: '0px' }"
-                                          ></ngx-skeleton-loader>
-                                        </ng-template>
-                                      </td>
-                                    </tr>    
+                                          <span
+                                            class="tf-icons bx bx bx-plus"
+                                          ></span>
+                                        </button>
+                                      </ng-container>
+                                      <ng-template #LoadingBtnStCmfo>
+                                        <ngx-skeleton-loader
+                                          count="1"
+                                          animation="pulse"
+                                          appearance="circle"
+                                          [theme]="{ margin: '0px' }"
+                                        ></ngx-skeleton-loader>
+                                      </ng-template>
+                                    </td>
+                                  </tr>
                                 </ng-container>
                               </ng-container>
                             </ng-container>
@@ -477,7 +496,10 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                           <ng-container *ngIf="mfoes.data.length === 0">
                             <tr>
                               <td colspan="2" class="text-center">
-                                <strong>No data found ...</strong>
+                                <strong *ngIf="mfoes.errorMessage === ''; else ErrorMsg">No data found ...</strong>
+                                <ng-template #ErrorMsg>
+                                  <strong class="text-danger">{{mfoes.errorMessage}}</strong>
+                                </ng-template>
                               </td>
                             </tr>
                           </ng-container>
@@ -501,35 +523,34 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                           >
                             <tr class="text-justify">
                               <td colspan="2">
-                                <div class="x-space-between" *ngIf="
-                                    !mfoes.isSearchLoading &&
-                                      !mfoes.isLoading;
+                                <div
+                                  class="x-space-between"
+                                  *ngIf="
+                                    !mfoes.isSearchLoading && !mfoes.isLoading;
                                     else LoadingMfo
-                                  ">
-                                <strong
-                                  class="text-primary"
+                                  "
                                 >
-                                  {{ i + 1 }}.&nbsp;{{ a.mfo }}</strong
-                                >
-                                <small
-                                      class="badge rounded-pill float-end cursor-pointer"
-                                      [ngClass]="
-                                        a.categoryId == '1'
-                                          ? 'bg-label-success'
-                                          : a.categoryId == '2'
-                                          ? 'bg-label-primary'
-                                          : a.categoryId == '3'
-                                          ? 'bg-label-warning'
-                                          : 'bg-label-secondary'
-                                      "
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      {{ displayCatergory(a.categoryId) }}
-                                    </small>
-
+                                  <strong class="text-primary">
+                                    {{ i + 1 }}.&nbsp;{{ a.mfo }}</strong
+                                  >
+                                  <small
+                                    class="badge rounded-pill float-end cursor-pointer"
+                                    [ngClass]="
+                                      a.categoryId == '1'
+                                        ? 'bg-label-success'
+                                        : a.categoryId == '2'
+                                        ? 'bg-label-primary'
+                                        : a.categoryId == '3'
+                                        ? 'bg-label-warning'
+                                        : 'bg-label-secondary'
+                                    "
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                  >
+                                    {{ displayCatergory(a.categoryId) }}
+                                  </small>
                                 </div>
-                                
+
                                 <ng-template #LoadingMfo>
                                   <ngx-skeleton-loader
                                     count="1"
@@ -544,8 +565,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                               <td>
                                 <div
                                   *ngIf="
-                                    !mfoes.isSearchLoading &&
-                                      !mfoes.isLoading;
+                                    !mfoes.isSearchLoading && !mfoes.isLoading;
                                     else LoadingSI
                                   "
                                   class="col-12 text-justify"
@@ -580,8 +600,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
                               <td [width]="10">
                                 <button
                                   *ngIf="
-                                    !mfoes.isSearchLoading &&
-                                      !mfoes.isLoading;
+                                    !mfoes.isSearchLoading && !mfoes.isLoading;
                                     else LoadingBtn
                                   "
                                   type="button"
@@ -624,28 +643,28 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
         </div>
       </div>
     </div>
-    <app-modal-add-mfo [mfo]="mfo"/>
+    <app-modal-add-mfo [mfo]="mfo" />
     <app-modal-add-subtask [subtask]="subtask" />
   `,
 })
 export class CanvasTargetMfoesComponent implements OnInit {
   ipcrService = inject(IpcrService);
-  mfoes       = this.ipcrService.dpcr_ipcr();
+  mfoes = this.ipcrService.dpcr_ipcr();
 
-  @Output() submit              = new EventEmitter<any>();
-  @Output() setIpcrDataObj      = new EventEmitter<any>();
+  @Output() submit = new EventEmitter<any>();
+  @Output() setIpcrDataObj = new EventEmitter<any>();
   @Output() hideCanvasIpcrMfoes = new EventEmitter<boolean>();
-  @Output() addType             = new EventEmitter<any>();
-  @Output() handleExpand        = new EventEmitter<any>();
+  @Output() addType = new EventEmitter<any>();
+  @Output() handleExpand = new EventEmitter<any>();
 
   ngOnInit(): void {
     this.ipcrService.ViewGetDPCR_IPCR();
   }
 
-  search   : any = '';
-  mfo      : any = {};
-  subtask  : any = {};
-  quantity : number | any;
+  search: any = '';
+  mfo: any = {};
+  subtask: any = {};
+  quantity: number | any;
 
   SearchMFO() {
     //   if (this.search === '' || this.search === null) {
@@ -667,37 +686,35 @@ export class CanvasTargetMfoesComponent implements OnInit {
   }
 
   async SetIpcrDataObj(
-    mfoData  : any,
-    siData   : any,
-    indexMfo : number,
-    indexSI  : number
+    mfoData: any,
+    siData: any,
+    indexMfo: number,
+    indexSI: number
   ) {
-    
     await this.ipcrService.GetIPCRDetailsRemaining(siData.dpcrDataId);
 
-    this.mfo              = siData;
+    this.mfo = siData;
     this.mfo.dpcrQuantity = siData.qty;
-    this.mfo.quantity     = null;
-    this.mfo.prompt       = false;
-    this.mfo.qty_rem      = siData.qty;
-    this.mfo.isIpcrMfo    = mfoData.isIpcrMfo;
-    this.mfo.categoryId   = mfoData.categoryId ?? mfoData.dpcrCategoryId;
+    this.mfo.quantity = null;
+    this.mfo.prompt = false;
+    this.mfo.qty_rem = siData.qty;
+    this.mfo.isIpcrMfo = mfoData.isIpcrMfo;
+    this.mfo.categoryId = mfoData.categoryId ?? mfoData.dpcrCategoryId;
 
-    console.log(this.mfo)
+    console.log(this.mfo);
   }
 
-  SetIpcrDataSubtaskObj(st: any, isST:boolean, categoryId:number) {
+  SetIpcrDataSubtaskObj(st: any, isST: boolean, categoryId: number) {
     this.ipcrService.GetIPCRDetailsRemainingST(st.subTaskId, st.dpcrDataId);
 
-    this.subtask              = st;
+    this.subtask = st;
     this.subtask.dpcrQuantity = st.qty;
-    this.subtask.indicator    = isST ? st.stIndicator : st.indicator;
-    this.subtask.prompt       = false;
-    this.subtask.qty_rem      = st.qty - this.ipcrService.ipcrST_rem();
-    this.subtask.quantity     = null;
-    this.subtask.isIpcrMfo    = 0;
-    this.subtask.categoryId   = categoryId;
-
+    this.subtask.indicator = isST ? st.stIndicator : st.indicator;
+    this.subtask.prompt = false;
+    this.subtask.qty_rem = st.qty - this.ipcrService.ipcrST_rem();
+    this.subtask.quantity = null;
+    this.subtask.isIpcrMfo = 0;
+    this.subtask.categoryId = categoryId;
 
     console.log(this.subtask);
   }
@@ -734,7 +751,7 @@ export class CanvasTargetMfoesComponent implements OnInit {
     return catName ? catName + '' : 'NO FUNCTION';
   }
 
-  handleExpandCard(){
+  handleExpandCard() {
     this.handleExpand.emit();
   }
 }

@@ -93,12 +93,11 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                 <label for="qtyOpcr">Total Quantity</label>
               </div>
               <div
-                *ngIf="(this.dpcrSIData.qty - this.dpcrSIData.qtyCommitted) > dpcrSIData.qtyRemaining && !dpcrSIData.isDpcrMfo"
+                *ngIf="dpcrSIData.qtyRemaining < 0 && !dpcrSIData.isDpcrMfo"
                 class="alert alert-danger mt-2"
                 role="alert"
               >
-                <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
-                than remaining quantity 
+                <i class="bx bxs-x-square"></i>&nbsp;Invalid Target Quantity
                 <strong
                   ><u>{{ dpcrSIData.qtyRemaining }}</u></strong
                 >

@@ -68,6 +68,50 @@ import { Router, ActivatedRoute  } from '@angular/router';
                 </mat-form-field>
                 <label *ngIf="validateField.reviewedById" class="text-danger">Reviewed by is required</label>
               </div>
+              <div class="col-lg-12">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Assessed by:</mat-label>
+                  <mat-select [(ngModel)]="signatory.assessedById">
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [(ngModel)]="searchAssessedBy"
+                        (ngModelChange)="handleOnChangeAssessedBy()"
+                        placeholderLabel="Search..."
+                        noEntriesFoundLabel="'no match found'"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let i of search_employee_list_assessed_by"
+                      value="{{ i.eic }}"
+                    >
+                      {{ i.lastName }}, {{ i.firstName }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+                <label *ngIf="validateField.assessedById" class="text-danger">Assessed by is required</label>
+              </div>
+              <div class="col-lg-12">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Final Rating by:</mat-label>
+                  <mat-select [(ngModel)]="signatory.finalRatingById">
+                    <mat-option>
+                      <ngx-mat-select-search
+                        [(ngModel)]="searchFinalRatingBy"
+                        (ngModelChange)="handleOnChangeFinalRatingBy()"
+                        placeholderLabel="Search..."
+                        noEntriesFoundLabel="'no match found'"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let i of search_employee_list_finalRating_by"
+                      value="{{ i.eic }}"
+                    >
+                      {{ i.lastName }}, {{ i.firstName }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+                <label *ngIf="validateField.finalRatingById" class="text-danger">Final rating by is required</label>
+              </div>
               <div class="text-center mb-4">
                 <h2 class="role-title">MPOR AND SMPOR</h2>
               </div>
@@ -113,15 +157,19 @@ export class ViewIpcrSignatoryComponent implements OnInit {
   signatory : any = {};
   validateField: any = {};
 
-  searchReviewedBy : any = '';
-  searchApprovedBy : any = '';
-  searchConfirmedBy: any = '';
+  searchReviewedBy   : any = '';
+  searchApprovedBy   : any = '';
+  searchConfirmedBy  : any = '';
+  searchAssessedBy   : any = '';
+  searchFinalRatingBy: any = '';
 
   employee_list: any = [];
 
-  search_employee_list_reviewed_by : any = [];
-  search_employee_list_approved_by : any = [];
-  search_employee_list_confirmed_by: any = [];
+  search_employee_list_reviewed_by   : any = [];
+  search_employee_list_approved_by   : any = [];
+  search_employee_list_confirmed_by  : any = [];
+  search_employee_list_assessed_by   : any = [];
+  search_employee_list_finalRating_by: any = [];
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
@@ -154,9 +202,11 @@ export class ViewIpcrSignatoryComponent implements OnInit {
             employee.salaryGrade >= 18 && employee.salaryGrade <= 26
         ).sort((a: any, b: any) => b.salaryGrade - a.salaryGrade);
 
-        this.search_employee_list_reviewed_by = this.employee_list;
-        this.search_employee_list_approved_by = this.employee_list;
-        this.search_employee_list_confirmed_by = this.employee_list;
+        this.search_employee_list_reviewed_by    = this.employee_list;
+        this.search_employee_list_approved_by    = this.employee_list;
+        this.search_employee_list_confirmed_by   = this.employee_list;
+        this.search_employee_list_assessed_by    = this.employee_list;
+        this.search_employee_list_finalRating_by = this.employee_list;
 
         console.log(this.employee_list);
       },
@@ -175,13 +225,13 @@ export class ViewIpcrSignatoryComponent implements OnInit {
     this.signatoryService.get_signatories_ipcr(ipcrId).subscribe(
       (request: any) => {
         if(request === null){
-          this.signatory.reviewedById  = null;
-          this.signatory.approvedById  = null;
-          this.signatory.confirmedById = null;
-
+          this.signatory.reviewedById    = null;
+          this.signatory.approvedById    = null;
+          this.signatory.confirmedById   = null;
+          this.signatory.assessedById    = null;
+          this.signatory.finalRatingById = null;
         }else{
           this.signatory = request;
-
         }
       },
       (err) => {}
@@ -217,8 +267,20 @@ export class ViewIpcrSignatoryComponent implements OnInit {
       }else{
         this.validateField.confirmedById = false;
       }
+
+      if(this.signatory!.assessedById === null || this.signatory!.assessedById === ""){
+        this.validateField.assessedById = true;
+      }else{
+        this.validateField.assessedById = false;
+      }
+
+      if(this.signatory!.finalRatingById === null || this.signatory!.finalRatingById === ""){
+        this.validateField.finalRatingById = true;
+      }else{
+        this.validateField.finalRatingById = false;
+      }
   
-      if(this.validateField!.reviewedById || this.validateField!.approvedById || this.validateField!.confirmedById){
+      if(this.validateField!.reviewedById || this.validateField!.approvedById || this.validateField!.confirmedById || this.validateField!.assessedById || this.validateField!.finalRatingById){
         resolve(false);
       }else{
         resolve(true);
@@ -251,6 +313,24 @@ export class ViewIpcrSignatoryComponent implements OnInit {
         (employee.firstName + ' ' + employee.lastName)
           .toLowerCase()
           .includes(this.searchConfirmedBy.toLowerCase())
+    );
+  }
+
+  handleOnChangeAssessedBy() {
+    this.search_employee_list_assessed_by = this.employee_list.filter(
+      (employee: any) =>
+        (employee.firstName + ' ' + employee.lastName)
+          .toLowerCase()
+          .includes(this.searchAssessedBy.toLowerCase())
+    );
+  }
+
+  handleOnChangeFinalRatingBy() {
+    this.search_employee_list_finalRating_by = this.employee_list.filter(
+      (employee: any) =>
+        (employee.firstName + ' ' + employee.lastName)
+          .toLowerCase()
+          .includes(this.searchFinalRatingBy.toLowerCase())
     );
   }
 }

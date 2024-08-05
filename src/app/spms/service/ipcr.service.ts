@@ -67,6 +67,7 @@ export class IpcrService {
   dpcr_ipcr = signal<any>({
     data: [],
     error: false,
+    errorMessage: "",
     isLoading: false,
     isLoadingSave: false,
     isNoData: false,
@@ -344,12 +345,21 @@ export class IpcrService {
       .subscribe({
         next: (response: any = {}) => {
           this.dpcr_ipcr.mutate((a) => (a.data = response));
+          this.dpcr_ipcr.mutate((a) => (a.errorMessage = ""));
+
         },
-        error: () => {
-          this.alertService.error();
+        error: (err:any) => {
+          //this.alertService.error();
+          this.dpcr_ipcr.mutate((a) => (a.isLoading = false));
+          this.dpcr_ipcr.mutate((a) => (a.data = []));
+          this.dpcr_ipcr.mutate((a) => (a.isSearchLoading = false));
+          this.dpcr_ipcr.mutate((a) => (a.errorMessage = err.error));
+
         },
         complete: () => {
           this.dpcr_ipcr.mutate((a) => (a.isLoading = false));
+          this.dpcr_ipcr.mutate((a) => (a.isSearchLoading = false));
+
           this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
           console.log(this.dpcr_ipcr().data)
         },

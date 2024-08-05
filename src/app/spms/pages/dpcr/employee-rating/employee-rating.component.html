@@ -11,13 +11,11 @@
     <div class="card accordion-item">
       <div class="accordion-button collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' +i"
         aria-expanded="false" aria-controls="accordionTwo">
-
         <div style="width: 80px; padding: 5px; margin-top: 8px;">
           <h1 *ngIf="!employeesRating.isLoading; else LoadRating">
             <b>
               {{item.rating.finalRating.total ?? ''}}
             </b>
-
           </h1>
           <ng-template #LoadRating>
             <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
@@ -62,7 +60,6 @@
                   <b>{{i+1}}. {{mfo.mfo}}</b>
                 </div>
                 <ng-container *ngFor="let si of mfo.si; let y = index">
-
                   <div class="accordion-item card" style="margin-top: 10px;">
                     <div class="col-12 x-space-between px-2">
                       <div style="width: 25%;">
@@ -93,14 +90,17 @@
                       <div style="width: 25%;">
                         <div style="margin-right: 30px;">
                           <label><b><u class="text-success">{{si.qty}}{{si.qtyUnit === 1?
-                                '%':''}}</u></b>&nbsp;{{si.indicator}}
+                                '%':''}}</u></b>
+                            <span class="text-success"
+                              *ngIf="si.qtyUnit && si.prcntActualQty > 0"><strong>&nbsp;({{si.prcntActualQty}})</strong></span>
+                            {{si.indicator}}
                           </label>
                         </div>
-
                       </div>
                       <div style="width: 25%;">
                         <label *ngIf="si.actual?.totalQty > 0"><b><u class="text-primary">{{si.actual?.totalQty ??
-                              0}}{{si.qtyUnit === 1? '%':''}}</u></b>&nbsp; {{si.actual.actualAc}}</label>
+                              0}}{{si.qtyUnit === 1? '%':''}}</u></b><span class="text-primary"
+                            *ngIf="si.qtyUnit && si.actual.qtyPrcntActual > 0"><strong>&nbsp;({{si.actual.qtyPrcntActual}})</strong></span>{{si.actual.actualAc}}</label>
                       </div>
                       <div style="width: 10%;">
                         <div class="">
@@ -180,7 +180,6 @@
               </div>
             </div>
           </ng-container>
-
         </div>
       </div>
     </div>
