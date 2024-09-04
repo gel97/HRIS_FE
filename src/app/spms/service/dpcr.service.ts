@@ -129,7 +129,6 @@ export class DpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
-
            response.employee.forEach((a:any) => {
             this.utilsSerivce.get_profile_picture(a.eic).subscribe(
               (request) => {
@@ -140,12 +139,8 @@ export class DpcrService {
               }
             );
           });
-
-          console.log(response)
-
           this.dpcrMfoEmployee.mutate((a) => {
-            (a.data = response),
-              (a.isLoading = false),
+              (a.data = response),
               (a.error = false),
               (a.errorStatus = null);
           });
@@ -155,14 +150,12 @@ export class DpcrService {
           });
         },
         error: (error: any) => {
-          this.dpcrMfoEmployee.mutate((a) => (a.isLoading = false));
-
           this.errorService.error.mutate((a) => {
             (a.error = true), (a.errorStatus = error.status);
           });
         },
         complete: () => {
-          console.log("DpcrMfo: ", this.dpcrMfoEmployee().data)
+          this.dpcrMfoEmployee.mutate((a) => (a.isLoading = false));
         },
       });
   }

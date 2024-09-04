@@ -42,7 +42,7 @@ import { PageEvent } from '@angular/material/paginator';
               </div>
               <div class="row">
                 <div class="col-12 text-center fs-2 fw-bold">
-                  {{ a.aveByCat }}
+                  {{ a.aveByCat | number: '1.2-2'}}
                 </div>
                 <div class="col-12 text-center mt-1">Average</div>
               </div>
@@ -210,7 +210,7 @@ import { PageEvent } from '@angular/material/paginator';
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuality">
                         <strong class="text-primary">{{
-                          b.actual?.totalQlty ?? 0
+                          b.actual?.totalQlty ?? 0 | number: '1.2-2'
                         }}</strong>
                       </h2>
                       <ng-template #noQuality>
@@ -225,7 +225,7 @@ import { PageEvent } from '@angular/material/paginator';
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimely">
                         <strong class="text-primary">{{
-                          b.actual?.totalTimely ?? 0
+                          b.actual?.totalTimely ?? 0 | number: '1.2-2'
                         }}</strong>
                       </h2>
                       <ng-template #noTimely>
@@ -942,8 +942,14 @@ export class ViewIpcrDataActualComponent implements OnInit {
   }
 
   handlePageEvent(e: PageEvent) {
+    console.log(e)
     this.page.pageNumber = e.pageIndex + 1;
     this.page.pageSize = e.pageSize;
+
+    this.paginate.pageNumber = e.pageIndex + 1;
+    this.paginate.pageSize   = e.pageSize;
+
+    this.otsService.GetMfoOtsPaginated(this.paginate);
     //this.post_all_logs();
   }
 
@@ -999,6 +1005,9 @@ export class ViewIpcrDataActualComponent implements OnInit {
     this.ots.timely3     = si.timely3;
     this.ots.timely2     = si.timely2;
     this.ots.timely1     = si.timely1;
+
+    this.ots.timelyR = null;
+    this.ots.qltyR   = null;
   }
 
   setOtsUpdate(otsData:any){
@@ -1098,9 +1107,9 @@ export class ViewIpcrDataActualComponent implements OnInit {
     if (this.sex === 'MALE') {
       return 'assets/img/illustrations/man-with-laptop-light.png';
     } else if (this.sex === 'FEMALE') {
-      return 'assets/img/illustrations/girl-doing-yoga-light.png';
+      return 'assets/img/illustrations/sitting-girl-with-laptop-light.png';
     } else {
-      return 'assets/img/illustrations/default.png';
+      return 'assets/img/illustrations/sitting-girl-with-laptop-light.png';
     }
   }
 

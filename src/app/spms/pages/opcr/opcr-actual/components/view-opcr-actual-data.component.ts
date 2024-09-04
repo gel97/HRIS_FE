@@ -492,9 +492,9 @@ export class ViewOpcrActualDataComponent implements OnInit {
     if (this.sex === 'MALE') {
       return 'assets/img/illustrations/man-with-laptop-light.png';
     } else if (this.sex === 'FEMALE') {
-      return 'assets/img/illustrations/girl-doing-yoga-light.png';
+      return 'assets/img/illustrations/sitting-girl-with-laptop-light.png';
     } else {
-      return 'assets/img/illustrations/default.png';
+      return 'assets/img/illustrations/sitting-girl-with-laptop-light.png';
     }
   }
 

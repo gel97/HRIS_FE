@@ -40,7 +40,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
               </div>
               <div class="row">
                 <div class="col-12 text-center fs-2 fw-bold">
-                  {{ a.aveByCat }}
+                  {{ a.aveByCat | number: '1.2-2'}}
                 </div>
                 <div class="col-12 text-center mt-1">Average</div>
               </div>
@@ -246,8 +246,8 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQualitySt">
                         <strong class="text-primary">{{
-                          b.actual?.totalQlty ?? 0
-                        }}</strong>
+                          b.actual?.totalQlty ?? 0 | number: '1.2-2'
+                        }} </strong>
                       </h2>
                       <ng-template #noQualitySt>
                         <strong
@@ -261,7 +261,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimelySt">
                         <strong class="text-primary">{{
-                          b.actual?.totalTimely ?? 0
+                          b.actual?.totalTimely ?? 0 | number: '1.2-2'
                         }}</strong>
                       </h2>
                       <ng-template #noTimelySt>
@@ -893,9 +893,9 @@ export class ViewDpcrActualDataComponent implements OnInit {
     if (this.sex === 'MALE') {
       return 'assets/img/illustrations/man-with-laptop-light.png';
     } else if (this.sex === 'FEMALE') {
-      return 'assets/img/illustrations/girl-doing-yoga-light.png';
+      return 'assets/img/illustrations/sitting-girl-with-laptop-light.png';
     } else {
-      return 'assets/img/illustrations/default.png';
+      return 'assets/img/illustrations/sitting-girl-with-laptop-light.png';
     }
   }
 
