@@ -276,7 +276,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noAveSt">
                         <strong class="text-success">{{
-                          b.actual?.average ?? 0
+                          b.actual?.average ?? 0 | number: '1.2-2'
                         }}</strong>
                       </h2>
                       <ng-template #noAveSt>
@@ -316,6 +316,14 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                           data-bs-toggle="modal"
                           data-bs-target="#modalDpcrActualQty"
                           ><i class="bx bx-show-alt me-1"></i> Actual Target</a
+                        >
+                        <a 
+                          *ngIf="b.isSubTask"
+                          (click)="setRatingData(b.dpcrDataId)"
+                          class="dropdown-item cursor-pointer"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalSetSubtaskRating"
+                          ><i class="bx bx-edit-alt me-1"></i> Set Rating</a
                         >
                       </div>
                     </div>
@@ -802,6 +810,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
         </div>
       </div>
     </div>
+    <app-modal-set-subtask-rating/>
   `,
 })
 export class ViewDpcrActualDataComponent implements OnInit {
@@ -827,6 +836,10 @@ export class ViewDpcrActualDataComponent implements OnInit {
   stData:any = {};
 
   ngOnInit(): void {
+  }
+
+  setRatingData(dpcrDataId:string){
+    this.dpcrService.GetDpcrSubtaskRating(dpcrDataId);
   }
 
   setSTData(b:any,c:any){

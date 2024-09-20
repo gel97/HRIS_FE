@@ -38,7 +38,7 @@ import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-
 import { ViewDpcrActualDataComponent } from './dpcr-actual/components/view-dpcr-actual-data.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ModalDpcrActualMfoOtsComponent } from './dpcr-actual/components/modal-dpcr-actual-mfo-ots.component';
-
+import { ModalSetSubtaskRatingComponent } from './dpcr-actual/components/modal-set-subtask-rating.component';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -77,7 +77,8 @@ import { EmployeeRatingComponent } from './employee-rating/employee-rating.compo
     HeaderDpcrActualComponent,
     ViewDpcrActualDataComponent,
     ModalDpcrActualMfoOtsComponent,
-    EmployeeRatingComponent
+    EmployeeRatingComponent,
+    ModalSetSubtaskRatingComponent
   ],
   imports: [
     CommonModule,

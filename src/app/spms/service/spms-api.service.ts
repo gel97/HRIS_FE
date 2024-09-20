@@ -111,7 +111,11 @@ export class SpmsApiService {
   get_dpcr_data_subtask = (dpcrId: string, mfoId: string) => `/tPMDpcrData/subtask/${dpcrId}/${mfoId}`;
   get_dpcr_mfo_ots      = (dpcrDataId: string)            => `/tPMDpcrData/${dpcrDataId}/dpcr/mfo_ots`;
   get_dpcr_mfo_employee = (subtaskId: string, dpcrDataId: string) => `/tPMDpcrData/dpcr_mfo_employee/${subtaskId}/${dpcrDataId}`;
-  
+ 
+  get_dpcr_subtask_rating  = (dpcrDataId: string) => `/tPMDpcrSubtaskRating/${dpcrDataId}`;
+  post_dpcr_subtask_rating = () => `/tPMDpcrSubtaskRating`;
+  put_dpcr_subtask_rating  = () => `/tPMDpcrSubtaskRating`;
+
   post_subtask                = () => `/tPMSubTask`;
   post_subtask_add_common_mfo = () => `/tPMSubTask/add/common_mfo`;
   put_subtask                 = () => `/tPMSubTask`;
