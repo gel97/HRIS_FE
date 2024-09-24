@@ -78,6 +78,9 @@ export class DpcrService {
   storageDpcrId = signal<any>(localStorage.getItem('dpcrId'));
   storageDpcrDetails = signal<any>(localStorage.getItem('dpcrDetails'));
   storageDpcrIdActual = signal<any>(localStorage.getItem('dpcrIdActual'));
+  storageDpcrDetailsActual = signal<any>(localStorage.getItem('dpcrDetailsActual'));
+
+  localDpcrIdActual:any = localStorage.getItem('dpcrIdActual');
   isShowDpcrDataActual = signal<number>(0);
 
   constructor(
@@ -101,8 +104,22 @@ export class DpcrService {
       })
       .subscribe({
         next: (response: any = {}) => {
+          let result = {};
+          console.log(response);
+          if(response === null){
+            result = {
+              dpcrDataId     : dpcrDataId,
+              totalQlty      : null,
+              totalQty       : null,
+              totalQtyRating : null,
+              totalTimely    : null,
+            };
+          }else{
+            result = response;
+          }
+          
           this.dpcrSubtaskRating.mutate((a) => {
-            (a.data = response), (a.error = false), (a.errorStatus = null);
+            (a.data = result), (a.error = false), (a.errorStatus = null);
           });
 
           this.errorService.error.mutate((a) => {

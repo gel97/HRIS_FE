@@ -83,6 +83,8 @@ export class SpmsApiService {
   get_opcr_data_actual    = (opcrId: string)     => `/tPMOpcrDatas/actual/list/${opcrId}/try`;
   get_opcr_target_report  = (opcrId: string)     => `/tPMOpcrDatas/GetOpcrTargetReport/${opcrId}`;
 
+  put_opcr_data_actual_qty = () => `/tPMOpcrDatas/update/percentage_actual_target`;
+
   post_dpcr          = () => `/tPMDpcr`;
   put_dpcr           = () => `/tPMDpcr`;
 

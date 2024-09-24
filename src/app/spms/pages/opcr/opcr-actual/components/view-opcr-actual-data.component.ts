@@ -181,7 +181,12 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                   <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <span class="text-success"
                       ><strong
-                        ><u>{{ b.qty }}</u></strong
+                        ><u>{{ b.qty }}{{b.qtyUnit ? '%': ''}}</u></strong
+                      ></span
+                    >
+                    <span class="text-success" *ngIf="b.qtyUnit && b.prcntActualQty > 0"
+                      ><strong
+                        >&nbsp;({{b.prcntActualQty}})</strong
                       ></span
                     >
                     {{ b.indicator }}
@@ -189,7 +194,12 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                   <td (click)="isShowStandard = true; setSIindex(i, y)">
                     <span *ngIf="b.actual; else noActualSt" class="text-primary"
                       ><strong
-                        ><u>{{ b.actual?.totalQty ?? 0 }}</u></strong
+                        ><u>{{ b.actual?.totalQty ?? 0 }}{{b.qtyUnit ? '%': ''}}</u></strong
+                      ></span
+                    >
+                    <span class="text-primary" *ngIf="b.qtyUnit && b.actual?.qtyPrcntActual > 0"
+                      ><strong
+                        >&nbsp;({{b.actual.qtyPrcntActual ?? 0}})</strong
                       ></span
                     >
                     {{ b.actual?.actualAc ?? '' }}
@@ -290,6 +300,14 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
                           class="dropdown-item cursor-pointer"
                           (click)="isShowCommittedDivions = true; setSIindexTgtCommitted(i, y)"
                           ><i class="bx bx-show-alt me-1"></i> View Committed Divisions</a
+                        >
+                        <a 
+                          *ngIf="b.qtyUnit"
+                          (click)="data = b"
+                          class="dropdown-item cursor-pointer"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalOpcrActualQty"
+                          ><i class="bx bx-edit-alt me-1"></i> Actual Target</a
                         >
                       </div>
                     </div>
@@ -422,6 +440,50 @@ import { OpcrService } from 'src/app/spms/service/opcr.service';
         </div>
       </div>
     </ng-container>
+     <!-- Small Modal OPCR Actual Target-->
+     <div class="modal fade" id="modalOpcrActualQty" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel2"> Set Actual Target</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating px-2">
+              <input
+                type="number"
+                class="form-control"
+                id="target"
+                [(ngModel)] = "data.prcntActualQty"
+                aria-describedby="target"
+              />
+              <label for="target">Target</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              (click)="SaveActualTarget()"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class ViewOpcrActualDataComponent implements OnInit {
@@ -445,7 +507,13 @@ export class ViewOpcrActualDataComponent implements OnInit {
   isShowCommittedDivions:boolean = false;
   isShowStandard:boolean = false;
 
+  data  :any = {};
+
   ngOnInit(): void {}
+
+  SaveActualTarget(){
+    this.opcrService.PutOPCRSPrcntActualQty(this.data);
+  }
 
   setSIindex(i: number, y: number) {
     if (this.currentMfoindex === i && this.currentSIindex === y) {

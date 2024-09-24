@@ -81,6 +81,22 @@ export class OpcrService {
     isLoadingReport: false,
   });
 
+  PutOPCRSPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_opcr_data_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+        },
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+          this.GetOPCRDataActual(this.storageOpcrId())
+        },
+      });
+  }
+
   GetOPCRYearsSubmitted() {
     this.opcr_years_submitted.mutate((a) => (a.isLoading = true));
     this.http

@@ -315,7 +315,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                           class="dropdown-item cursor-pointer"
                           data-bs-toggle="modal"
                           data-bs-target="#modalDpcrActualQty"
-                          ><i class="bx bx-show-alt me-1"></i> Actual Target</a
+                          ><i class="bx bx-edit-alt me-1"></i> Actual Target</a
                         >
                         <a 
                           *ngIf="b.isSubTask"

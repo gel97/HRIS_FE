@@ -139,6 +139,10 @@ export class ViewDpcrActualComponent implements OnInit {
 
     setDpcrDetails(data:any){
         this.dpcrService.isShowDpcrDataActual.set(1);
+
+        this.dpcrService.storageDpcrDetailsActual.set(data.details);
+        this.dpcrService.storageDpcrIdActual.set(data.dpcrId);
+
         localStorage.setItem('dpcrIdActual', data.dpcrId);
         localStorage.setItem('dpcrDetailsActual', data.details);
         this.dpcrService.GetDPCRDataActual(data.dpcrId);
