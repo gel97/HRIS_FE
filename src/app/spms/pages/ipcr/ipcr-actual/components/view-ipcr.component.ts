@@ -995,6 +995,9 @@ export class ViewIpcrComponent implements OnInit {
   setIpcrDetails(data: any) {
     this.ipcrService.isShowIpcrDataActual.set(1);
     this.ipcrService.storageIpcrDetailsActual.set(data.details);
+    this.ipcrService.storageIpcrIdActual.set(data.ipcrId);
+    this.ipcrService.storageIpcrActualYear.set(data.year);
+    this.ipcrService.storageIpcrActualSem.set(data.semester);
 
     localStorage.setItem('ipcrIdActual', data.ipcrId);
     localStorage.setItem('ipcrDetailsActual', data.details);

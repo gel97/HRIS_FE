@@ -806,7 +806,7 @@ export class ModalOtsComponent implements OnInit {
 
   getGroupUsers() {
     console.log('e:', this.ots);
-    this.ots.dateDone = this.otsMfoes.dateDone;
+    //this.ots.dateDone = this.otsMfoes.dateDone;
     this.otsService.PostOtsGetListUserMfo(this.ots);
   }
 

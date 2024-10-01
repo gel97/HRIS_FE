@@ -23,6 +23,9 @@ export class IpcrService {
   storageIpcrData          = signal<any>(localStorage.getItem('ipcrData'));
   isShowIpcrDataActual     = signal<any>(localStorage.getItem('isShow_ipcrActual'));
   storageIpcrDetailsActual = signal<any>(localStorage.getItem('ipcrDetailsActual'));
+  storageIpcrIdActual      = signal<any>(localStorage.getItem('ipcrIdActual'));
+  storageIpcrActualYear    = signal<any>(localStorage.getItem('ipcrDetailsActualYear'));
+  storageIpcrActualSem     = signal<any>(localStorage.getItem('ipcrDetailsActualSem'));
 
   isCommon = signal<number>(0);
   divisionId: string | null = localStorage.getItem('divisionId');

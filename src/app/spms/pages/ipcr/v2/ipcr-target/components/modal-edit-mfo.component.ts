@@ -86,7 +86,7 @@ import { IpcrService } from 'src/app/spms/service/ipcr.service';
 
                 <div *ngIf="!mfo.isIpcrMfo" class="col-12">
                   <br />
-                  <div *ngIf="mfo.promptEdit">
+                  <div *ngIf="mfo.promptEdit && !mfo.qtyUnit">
                     <div class="alert alert-danger" role="alert">
                       <i class="bx bxs-x-square"></i>&nbsp;Quantity must not
                       exceed to REMAINING or REMAINING already depleted below
@@ -306,15 +306,15 @@ export class ModalEditMfoComponent implements OnInit {
         this.mfo.qty1 = null;
       }
 
-      if (this.qtyRemaining < 0 || this.mfo.qty < 0) {
+      if (this.qtyRemaining < 0 && !this.mfo.qtyUnit || this.mfo.qty < 0 && !this.mfo.qtyUnit) {
         this.mfo.promptEdit = true;
       } else {
         this.mfo.promptEdit = false;
       }
     } else {
       if (
-        this.mfo.qty > this.mfo.totalIpcrQuantity ||
-        this.mfo.qty < 0
+        this.mfo.qty > this.mfo.totalIpcrQuantity && !this.mfo.qtyUnit ||
+        this.mfo.qty < 0 && !this.mfo.qtyUnit
       ) {
         this.mfo.promptEdit = true;
       } else {

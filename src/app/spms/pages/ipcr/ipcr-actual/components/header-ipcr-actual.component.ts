@@ -62,28 +62,28 @@ import { DatePipe } from '@angular/common';
                         class="dropdown-item cursor-pointer"
                         data-bs-target="#modalIpcrActualReport"
                         data-bs-toggle="modal"
-                        (click)="ipcrService.GetIpcrActualReport(ipcrId ??'')"
+                        (click)="ipcrService.GetIpcrActualReport(ipcrService.storageIpcrIdActual() ??'')"
                     ><i class="bx bx-printer me-1"></i> IPCR</a
                     >
                     <a
                         class="dropdown-item cursor-pointer"
                         data-bs-target="#modalIpcrTargetReportActual"
                         data-bs-toggle="modal"
-                        (click)="ipcrService.GetIpcrTargetReport(ipcrId ??'')"
+                        (click)="ipcrService.GetIpcrTargetReport(ipcrService.storageIpcrIdActual())"
                     ><i class="bx bx-printer me-1"></i> IPCR Target</a
                     >
                     <a
                         class="dropdown-item cursor-pointer"
                         data-bs-toggle="modal"
                         data-bs-target="#modalStandard"
-                        (click)="ipcrService.GetIpcrStandardReport(ipcrId ??'', year, sem)"
+                        (click)="ipcrService.GetIpcrStandardReport(ipcrService.storageIpcrIdActual(), ipcrService.storageIpcrActualYear(), ipcrService.storageIpcrActualSem())"
                     ><i class="bx bx-printer me-1"></i> Standard</a
                     >
                     <a
                         class="dropdown-item cursor-pointer"
                         data-bs-toggle="modal"
                         data-bs-target="#modalMPORReport"
-                        (click)="ReportMPOR()"
+                        (click)="getMonths();ReportMPOR()"
 
                     ><i class="bx bx-printer me-1"></i> MPOR</a
                     >
@@ -91,7 +91,7 @@ import { DatePipe } from '@angular/common';
                         class="dropdown-item cursor-pointer"
                         data-bs-toggle="modal"
                         data-bs-target="#modalSMPORReport"
-                        (click)="ipcrService.GetIpcrSMPOReport(ipcrId ?? '', year, sem)"
+                        (click)="ipcrService.GetIpcrSMPOReport(ipcrService.storageIpcrIdActual(), ipcrService.storageIpcrActualYear(), ipcrService.storageIpcrActualSem())"
                     ><i class="bx bx-printer me-1"></i> SMPOR</a
                     >
                 </div>
@@ -396,11 +396,14 @@ export class HeaderIpcrActualComponent implements OnInit{
   getMonths() {
     let initial: number | any;
     let condition: number | any;
-    if (this.sem == 1) {
+
+    const sem = this.ipcrService.storageIpcrActualSem();
+
+    if (sem === 1) {
       initial = 1;
       condition = 6;
       this.selectedMonth = initial;
-    } else if (this.sem == 2) {
+    } else if (sem === 2) {
       initial = 6;
       condition = 12;
       this.selectedMonth = initial;
@@ -424,7 +427,10 @@ export class HeaderIpcrActualComponent implements OnInit{
   }
 
   ReportMPOR(){
-    this.ipcrService.GetIpcrMPOReport(this.ipcrId ?? '', this.year, this.reportMPOR.monthNum)
+
+    const year = new Date().getFullYear();
+
+    this.ipcrService.GetIpcrMPOReport(this.ipcrService.storageIpcrIdActual() ?? '', this.year === 0? year: this.year, this.reportMPOR.monthNum)
   }
 
   SearchMFO() {
