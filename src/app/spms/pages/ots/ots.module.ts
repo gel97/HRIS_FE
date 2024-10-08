@@ -10,7 +10,6 @@ import { TableOtsComponent } from './main/components/table-ots.component';
 import { TableMfoesComponent } from './main/components/table-mfoes.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TableMonthComponent } from './main/components/table-month.component';
-import { ModalOtsComponent } from './main/components/modal-ots.component';
 import { WarningComponent } from "../../components/warning.component";
 import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
 import { ModalOtsEditComponent } from './main/components/modal-ots-edit.component';
@@ -22,7 +21,6 @@ import { SharedModule } from 'src/app/shared.module';
         TableOtsComponent,
         TableMfoesComponent,
         TableMonthComponent,
-        ModalOtsComponent,
         TruncatePipe,
         ModalOtsEditComponent
     ],

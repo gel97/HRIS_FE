@@ -370,7 +370,7 @@ height: 100%;
                                                                         </button>
                                                                         <button type="button"
                                                                             (click)="ipcrSTDetails = st"
-                                                                            (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId); returnQtyST = ipcrSTDetails.qty; promptEditST = false"
+                                                                            (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId, ipcrSTDetails.dpcrDataId); returnQtyST = ipcrSTDetails.qty; promptEditST = false"
                                                                             type="button" data-bs-toggle="modal"
                                                                             data-bs-target="#modalEditSubtask"
                                                                             class="btn rounded-pill btn-icon btn-outline-primary border-0 float-end">
@@ -554,7 +554,7 @@ height: 100%;
                                                             <div class="col-1">
                                                                 <button
                                                                     (click)="ipcrSTDetails = st; dpcrSTQuantity = ipcrSTDetails.qty"
-                                                                    (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
+                                                                    (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId, ipcrSTDetails.dpcrDataId);promptST = false ; quantityST = ''"
                                                                     type="button" data-bs-toggle="modal"
                                                                     data-bs-target="#modalAddSubtask"
                                                                     class="btn rounded-pill btn-icon btn-primary float-end">
@@ -590,7 +590,7 @@ height: 100%;
                                                                 <div class="col-1">
                                                                     <button
                                                                         (click)="ipcrSTDetails = siStC; ipcrSTDetails.stIndicator = siStC.indicator; dpcrSTQuantity = siStC.qty"
-                                                                        (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
+                                                                        (click)="GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId, ipcrSTDetails.subTaskId);promptST = false ; quantityST = ''"
                                                                         type="button" data-bs-toggle="modal"
                                                                         data-bs-target="#modalAddSubtask"
                                                                         class="btn rounded-pill btn-icon btn-primary float-end">

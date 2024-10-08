@@ -25,7 +25,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                         <a (click)="SetIsShowDpcrData()" class="cursor-pointer"><i class='bx bxs-right-top-arrow-circle'></i>&nbsp;Actual</a>
                     </li>
                     <li *ngIf="isShowDpcrData" class="breadcrumb-item" [ngClass]="isShowDpcrData?'active':''">
-                        <a>&nbsp;{{dpcrDetailsActual}}</a>
+                        <a>&nbsp;{{dpcrService.storageDpcrDetailsActual()}}</a>
                     </li>
                 </ol>
             </nav>
@@ -45,7 +45,6 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
     dpcrService = inject(DpcrService);
     ipcrService = inject(IpcrService);
 
-    dpcrDetailsActual = localStorage.getItem('dpcrDetailsActual');
 
     @Input() search: any;
     @Input() isShowDpcrData: any;

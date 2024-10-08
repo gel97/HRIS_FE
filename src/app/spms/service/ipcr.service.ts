@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
 import { IpcrTargetComponent } from '../pages/ipcr/ipcr-target/ipcr-target.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -16,17 +17,23 @@ export class IpcrService {
     private url: SpmsApiService,
     private alertService: AlertService,
     private sanitizer: DomSanitizer,
+    private datePipe: DatePipe
   ) {}
 
-  storageIsShow = signal<any>(localStorage.getItem('isShow_ipcr'));
-  storageIpcrId = signal<any>(localStorage.getItem('ipcrId'));
-  storageIpcrData = signal<any>(localStorage.getItem('ipcrData'));
-  isShowIpcrDataActual = signal<number>(0);
+  storageIsShow            = signal<any>(localStorage.getItem('isShow_ipcr'));
+  storageIpcrId            = signal<any>(localStorage.getItem('ipcrId'));
+  storageIpcrData          = signal<any>(localStorage.getItem('ipcrData'));
+  isShowIpcrDataActual     = signal<any>(localStorage.getItem('isShow_ipcrActual'));
+  storageIpcrDetailsActual = signal<any>(localStorage.getItem('ipcrDetailsActual'));
+  storageIpcrIdActual      = signal<any>(localStorage.getItem('ipcrIdActual'));
+  storageIpcrActualYear    = signal<any>(localStorage.getItem('ipcrDetailsActualYear'));
+  storageIpcrActualSem     = signal<any>(localStorage.getItem('ipcrDetailsActualSem'));
 
   isCommon = signal<number>(0);
   divisionId: string | null = localStorage.getItem('divisionId');
   userId: string | null = localStorage.getItem('userId');
   year = signal<string>(new Date().getFullYear().toString());
+
 
   isLoadingIpcr: boolean = false;
 
@@ -36,10 +43,23 @@ export class IpcrService {
     isLoading: false,
   });
 
+  ipcr_user = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
   ipcrDataActual = signal<any>({
     data: [],
     rating: [],
     finalRating: {},
+    error: false,
+    isLoading: false,
+  });
+
+  mporMonths = signal<any>({
+    data: [],
+    selectedMonth: 0,
     error: false,
     isLoading: false,
   });
@@ -59,6 +79,7 @@ export class IpcrService {
   dpcr_ipcr = signal<any>({
     data: [],
     error: false,
+    errorMessage: "",
     isLoading: false,
     isLoadingSave: false,
     isNoData: false,
@@ -84,6 +105,13 @@ export class IpcrService {
     isLoadingReport: false,
   });
 
+  ipcrStandardReportUrl:SafeResourceUrl = "";
+  ipcrStandard = signal<any>({
+    data: null,
+    error: false,
+    isLoadingReport: false,
+  });
+
   ipcrMporReportUrl:SafeResourceUrl = "";
   ipcrMPOR = signal<any>({
     data: null,
@@ -99,10 +127,13 @@ export class IpcrService {
       })
       .subscribe({
         next: (response: any) => {
+
           this.ipcrMporReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
 
           this.ipcrMPOR.mutate((a) => (a.data = this.ipcrMporReportUrl));
           this.ipcrMPOR.mutate((a) => (a.isLoadingReport = false));
+
+
         },
         error: () => {
           this.alertService.error();
@@ -114,6 +145,41 @@ export class IpcrService {
 
         },
       });
+  }
+
+  GetMPORMonths(monthNo:number){
+
+    this.mporMonths.mutate((a) => (a.data = []));
+    //this.mporMonths.mutate((a) => (a.selectedMonth = 0));
+
+    let initial: number | any;
+    let condition: number | any;
+    let _months:any = [];
+
+    this.mporMonths.mutate((a) => (a.selectedMonth = monthNo));
+
+    if (monthNo >= 1 && monthNo <= 6) {
+      initial = 1;
+      condition = 6;
+    } else  {
+      initial = 7;
+      condition = 12;
+    }
+    for (let i = initial; i <= condition; i++) {
+      const monthName = this.datePipe.transform(
+        new Date(2000, i - 1, 1),
+        'MMMM'
+      );
+      if (monthName) {
+        const combinedData = { month: monthName, monthNum: i };
+        _months.push(combinedData);
+
+      }
+    }
+
+    this.mporMonths.mutate((a) => (a.data = _months));
+
+
   }
 
   GetIpcrSMPOReport(ipcrId: string, year:number, monthNo:number) {
@@ -136,6 +202,31 @@ export class IpcrService {
         complete: () => {
           console.log(this.ipcrSMPOR())
           this.ipcrSMPOR.mutate((a) => (a.isLoadingReport = false));
+
+        },
+      });
+  }
+
+  GetIpcrStandardReport(ipcrId: string, year:number, monthNo:number) {
+    this.ipcrStandard.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_standard_report(ipcrId,  year, monthNo === undefined? 1: monthNo), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.ipcrStandardReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.ipcrStandard.mutate((a) => (a.data = this.ipcrStandardReportUrl));
+          this.ipcrStandard.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.ipcrStandard.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.ipcrStandard())
+          this.ipcrStandard.mutate((a) => (a.isLoadingReport = false));
 
         },
       });
@@ -183,6 +274,24 @@ export class IpcrService {
         next: (response: any = {}) => {
           this.ipcr.mutate((a) => (a.data = response));
           this.ipcr.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {},
+      });
+  }
+
+  GetIPCRUser(ipcrId:string) {
+    this.ipcr_user.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_user(ipcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.ipcr_user.mutate((a) => (a.data = response));
+          this.ipcr_user.mutate((a) => (a.isLoading = false));
         },
         error: () => {
           this.alertService.error();
@@ -255,16 +364,17 @@ export class IpcrService {
   }
 
   //remST
-  GetIPCRDetailsRemainingST(data: any) {
+  GetIPCRDetailsRemainingST(subTaskId: string, dpcrDataId:string) {
     this.http
-      .get<any[]>(api + this.url.get_ipcrdetails_remainingST(data), {
-        responseType: `json`,
+      .post<any[]>(api + this.url.get_ipcrdetails_remainingST(), {subTaskId:subTaskId, dpcrDataId:dpcrDataId}, {
+        responseType: `json`
       })
       .subscribe({
         next: (response: any) => {
           this.ipcrST_rem.set(response);
         },
-        error: () => {
+        error: (err:any) => {
+          console.log(err)
           this.alertService.error();
         },
         complete: () => {},
@@ -285,21 +395,30 @@ export class IpcrService {
       .subscribe({
         next: (response: any = {}) => {
           this.dpcr_ipcr.mutate((a) => (a.data = response));
+          this.dpcr_ipcr.mutate((a) => (a.errorMessage = ""));
+
         },
-        error: () => {
-          this.alertService.error();
+        error: (err:any) => {
+          //this.alertService.error();
+          this.dpcr_ipcr.mutate((a) => (a.isLoading = false));
+          this.dpcr_ipcr.mutate((a) => (a.data = []));
+          this.dpcr_ipcr.mutate((a) => (a.isSearchLoading = false));
+          this.dpcr_ipcr.mutate((a) => (a.errorMessage = err.error));
+
         },
         complete: () => {
           this.dpcr_ipcr.mutate((a) => (a.isLoading = false));
+          this.dpcr_ipcr.mutate((a) => (a.isSearchLoading = false));
+
           this.dpcr_ipcr.mutate((a) => (a.isLoadingSave = false));
           console.log(this.dpcr_ipcr().data)
         },
       });
   }
 
-  AddIPCR() {
+  AddIPCR(data:any) {
     this.http
-      .post<any[]>(api + this.url.post_ipcr(), {
+      .post<any[]>(api + this.url.post_ipcr(), data ,{
         responseType: `json`,
       })
       .subscribe({
@@ -387,6 +506,66 @@ export class IpcrService {
   PutIPCRStatus(data: any) {
     this.http
       .put<any[]>(api + this.url.put_ipcr_status(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
+  PutSubmitTarget(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcr_target_submit(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.save();
+        },
+      });
+  }
+
+  PutSubmitActual(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcr_actual_submit(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {
+          this.alertService.error();
+        },
+        complete: () => {
+          this.alertService.save();
+        },
+      });
+  }
+
+  PutIPCRSPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcrdata_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
+  PutIPCRSubtaskPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_ipcrSubData_actual_qty(), data, {
         responseType: `json`,
       })
       .subscribe({
@@ -735,6 +914,36 @@ export class IpcrService {
     } catch (error) {
       console.error('Error:', error);
     }
+  }
+
+  async checkIfIpcrIdIsFromCurrentUser(ipcrId: string) : Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      this.http
+      .get<any[]>(api + this.url.get_ipcr_user(ipcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.ipcr_user.mutate((a) => (a.data = response));
+          this.ipcr_user.mutate((a) => (a.isLoading = false));
+          console.log('response:', response);
+
+          if(response !== null){
+            if(response.userId === this.userId){
+              resolve(true);
+            }else{
+              resolve(false);
+            }
+          }else{
+            resolve(false);
+          }         
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {},
+      });
+    });
   }
 
 }

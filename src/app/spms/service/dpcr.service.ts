@@ -6,6 +6,7 @@ import { MfoService } from './mfo.service';
 import { ErrorService } from './error.service';
 import { AlertService } from './alert.service';
 import { SpmsApiService } from './spms-api.service';
+import { UtlityService } from './utility.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Injectable({
   providedIn: 'root',
@@ -46,6 +47,26 @@ export class DpcrService {
     isLoading: false,
   });
 
+  dpcrMfoEmployee = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+  dpcrEmployeeRating = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+  dpcrSubtaskRating = signal<any>({
+    data: {},
+    error: false,
+    isLoading: false,
+  });
+
+  selectedDprcId = signal<string>('');
+
   officeId: string | null = localStorage.getItem('officeId');
   divisionId: string | null = localStorage.getItem('divisionId');
   divisionName: string | null = localStorage.getItem('divisionName');
@@ -56,6 +77,10 @@ export class DpcrService {
   storageIsShowDpcrData = signal<any>(localStorage.getItem('isShowDpcrData'));
   storageDpcrId = signal<any>(localStorage.getItem('dpcrId'));
   storageDpcrDetails = signal<any>(localStorage.getItem('dpcrDetails'));
+  storageDpcrIdActual = signal<any>(localStorage.getItem('dpcrIdActual'));
+  storageDpcrDetailsActual = signal<any>(localStorage.getItem('dpcrDetailsActual'));
+
+  localDpcrIdActual:any = localStorage.getItem('dpcrIdActual');
   isShowDpcrDataActual = signal<number>(0);
 
   constructor(
@@ -64,23 +89,197 @@ export class DpcrService {
     private alertService: AlertService,
     private http: HttpClient,
     private url: SpmsApiService,
-    public sanitizer: DomSanitizer
-
+    public sanitizer: DomSanitizer,
+    public utilsSerivce: UtlityService
   ) {}
 
-  dpcrTargetReportUrl:SafeResourceUrl = "";
+  dpcrTargetReportUrl: SafeResourceUrl = '';
   loadReportTgt = signal<boolean>(false);
 
+  GetDpcrSubtaskRating(dpcrDataId: string) {
+    this.dpcrSubtaskRating.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_subtask_rating(dpcrDataId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          let result = {};
+          console.log(response);
+          if(response === null){
+            result = {
+              dpcrDataId     : dpcrDataId,
+              totalQlty      : null,
+              totalQty       : null,
+              totalQtyRating : null,
+              totalTimely    : null,
+            };
+          }else{
+            result = response;
+          }
+          
+          this.dpcrSubtaskRating.mutate((a) => {
+            (a.data = result), (a.error = false), (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          this.dpcrSubtaskRating.mutate((a) => (a.isLoading = false));
+        },
+      });
+  }
+
+  AddDpcrSubtaskRating(rating: any) {
+    this.dpcrSubtaskRating.mutate((a) => (a.isLoadingSave = true));
+    this.http
+      .post<any[]>(api + this.url.post_dpcr_subtask_rating(), rating, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.dpcrSubtaskRating.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = false;
+          });
+
+          this.alertService.save();
+        },
+        error: (error: any) => {
+          this.alertService.customError(error.error);
+          this.dpcrSubtaskRating.mutate((a) => {
+            a.isLoadingSave = false;
+            a.error = true;
+          });
+        },
+        complete: () => {
+          this.GetDPCRDataActual(this.storageDpcrIdActual());
+        },
+      });
+  }
+
+  PutDpcrSubtaskRating(rating: any) {
+    this.http
+      .put<any[]>(api + this.url.put_dpcr_subtask_rating(), rating, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {},
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
+  PutDPCRSPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_dpcr_data_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDPCRDataActual(this.storageDpcrIdActual());
+        },
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
+  PutSubtaskPrcntActualQty(data: any) {
+    this.http
+      .put<any[]>(api + this.url.put_subtask_actual_qty(), data, {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.GetDPCRDataActual(this.storageDpcrIdActual());
+        },
+        error: (error: any) => {},
+        complete: () => {
+          this.alertService.update();
+        },
+      });
+  }
+
+  GetDpcrMfoEmployee(subtaskId: string, dpcrDataId: string) {
+    this.dpcrMfoEmployee.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_mfo_employee(subtaskId, dpcrDataId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          response.employee.forEach((a: any) => {
+            this.utilsSerivce.get_profile_picture(a.eic).subscribe(
+              (request) => {
+                a.profile = (<any>request).imageDataURL;
+              },
+              (err) => {
+                // alert('error')
+              }
+            );
+          });
+          this.dpcrMfoEmployee.mutate((a) => {
+            (a.data = response), (a.error = false), (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
+        complete: () => {
+          this.dpcrMfoEmployee.mutate((a) => (a.isLoading = false));
+        },
+      });
+  }
+
+  GetDpcrEmployeeRating(dpcrId: string) {
+    this.dpcrEmployeeRating.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr_employee_rating(dpcrId), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          this.dpcrEmployeeRating.mutate((a) => (a.data = response));
+          this.dpcrEmployeeRating.mutate((a) => (a.isLoading = false));
+        },
+        error: () => {
+          this.alertService.error();
+        },
+        complete: () => {
+          console.log('DPCR Employee Rating: ', this.dpcrEmployeeRating().data);
+          this.dpcrEmployeeRating.mutate((a) => (a.isLoading = false));
+        },
+      });
+  }
+
   GetDpcrTargetReport(dpcrId: string) {
-    this.dpcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_dpcr_data_target_report(dpcrId));
+    this.dpcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      api + this.url.get_dpcr_data_target_report(dpcrId)
+    );
     this.loadReportTgt.set(true);
     setTimeout(() => {
       this.loadReportTgt.set(false);
     }, 1000);
-    
   }
 
-  GetDpcrMfoOts(dpcrDataId:string) {
+  GetDpcrMfoOts(dpcrDataId: string) {
     this.dpcrMfoOts.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(api + this.url.get_dpcr_mfo_ots(dpcrDataId), {
@@ -107,7 +306,7 @@ export class DpcrService {
           });
         },
         complete: () => {
-          console.log("DpcrMfoOts: ", this.dpcrMfoOts().data)
+          console.log('DpcrMfoOts: ', this.dpcrMfoOts().data);
         },
       });
   }
@@ -138,7 +337,41 @@ export class DpcrService {
             (a.error = true), (a.errorStatus = error.status);
           });
         },
+        complete: () => {},
+      });
+  }
+
+  GetDpcrDivisions() {
+    this.dpcr.mutate((a) => (a.isLoading = true));
+    this.http
+      .get<any[]>(api + this.url.get_dpcr(0, this.divisionId ?? ''), {
+        responseType: `json`,
+      })
+      .subscribe({
+        next: (response: any = {}) => {
+          let dpcr = response.find((a: any) => a.active === 1);
+          this.selectedDprcId.set(dpcr.dpcrId);
+
+          this.dpcr.mutate((a) => {
+            (a.data = response),
+              (a.isLoading = false),
+              (a.error = false),
+              (a.errorStatus = null);
+          });
+
+          this.errorService.error.mutate((a) => {
+            (a.error = false), (a.errorStatus = null);
+          });
+        },
+        error: (error: any) => {
+          this.dpcr.mutate((a) => (a.isLoading = false));
+
+          this.errorService.error.mutate((a) => {
+            (a.error = true), (a.errorStatus = error.status);
+          });
+        },
         complete: () => {
+          this.GetDpcrEmployeeRating(this.selectedDprcId());
         },
       });
   }
@@ -162,7 +395,7 @@ export class DpcrService {
           this.alertService.save();
         },
         error: (error: any) => {
-          this.alertService.error();
+          this.alertService.customError(error.error);
           this.dpcr.mutate((a) => {
             a.isLoadingSave = false;
             a.error = true;
@@ -214,7 +447,6 @@ export class DpcrService {
       // } else {
       // }
       this.GetDpcr();
-
     } catch (error) {
       console.error('Error:', error);
     }
@@ -239,7 +471,7 @@ export class DpcrService {
           this.alertService.error();
         },
         complete: () => {
-          console.log("DPCR Actual: ", this.dpcrDataActual());
+          console.log('DPCR Actual: ', this.dpcrDataActual());
         },
       });
   }
@@ -249,7 +481,7 @@ export class DpcrService {
     dpcrData.dpcrId = this.storageDpcrId();
 
     this.http
-      .post<any[]>(api + this.url.post_dpcr_data(), dpcrData,  {
+      .post<any[]>(api + this.url.post_dpcr_data(), dpcrData, {
         responseType: `json`,
       })
       .subscribe({
@@ -314,10 +546,10 @@ export class DpcrService {
           });
         },
         complete: () => {
-          if(this.isCommonDivision() >= 0){
+          if (this.isCommonDivision() >= 0) {
             this.GetDpcrDataMfoes();
-          }else{
-            this.GetDpcrDataMfoesDivision(null)
+          } else {
+            this.GetDpcrDataMfoesDivision(null);
           }
         },
       });
@@ -367,9 +599,13 @@ export class DpcrService {
 
   EditDpcrDataMfoCategory(dpcrId: string, MFOId: string, categoryId: number) {
     this.http
-      .put<any[]>(api + this.url.put_dpcr_data_update_mfo_category(dpcrId, MFOId, categoryId), {
-        responseType: `json`,
-      })
+      .put<any[]>(
+        api +
+          this.url.put_dpcr_data_update_mfo_category(dpcrId, MFOId, categoryId),
+        {
+          responseType: `json`,
+        }
+      )
       .subscribe({
         next: (response: any = {}) => {
           this.alertService.update();
@@ -390,7 +626,7 @@ export class DpcrService {
       .get<any[]>(
         api +
           this.url.get_dpcr_data_mfoes(
-            this.officeId??"",
+            this.officeId ?? '',
             this.storageDpcrId(),
             this.divisionName ?? '',
             this.isCommonDivision()
@@ -420,19 +656,18 @@ export class DpcrService {
             (a.error = true), (a.errorStatus = error.status);
           });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
 
-  GetDpcrDataMfoesDivision(searchDivisionMfo:any) {
+  GetDpcrDataMfoesDivision(searchDivisionMfo: any) {
     this.dpcrDataMfoes.mutate((a) => (a.isLoading = true));
     this.http
       .get<any[]>(
         api +
           this.url.get_dpcr_data_mfoes_division(
-            this.officeId??"",
-            this.divisionId ?? "",
+            this.officeId ?? '',
+            this.divisionId ?? '',
             this.storageDpcrId(),
             this.divisionName ?? '',
             searchDivisionMfo
@@ -462,25 +697,20 @@ export class DpcrService {
             (a.error = true), (a.errorStatus = error.status);
           });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
-
 
   GetDpcrDataDivisionMfoes() {
     this.dpcrDataMfoes.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(
-        api + this.url.get_division_mfoes(this.divisionId ?? ''),
-        {
-          responseType: `json`,
-        }
-      )
+      .get<any[]>(api + this.url.get_division_mfoes(this.divisionId ?? ''), {
+        responseType: `json`,
+      })
       .subscribe({
         next: (response: any = {}) => {
           this.dpcrDataMfoes.mutate((a) => {
-              (a.data = response),
+            (a.data = response),
               (a.isLoading = false),
               (a.error = false),
               (a.errorStatus = null);
@@ -497,8 +727,7 @@ export class DpcrService {
             (a.error = true), (a.errorStatus = error.status);
           });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
 
@@ -610,8 +839,7 @@ export class DpcrService {
             (a.error = true), (a.errorStatus = error.status);
           });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
 
@@ -621,7 +849,7 @@ export class DpcrService {
       .get<any[]>(
         api +
           this.url.get_dpcr_data_search_mfoes(
-            this.officeId ?? "",
+            this.officeId ?? '',
             this.storageDpcrId(),
             this.divisionName ?? '',
             this.isCommonDivision(),
@@ -653,21 +881,24 @@ export class DpcrService {
             (a.error = true), (a.errorStatus = error.status);
           });
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
   }
 
   PutDpcrDataSortByMfo(data: any) {
     this.http
-      .put<any[]>(api + this.url.put_dpcrdata_sortby_mfo(this.storageDpcrId()), data, {})
+      .put<any[]>(
+        api + this.url.put_dpcrdata_sortby_mfo(this.storageDpcrId()),
+        data,
+        {}
+      )
       .subscribe({
         next: (response: any = {}) => {},
         error: () => {
-          this.alertService.customError("Error: Something went wrong!");
+          this.alertService.customError('Error: Something went wrong!');
         },
-        complete: () => {   
-          this.alertService.customUpdateWmessage("Sorted Successfully");
+        complete: () => {
+          this.alertService.customUpdateWmessage('Sorted Successfully');
         },
       });
   }
@@ -694,7 +925,7 @@ export class DpcrService {
       );
 
       if (deleteData) {
-         this.GetDpcrData();
+        this.GetDpcrData();
       } else {
       }
     } catch (error) {

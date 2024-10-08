@@ -66,7 +66,7 @@ import { MfoService } from 'src/app/spms/service/mfo.service';
             </div>
             <br />
 
-            <div *ngIf="mfoService.isCommon()" class=" my-1">
+            <div *ngIf="mfoService.isCommon()" class=" my-1">           
               <div class="form-check">
                 <input
                   name="default-radio-1"
@@ -229,6 +229,15 @@ export class CanvasSIComponent {
       this.siData.isFiveStndrd = 0;
     }
   }
+
+  handleIsIpcrShow(e:any){
+    // console.log(e.target.checked)
+     if(e.target.checked){
+       this.siData.isIpcrShow = 1;
+     }else{
+       this.siData.isIpcrShow = 0;
+     }
+   }
 
   EditIsFiveStandard(){
     this.mfoService.EditIsFiveStandard(this.siData);

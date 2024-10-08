@@ -101,7 +101,7 @@ import { DpcrService } from 'src/app/spms/service/dpcr.service';
                   />
                 </div>
                 <div class="col-12">
-                  <div *ngIf="mfo.prompt">
+                  <div *ngIf="mfo.prompt && !mfo.qtyUnit">
                     <div class="alert alert-danger" role="alert">
                       <i class="bx bxs-x-square"></i>&nbsp;Quantity must not
                       exceed to REMAINING or REMAINING already depleted to zero!
@@ -276,10 +276,13 @@ export class ModalAddMfoComponent implements OnInit {
 
   PostIPCRDetails() {
     if (
-      this.dpcrQuantity - this.ipcrService.ipcr_rem() == 0 &&
-      this.mfo.qtyUnit == 0
+      this.dpcrQuantity - this.ipcrService.ipcr_rem() === 0 &&
+      this.mfo.qtyUnit === 0
     ) {
       this.mfo.prompt = true;
+
+    }else{
+      this.mfo.prompt = false;
     }
     if (this.mfo.prompt) {
       this.buttonTrap = true;

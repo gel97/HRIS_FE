@@ -23,13 +23,9 @@ import {MatListModule} from '@angular/material/list';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatTabsModule} from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatDatepickerModule, MatDatepickerToggle, matDatepickerAnimations} from '@angular/material/datepicker';
-import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
 import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions, MatCheckboxModule} from '@angular/material/checkbox';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { OverviewComponent } from './overview/overview.component';
 import { SharedModule } from 'src/app/shared.module';
@@ -52,13 +48,10 @@ import { SharedModule } from 'src/app/shared.module';
     MatPaginatorModule,
     MatButtonModule,
     MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
     // MatAutocompleteModule,
-    MatSelectModule,
     MatTableModule,
     MatCheckboxModule,
     MatIconModule,
@@ -71,7 +64,6 @@ import { SharedModule } from 'src/app/shared.module';
     MatProgressBarModule,
     MatBadgeModule,
     MatTabsModule,
-    NgxMatSelectSearchModule,
     CdkDropList,
     CdkDrag,
     SharedModule

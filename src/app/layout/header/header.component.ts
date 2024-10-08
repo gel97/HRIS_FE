@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
+import { UtilsService } from 'src/app/service/utils.service';
 import { UtlityService } from 'src/app/spms/service/utility.service';
 
 @Component({
@@ -18,11 +19,16 @@ export class HeaderComponent implements OnInit {
   public divisionName: string |any;
   public profilePicture: any = {};
 
+  utilsService = inject(UtilsService);
   ngOnInit(): void {
     this.fullName = localStorage.getItem('fullName');
     this.officeName = localStorage.getItem('officeName');
     this.divisionName = localStorage.getItem('divisionName');
     this.get_profile_picture();
+  }
+
+  setSidebarMobileView(){
+    this.utilsService.isShowSidebar.set(!this.utilsService.isShowSidebar())
   }
 
   get_profile_picture() {

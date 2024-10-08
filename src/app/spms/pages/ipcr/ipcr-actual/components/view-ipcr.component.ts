@@ -5,6 +5,8 @@ import { DatePipe } from '@angular/common';
 import { ReportSmporService } from 'src/app/spms/service/report-smpor.service';
 import { ReportIpcrService } from 'src/app/spms/service/report-ipcr.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import Swal from 'sweetalert2'
+
 @Component({
   selector: 'app-view-ipcr',
   styleUrls: ['../ipcr-actual.component.css'],
@@ -38,11 +40,12 @@ import { DomSanitizer } from '@angular/platform-browser';
                   <th>Sem</th>
                   <th>Year</th>
                   <th>Date Created</th>
+                  <th>Date Submitted</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody *ngFor="let data of ipcr.data">
+              <tbody *ngFor="let data of ipcr.data; let i = index">
                 <tr>
                   <td class="pointer">
                     <a (click)="setIpcrDetails(data)" class="cursor-pointer"
@@ -73,6 +76,9 @@ import { DomSanitizer } from '@angular/platform-browser';
                     {{ data.transDT | date : 'MMM. dd, yyyy' }}
                   </td>
                   <td>
+                    {{ data.actualSubmitAt | date : 'MMM. dd, yyyy' }}
+                  </td>
+                  <td>
                     <span
                       [ngClass]="
                         data.active == '1'
@@ -99,6 +105,27 @@ import { DomSanitizer } from '@angular/platform-browser';
                       <div class="dropdown-menu">
                         <a
                           class="dropdown-item"
+                          (click)="ipcrService.GetIpcrActualReport(data.ipcrId)"
+                          data-bs-target="#modalIpcrActualReport"
+                          data-bs-toggle="modal"
+                          ><i class="bx bx-printer me-1"></i> IPCR</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          (click)="ipcrService.GetIpcrTargetReport(data.ipcrId)"
+                          data-bs-target="#modalIpcrTargetReportActual"
+                          data-bs-toggle="modal"
+                          ><i class="bx bx-printer me-1"></i> IPCR Target</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalStandard"
+                          (click)="ReportStandard(data)"
+                          ><i class="bx bx-printer me-1"></i> Standard</a
+                        >
+                        <a
+                          class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#printMPOR"
                           (click)="
@@ -107,21 +134,21 @@ import { DomSanitizer } from '@angular/platform-browser';
                             months = [];
                             getMonths()
                           "
-                          ><i class="bx bx-printer me-1"></i> Print MPOR</a
+                          ><i class="bx bx-printer me-1"></i> MPOR</a
                         >
                         <a
                           class="dropdown-item"
                           data-bs-toggle="modal"
                           data-bs-target="#modalSMPORReport"
                           (click)="ReportSMPOR(data)"
-                          ><i class="bx bx-printer me-1"></i> Print SMPOR</a
+                          ><i class="bx bx-printer me-1"></i> SMPOR</a
                         >
                         <a
-                          class="dropdown-item"
-                          (click)="ipcrService.GetIpcrActualReport(data.ipcrId)"
-                          data-bs-target="#modalIpcrActualReport"
+                          class="dropdown-item cursor-pointer"
+                          data-bs-target="#submitActual"
                           data-bs-toggle="modal"
-                          ><i class="bx bx-printer me-1"></i> Print IPCR</a
+                          (click)="actualSubmit.index = i; actualSubmit.ipcrId = data.ipcrId; actualSubmit.currentActualSubmitted = data.actualSubmitAt"
+                        ><i class="bx bx-send"></i> Submit Actual</a
                         >
                       </div>
                     </div>
@@ -160,11 +187,52 @@ import { DomSanitizer } from '@angular/platform-browser';
     </div>
 
     <!-- Small Modal -->
+    <div class="modal fade" id="submitActual" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content" style="z-index: 1;">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLabel2">SELECT DATE</h3>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col mb-3">
+                <input
+                  class="form-control"
+                  type="date"
+                  [(ngModel)]="actualSubmit.actualSubmitAt"
+                  id="html5-datetime-local-input"
+                  min="2023-11-1T08:00 | date:'yyyy-MM-ddTHH:mm'"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="actualSubmit.actualSubmitAt === undefined"
+            (click)="SubmitActual()">Submit Actual</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Small Modal -->
     <div class="modal fade" id="printMPOR" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel2">Print MPOR</h5>
+            <h5 class="modal-title" id="exampleModalLabel2">MPOR</h5>
             <button
               type="button"
               class="btn-close"
@@ -182,10 +250,10 @@ import { DomSanitizer } from '@angular/platform-browser';
                   class="form-select"
                   id="exampleFormControlSelect1"
                   aria-label="Default select example"
-                  [ngModel]="selectedMonth"
+                  [ngModel]="mporMonths.selectedMonth"
                   (ngModelChange)="selectMonth($event)"
                 >
-                  <option *ngFor="let i of months" [value]="i.monthNum">
+                  <option *ngFor="let i of mporMonths.data" [value]="i.monthNum">
                     {{ i.month }}
                   </option>
                 </select>
@@ -207,7 +275,7 @@ import { DomSanitizer } from '@angular/platform-browser';
               type="button"
               class="btn btn-primary"
             >
-              Print MPOR
+              Submit
             </button>
           </div>
         </div>
@@ -242,57 +310,6 @@ import { DomSanitizer } from '@angular/platform-browser';
               height="100%"
               frameborder="0"
             ></iframe>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="modalMPORReport"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div
-        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
-        style="padding: 50px 100px 50px 100px;"
-        role="document"
-      >
-        <div class="modal-content">
-          <div class="modal-header">
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body row">
-            <ng-container
-              *ngIf="ipcrMporReport.isLoadingReport; else ShowReport"
-            >
-              <app-loading-square-jelly-box
-                [loading]="ipcrMporReport.isLoadingReport"
-              />
-            </ng-container>
-            <ng-template #ShowReport>
-              <iframe
-                [src]="ipcrMporReport.data"
-                width="100%"
-                height="100%"
-                frameborder="0"
-              ></iframe>
-            </ng-template>
           </div>
           <div class="modal-footer">
             <button
@@ -357,6 +374,107 @@ import { DomSanitizer } from '@angular/platform-browser';
         </div>
       </div>
     </div>
+
+     <!-- Modal -->
+     <div
+      class="modal fade"
+      id="modalStandard"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <ng-container
+              *ngIf="ipcrStandardReport.isLoadingReport; else ShowReportStandard"
+            >
+              <app-loading-square-jelly-box
+                [loading]="ipcrStandardReport.isLoadingReport"
+              />
+            </ng-container>
+            <ng-template #ShowReportStandard>
+              <iframe
+                [src]="ipcrStandardReport.data"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalIpcrTargetReportActual"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
+        style="padding: 50px 100px 50px 100px;"
+        role="document"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row">
+            <ng-container *ngIf="ipcrService.loadReportIpcrTgt(); else ShowReportTargetActual">
+              <app-loading-square-jelly-box
+                [loading]="ipcrService.loadReportIpcrTgt()"
+              />
+            </ng-container>
+            <ng-template #ShowReportTargetActual>
+              <iframe
+                [src]="ipcrService.ipcrTargetReportUrl
+                "
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
 })
 export class ViewIpcrComponent implements OnInit {
@@ -394,14 +512,70 @@ export class ViewIpcrComponent implements OnInit {
   reportIPCR     : any = {};
   get_IPCR_data  : any = [];
 
+  mporMonths     : any = this.ipcrService.mporMonths();
+
   ipcrMporReport : any = this.ipcrService.ipcrMPOR();
   ipcrSmporReport: any = this.ipcrService.ipcrSMPOR();
+  ipcrStandardReport: any = this.ipcrService.ipcrStandard();
+
+  actualSubmit:any = {};
 
   ngOnInit(): void {
     this.ipcrYear();
     this.GetIpcr();
 
   }
+  
+
+  SubmitActual(){
+    if(this.actualSubmit.actualSubmitAt !== undefined){
+      if(this.actualSubmit.currentActualSubmitted !== null){
+
+        let _currentActualSubmitted = this.formatDate(this.actualSubmit.currentActualSubmitted);
+        let _actualSubmitAt = this.formatDate(this.actualSubmit.actualSubmitAt);
+
+        let _text ="Your actual IPCR was already submitted on '" + _currentActualSubmitted +"'. Continuing will overwrite it with '" +_actualSubmitAt+  "'";
+
+        if(_currentActualSubmitted  === _actualSubmitAt){
+           _text ="You selected '" + _currentActualSubmitted +"', the same date that was already submitted. Please choose a different date.";
+        }
+        Swal.fire({
+          title: 'Are you sure?',
+          text: _text,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, submit it!',
+          showClass: {
+            popup: 'z-5'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.ipcr.data[this.actualSubmit.index].actualSubmitAt = this.actualSubmit.actualSubmitAt;
+            this.ipcrService.PutSubmitActual(this.actualSubmit);
+          } 
+        });
+      }else{
+        this.ipcrService.PutSubmitActual(this.actualSubmit);
+      }
+    }
+  }
+
+  formatDate = (date: Date): string => {
+    const validDate = new Date(date);
+    if (isNaN(validDate.getTime())) {
+      throw new Error('Invalid date');
+    }
+  
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric'
+    };
+  
+    return validDate.toLocaleDateString('en-US', options).replace(',', '');
+  };
 
   printIPCR() {
     this.reportServiceIPCR.post_print_ipcr(this.reportIPCR).subscribe({
@@ -547,33 +721,26 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   selectMonth(month: number) {
+
     this.reportMPOR.monthNum = month;
     this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
-    console.log(month)
+    this.ipcrService.GetMPORMonths(this.reportMPOR.monthNum);
+
+  }
+
+  selectMonthOnChange(month: number) {
+    this.reportMPOR.monthNum = month;
+    this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
+    this.ReportMPOR();
   }
 
   getMonths() {
-    let initial: number | any;
-    let condition: number | any;
     if (this.sem == 1) {
-      initial = 1;
-      condition = 6;
-      this.selectedMonth = initial;
-    } else if (this.sem == 2) {
-      initial = 6;
-      condition = 12;
-      this.selectedMonth = initial;
+     this.ipcrService.GetMPORMonths(1);
+    } else{
+      this.ipcrService.GetMPORMonths(7);
     }
-    for (let i = initial; i <= condition; i++) {
-      const monthName = this.datePipe.transform(
-        new Date(2000, i - 1, 1),
-        'MMMM'
-      );
-      if (monthName) {
-        const combinedData = { month: monthName, monthNum: i };
-        this.months.push(combinedData);
-      }
-    }
+    
   }
 
   ReportSMPOR(data:any){
@@ -581,7 +748,30 @@ export class ViewIpcrComponent implements OnInit {
 
   }
 
+  ReportStandard(data:any){
+    this.ipcrService.GetIpcrStandardReport(data.ipcrId, data.year, data.semester)
+
+  }
+
   ReportMPOR(){
+    localStorage.setItem('ipcrIdActual', this.reportMPOR.ipcrId);
+    this.ipcrService.storageIpcrIdActual.set(this.reportMPOR.ipcrId);
+
+    console.log("this.reportMPOR.monthNum: ", this.reportMPOR.monthNum)
+
+    if(this.reportMPOR.monthNum === undefined){
+      if(this.sem === 1){
+        this.ipcrService.GetMPORMonths(1);
+
+      }else{
+        this.ipcrService.GetMPORMonths(7);
+
+      }
+
+    }else{
+      this.ipcrService.GetMPORMonths(this.reportMPOR.monthNum);
+
+    }
     this.ipcrService.GetIpcrMPOReport(this.reportMPOR.ipcrId, this.reportMPOR.year, this.reportMPOR.monthNum)
 
   }
@@ -740,8 +930,16 @@ export class ViewIpcrComponent implements OnInit {
 
   setIpcrDetails(data: any) {
     this.ipcrService.isShowIpcrDataActual.set(1);
+    this.ipcrService.storageIpcrDetailsActual.set(data.details);
+    this.ipcrService.storageIpcrIdActual.set(data.ipcrId);
+    this.ipcrService.storageIpcrActualYear.set(data.year);
+    this.ipcrService.storageIpcrActualSem.set(data.semester);
+
     localStorage.setItem('ipcrIdActual', data.ipcrId);
     localStorage.setItem('ipcrDetailsActual', data.details);
+    localStorage.setItem('ipcrDetailsActualYear', data.year);
+    localStorage.setItem('isShow_ipcrActual', '1');
+    localStorage.setItem('ipcrDetailsActualSem', data.semester);
 
     this.ipcrService.GetIPCRDataActual(data.ipcrId);
   }

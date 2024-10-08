@@ -54,3 +54,54 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .x-space-between{
   display:flex; justify-content: space-between;align-items: center;
 }
+
+.x-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-hover-edit {
+  color: #59595a;
+}
+
+.icon-hover-edit:hover {
+  color: #007bff;
+  transform: scale(1.2);
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.icon-hover-delete {
+  color: #59595a;
+}
+
+.icon-hover-delete:hover {
+  color: #ff0000;
+  transform: scale(1.2);
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.text-hover {
+  color: #59595a;
+}
+
+.text-hover:hover {
+  color: #007bff;
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.tr-hover:hover {
+  background-color: #dee0e2;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+}
+.cdk-overlay-container{ z-index: 9999 !important; }
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999;
+}

@@ -30,14 +30,17 @@ import {
         class="btn btn-primary mt-2"
         *ngIf="mfoes.data.length > 0; else showNoData"
         (click)="handleExpandCard()"
-        
       >
-      <i class="bx bx-plus"></i>
+        <i class="bx bx-plus"></i>
         MAJOR FINAL OUTPUT
       </button>
-      <div [ngClass]="isExpand? 'col-xl-6':'col-xl-12'">
+      <div [ngClass]="isExpand ? 'col-xl-6' : 'col-xl-12'">
         <div cdkDropList (cdkDropListDropped)="drop($event)">
-          <div class="card my-2" *ngFor="let a of mfoes.data; let i = index" cdkDrag>
+          <div
+            class="card my-2"
+            *ngFor="let a of mfoes.data; let i = index"
+            cdkDrag
+          >
             <div class="card-header x-space-between">
               <div>
                 <b class="text-primary">{{ i + 1 }}. {{ a.mfo }}</b>
@@ -94,12 +97,37 @@ import {
                     </a>
                   </li>
                 </ul>
+                <div
+                  class="dropdown"
+                  style="position: absolute; right: 0px; top: 20px; z-index: 3;"
+                >
+                  <button
+                    type="button"
+                    class="btn p-0 dropdown-toggle hide-arrow"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i
+                      class="bx bx-dots-vertical-rounded text-primary"
+                      style="position: absolute; right: 0px; top: 0px; z-index: 3;"
+                    ></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a
+                      class="dropdown-item cursor-pointer"
+                      (click)="DeleteIPCRDetails(a.ipcrDataId)"
+                      ><i class="bx bx-trash me-1"></i> Delete</a
+                    >
+                  </div>
+                </div>
               </div>
             </div>
             <div class="card-body">
               <ng-container *ngFor="let b of a.si; let y = index">
                 <div
-                  *ngIf="b.isSubTask === 0 || b.isSubTask === null; else showSubtask"
+                  *ngIf="
+                    b.isSubTask === 0 || b.isSubTask === null;
+                    else showSubtask
+                  "
                   class="accordion"
                   id="accordionExample"
                 >
@@ -142,12 +170,13 @@ import {
                         <div class="dropdown-menu">
                           <a
                             class="dropdown-item cursor-pointer"
-                            (click)="EditIPCRDetails(a,b)"
+                            (click)="EditIPCRDetails(a, b)"
                             data-bs-toggle="modal"
                             data-bs-target="#modalEdit"
                             ><i class="bx bx-edit-alt me-1"></i> Edit</a
                           >
-                          <a class="dropdown-item cursor-pointer"
+                          <a
+                            class="dropdown-item cursor-pointer"
                             (click)="DeleteIPCRDetails(b.ipcrDataId)"
                             ><i class="bx bx-trash me-1"></i> Delete</a
                           >
@@ -209,7 +238,11 @@ import {
                   </div>
                 </div>
                 <ng-template #showSubtask>
-                  <ng-container *ngFor="let c of b.st; let z = index">          
+                  <div *ngIf="b.st.length === 0" class="mb-2">
+                    <button class="btn btn-danger" (click)="DeleteIPCRDetails(b.ipcrDataId)"
+                    >Delete</button>
+                  </div>
+                  <ng-container *ngFor="let c of b.st; let z = index">
                     <div class="x-space-between m-2 ">
                       <div>
                         <b class="text-secondary"
@@ -270,7 +303,9 @@ import {
                                 data-bs-target="#modalEditSubtask"
                                 ><i class="bx bx-edit-alt me-1"></i> Edit</a
                               >
-                              <a class="dropdown-item cursor-pointer" (click)="DeleteIPCRSTDetails(c.ipcrSubtaskId)"
+                              <a
+                                class="dropdown-item cursor-pointer"
+                                (click)="DeleteIPCRSTDetails(c.ipcrSubtaskId)"
                                 ><i class="bx bx-trash me-1"></i> Delete</a
                               >
                             </div>
@@ -329,129 +364,135 @@ import {
                           </div>
                         </div>
                       </div>
-                    </div>               
+                    </div>
                   </ng-container>
                   <ng-container *ngFor="let d of b.stCmfo; let x = index">
                     <div class="x-space-between m-2 ">
-                        <div>
-                          <b class="text-secondary"
-                            >{{ i + 1 }}.{{ b.st.length + x + 1 }}. {{ d.mfo }}</b
-                          >
-                        </div>
-                        <div>
-                          <small
-                            class="badge rounded-pill"
-                            style="background-color: black;"
-                          >
-                            SUBTASK MFO
-                          </small>
-                        </div>
+                      <div>
+                        <b class="text-secondary"
+                          >{{ i + 1 }}.{{ b.st.length + x + 1 }}. {{ d.mfo }}</b
+                        >
                       </div>
-                      <div  *ngFor="let e of d.si; let xx = index" class="accordion my-1" id="accordionExampleStCmfo">
-                        <div class="card accordion-item">
-                          <h2
-                            class="accordion-header"
-                            id="headingStCmfo{{ xx }}"
-                            style="margin-right: 10px;"
+                      <div>
+                        <small
+                          class="badge rounded-pill"
+                          style="background-color: black;"
+                        >
+                          SUBTASK MFO
+                        </small>
+                      </div>
+                    </div>
+                    <div
+                      *ngFor="let e of d.si; let xx = index"
+                      class="accordion my-1"
+                      id="accordionExampleStCmfo"
+                    >
+                      <div class="card accordion-item">
+                        <h2
+                          class="accordion-header"
+                          id="headingStCmfo{{ xx }}"
+                          style="margin-right: 10px;"
+                        >
+                          <button
+                            type="button"
+                            class="accordion-button collapsed"
+                            data-bs-toggle="collapse"
+                            [attr.data-bs-target]="'#accordionStCmfo' + xx"
+                            aria-expanded="false"
+                            [attr.aria-controls]="'accordionStCmfo' + xx"
+                          >
+                            <i class="bx bx-label"></i>
+                            &nbsp;
+                            <strong class="text-success">
+                              <u> {{ e.qty }}{{ e.qtyUnit ? '%' : '' }} </u>
+                            </strong>
+                            &nbsp;
+                            {{ e.indicator }}
+                          </button>
+                          <div
+                            class="dropdown"
+                            style="position: absolute; right: 0px; top: 20px; z-index: 3;"
                           >
                             <button
                               type="button"
-                              class="accordion-button collapsed"
-                              data-bs-toggle="collapse"
-                              [attr.data-bs-target]="'#accordionStCmfo' + xx"
-                              aria-expanded="false"
-                              [attr.aria-controls]="'accordionStCmfo' + xx"
+                              class="btn p-0 dropdown-toggle hide-arrow"
+                              data-bs-toggle="dropdown"
                             >
-                              <i class="bx bx-label"></i>
-                              &nbsp;
-                              <strong class="text-success">
-                                <u> {{ e.qty }}{{ e.qtyUnit ? '%' : '' }} </u>
-                              </strong>
-                              &nbsp;
-                              {{ e.indicator }}
+                              <i
+                                class="bx bx-dots-vertical-rounded text-primary"
+                                style="position: absolute; right: 0px; top: 0px; z-index: 3;"
+                              ></i>
                             </button>
-                            <div
-                              class="dropdown"
-                              style="position: absolute; right: 0px; top: 20px; z-index: 3;"
-                            >
-                              <button
-                                type="button"
-                                class="btn p-0 dropdown-toggle hide-arrow"
-                                data-bs-toggle="dropdown"
+                            <div class="dropdown-menu">
+                              <a
+                                class="dropdown-item cursor-pointer"
+                                (click)="EditIPCRSubtaskDetails(e)"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEditSubtask"
+                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
                               >
-                                <i
-                                  class="bx bx-dots-vertical-rounded text-primary"
-                                  style="position: absolute; right: 0px; top: 0px; z-index: 3;"
-                                ></i>
-                              </button>
-                              <div class="dropdown-menu">
-                                <a
-                                  class="dropdown-item cursor-pointer"
-                                  (click)="EditIPCRSubtaskDetails(e)"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#modalEditSubtask"
-                                  ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                >
-                                <a class="dropdown-item cursor-pointer" (click)="DeleteIPCRSTDetails(e.ipcrSubtaskId)"
-                                  ><i class="bx bx-trash me-1"></i> Delete</a
-                                >
-                              </div>
+                              <a
+                                class="dropdown-item cursor-pointer"
+                                (click)="DeleteIPCRSTDetails(e.ipcrSubtaskId)"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
                             </div>
-                          </h2>
-                          <div
-                            id="accordionStCmfo{{ xx }}"
-                            class="accordion-collapse collapse"
-                            data-bs-parent="#accordionExampleStCmfo"
-                          >
-                            <div class="accordion-body">
-                              <div class="table-responsive text-nowrap">
-                                <table class="table table-bordered">
-                                  <thead>
-                                    <tr>
-                                      <th>RATING</th>
-                                      <th>QUANTITY</th>
-                                      <th>QUALITY</th>
-                                      <th>TIMELINESS</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>{{ '5' }}</td>
-                                      <td>{{ e.qty5 }}</td>
-                                      <td>{{ e.qlty5 }}</td>
-                                      <td>{{ e.timely5 }}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>{{ '4' }}</td>
-                                      <td>{{ e.qty4 }}</td>
-                                      <td>{{ e.qlty4 }}</td>
-                                      <td>{{ e.timely4 }}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>{{ '3' }}</td>
-                                      <td>{{ e.qty3 }}</td>
-                                      <td>{{ e.qlty3 }}</td>
-                                      <td>{{ e.timely3 }}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>{{ '2' }}</td>
-                                      <td>{{ e.qty2 }}</td>
-                                      <td>{{ e.qlty2 }}</td>
-                                      <td>{{ e.timely2 }}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>{{ '1' }}</td>
-                                      <td>{{ e.qty1 }}</td>
-                                      <td>{{ e.qlty1 }}</td>
-                                      <td>{{ e.timely1 }}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
+                          </div>
+                        </h2>
+                        <div
+                          id="accordionStCmfo{{ xx }}"
+                          class="accordion-collapse collapse"
+                          data-bs-parent="#accordionExampleStCmfo"
+                        >
+                          <div class="accordion-body">
+                            <div class="table-responsive text-nowrap">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>RATING</th>
+                                    <th>QUANTITY</th>
+                                    <th>QUALITY</th>
+                                    <th>TIMELINESS</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>{{ '5' }}</td>
+                                    <td>{{ e.qty5 }}</td>
+                                    <td>{{ e.qlty5 }}</td>
+                                    <td>{{ e.timely5 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>{{ '4' }}</td>
+                                    <td>{{ e.qty4 }}</td>
+                                    <td>{{ e.qlty4 }}</td>
+                                    <td>{{ e.timely4 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>{{ '3' }}</td>
+                                    <td>{{ e.qty3 }}</td>
+                                    <td>{{ e.qlty3 }}</td>
+                                    <td>{{ e.timely3 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>{{ '2' }}</td>
+                                    <td>{{ e.qty2 }}</td>
+                                    <td>{{ e.qlty2 }}</td>
+                                    <td>{{ e.timely2 }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>{{ '1' }}</td>
+                                    <td>{{ e.qty1 }}</td>
+                                    <td>{{ e.qlty1 }}</td>
+                                    <td>{{ e.timely1 }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                         </div>
-                    </div>     
+                      </div>
+                    </div>
                   </ng-container>
                 </ng-template>
               </ng-container>
@@ -488,8 +529,9 @@ import {
               aria-controls="offcanvasScroll"
               type="button"
               class="btn btn-primary"
+              (click)="handleExpandCard()"
             >
-            <i class="bx bx-plus"></i>
+              <i class="bx bx-plus"></i>
               MAJOR FINAL OUTPUT
             </button>
           </div>
@@ -497,10 +539,10 @@ import {
       </ng-template>
     </ng-container>
     <ng-template #LoadingView>
-      <app-skeleton-loading/>
+      <app-skeleton-loading />
     </ng-template>
-    <app-modal-edit-mfo [mfo]="mfo"/>
-    <app-modal-edit-subtask [subtask]="subtask"/>
+    <app-modal-edit-mfo [mfo]="mfo" />
+    <app-modal-edit-subtask [subtask]="subtask" />
   `,
 
   styleUrls: ['../ipcr-target.component.css'],
@@ -519,11 +561,11 @@ export class TableIpcrDataComponent implements OnInit {
 
   mfoes = this.ipcrService.ipcrDetails();
 
-  mfo     : any = {};
-  subtask : any = {};
+  mfo: any = {};
+  subtask: any = {};
 
   @Output() handleExpand = new EventEmitter<any>();
-  @Input() isExpand:any;
+  @Input() isExpand: any;
 
   ngOnInit(): void {
     this.ipcrService.GetIPCRDetails();
@@ -532,13 +574,9 @@ export class TableIpcrDataComponent implements OnInit {
   drop(event: any) {
     console.log(event);
 
-    moveItemInArray(
-      this.mfoes.data,
-      event.previousIndex,
-      event.currentIndex
-    );
+    moveItemInArray(this.mfoes.data, event.previousIndex, event.currentIndex);
 
-    console.log(event)
+    console.log(event);
     let sortData: any = [];
 
     this.mfoes.data.forEach((x: any, index: number) => {
@@ -553,21 +591,22 @@ export class TableIpcrDataComponent implements OnInit {
     console.log(sortData);
   }
 
-  EditIPCRDetails(a:any, b:any){
+  EditIPCRDetails(a: any, b: any) {
     this.ipcrService.GetIPCRDetailsRemaining(b.dpcrDataId);
-    this.mfo            = b;
-    this.mfo.sortByMFO  = a.sortByMFO;
-    this.mfo.isIpcrMfo  = a.isIpcrMfo;
-    this.mfo.returnQty  = b.qty;
+    this.mfo = b;
+    this.mfo.sortByMFO = a.sortByMFO;
+    this.mfo.isIpcrMfo = a.isIpcrMfo;
+    this.mfo.returnQty = b.qty;
     this.mfo.promptEdit = false;
   }
 
-  EditIPCRSubtaskDetails(c:any){
-   // GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId); returnQtyST = ipcrSTDetails.qty; promptEditST = false"
-    this.mfo.add_qtyRemainingST = this.mfo.dpcrSTQuantity - this.ipcrService.ipcrST_rem();
-    this.ipcrService.GetIPCRDetailsRemainingST(c.subTaskId);   
-    this.subtask              = c;
-    this.subtask.returnQtyST  = c.qty;
+  EditIPCRSubtaskDetails(c: any) {
+    // GetIPCRDetailsRemainingST(ipcrSTDetails.subTaskId); returnQtyST = ipcrSTDetails.qty; promptEditST = false"
+    this.mfo.add_qtyRemainingST =
+      this.mfo.dpcrSTQuantity - this.ipcrService.ipcrST_rem();
+    this.ipcrService.GetIPCRDetailsRemainingST(c.subTaskId, c.dpcrDataId);
+    this.subtask = c;
+    this.subtask.returnQtyST = c.qty;
     this.subtask.promptEditST = false;
   }
 
@@ -579,7 +618,7 @@ export class TableIpcrDataComponent implements OnInit {
     this.ipcrService.DeleteIPCRSTDetails(value);
   }
 
-  handleExpandCard(){
+  handleExpandCard() {
     this.handleExpand.emit();
   }
 

@@ -256,7 +256,7 @@ import {
                       <td>
                         &nbsp; <i class="m-2 bx bx-subdirectory-right"></i
                         ><strong
-                          ><u>{{ c.qty }}</u></strong
+                          ><u>{{ c.qty }}{{c.qtyUnit == 1? '%' :''}}</u></strong
                         >
                         {{ c.stIndicator }}
                       </td>
@@ -276,7 +276,7 @@ import {
                               class="dropdown-item cursor-pointer"
                               data-bs-toggle="modal"
                               data-bs-target="#modalEditSubTask"
-                              (click)="subtaskData = c"
+                              (click)="subtaskData = c; subtaskData.stIndicator = c.stIndicatorTemp"
                             >
                               <i
                                 class="bx bxs-edit text-label cursor-pointer"

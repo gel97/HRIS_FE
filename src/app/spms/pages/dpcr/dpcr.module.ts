@@ -38,7 +38,7 @@ import { HeaderDpcrActualComponent } from './dpcr-actual/components/header-dpcr-
 import { ViewDpcrActualDataComponent } from './dpcr-actual/components/view-dpcr-actual-data.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ModalDpcrActualMfoOtsComponent } from './dpcr-actual/components/modal-dpcr-actual-mfo-ots.component';
-
+import { ModalSetSubtaskRatingComponent } from './dpcr-actual/components/modal-set-subtask-rating.component';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -47,6 +47,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { EmployeeRatingComponent } from './employee-rating/employee-rating.component';
 @NgModule({
   declarations: [
     DpcrTargetComponent,
@@ -75,7 +76,9 @@ import {
     ViewDpcrActualComponent,
     HeaderDpcrActualComponent,
     ViewDpcrActualDataComponent,
-    ModalDpcrActualMfoOtsComponent
+    ModalDpcrActualMfoOtsComponent,
+    EmployeeRatingComponent,
+    ModalSetSubtaskRatingComponent
   ],
   imports: [
     CommonModule,

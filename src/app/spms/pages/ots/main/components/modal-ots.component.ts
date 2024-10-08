@@ -15,7 +15,8 @@ import { OtsService } from 'src/app/spms/service/ots.service';
     <!-- Modal -->
     <div class="modal fade" id="modalOts" tabindex="-1" aria-hidden="true">
       <div
-        class="modal-dialog modal-dialog-scrollable modal-xl"
+        class="modal-dialog modal-dialog-scrollable"
+        [ngClass]="isShowMfoes? 'modal-xl':'modal-m'"
         role="document"
       >
         <div class="modal-content">
@@ -39,277 +40,279 @@ import { OtsService } from 'src/app/spms/service/ots.service';
               <app-warning />
             </ng-container>
             <ng-template #showOts>
-              <div [ngClass]="ots.mfo === undefined ? 'col-12' : 'col-6'">
-                <ng-container
-                  *ngIf="otsGetMfoGroup.data.length === 0; else ShowOtsGroup"
-                >
-                  <strong>LIST OF MFO</strong>
-                  <div class="table-responsive mt-2">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th [width]="10">#</th>
-                          <th>MFO</th>
-                          <th [width]="10">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <ng-container
-                          *ngFor="let a of otsMfoes.data; let i = index"
-                        >
-                          <tr>
-                            <td>
-                              <strong class="text-primary">{{ i + 1 }}</strong>
-                            </td>
-                            <td colspan="2">
-                              <strong class="text-primary">{{ a.mfo }}</strong>
-                            </td>
-                          </tr>
-                          <ng-container *ngFor="let b of a.si; let y = index">
-                            <ng-container
-                              *ngIf="b.isSubTask; else showNotSubtask"
-                            >
-                              <ng-container
-                                *ngFor="let c of b.st; let z = index"
-                              >
-                                <tr>
-                                  <td></td>
-                                  <td>
-                                    <strong class="text-secondaary"
-                                      >{{ i + 1 }}.{{ z + 1 }}
-                                      {{ c.stMfo }}</strong
-                                    >
-                                  </td>
-                                  <td></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td>
-                                    <i
-                                      class="bx bx-chevron-right cursor-pointer text-secondary"
-                                    ></i>
-                                    <strong class="text-primary"
-                                      ><u
-                                        >{{ c.qty
-                                        }}{{ b.qtyUnit ? '%' : '' }}</u
-                                      ></strong
-                                    >
-                                    {{ c.stIndicator }}
-                                  </td>
-                                  <td>
-                                    <button
-                                      (click)="
-                                      setOtsData({
-                                        mfo: c.stMfo,
-                                        mfoId: c.subTaskId,
-                                        subtaskId: c.subTaskId,
-                                        indicator: c.stIndicator,
-                                        indicatorId: c.indicatorId,
-                                        qty: c.qty,
-                                        dpcrDataId: c.dpcrDataId,
-                                        ipcrDataId: c.ipcrDataId,
-                                        ipcrId: b.ipcrId,
-                                        isSubTask: b.isSubTask,
-                                        opcrDataId: b.opcrDataId,
-                                        qtyUnit: b.qtyUnit,
-                                        qlty5: c.qlty5,
-                                        qlty4: c.qlty4,
-                                        qlty3: c.qlty3,
-                                        qlty2: c.qlty2,
-                                        qlty1: c.qlty1,
-                                        timely5: c.timely5,
-                                        timely4: c.timely4,
-                                        timely3: c.timely3,
-                                        timely2: c.timely2,
-                                        timely1: c.timely1,
-                                      })
-                                    "
-                                      class="btn btn-primary"
-                                    >
-                                      <span
-                                        class="tf-icons bx bx bx-plus"
-                                      ></span>
-                                    </button>
-                                  </td>
-                                </tr>
-                              </ng-container>
-                              <ng-container
-                                *ngFor="let c of b.stCmfo; let z = index"
-                              >
-                                <tr>
-                                  <td></td>
-                                  <td>
-                                    <strong class="text-secondaary"
-                                      >{{ i + 1 }}.{{ b.st.length + z + 1 }}
-                                      {{ c.mfo }}</strong
-                                    >
-                                  </td>
-                                  <td></td>
-                                </tr>
-                                <tr *ngFor="let d of c.si; let zz = index">
-                                  <td></td>
-                                  <td>
-                                    <i
-                                      class="bx bx-chevron-right cursor-pointer text-secondary"
-                                    ></i>
-                                    <strong class="text-primary"
-                                      ><u
-                                        >{{ d.qty
-                                        }}{{ d.qtyUnit ? '%' : '' }}</u
-                                      ></strong
-                                    >
-                                    {{ d.indicator }}
-                                  </td>
-                                  <td>
-                                    <button
-                                      (click)="
-                                      setOtsData({
-                                        mfo: c.mfo,
-                                        mfoId: c.mfoId,
-                                        subtaskId: d.subTaskId,
-                                        indicator: d.indicator,
-                                        indicatorId: d.indicatorId,
-                                        qty: d.qty,
-                                        dpcrDataId: d.dpcrDataId,
-                                        ipcrDataId: d.ipcrDataId,
-                                        ipcrId: d.ipcrId,
-                                        isSubTask: d.isSubTask,
-                                        opcrDataId: d.opcrDataId,
-                                        qtyUnit: d.qtyUnit,
-                                        qlty5: d.qlty5,
-                                        qlty4: d.qlty4,
-                                        qlty3: d.qlty3,
-                                        qlty2: d.qlty2,
-                                        qlty1: d.qlty1,
-                                        timely5: d.timely5,
-                                        timely4: d.timely4,
-                                        timely3: d.timely3,
-                                        timely2: d.timely2,
-                                        timely1: d.timely1,
-                                      })
-                                    "
-                                      class="btn btn-primary"
-                                    >
-                                      <span
-                                        class="tf-icons bx bx bx-plus"
-                                      ></span>
-                                    </button>
-                                  </td>
-                                </tr>
-
-                              </ng-container>
-                            </ng-container>
-                            <ng-template #showNotSubtask>
-                              <tr>
-                                <td></td>
-                                <td>
-                                  <i
-                                    class="bx bx-chevron-right cursor-pointer text-secondary"
-                                  ></i>
-                                  <strong class="text-primary"
-                                    ><u
-                                      >{{ b.qty }}{{ b.qtyUnit ? '%' : '' }}</u
-                                    ></strong
-                                  >
-                                  {{ b.indicator }}
-                                </td>
-                                <td>
-                                  <button
-                                    (click)="
-                                      setOtsData({
-                                        mfo: a.mfo,
-                                        mfoId: a.mfoId,
-                                        indicator: b.indicator,
-                                        indicatorId: b.indicatorId,
-                                        qty: b.qty,
-                                        dpcrDataId: b.dpcrDataId,
-                                        ipcrDataId: b.ipcrDataId,
-                                        ipcrId: b.ipcrId,
-                                        isSubTask: b.isSubTask,
-                                        opcrDataId: b.opcrDataId,
-                                        qtyUnit: b.qtyUnit,
-                                        qlty5: b.qlty5,
-                                        qlty4: b.qlty4,
-                                        qlty3: b.qlty3,
-                                        qlty2: b.qlty2,
-                                        qlty1: b.qlty1,
-                                        timely5: b.timely5,
-                                        timely4: b.timely4,
-                                        timely3: b.timely3,
-                                        timely2: b.timely2,
-                                        timely1: b.timely1,
-                                      })
-                                    "
-                                    class="btn btn-primary"
-                                  >
-                                    <span class="tf-icons bx bx bx-plus"></span>
-                                  </button>
-                                </td>
-                              </tr>
-                            </ng-template>
-                          </ng-container>
-                        </ng-container>
-                      </tbody>
-                    </table>
-                  </div>
-                </ng-container>
-                <ng-template #ShowOtsGroup>
-                  <strong>LIST OF GROUP OTS</strong>
-                  <div
-                    (click)="otsService.clearOtsGetMfo()"
-                    class="cursor-pointer text-primary"
+              <ng-container *ngIf="isShowMfoes">
+                <div [ngClass]="ots.mfo === undefined ? 'col-12' : 'col-6'" style="height: 700px;overflow: auto;">
+                  <ng-container
+                    *ngIf="otsGetMfoGroup.data.length === 0; else ShowOtsGroup"
                   >
-                    <i class="bx bx-arrow-back"></i> Back
-                  </div>
-                  <div class="table-responsive mt-2">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th [width]="10">#</th>
-                          <th>Date</th>
-                          <th>Description</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <ng-container
-                          *ngFor="let a of otsGetMfoGroup.data; let i = index"
-                        >
+                    <strong>LIST OF MFO</strong>
+                    <div class="table-responsive mt-2">
+                      <table class="table table-bordered">
+                        <thead>
                           <tr>
-                            <td>
-                              <strong class="text-primary">{{ i + 1 }}</strong>
-                            </td>
-                            <td>
-                              <strong class="text-primary">{{
-                                a.dateDone | date : 'MMM. dd, yyyy hh:mm a'
-                              }}</strong>
-                            </td>
-                            <td>
-                              <strong class="text-secondary">{{
-                                a.data.description
-                              }}</strong>
-                            </td>
-                            <td>
-                              <button
-                                *ngIf="!a.data.hasOts"
-                                class="btn btn-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#backDropModal"
-                                data-bs-dismiss="modal"
-                                (click)="otsGroupData = a"
-                              >
-                                Add OTS
-                              </button>
-                            </td>
+                            <th [width]="10">#</th>
+                            <th>MFO</th>
+                            <th [width]="10">Action</th>
                           </tr>
-                        </ng-container>
-                      </tbody>
-                    </table>
-                  </div>
-                </ng-template>
-              </div>
-              <div class="col-6" *ngIf="ots.mfo !== undefined">
-                <strong>OTS FORM</strong>
+                        </thead>
+                        <tbody>
+                          <ng-container
+                            *ngFor="let a of otsMfoes.data; let i = index"
+                          >
+                            <tr>
+                              <td>
+                                <strong class="text-primary">{{ i + 1 }}</strong>
+                              </td>
+                              <td colspan="2">
+                                <strong class="text-primary">{{ a.mfo }}</strong>
+                              </td>
+                            </tr>
+                            <ng-container *ngFor="let b of a.si; let y = index">
+                              <ng-container
+                                *ngIf="b.isSubTask; else showNotSubtask"
+                              >
+                                <ng-container
+                                  *ngFor="let c of b.st; let z = index"
+                                >
+                                  <tr>
+                                    <td></td>
+                                    <td>
+                                      <strong class="text-secondaary"
+                                        >{{ i + 1 }}.{{ z + 1 }}
+                                        {{ c.stMfo }}</strong
+                                      >
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td></td>
+                                    <td>
+                                      <i
+                                        class="bx bx-chevron-right cursor-pointer text-secondary"
+                                      ></i>
+                                      <strong class="text-primary"
+                                        ><u
+                                          >{{ c.qty
+                                          }}{{ c.qtyUnit ? '%' : '' }}</u
+                                        ></strong
+                                      >
+                                      {{ c.stIndicator }}
+                                    </td>
+                                    <td>
+                                      <button
+                                        (click)="
+                                        setOtsData({
+                                          mfo: c.stMfo,
+                                          mfoId: c.subTaskId,
+                                          subtaskId: c.subTaskId,
+                                          indicator: c.stIndicator,
+                                          indicatorId: c.indicatorId,
+                                          qty: c.qty,
+                                          dpcrDataId: c.dpcrDataId,
+                                          ipcrDataId: c.ipcrDataId,
+                                          ipcrId: b.ipcrId,
+                                          isSubTask: b.isSubTask,
+                                          opcrDataId: b.opcrDataId,
+                                          qtyUnit: b.qtyUnit,
+                                          qlty5: c.qlty5,
+                                          qlty4: c.qlty4,
+                                          qlty3: c.qlty3,
+                                          qlty2: c.qlty2,
+                                          qlty1: c.qlty1,
+                                          timely5: c.timely5,
+                                          timely4: c.timely4,
+                                          timely3: c.timely3,
+                                          timely2: c.timely2,
+                                          timely1: c.timely1,
+                                        })
+                                      "
+                                        class="btn btn-primary"
+                                      >
+                                        <span
+                                          class="tf-icons bx bx bx-plus"
+                                        ></span>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                                <ng-container
+                                  *ngFor="let c of b.stCmfo; let z = index"
+                                >
+                                  <tr>
+                                    <td></td>
+                                    <td>
+                                      <strong class="text-secondaary"
+                                        >{{ i + 1 }}.{{ b.st.length + z + 1 }}
+                                        {{ c.mfo }}</strong
+                                      >
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                  <tr *ngFor="let d of c.si; let zz = index">
+                                    <td></td>
+                                    <td>
+                                      <i
+                                        class="bx bx-chevron-right cursor-pointer text-secondary"
+                                      ></i>
+                                      <strong class="text-primary"
+                                        ><u
+                                          >{{ d.qty
+                                          }}{{ d.qtyUnit ? '%' : '' }}</u
+                                        ></strong
+                                      >
+                                      {{ d.indicator }}
+                                    </td>
+                                    <td>
+                                      <button
+                                        (click)="
+                                        setOtsData({
+                                          mfo: c.mfo,
+                                          mfoId: c.mfoId,
+                                          subtaskId: d.subTaskId,
+                                          indicator: d.indicator,
+                                          indicatorId: d.indicatorId,
+                                          qty: d.qty,
+                                          dpcrDataId: d.dpcrDataId,
+                                          ipcrDataId: d.ipcrDataId,
+                                          ipcrId: d.ipcrId,
+                                          isSubTask: d.isSubTask,
+                                          opcrDataId: d.opcrDataId,
+                                          qtyUnit: d.qtyUnit,
+                                          qlty5: d.qlty5,
+                                          qlty4: d.qlty4,
+                                          qlty3: d.qlty3,
+                                          qlty2: d.qlty2,
+                                          qlty1: d.qlty1,
+                                          timely5: d.timely5,
+                                          timely4: d.timely4,
+                                          timely3: d.timely3,
+                                          timely2: d.timely2,
+                                          timely1: d.timely1,
+                                        })
+                                      "
+                                        class="btn btn-primary"
+                                      >
+                                        <span
+                                          class="tf-icons bx bx bx-plus"
+                                        ></span>
+                                      </button>
+                                    </td>
+                                  </tr>
+
+                                </ng-container>
+                              </ng-container>
+                              <ng-template #showNotSubtask>
+                                <tr>
+                                  <td></td>
+                                  <td>
+                                    <i
+                                      class="bx bx-chevron-right cursor-pointer text-secondary"
+                                    ></i>
+                                    <strong class="text-primary"
+                                      ><u
+                                        >{{ b.qty }}{{ b.qtyUnit ? '%' : '' }}</u
+                                      ></strong
+                                    >
+                                    {{ b.indicator }}
+                                  </td>
+                                  <td>
+                                    <button
+                                      (click)="
+                                        setOtsData({
+                                          mfo: a.mfo,
+                                          mfoId: a.mfoId,
+                                          indicator: b.indicator,
+                                          indicatorId: b.indicatorId,
+                                          qty: b.qty,
+                                          dpcrDataId: b.dpcrDataId,
+                                          ipcrDataId: b.ipcrDataId,
+                                          ipcrId: b.ipcrId,
+                                          isSubTask: b.isSubTask,
+                                          opcrDataId: b.opcrDataId,
+                                          qtyUnit: b.qtyUnit,
+                                          qlty5: b.qlty5,
+                                          qlty4: b.qlty4,
+                                          qlty3: b.qlty3,
+                                          qlty2: b.qlty2,
+                                          qlty1: b.qlty1,
+                                          timely5: b.timely5,
+                                          timely4: b.timely4,
+                                          timely3: b.timely3,
+                                          timely2: b.timely2,
+                                          timely1: b.timely1,
+                                        })
+                                      "
+                                      class="btn btn-primary"
+                                    >
+                                      <span class="tf-icons bx bx bx-plus"></span>
+                                    </button>
+                                  </td>
+                                </tr>
+                              </ng-template>
+                            </ng-container>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-container>
+                  <ng-template #ShowOtsGroup>
+                    <strong>LIST OF GROUP OTS</strong>
+                    <div
+                      (click)="otsService.clearOtsGetMfo()"
+                      class="cursor-pointer text-primary"
+                    >
+                      <i class="bx bx-arrow-back"></i> Back
+                    </div>
+                    <div class="table-responsive mt-2">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th [width]="10">#</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container
+                            *ngFor="let a of otsGetMfoGroup.data; let i = index"
+                          >
+                            <tr>
+                              <td>
+                                <strong class="text-primary">{{ i + 1 }}</strong>
+                              </td>
+                              <td>
+                                <strong class="text-primary">{{
+                                  a.dateDone | date : 'MMM. dd, yyyy hh:mm a'
+                                }}</strong>
+                              </td>
+                              <td>
+                                <strong class="text-secondary">{{
+                                  a.data.description
+                                }}</strong>
+                              </td>
+                              <td>
+                                <button
+                                  *ngIf="!a.data.hasOts"
+                                  class="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#backDropModal"
+                                  data-bs-dismiss="modal"
+                                  (click)="otsGroupData = a"
+                                >
+                                  Add OTS
+                                </button>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-container>
+              <div [ngClass]="isShowMfoes? 'col-6':'col-12'" *ngIf="ots.mfo !== undefined || !isShowMfoes">
+                <strong *ngIf="isShowMfoes">OTS FORM</strong>
                 <div class="card mb-4">
                   <div class="card-body" *ngIf="!isGroupOts; else ShowGroup">
                     <div class="card bg-primary text-white mb-2">
@@ -348,9 +351,11 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         placeholder="Quantity"
                         aria-describedby="quantity"
                         [(ngModel)]="ots.qtyR"
+                        (keyup)="isEmptyQtyR = false"
                       />
                       <label for="quantity">Quantity</label>
                     </div>
+                    <p *ngIf="isEmptyQtyR" class="text-danger">Quantity is required.</p>
                     <label class="col-form-label">Quality</label>
                     <div class="row mb-2">
                       <div class="col-2">
@@ -409,6 +414,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         </button>
                       </div>
                     </div>
+                    <p *ngIf="isEmptyQltyR" class="text-danger">Quality is required.</p>
                     <label class="col-form-label">Timeliness</label>
                     <div class="row mb-4">
                       <div class="col-2">
@@ -467,7 +473,7 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                         </button>
                       </div>
                     </div>
-
+                    <p *ngIf="isEmptyTimelyR" class="text-danger">Timeliness is required.</p>
                     <div class="mb-2">
                       <label
                         for="html5-datetime-local-input"
@@ -477,11 +483,13 @@ import { OtsService } from 'src/app/spms/service/ots.service';
                       <input
                         class="form-control"
                         type="datetime-local"
-                        [(ngModel)]="otsMfoes.dateDone"
+                        [(ngModel)]="ots.dateDone"
                         id="html5-datetime-local-input"
                         min="2023-11-1T08:00 | date:'yyyy-MM-ddTHH:mm'"
+                        (keypress)="isEmptyDateDone = false"
                       />
                     </div>
+                    <p *ngIf="isEmptyDateDone" class="text-danger">Date accomplished is required.</p>
                     <div class="form-check">
                       <input
                         class="form-check-input"
@@ -698,22 +706,29 @@ export class ModalOtsComponent implements OnInit {
   closeModal!: { nativeElement: { click: () => void } };
 
   dpcrService = inject(DpcrService);
-  otsService = inject(OtsService);
+  otsService  = inject(OtsService);
   sample: any = '';
-  ots: any = {};
-  isGroupOts: boolean = false;
-  isCheckAll: boolean = false;
+  //ots: any = {};
+  isGroupOts : boolean = false;
+  isCheckAll : boolean = false;
+
+  isEmptyDateDone: boolean = false;
+  isEmptyQtyR    : boolean = false;
+  isEmptyQltyR   : boolean = false;
+  isEmptyTimelyR : boolean = false;
 
   quantity: any = {};
 
   otsGetListUserMfo = this.otsService.otsGetListUserMfo();
   otsGetMfoGroup = this.otsService.otsGetMfoGroup();
 
-  otsGroup: any = [];
+  otsGroup    : any = [];
   otsGroupData: any = {};
 
-  @Input() otsMfoes: any;
-  @Input() error: any;
+  @Input() otsMfoes   : any;
+  @Input() ots        : any = {};
+  @Input() error      : any;
+  @Input() isShowMfoes: boolean = true;
 
   @Output() submit = new EventEmitter<any>();
 
@@ -726,15 +741,36 @@ export class ModalOtsComponent implements OnInit {
   }
 
   Submit() {
-    this.ots.startDate = this.otsMfoes.startDate;
-    this.ots.endDate = this.otsMfoes.endDate;
-    this.ots.dateDone = this.otsMfoes.dateDone;
+    // this.ots.startDate = this.otsMfoes.startDate;
+    // this.ots.endDate = this.otsMfoes.endDate;
+    // this.ots.dateDone = this.otsMfoes.dateDone;
+    console.log(this.ots);
+    if(this.ots.qtyR > 0 && this.ots.dateDone !== null && this.ots.qltyR > 0 && this.ots.timelyR > 0){
+      if (this.isGroupOts) {
+        this.fiterGroupOts();
+        this.otsService.AddGroupOts({ ots: this.ots, users: this.otsGroup });
+      } else {
+        this.otsService.AddOts(this.ots);
+      }
+  
+      this.submit.emit();
+    }else{
+      this.validateFields(this.ots);
+    }
+  }
 
-    if (this.isGroupOts) {
-      this.fiterGroupOts();
-      this.otsService.AddGroupOts({ ots: this.ots, users: this.otsGroup });
-    } else {
-      this.otsService.AddOts(this.ots);
+  validateFields(ots:any){
+    if(!ots.qtyR){
+      this.isEmptyQtyR = true;
+    }
+    if(!ots.dateDone){
+      this.isEmptyDateDone = true;
+    }
+    if(!ots.qltyR){
+      this.isEmptyQltyR = true;
+    }
+    if(!ots.timelyR){
+      this.isEmptyTimelyR = true;
     }
   }
 
@@ -770,14 +806,13 @@ export class ModalOtsComponent implements OnInit {
 
   getGroupUsers() {
     console.log('e:', this.ots);
-    this.ots.dateDone = this.otsMfoes.dateDone;
+    //this.ots.dateDone = this.otsMfoes.dateDone;
     this.otsService.PostOtsGetListUserMfo(this.ots);
   }
 
   setOtsData(mfoData: any) {
     this.ots = mfoData;
     this.otsService.GetOtsMfoGroup(mfoData);
-
     this.clearGroupOts();
   }
 
@@ -788,17 +823,20 @@ export class ModalOtsComponent implements OnInit {
 
   setQuality(rating: number) {
     this.ots.qltyR = rating;
+    this.isEmptyQltyR = false;
   }
 
   setTimeliness(rating: number) {
     this.ots.timelyR = rating;
+    this.isEmptyTimelyR = false;
+
   }
 
   initialDate() {
     const currentDate = new Date();
     currentDate.setHours(16, 0, 0, 0);
     const formattedDate = currentDate.toISOString().slice(0, 16);
-    this.otsMfoes.dateDone = formattedDate;
+    this.ots.dateDone = formattedDate;
   }
 
   handleStatus() {

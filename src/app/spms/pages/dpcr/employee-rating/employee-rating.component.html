@@ -1,0 +1,187 @@
+<div class="col-lg-2">
+  <label>Select year and semester:</label>
+  <select class="form-select" aria-label="Default select example" [(ngModel)]="dpcrId"
+    [disabled]="employeesRating.isLoading" (ngModelChange)="GetEmployeeRating()">
+    <option *ngFor="let item of dpcr.data" [value]="item.dpcrId" [selected]="item.active === 1">{{item.year}} -
+      {{item.semester === 1 ? '1st': '2nd'}} semester</option>
+  </select>
+</div>
+<ng-container *ngFor="let item of employeesRating.data; let i = index">
+  <div class="accordion mt-1" id="accordionExample{{i}}">
+    <div class="card accordion-item">
+      <div class="accordion-button collapsed" data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' +i"
+        aria-expanded="false" aria-controls="accordionTwo">
+        <div style="width: 80px; padding: 5px; margin-top: 8px;">
+          <h1 *ngIf="!employeesRating.isLoading; else LoadRating">
+            <b>
+              {{item.rating.finalRating.total ?? ''}}
+            </b>
+          </h1>
+          <ng-template #LoadRating>
+            <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
+              [theme]="{ margin: '0px' }"></ngx-skeleton-loader>
+          </ng-template>
+        </div>
+        <div class="d-flex align-items-center">
+          <div *ngIf="!employeesRating.isLoading; else LoadProfile">
+            <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
+                class="avatar avatar-lg pull-up" title="" data-bs-original-title="Lilian Fuller">
+                <img [src]="item.profile" loading="lazy" onerror="this.src='./assets/img/avatars/user_picture.png'"
+                  alt="Avatar" class="rounded-circle">
+              </li>
+            </ul>
+          </div>
+          <ng-template #LoadProfile>
+            <ngx-skeleton-loader count="1" animation="pulse" appearance="circle"
+              [theme]="{ margin: '0px' }"></ngx-skeleton-loader>
+          </ng-template>
+          <div>
+            <span class="ml-2" *ngIf="!employeesRating.isLoading; else LoadData">
+              &nbsp;
+              {{item.fullNameFirst}}
+            </span>
+            <ng-template #LoadData>
+              <div style="margin-left: 70px; width: 100%;">
+                <ngx-skeleton-loader count="1" animation="pulse" appearance="line" style="width: 100%;" , height="50px"
+                  , [theme]="{ margin: '0px', width:'100%' }"></ngx-skeleton-loader>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div id="accordion{{i}}" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+        [attr.data-bs-target]="'#accordionExample' +{i}">
+        <div class="accordion-body">
+          <ng-container *ngFor="let mfo of item.rating.data; let i = index">
+            <div class="card mt-2">
+              <div class="card-body">
+                <div class="col-12">
+                  <b>{{i+1}}. {{mfo.mfo}}</b>
+                </div>
+                <ng-container *ngFor="let si of mfo.si; let y = index">
+                  <div class="accordion-item card" style="margin-top: 10px;">
+                    <div class="col-12 x-space-between px-2">
+                      <div style="width: 25%;">
+                        <label><i>Success indicator</i></label>
+                      </div>
+                      <div style="width: 25%;">
+                        <label><i>Actual accomplishment</i></label>
+                      </div>
+                      <div style="width: 10%;">
+                        <label><i>Status</i></label>
+                      </div>
+                      <div style="width: 10%;">
+                        <label><i>Quantity</i></label>
+                      </div>
+                      <div style="width: 10%;">
+                        <label><i>Quality</i></label>
+                      </div>
+                      <div style="width: 10%;">
+                        <label><i>Timeliness</i></label>
+                      </div>
+                      <div style="width: 10%;">
+                        <label><i>Average</i></label>
+                      </div>
+                    </div>
+                    <div class="col-12 x-space-between mt-2" class="accordion-button collapsed"
+                      data-bs-toggle="collapse" [attr.data-bs-target]="'#accordionSIIcon-2' + i + y "
+                      aria-controls="accordionIcon-2">
+                      <div style="width: 25%;">
+                        <div style="margin-right: 30px;">
+                          <label><b><u class="text-success">{{si.qty}}{{si.qtyUnit === 1?
+                                '%':''}}</u></b>
+                            <span class="text-success"
+                              *ngIf="si.qtyUnit && si.prcntActualQty > 0"><strong>&nbsp;({{si.prcntActualQty}})</strong></span>
+                            {{si.indicator}}
+                          </label>
+                        </div>
+                      </div>
+                      <div style="width: 25%;">
+                        <label *ngIf="si.actual?.totalQty > 0"><b><u class="text-primary">{{si.actual?.totalQty ??
+                              0}}{{si.qtyUnit === 1? '%':''}}</u></b><span class="text-primary"
+                            *ngIf="si.qtyUnit && si.actual.qtyPrcntActual > 0"><strong>&nbsp;({{si.actual.qtyPrcntActual}})</strong></span>{{si.actual.actualAc}}</label>
+                      </div>
+                      <div style="width: 10%;">
+                        <div class="">
+                          <circle-progress [percent]="si.actual?.qtyPrcnt ?? 0" [radius]="30" [outerStrokeWidth]="3"
+                            [innerStrokeWidth]="3" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E496'"
+                            [animation]="true" [animationDuration]="300"></circle-progress>
+                        </div>
+                      </div>
+                      <div style="width: 10%;">
+                        <div style="margin-left: 30px;"><b class="text-primary"
+                            *ngIf="si.actual?.totalQtyRating > 0">{{si.actual?.totalQtyRating ?? 0}}</b></div>
+                      </div>
+                      <div style="width: 10%;">
+                        <div style="margin-left: 30px;"><b class="text-primary"
+                            *ngIf="si.actual?.totalQlty > 0">{{si.actual?.totalQlty ?? 0}}</b></div>
+                      </div>
+                      <div style="width: 10%;">
+                        <div style="margin-left: 40px;"><b class="text-primary"
+                            *ngIf="si.actual?.totalTimely > 0">{{si.actual?.totalTimely ?? 0}}</b></div>
+                      </div>
+                      <div style="width: 10%;">
+                        <div style="margin-left: 30px;"><b class="text-success"
+                            *ngIf="si.actual?.average > 0">{{si.actual?.average ?? 0}}</b></div>
+                      </div>
+                    </div>
+                    <div id="accordionSIIcon-2{{i}}{{y}}" class="accordion-collapse collapse"
+                      [attr.data-bs-parent]="'#accordionSIIcon'+ i + y">
+                      <div class="accordion-body">
+                        <div class="table-responsive text-nowrap">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th [width]="10">Rating</th>
+                                <th [width]="10">Quantity</th>
+                                <th>Quality</th>
+                                <th>Timeliness</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td class="text-center"><strong>5</strong></td>
+                                <td class="text-center">{{ si.qty5 }}</td>
+                                <td>{{ si.qlty5 }}</td>
+                                <td>{{ si.timely5 }}</td>
+                              </tr>
+                              <tr>
+                                <td class="text-center"><strong>4</strong></td>
+                                <td class="text-center">{{ si.qty4 }}</td>
+                                <td>{{ si.qlty4 }}</td>
+                                <td>{{ si.timely4 }}</td>
+                              </tr>
+                              <tr>
+                                <td class="text-center"><strong>3</strong></td>
+                                <td class="text-center">{{ si.qty3 }}</td>
+                                <td>{{ si.qlty3 }}</td>
+                                <td>{{ si.timely3 }}</td>
+                              </tr>
+                              <tr>
+                                <td class="text-center"><strong>2</strong></td>
+                                <td class="text-center">{{ si.qty2 }}</td>
+                                <td>{{ si.qlty2 }}</td>
+                                <td>{{ si.timely2 }}</td>
+                              </tr>
+                              <tr>
+                                <td class="text-center"><strong>1</strong></td>
+                                <td class="text-center">{{ si.qty1 }}</td>
+                                <td>{{ si.qlty1 }}</td>
+                                <td>{{ si.timely1 }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

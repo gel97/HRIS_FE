@@ -19,7 +19,8 @@ import {
   CdkDropList,
   CdkDropListGroup,
 } from '@angular/cdk/drag-drop';
-
+import { CanvasTargetIpcrComponent } from './v2/ipcr-target/components/canvas-ipcr-target.component';
+import { ViewIpcrSignatoryComponent } from './v2/ipcr-target/components/view-ipcr-signatory.component';
 @NgModule({
   declarations: [
     IpcrTargetComponent,
@@ -31,7 +32,9 @@ import {
     ModalAddSubtaskComponent,
     ModalEditMfoComponent,
     ModalEditSubtaskComponent,
-    SkeletonLoadingComponent
+    SkeletonLoadingComponent,
+    CanvasTargetIpcrComponent,
+    ViewIpcrSignatoryComponent
   ],
   imports: [
     CommonModule,
