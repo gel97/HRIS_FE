@@ -250,10 +250,10 @@ import Swal from 'sweetalert2'
                   class="form-select"
                   id="exampleFormControlSelect1"
                   aria-label="Default select example"
-                  [ngModel]="selectedMonth"
+                  [ngModel]="mporMonths.selectedMonth"
                   (ngModelChange)="selectMonth($event)"
                 >
-                  <option *ngFor="let i of months" [value]="i.monthNum">
+                  <option *ngFor="let i of mporMonths.data" [value]="i.monthNum">
                     {{ i.month }}
                   </option>
                 </select>
@@ -310,78 +310,6 @@ import Swal from 'sweetalert2'
               height="100%"
               frameborder="0"
             ></iframe>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="modalMPORReport"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div
-        class="modal-dialog modal-dialog-scrollable modal-fullscreen"
-        style="padding: 50px 100px 50px 100px;"
-        role="document"
-      >
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4><b>MPOR</b></h4>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body row">
-            <div class="mb-2" style="display: flex;">
-              <div style="margin-top: 10px; ">
-                <label for="exampleFormControlSelect1" class="form-label"
-                  >Month:</label
-                >
-              </div>
-              <div style="margin-left: 10px">
-                <select
-                  class="form-select col-2"
-                  id="exampleFormControlSelect1"
-                  aria-label="Default select example"
-                  [ngModel]="selectedMonth"
-                  (ngModelChange)="selectMonthOnChange($event)"
-                >
-                  <option *ngFor="let i of months" [value]="i.monthNum">
-                    {{ i.month }}
-                  </option>
-                </select>
-              </div>         
-            </div>
-            <ng-container
-              *ngIf="ipcrMporReport.isLoadingReport; else ShowReport"
-            >
-              <app-loading-square-jelly-box
-                [loading]="ipcrMporReport.isLoadingReport"
-              />
-            </ng-container>
-            <ng-template #ShowReport>
-              <iframe
-                [src]="ipcrMporReport.data"
-                width="95%"
-                height="90%"
-                frameborder="0"
-              ></iframe>
-            </ng-template>
           </div>
           <div class="modal-footer">
             <button
@@ -584,6 +512,8 @@ export class ViewIpcrComponent implements OnInit {
   reportIPCR     : any = {};
   get_IPCR_data  : any = [];
 
+  mporMonths     : any = this.ipcrService.mporMonths();
+
   ipcrMporReport : any = this.ipcrService.ipcrMPOR();
   ipcrSmporReport: any = this.ipcrService.ipcrSMPOR();
   ipcrStandardReport: any = this.ipcrService.ipcrStandard();
@@ -595,6 +525,7 @@ export class ViewIpcrComponent implements OnInit {
     this.GetIpcr();
 
   }
+  
 
   SubmitActual(){
     if(this.actualSubmit.actualSubmitAt !== undefined){
@@ -790,9 +721,11 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   selectMonth(month: number) {
+
     this.reportMPOR.monthNum = month;
     this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
-    console.log(month)
+    this.ipcrService.GetMPORMonths(this.reportMPOR.monthNum);
+
   }
 
   selectMonthOnChange(month: number) {
@@ -802,27 +735,12 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   getMonths() {
-    let initial: number | any;
-    let condition: number | any;
     if (this.sem == 1) {
-      initial = 1;
-      condition = 6;
-      this.selectedMonth = initial;
-    } else if (this.sem == 2) {
-      initial = 6;
-      condition = 12;
-      this.selectedMonth = initial;
+     this.ipcrService.GetMPORMonths(1);
+    } else{
+      this.ipcrService.GetMPORMonths(7);
     }
-    for (let i = initial; i <= condition; i++) {
-      const monthName = this.datePipe.transform(
-        new Date(2000, i - 1, 1),
-        'MMMM'
-      );
-      if (monthName) {
-        const combinedData = { month: monthName, monthNum: i };
-        this.months.push(combinedData);
-      }
-    }
+    
   }
 
   ReportSMPOR(data:any){
@@ -836,6 +754,24 @@ export class ViewIpcrComponent implements OnInit {
   }
 
   ReportMPOR(){
+    localStorage.setItem('ipcrIdActual', this.reportMPOR.ipcrId);
+    this.ipcrService.storageIpcrIdActual.set(this.reportMPOR.ipcrId);
+
+    console.log("this.reportMPOR.monthNum: ", this.reportMPOR.monthNum)
+
+    if(this.reportMPOR.monthNum === undefined){
+      if(this.sem === 1){
+        this.ipcrService.GetMPORMonths(1);
+
+      }else{
+        this.ipcrService.GetMPORMonths(7);
+
+      }
+
+    }else{
+      this.ipcrService.GetMPORMonths(this.reportMPOR.monthNum);
+
+    }
     this.ipcrService.GetIpcrMPOReport(this.reportMPOR.ipcrId, this.reportMPOR.year, this.reportMPOR.monthNum)
 
   }

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { AlertService } from './alert.service';
 import { IpcrTargetComponent } from '../pages/ipcr/ipcr-target/ipcr-target.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class IpcrService {
     private url: SpmsApiService,
     private alertService: AlertService,
     private sanitizer: DomSanitizer,
+    private datePipe: DatePipe
   ) {}
 
   storageIsShow            = signal<any>(localStorage.getItem('isShow_ipcr'));
@@ -51,6 +53,13 @@ export class IpcrService {
     data: [],
     rating: [],
     finalRating: {},
+    error: false,
+    isLoading: false,
+  });
+
+  mporMonths = signal<any>({
+    data: [],
+    selectedMonth: 0,
     error: false,
     isLoading: false,
   });
@@ -118,10 +127,13 @@ export class IpcrService {
       })
       .subscribe({
         next: (response: any) => {
+
           this.ipcrMporReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
 
           this.ipcrMPOR.mutate((a) => (a.data = this.ipcrMporReportUrl));
           this.ipcrMPOR.mutate((a) => (a.isLoadingReport = false));
+
+
         },
         error: () => {
           this.alertService.error();
@@ -133,6 +145,41 @@ export class IpcrService {
 
         },
       });
+  }
+
+  GetMPORMonths(monthNo:number){
+
+    this.mporMonths.mutate((a) => (a.data = []));
+    //this.mporMonths.mutate((a) => (a.selectedMonth = 0));
+
+    let initial: number | any;
+    let condition: number | any;
+    let _months:any = [];
+
+    this.mporMonths.mutate((a) => (a.selectedMonth = monthNo));
+
+    if (monthNo >= 1 && monthNo <= 6) {
+      initial = 1;
+      condition = 6;
+    } else  {
+      initial = 7;
+      condition = 12;
+    }
+    for (let i = initial; i <= condition; i++) {
+      const monthName = this.datePipe.transform(
+        new Date(2000, i - 1, 1),
+        'MMMM'
+      );
+      if (monthName) {
+        const combinedData = { month: monthName, monthNum: i };
+        _months.push(combinedData);
+
+      }
+    }
+
+    this.mporMonths.mutate((a) => (a.data = _months));
+
+
   }
 
   GetIpcrSMPOReport(ipcrId: string, year:number, monthNo:number) {

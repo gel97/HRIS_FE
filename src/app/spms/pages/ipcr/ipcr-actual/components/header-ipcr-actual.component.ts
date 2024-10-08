@@ -83,7 +83,7 @@ import { DatePipe } from '@angular/common';
                         class="dropdown-item cursor-pointer"
                         data-bs-toggle="modal"
                         data-bs-target="#modalMPORReport"
-                        (click)="getMonths();ReportMPOR()"
+                        (click)="getMonths();InitMPOR()"
 
                     ><i class="bx bx-printer me-1"></i> MPOR</a
                     >
@@ -274,10 +274,10 @@ import { DatePipe } from '@angular/common';
                   class="form-select col-2"
                   id="exampleFormControlSelect1"
                   aria-label="Default select example"
-                  [ngModel]="selectedMonth"
+                  [ngModel]="mporMonths.selectedMonth"
                   (ngModelChange)="selectMonthOnChange($event)"
                 >
-                  <option *ngFor="let i of months" [value]="i.monthNum">
+                  <option *ngFor="let i of mporMonths.data" [value]="i.monthNum">
                     {{ i.month }}
                   </option>
                 </select>
@@ -385,6 +385,7 @@ export class HeaderIpcrActualComponent implements OnInit{
   year: number = this.storedYear !== null ? parseInt(this.storedYear, 10) : 0;
   sem: number  = this.storedSem  !== null ? parseInt(this.storedSem) : 0;
 
+  mporMonths     : any = this.ipcrService.mporMonths();
   ipcrMporReport : any = this.ipcrService.ipcrMPOR();
   ipcrSmporReport: any = this.ipcrService.ipcrSMPOR();
   ipcrStandardReport: any = this.ipcrService.ipcrStandard();
@@ -426,9 +427,27 @@ export class HeaderIpcrActualComponent implements OnInit{
     this.ReportMPOR();
   }
 
+  InitMPOR(){
+    const year = new Date().getFullYear();
+     let _monthNo = 0;
+
+    if(this.ipcrService.storageIpcrActualSem() === 1){
+      _monthNo = 1;
+      this.ipcrService.GetMPORMonths(_monthNo);
+    }else{
+      _monthNo = 7;
+      this.ipcrService.GetMPORMonths(_monthNo)
+    }
+
+    this.ipcrService.GetIpcrMPOReport(this.ipcrService.storageIpcrIdActual() ?? '', this.ipcrService.storageIpcrActualYear(), _monthNo)
+
+  }
+
   ReportMPOR(){
 
     const year = new Date().getFullYear();
+
+    this.ipcrService.GetMPORMonths(this.reportMPOR.monthNum)
 
     this.ipcrService.GetIpcrMPOReport(this.ipcrService.storageIpcrIdActual() ?? '', this.year === 0? year: this.year, this.reportMPOR.monthNum)
   }
