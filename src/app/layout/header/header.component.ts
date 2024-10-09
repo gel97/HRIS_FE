@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { UtilsService } from 'src/app/service/utils.service';
-import { UtlityService } from 'src/app/spms/service/utility.service';
+import { UtlityService } from 'src/app/modules/spms/service/utility.service';
 
 @Component({
   selector: 'app-header',

@@ -2,8 +2,8 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, of } from 'rxjs';
 import { api } from 'src/app/connection';
-import { ErrorService } from '../spms/service/error.service';
-import { SpmsApiService } from '../spms/service/spms-api.service';
+import { ErrorService } from '../modules/spms/service/error.service';
+import { SpmsApiService } from '../modules/spms/service/spms-api.service';
 import { Console } from 'console';
 @Injectable({
   providedIn: 'root',
