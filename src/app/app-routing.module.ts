@@ -26,6 +26,11 @@ const routes: Routes = [
           import('./spms/spms.module').then((m) => m.SpmsModule),
       },
       {
+        path: 'health&wellness',
+        loadChildren: () =>
+          import('./healthNwellness/healthNwellness.module').then((m) => m.HealthNWellnessModule),
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent,
       },

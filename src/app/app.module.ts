@@ -19,6 +19,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
 import { DatePipe } from '@angular/common';
 import { SharedModule } from './shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+//import { HealthNWellnessModule } from './healthNwellness/healthNwellness.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,8 @@ import { SharedModule } from './shared.module';
     HttpClientModule,
     NgxSkeletonLoaderModule,
     SharedModule,
+    FontAwesomeModule,
+  //  HealthNWellnessModule
   ],
   providers: [
     DatePipe,
