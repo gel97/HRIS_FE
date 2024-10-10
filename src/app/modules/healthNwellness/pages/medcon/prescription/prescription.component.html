@@ -1,1 +1,58 @@
-<p>prescription works!</p>
+<h1 class="content-group text-semibold">Medical Prescription</h1>
+<h3 class="display-block">Detailed history of patient`s medical prescription</h3>
+
+<ng-container *ngFor="let item of prescription.data; let i = index">
+    <div class="card accordion-item my-2">
+        <h2 class="" id="heading{{i}}">
+            <div class="x-space-between m-2 mx-2 custom-background" data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i"
+                aria-expanded="false" [attr.aria-controls]="'accordion' + i">
+                <div class="mx-2">
+                    <p><i class='bx bx-calendar'></i>{{item.rxDate | date : 'MMM. dd, yyyy'}}</p>
+                </div>
+                <div>
+                    <p><i class='bx bx-user'></i>{{item.physician}}</p>
+                </div>
+                <div>
+                    <button type="button" class="accordion-button collapsed" style="width: 100%;"
+                        data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i" aria-expanded="false"
+                        [attr.aria-controls]="'accordion' + i">
+                    </button>
+                </div>
+            </div>
+        </h2>
+        <div id="accordion{{ i }}" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="card">
+                    <h3 class="my-2 mx-4"><b>Laboratories</b></h3>
+                    <div class="table-responsive text-nowrap">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Prescription</th>
+                            <th>Frequency</th>
+                            <th class="text-center">No. of Days</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-center">Note/Instruction</th>                    
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                          <ng-container *ngFor="let rxData of item.rx; let y = index">
+                            <tr>
+                                <td [width]="10"><strong>{{y+1}}</strong></td>
+                                <td>{{rxData.productDesc ?? '-'}}</td>
+                                <td>{{rxData.dosage}} {{rxData.unitDesc}} x {{rxData.perDay}}</td>
+                                <td class="text-center">{{rxData.noDay == 'maintenance' ? 'as Maintenance':rxData.noDay == 'needed' ? 'as Needed':rxData.noDay == 'single' ? 'Single Dose':rxData.noDay + ' Day/s'}}</td>
+                                <td class="text-center">{{rxData.qtyRx}} {{rxData.unitDesc == 'Suspension' || rxData.unitDesc == 'Syrup' || rxData.unitDesc == 'Drops' || rxData.unitDesc == 'Bottle' ? 'Bottle/s':rxData.unitDesc == 'Cream' ? 'Tube':''}}</td>
+                                <td><span class="label label-success">{{rxData.note}}</span></td>
+                              </tr>
+                          </ng-container>                         
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

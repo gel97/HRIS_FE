@@ -37,6 +37,12 @@ export class MedconService {
     isLoading: false,
   });
 
+  prescription = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
   labHistoryUrl:SafeResourceUrl = "";
 
 
@@ -106,7 +112,24 @@ export class MedconService {
       });
   }
 
-
-
+  GetPrescription() {
+    this.prescription.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_prescription_history())
+      .subscribe({
+        next: (response: any) => {
+          this.prescription.mutate((a) => (a.data = response));
+          this.prescription.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.prescription.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.prescription())
+          this.prescription.mutate((a) => (a.isLoadingReport = false));
+        },
+      });
+  }
 
 }
