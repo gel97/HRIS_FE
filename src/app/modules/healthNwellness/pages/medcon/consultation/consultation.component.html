@@ -1,1 +1,46 @@
-<p>consultation works!</p>
+<ng-container *ngFor="let item of consultation.data; let i = index">
+    <div class="card accordion-item my-2">
+        <h2 class="" id="heading{{i}}">
+            <div class="x-space-between m-2 mx-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i"
+                aria-expanded="false" [attr.aria-controls]="'accordion' + i">
+                <div>
+                    {{item.consultDate | date : 'MMM. dd, yyyy'}}
+                </div>
+
+                <div>
+                    {{item.physician}}
+                </div>
+                <div>
+                    <button type="button" class="accordion-button collapsed" style="width: 100%;"
+                        data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i" aria-expanded="false"
+                        [attr.aria-controls]="'accordion' + i">
+
+                    </button>
+                </div>
+
+            </div>
+        </h2>
+        <div id="accordion{{ i }}" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <!-- List group Numbered -->
+                <div class="col-12">
+                    <small class="text-light fw-semibold">Diagnosis</small>
+                    <div class="demo-inline-spacing mt-3">
+                      <ol class="list-group list-group-numbered">
+                        <ng-container *ngFor="let diag of item.diagnosis; let y = index">
+                            <ng-container *ngIf="diag.diagnoseName !== 'Others'; else showDiagOther">
+                                <li class="list-group-item">{{diag.diagnoseName}}</li>
+                            </ng-container>
+                            <ng-template #showDiagOther>
+                                <li class="list-group-item">{{diag.diagnoseName}} ({{diag.otherDiagnosis}})</li>
+                            </ng-template>
+
+                        </ng-container>
+                      </ol>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
