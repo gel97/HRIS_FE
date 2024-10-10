@@ -1,16 +1,19 @@
+<h1 class="content-group text-semibold">Medical Laboratories and Results</h1>
+<h3 class="display-block">Detailed history of patient`s medical laboratory results</h3>
+
 <ng-container *ngFor="let item of labHistory.data; let i = index">
     <div class="card accordion-item my-2">
         <h2 class="" id="heading{{i}}">
-            <div class="x-space-between m-2 mx-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i"
-                aria-expanded="false" [attr.aria-controls]="'accordion' + i">
+            <div class="x-space-between m-2 mx-2 custom-background" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#accordion' + i" aria-expanded="false" [attr.aria-controls]="'accordion' + i">
                 <div class="mx-2">
-                    <p><i class='bx bx-calendar'></i>{{item.labDate | date : 'MMM. dd, yyyy'}}</p>
+                    <p><i class='bx bx-calendar'></i> {{item.labDate | date : 'MMM. dd, yyyy'}}</p>
                 </div>
                 <div>
-                    <p><i class='bx bx-user'></i>{{item.physician}}</p>
+                    <p><i class='bx bx-user'></i> {{item.physician}}</p>
                 </div>
                 <div>
-                    <p><i class='bx bx-buildings' ></i>{{item.hospitalName}}</p>
+                    <p><i class='bx bx-buildings'></i> {{item.hospitalName}}</p>
                 </div>
                 <div>
                     <button type="button" class="accordion-button collapsed" style="width: 100%;"
@@ -26,46 +29,49 @@
                 <div class="card">
                     <h3 class="my-2 mx-4"><b>Laboratories</b></h3>
                     <div class="table-responsive text-nowrap">
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Laboratory</th>
-                            <th class="text-center">X-ray (Type)</th>
-                            <th class="text-center">Ultrasound (Type)</th>
-                            <th class="text-center">ECG (Type)</th>
-                            <th class="text-center">Other</th>
-                            <th class="text-center">Result</th>
-                            <th class="text-center">Action</th>                     
-                          </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                          <ng-container *ngFor="let lab of item.labTests; let y = index">
-                            <tr>
-                                <td [width]="10"><strong>{{y+1}}</strong></td>
-                                <td>{{lab.labTestName ?? '-'}}</td>
-                                <td class="text-center">{{lab.xrayDesc ?? '-'}}</td>
-                                <td class="text-center">{{lab.ultrasoundDesc ?? '-'}}</td>
-                                <td class="text-center">{{lab.ecgDesc ?? '-'}}</td>
-                                <td class="text-center">{{lab.otherLabDesc ?? '-'}}</td>
-                                <td class="text-center">
-                                    <i *ngIf="lab.isEncoded; else notEncoded" class='bx bx-check text-success'></i>
-                                    <ng-template #notEncoded>
-                                        <i class='bx bx-x text-danger'></i>
-                                    </ng-template>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn rounded-pill btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#modalLabHistoryReport" (click)="GetLabReport(lab.labID)">
-                                        <span class="tf-icons bx bx-show"></span>
-                                    </button>
-                                </td>
-
-                              </tr>
-                          </ng-container>                         
-                        </tbody>
-                      </table>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Laboratory</th>
+                                    <th class="text-center">X-ray (Type)</th>
+                                    <th class="text-center">Ultrasound (Type)</th>
+                                    <th class="text-center">ECG (Type)</th>
+                                    <th class="text-center">Other</th>
+                                    <th class="text-center">Result</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                <ng-container *ngFor="let lab of item.labTests; let y = index">
+                                    <tr>
+                                        <td [width]="10"><strong>{{y+1}}</strong></td>
+                                        <td>{{lab.labTestName ?? '-'}}</td>
+                                        <td class="text-center">{{lab.xrayDesc ?? '-'}}</td>
+                                        <td class="text-center">{{lab.ultrasoundDesc ?? '-'}}</td>
+                                        <td class="text-center">{{lab.ecgDesc ?? '-'}}</td>
+                                        <td class="text-center">{{lab.otherLabDesc ?? '-'}}</td>
+                                        <td class="text-center">
+                                            <i *ngIf="lab.isEncoded; else notEncoded"
+                                                class='bx bx-check text-success'></i>
+                                            <ng-template #notEncoded>
+                                                <i class='bx bx-x text-danger'></i>
+                                            </ng-template>
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn rounded-pill btn-icon btn-primary"
+                                                data-bs-toggle="modal" data-bs-target="#modalLabHistoryReport"
+                                                (click)="GetLabReport(lab.labID)" [disabled]="!lab.isEncoded"
+                                                [ngClass]="{'disabled': !lab.isEncoded}">
+                                                <span class="tf-icons bx bx-show"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
                     </div>
-                  </div>
+                </div>
             </div>
         </div>
     </div>
