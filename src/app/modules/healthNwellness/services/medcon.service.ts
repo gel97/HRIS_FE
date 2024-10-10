@@ -16,6 +16,7 @@ export class MedconService {
     private http: HttpClient,
     private url: HWApiService,
     private alertService: AlertService,
+    private sanitizer: DomSanitizer,
   ) {}
 
   consultation = signal<any>({
@@ -23,6 +24,21 @@ export class MedconService {
     error: false,
     isLoading: false,
   });
+
+  labHistory = signal<any>({
+    data: [],
+    error: false,
+    isLoading: false,
+  });
+
+  labHistoryReport = signal<any>({
+    data: null,
+    error: false,
+    isLoading: false,
+  });
+
+  labHistoryUrl:SafeResourceUrl = "";
+
 
   GetConsultationHistory() {
     this.consultation.mutate((a) => (a.isLoadingReport = true));
@@ -40,6 +56,52 @@ export class MedconService {
         complete: () => {
           console.log(this.consultation())
           this.consultation.mutate((a) => (a.isLoadingReport = false));
+        },
+      });
+  }
+
+  GetLabHistory() {
+    this.labHistory.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_lab_history())
+      .subscribe({
+        next: (response: any) => {
+          this.labHistory.mutate((a) => (a.data = response));
+          this.labHistory.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.labHistory.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.labHistory())
+          this.labHistory.mutate((a) => (a.isLoadingReport = false));
+        },
+      });
+  }
+
+  GetLabHistoryReport(fileName: string) {
+    this.labHistoryReport.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_lab_result(fileName), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          console.log(response)
+          this.labHistoryUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.labHistoryReport.mutate((a) => (a.data = this.labHistoryUrl));
+          this.labHistoryReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.labHistoryReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.labHistoryReport())
+          this.labHistoryReport.mutate((a) => (a.isLoadingReport = false));
+
         },
       });
   }

@@ -1,1 +1,74 @@
-<p>laboratory works!</p>
+<ng-container *ngFor="let item of labHistory.data; let i = index">
+    <div class="card accordion-item my-2">
+        <h2 class="" id="heading{{i}}">
+            <div class="x-space-between m-2 mx-2" data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i"
+                aria-expanded="false" [attr.aria-controls]="'accordion' + i">
+                <div class="mx-2">
+                    <p><i class='bx bx-calendar'></i>{{item.labDate | date : 'MMM. dd, yyyy'}}</p>
+                </div>
+                <div>
+                    <p><i class='bx bx-user'></i>{{item.physician}}</p>
+                </div>
+                <div>
+                    <p><i class='bx bx-buildings' ></i>{{item.hospitalName}}</p>
+                </div>
+                <div>
+                    <button type="button" class="accordion-button collapsed" style="width: 100%;"
+                        data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i" aria-expanded="false"
+                        [attr.aria-controls]="'accordion' + i">
+                    </button>
+                </div>
+            </div>
+        </h2>
+        <div id="accordion{{ i }}" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="card">
+                    <h3 class="my-2 mx-4"><b>Laboratories</b></h3>
+                    <div class="table-responsive text-nowrap">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Laboratory</th>
+                            <th class="text-center">X-ray (Type)</th>
+                            <th class="text-center">Ultrasound (Type)</th>
+                            <th class="text-center">ECG (Type)</th>
+                            <th class="text-center">Other</th>
+                            <th class="text-center">Result</th>
+                            <th class="text-center">Action</th>                     
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                          <ng-container *ngFor="let lab of item.labTests; let y = index">
+                            <tr>
+                                <td [width]="10"><strong>{{y+1}}</strong></td>
+                                <td>{{lab.labTestName ?? '-'}}</td>
+                                <td class="text-center">{{lab.xrayDesc ?? '-'}}</td>
+                                <td class="text-center">{{lab.ultrasoundDesc ?? '-'}}</td>
+                                <td class="text-center">{{lab.ecgDesc ?? '-'}}</td>
+                                <td class="text-center">{{lab.otherLabDesc ?? '-'}}</td>
+                                <td class="text-center">
+                                    <i *ngIf="lab.isEncoded; else notEncoded" class='bx bx-check text-success'></i>
+                                    <ng-template #notEncoded>
+                                        <i class='bx bx-x text-danger'></i>
+                                    </ng-template>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn rounded-pill btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#modalLabHistoryReport" (click)="GetLabReport(lab.labID)">
+                                        <span class="tf-icons bx bx-show"></span>
+                                    </button>
+                                </td>
+
+                              </tr>
+                          </ng-container>                         
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<app-modal-lab-history-report>

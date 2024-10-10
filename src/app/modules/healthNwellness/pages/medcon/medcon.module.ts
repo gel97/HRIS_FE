@@ -7,12 +7,14 @@ import { MedConComponent } from './medcon.component';
 import { ConsultationComponent } from './consultation/consultation.component';
 import { LaboratoryComponent } from './laboratory/laboratory.component';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { ModalLabHistoryReportComponent } from './laboratory/components/modal-lab-history-report.component';
 @NgModule({
   declarations: [
     MedConComponent,
     ConsultationComponent,
     LaboratoryComponent,
-    PrescriptionComponent
+    PrescriptionComponent,
+    ModalLabHistoryReportComponent
   ],
   imports: [
     CommonModule,
