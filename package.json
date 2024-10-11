@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
     "@auth0/angular-jwt": "^5.2.0",
+    "@bytescale/upload-widget": "^4.27.0",
+    "@bytescale/upload-widget-angular": "^9.15.0",
     "@ckeditor/ckeditor5-angular": "^9.0.0",
     "@fortawesome/angular-fontawesome": "^0.13.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",

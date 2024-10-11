@@ -19,12 +19,12 @@ import { TicketComponent } from './ticket.component';
 import { UserTicketComponent } from './user-ticket/user-ticket.component';
 import { ModalTicketComponent } from './user-ticket/components/modal-ticket.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
+import { UploadWidgetModule } from "@bytescale/upload-widget-angular";
 @NgModule({
   declarations: [
     TicketComponent,
     UserTicketComponent,
-    ModalTicketComponent
+    ModalTicketComponent,
   ],
   imports: [
     CommonModule,
@@ -36,7 +36,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     NgxSkeletonLoaderModule,
     SharedModule,
     TicketRoutingModule,
-    CKEditorModule
+    CKEditorModule,
+    UploadWidgetModule
   ],
 })
 export class TicketModule {}

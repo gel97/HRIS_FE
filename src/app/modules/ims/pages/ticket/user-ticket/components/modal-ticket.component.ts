@@ -1,6 +1,45 @@
-import { Component , ViewEncapsulation} from '@angular/core';
-import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo, FontSize, Underline, Strikethrough, FontColor, FontBackgroundColor, FontFamily, Alignment, BlockQuote, Link, ImageUpload, Code, CodeBlock, HorizontalLine, Indent, Autoformat, PasteFromOffice, WordCount, CKFinder, Autosave, Markdown } from 'ckeditor5';
-import { Comments, SlashCommand, TrackChanges } from 'ckeditor5-premium-features';
+import { Component, ViewEncapsulation } from '@angular/core';
+import {
+  ClassicEditor,
+  Bold,
+  Essentials,
+  Italic,
+  Mention,
+  Paragraph,
+  Undo,
+  FontSize,
+  Underline,
+  Strikethrough,
+  FontColor,
+  FontBackgroundColor,
+  FontFamily,
+  Alignment,
+  BlockQuote,
+  Link,
+  ImageUpload,
+  Code,
+  CodeBlock,
+  HorizontalLine,
+  Indent,
+  Autoformat,
+  PasteFromOffice,
+  WordCount,
+  CKFinder,
+  Autosave,
+  Markdown,
+  Table,
+  Heading,
+  List,
+} from 'ckeditor5';
+import {
+  Comments,
+  SlashCommand,
+  TrackChanges,
+} from 'ckeditor5-premium-features';
+import {
+  UploadWidgetConfig,
+  UploadWidgetResult,
+} from '@bytescale/upload-widget';
 
 @Component({
   selector: 'app-modal-ticket',
@@ -34,10 +73,21 @@ import { Comments, SlashCommand, TrackChanges } from 'ckeditor5-premium-features
             <div class="row">
               <div class="col mb-3">
                 <label for="nameLarge" class="form-label">Description</label>
-                <ckeditor [config]="config"  [editor]="Editor" [(ngModel)]="data.description"></ckeditor>
-
+                <ckeditor
+                  [config]="config"
+                  [editor]="Editor"
+                  [(ngModel)]="data.description"
+                ></ckeditor>
               </div>
             </div>
+            <button
+              uploadButton
+              [uploadOptions]="options"
+              [uploadComplete]="onComplete"
+              class="btn btn-primary"
+            >
+              Upload a file...
+            </button>
           </div>
           <div class="modal-footer">
             <button
@@ -53,36 +103,65 @@ import { Comments, SlashCommand, TrackChanges } from 'ckeditor5-premium-features
       </div>
     </div>
   `,
-  styleUrls: [ '../user-ticket.component.css' ],
-  encapsulation: ViewEncapsulation.None
-
+  styleUrls: ['../user-ticket.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ModalTicketComponent {
+  data: any = {
+    subject: 'Hellow World!',
+    description: 'haha',
+  };
 
-    data:any = {
-      subject: "Hellow World!",
-      description: "haha"
-    };
+  public Editor = ClassicEditor;
+  public config = {
+    toolbar: [
+      'undo',
+      'redo',
+      '|',
+      'bold',
+      'italic',
+      'underline',
+      'link',
+      'bulletedList',
+      'numberedList',
+      'blockQuote',
+      'insertTable',
+      '|',
+      'heading',
+    ],
+    plugins: [
+      Bold,
+      Essentials,
+      Italic,
+      Paragraph,
+      Undo,
+      Underline,
+      Link,
+      List,
+      BlockQuote,
+      Table,
+      Heading,
+    ],
+  };
 
-    public Editor = ClassicEditor;
-    public config = {
-      toolbar: [ 'undo', 'redo', '|', 'bold', 'italic' ],
-        plugins: [
-            Bold, Essentials, Italic, Mention, Paragraph, Undo,
-        ],
-        licenseKey: '<YOUR_LICENSE_KEY>',
-        // mention: {
-        //     Mention configuration
-        // }
-    }
+  public onReady(editor: ClassicEditor): void {
+    const element = editor.ui.getEditableElement()!;
+    const parent = element.parentElement!;
 
-    public onReady( editor: ClassicEditor ): void {
-      const element = editor.ui.getEditableElement()!;
-      const parent = element.parentElement!;
-
-      parent.insertBefore(
-          editor.ui.view.toolbar.element!,
-          element
-      );
+    parent.insertBefore(editor.ui.view.toolbar.element!, element);
   }
+
+  options: UploadWidgetConfig = {
+    //apiKey: 'public_FW25cEZ75Jgmuj7Ei4Tx4HGQupcU', // This is your API key.
+    apiKey: '', // This is your API key.
+
+    maxFileCount: 3,
+  };
+
+  onComplete = (files: UploadWidgetResult[]) => {
+    this.uploadedFileUrl = files[0]?.fileUrl;
+    console.log(files);
+  };
+
+  uploadedFileUrl: string | undefined = undefined;
 }
