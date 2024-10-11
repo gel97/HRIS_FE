@@ -1,0 +1,11 @@
+.custom-background {
+    background-color:#ffffff; /* Choose your color */
+    padding: 10px; /* Optional: Add some padding for better spacing */
+    border-radius: 5px; /* Optional: Round the corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for depth */
+}
+
+/* Optional: Style the text color if necessary */
+.custom-background p {
+    color: #6a6ae9; /* Ensures text is black for readability */
+}

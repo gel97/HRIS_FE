@@ -1,0 +1,65 @@
+<h1 class="content-group text-semibold">Medical Consultation & Diagnosis</h1>
+<h3 class="display-block">Detailed history of patient`s medical record</h3>
+
+<ng-container *ngFor="let item of consultation.data; let i = index">
+    <div class="card accordion-item my-2">
+        <h2 class="" id="heading{{i}}">
+            <div class="x-space-between m-1 mx-1 custom-background" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#accordion' + i" aria-expanded="false" [attr.aria-controls]="'accordion' + i">
+                <div class="mx-2">
+                    <p><i class='bx bx-calendar'></i> {{item.consultDate | date : 'MMM. dd, yyyy'}}</p>
+                </div>
+                <div>
+                    <p><i class='bx bx-user'></i> {{item.physician}}</p>
+                </div>
+                <div>
+                    <button type="button" class="accordion-button collapsed" style="width: 100%;"
+                        data-bs-toggle="collapse" [attr.data-bs-target]="'#accordion' + i" aria-expanded="false"
+                        [attr.aria-controls]="'accordion' + i">
+                    </button>
+                </div>
+            </div>
+        </h2>
+        <div id="accordion{{ i }}" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <!-- List group Numbered -->
+                <div class="col-12">
+                    <p class="fw-semibold"><i class='bx bx-receipt'></i> Diagnosis</p>
+                    <div class="demo-inline-spacing mt-3">
+                        <ol class="list-group list-group-numbered">
+                            <ng-container *ngFor="let diag of item.diagnosis; let y = index">
+                                <ng-container *ngIf="diag.diagnoseName !== 'Others'; else showDiagOther">
+                                    <ng-container
+                                        *ngIf="item.diagnosis.length !== 1 && diag.diagnoseName !== null; else noDiag">
+                                        <li class="list-group-item"> {{diag.diagnoseName}}</li>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-template #showDiagOther>
+                                    <li class="list-group-item"> {{diag.diagnoseName}} ({{diag.otherDiagnosis}})</li>
+                                </ng-template>
+                            </ng-container>
+                        </ol>
+                        <ng-template #noDiag>
+                            <ol class="list-group list-group">
+                                <li class="list-group-item"> {{item.outsideReferral ?? "N/A"}}</li>
+                            </ol>
+                        </ng-template>
+                    </div>
+                    <div class="mt-2">
+                        <p class="fw-semibold"><i class='bx bx-paper-plane'></i> Refferals</p>
+                        <ol class="list-group list-group">
+                            <li class="list-group-item">{{item.outsideReferral ?? "N/A"}}</li>
+                        </ol>
+                    </div>
+                    <div class="mt-2">
+                        <p class="fw-semibold"><i class='bx bx-comment'> </i> Remarks</p>
+                        <ol class="list-group list-group">
+                            <li class="list-group-item">{{item.remarks ?? "N/A"}}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

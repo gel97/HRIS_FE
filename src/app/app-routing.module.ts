@@ -23,7 +23,12 @@ const routes: Routes = [
       {
         path: 'spms',
         loadChildren: () =>
-          import('./spms/spms.module').then((m) => m.SpmsModule),
+          import('./modules/spms/spms.module').then((m) => m.SpmsModule),
+      },
+      {
+        path: 'health&wellness',
+        loadChildren: () =>
+          import('./modules/healthNwellness/healthNwellness.module').then((m) => m.HealthNWellnessModule),
       },
       {
         path: 'dashboard',

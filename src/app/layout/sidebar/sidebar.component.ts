@@ -1,6 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MenuService } from 'src/app/service/menu.service';
 import { UtilsService } from 'src/app/service/utils.service';
+import { faUserDoctor } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -9,6 +11,9 @@ import { UtilsService } from 'src/app/service/utils.service';
 export class SidebarComponent implements OnInit {
   menuService  = inject(MenuService);
   utilsService = inject(UtilsService);
+
+    faCoffee = faUserDoctor;
+
 
   isShowSidebar = this.utilsService.isShowSidebar();
 
@@ -28,6 +33,12 @@ export class SidebarComponent implements OnInit {
 
   getSPMSMenu(){
     this.menuService.GetMenu()
+  }
+
+  selectedSystem:string = '';
+
+  toogleSystem(systemName:string){
+    this.selectedSystem = this.selectedSystem === systemName ? "" : systemName;
   }
 
   selectedMenu:string = '';

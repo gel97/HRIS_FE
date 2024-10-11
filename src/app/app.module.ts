@@ -8,9 +8,9 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { UserComponent } from './components/user/user.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { MainlayoutComponent } from './layout/mainlayout/mainlayout.component';
-import { SpmsModule } from './spms/spms.module';
+import { SpmsModule } from './modules/spms/spms.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ErrorComponent } from './spms/components/error/error.component';
+import { ErrorComponent } from './modules/spms/components/error/error.component';
 import { FormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { UserLoginComponent } from './login/user-login/user-login.component';
@@ -19,6 +19,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
 import { DatePipe } from '@angular/common';
 import { SharedModule } from './shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+//import { HealthNWellnessModule } from './healthNwellness/healthNwellness.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,8 @@ import { SharedModule } from './shared.module';
     HttpClientModule,
     NgxSkeletonLoaderModule,
     SharedModule,
+    FontAwesomeModule,
+  //  HealthNWellnessModule
   ],
   providers: [
     DatePipe,
