@@ -31,6 +31,11 @@ const routes: Routes = [
           import('./modules/healthNwellness/healthNwellness.module').then((m) => m.HealthNWellnessModule),
       },
       {
+        path: 'ims',
+        loadChildren: () =>
+          import('./modules/ims/ims.module').then((m) => m.IMSModule),
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent,
       },
