@@ -152,8 +152,7 @@ export class ModalTicketComponent {
   }
 
   options: UploadWidgetConfig = {
-    //apiKey: 'public_FW25cEZ75Jgmuj7Ei4Tx4HGQupcU', // This is your API key.
-    apiKey: '', // This is your API key.
+    apiKey: 'public_FW25cEZ75Jgmuj7Ei4Tx4HGQupcU', // This is your API key.
 
     maxFileCount: 3,
   };
