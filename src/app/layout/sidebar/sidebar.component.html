@@ -12,8 +12,6 @@
         </a>
     </div>
     <div class="menu-inner-shadow"></div>
-
-
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item" routerLinkActive="active">
@@ -22,52 +20,11 @@
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
-        <!-- <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Health & Wellness</span>
-        </li>
-
-        <li class="menu-item open"  routerLinkActive="active">
-            <a  routerLink="user" class="menu-link menu-toggle"
-                >
-                <fa-icon class="menu-icon tf-icons" [icon]="faCoffee"></fa-icon>
-
-
-                <div data-i18n="Layouts">Med. Con.</div>
-            </a>
-           
-            <ul class="menu-sub">
-                <li class="menu-item" routerLinkActive="active">
-                    <a [routerLink]="" class="menu-link">
-                        <div data-i18n="Without menu">Consultation</div>
-                    </a>
-                    
-                </li>
-            </ul>
-
-            <ul class="menu-sub">
-                <li class="menu-item" routerLinkActive="active">          
-                    <a [routerLink]="" class="menu-link">
-                        <div data-i18n="Without menu">Laboratory</div>
-                    </a>
- 
-                </li>
-            </ul>
-            <ul class="menu-sub">
-                <li class="menu-item" routerLinkActive="active">          
-
-                    <a [routerLink]="" class="menu-link">
-                        <div data-i18n="Without menu">Prescription</div>
-                    </a>
-                </li>
-            </ul>
-        </li> -->
-
         <ng-container *ngFor="let item of menu.data; let index = index">
             <li (click)="toogleSystem(item.systemName)" class="menu-header  text-uppercase cursor-pointer">
                 <span class="menu-header-text ">{{item.systemName}}</span>
             </li>
-    
-            <!-- SPMS -->
+            <!-- HRIS MENU -->
             <ng-container *ngIf="selectedSystem === item.systemName">
                 <ng-container *ngFor="let data of item.menu; let i = index">
                     <ng-container *ngIf="data.subMenu.length > 0; else ShowNoSubMenu">
@@ -122,108 +79,8 @@
                         </li>
                     </ng-template>
                 </ng-container>
-                <ng-container *ngIf="menu.data.length === 0">
-                    <li class="menu-item" [ngClass]="sample3==1?'open':''" routerLinkActive="active">
-                        <a *ngIf="!menu.isLoading; else LoadingIpcr" routerLink="user" class="menu-link menu-toggle"
-                            (click)="toggleSubMenu3(1)">
-                            <i class="menu-icon tf-icons bx bx-user"></i>
-                            <div data-i18n="Layouts">IPCR</div>
-                        </a>
-                        <ng-template #LoadingIpcr>
-                            <div class="row px-4 py-2">
-                                <div class="col-2">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="circle"
-                                        [theme]="{ margin: '0px', height:'20px', width:'20px'}"></ngx-skeleton-loader>
-                                </div>
-                                <div class="col-10">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
-                                        [theme]="{ margin: '0px',}"></ngx-skeleton-loader>
-                                </div>
-                            </div>
-                        </ng-template>
-                        <ul class="menu-sub">
-                            <li class="menu-item" routerLinkActive="active">
-                                <a routerLink="spms/ipcr/target" class="menu-link">
-                                    <div data-i18n="Without menu">Target</div>
-                                </a>
-                            </li>
-                            <li class="menu-item" routerLinkActive="active">
-                                <a routerLink="spms/ipcr/actual" class="menu-link">
-                                    <div data-i18n="Without menu">Actual</div>
-                                </a>
-                            </li>
-                        </ul>
-                        <!-- <ul class="menu-sub">
-                        <li class="menu-item" routerLinkActive="active">
-                            <a routerLink="spms/ipcr/actual" class="menu-link">
-                                <div data-i18n="Without menu">Actual</div>
-                            </a>
-                        </li>
-                    </ul> -->
-                    </li>
-                    <li class="menu-item" routerLinkActive="active">
-                        <a *ngIf="!menu.isLoading; else LoadingOts" routerLink="spms/ots/index" class="menu-link">
-                            <i class='menu-icon tf-icons bx bx-notepad'></i>
-                            <div data-i18n="Analytics">OTS</div>
-                        </a>
-                        <ng-template #LoadingOts>
-                            <div class="row px-4 py-2">
-                                <div class="col-2">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="circle"
-                                        [theme]="{ margin: '0px', height:'20px', width:'20px'}"></ngx-skeleton-loader>
-                                </div>
-                                <div class="col-10">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
-                                        [theme]="{ margin: '0px',}"></ngx-skeleton-loader>
-                                </div>
-                            </div>
-                            <div class="row px-4 py-2">
-                                <div class="col-2">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="circle"
-                                        [theme]="{ margin: '0px', height:'20px', width:'20px'}"></ngx-skeleton-loader>
-                                </div>
-                                <div class="col-10">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
-                                        [theme]="{ margin: '0px',}"></ngx-skeleton-loader>
-                                </div>
-                            </div>
-                            <div class="row px-4 py-2">
-                                <div class="col-2">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="circle"
-                                        [theme]="{ margin: '0px', height:'20px', width:'20px'}"></ngx-skeleton-loader>
-                                </div>
-                                <div class="col-10">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
-                                        [theme]="{ margin: '0px',}"></ngx-skeleton-loader>
-                                </div>
-                            </div>
-                            <div class="row px-4 py-2">
-                                <div class="col-2">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="circle"
-                                        [theme]="{ margin: '0px', height:'20px', width:'20px'}"></ngx-skeleton-loader>
-                                </div>
-                                <div class="col-10">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
-                                        [theme]="{ margin: '0px',}"></ngx-skeleton-loader>
-                                </div>
-                            </div>
-                            <div class="row px-4 py-2">
-                                <div class="col-2">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="circle"
-                                        [theme]="{ margin: '0px', height:'20px', width:'20px'}"></ngx-skeleton-loader>
-                                </div>
-                                <div class="col-10">
-                                    <ngx-skeleton-loader count="1" animation="pulse" appearance="line"
-                                        [theme]="{ margin: '0px',}"></ngx-skeleton-loader>
-                                </div>
-                            </div>
-                        </ng-template>
-                    </li>
-                </ng-container>
             </ng-container>
         </ng-container>
-        
-
     </ul>
 </aside>
 
