@@ -40,6 +40,9 @@ import {
   UploadWidgetConfig,
   UploadWidgetResult,
 } from '@bytescale/upload-widget';
+import { DemoFilePickerAdapter } from './demo-file-picker.adapter';
+import { HttpClient } from '@angular/common/http';
+import { ValidationError } from 'ngx-awesome-uploader';
 @Component({
   selector: 'app-modal-ticket',
   template: `
@@ -87,6 +90,18 @@ import {
             >
               Upload a file...
             </button>
+            <div class="uploader-wrapper">
+              <ngx-awesome-uploader
+                [adapter]="adapter"
+                [enableCropper]="false"
+                [fileMaxSize]="200"
+                (uploadSuccess)="uploadSuccess($event)"
+                (enableAutoUpload)="false"
+                (uploadFail)="onValidationErrorUpload()"
+                (validationError)="onValidationError($event)"
+              >
+              </ngx-awesome-uploader>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -106,6 +121,27 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class ModalTicketComponent {
+  public adapter = new DemoFilePickerAdapter(this.http);
+
+  constructor(private http: HttpClient) {}
+
+  public ngOnInit(): void {}
+
+  uploadSuccess(event: any) {
+    console.log('Files successfully handled locally', this.adapter);
+  }
+
+  public onValidationError(error: ValidationError): void {
+    console.log(error);
+    console.log('Files error handled locally', this.adapter);
+
+    alert(`Validation Error ${error.error} in ${error.file?.name}`);
+  }
+
+  public onValidationErrorUpload(): void {
+    console.log('Files error handled locally', this.adapter);
+
+  }
 
   data: any = {
     subject: 'Hellow World!',
