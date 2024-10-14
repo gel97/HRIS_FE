@@ -20,6 +20,7 @@ import { UserTicketComponent } from './user-ticket/user-ticket.component';
 import { ModalTicketComponent } from './user-ticket/components/modal-ticket.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { UploadWidgetModule } from "@bytescale/upload-widget-angular";
+
 @NgModule({
   declarations: [
     TicketComponent,
@@ -37,7 +38,7 @@ import { UploadWidgetModule } from "@bytescale/upload-widget-angular";
     SharedModule,
     TicketRoutingModule,
     CKEditorModule,
-    UploadWidgetModule
+    UploadWidgetModule,
   ],
 })
 export class TicketModule {}

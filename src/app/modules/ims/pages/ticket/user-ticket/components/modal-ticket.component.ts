@@ -40,7 +40,6 @@ import {
   UploadWidgetConfig,
   UploadWidgetResult,
 } from '@bytescale/upload-widget';
-
 @Component({
   selector: 'app-modal-ticket',
   template: `
@@ -107,6 +106,7 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class ModalTicketComponent {
+
   data: any = {
     subject: 'Hellow World!',
     description: 'haha',
@@ -152,7 +152,7 @@ export class ModalTicketComponent {
   }
 
   options: UploadWidgetConfig = {
-    apiKey: 'public_FW25cEZ75Jgmuj7Ei4Tx4HGQupcU', // This is your API key.
+    apiKey: 'sd', // This is your API key.
 
     maxFileCount: 3,
   };
