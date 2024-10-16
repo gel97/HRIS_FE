@@ -82,15 +82,8 @@ import { ValidationError } from 'ngx-awesome-uploader';
                 ></ckeditor>
               </div>
             </div>
-            <button
-              uploadButton
-              [uploadOptions]="options"
-              [uploadComplete]="onComplete"
-              class="btn btn-primary"
-            >
-              Upload a file...
-            </button>
-            <div class="uploader-wrapper">
+            <div class="flex">
+              <label for="nameLarge" class="form-label">Attach File</label>
               <ngx-awesome-uploader
                 [adapter]="adapter"
                 [enableCropper]="false"
