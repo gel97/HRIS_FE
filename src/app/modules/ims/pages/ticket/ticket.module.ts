@@ -19,7 +19,6 @@ import { TicketComponent } from './ticket.component';
 import { UserTicketComponent } from './user-ticket/user-ticket.component';
 import { ModalTicketComponent } from './user-ticket/components/modal-ticket.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { UploadWidgetModule } from "@bytescale/upload-widget-angular";
 import {FilePickerModule} from 'ngx-awesome-uploader';
 
 @NgModule({
@@ -39,7 +38,6 @@ import {FilePickerModule} from 'ngx-awesome-uploader';
     SharedModule,
     TicketRoutingModule,
     CKEditorModule,
-    UploadWidgetModule,
     FilePickerModule
   ],
 })

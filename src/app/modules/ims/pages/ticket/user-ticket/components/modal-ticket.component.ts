@@ -31,15 +31,7 @@ import {
   Heading,
   List,
 } from 'ckeditor5';
-import {
-  Comments,
-  SlashCommand,
-  TrackChanges,
-} from 'ckeditor5-premium-features';
-import {
-  UploadWidgetConfig,
-  UploadWidgetResult,
-} from '@bytescale/upload-widget';
+
 import { DemoFilePickerAdapter } from './demo-file-picker.adapter';
 import { HttpClient } from '@angular/common/http';
 import { ValidationError } from 'ngx-awesome-uploader';
@@ -179,17 +171,4 @@ export class ModalTicketComponent {
 
     parent.insertBefore(editor.ui.view.toolbar.element!, element);
   }
-
-  options: UploadWidgetConfig = {
-    apiKey: 'sd', // This is your API key.
-
-    maxFileCount: 3,
-  };
-
-  onComplete = (files: UploadWidgetResult[]) => {
-    this.uploadedFileUrl = files[0]?.fileUrl;
-    console.log(files);
-  };
-
-  uploadedFileUrl: string | undefined = undefined;
 }

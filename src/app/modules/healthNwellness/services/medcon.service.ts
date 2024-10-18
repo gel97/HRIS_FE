@@ -6,7 +6,8 @@ import Swal from 'sweetalert2';
 import { AlertService } from '../../spms/service/alert.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
-
+import { HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -86,12 +87,16 @@ export class MedconService {
       });
   }
 
-  GetLabHistoryReport(fileName: string) {
+
+  GetLabHistoryReport(qrCode:string, fileName:string) {
     this.labHistoryReport.mutate((a) => (a.isLoadingReport = true));
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json', // Example header, you can add more
+      'stringss': environment.hwApiKey
+      
+    });
     this.http
-      .get<any[]>(api + this.url.get_lab_result(fileName), {
-        responseType: 'blob' as 'json',
-      })
+      .get<any[]>(`https://davnorsystems.gov.ph/HWWebApi/api/LaboratoryResult/GetLabResult/${qrCode}/${fileName}`, {headers, 'responseType':'blob' as 'json'})
       .subscribe({
         next: (response: any) => {
           console.log(response)
@@ -100,7 +105,9 @@ export class MedconService {
           this.labHistoryReport.mutate((a) => (a.data = this.labHistoryUrl));
           this.labHistoryReport.mutate((a) => (a.isLoadingReport = false));
         },
-        error: () => {
+        error: (error:any) => {
+          console.log(error)
+
           this.alertService.error();
           this.labHistoryReport.mutate((a) => (a.isLoadingReport = false));
         },
