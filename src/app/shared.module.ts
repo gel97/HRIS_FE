@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,
@@ -36,7 +37,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
   ],
   exports: [
     NgCircleProgressModule,
@@ -50,7 +51,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

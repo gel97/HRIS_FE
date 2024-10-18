@@ -19,7 +19,7 @@ export class LaboratoryComponent implements OnInit {
     this.medconService.GetLabHistory();
   }
 
-  GetLabReport(labID: string) {
-    this.medconService.GetLabHistoryReport(labID);
+  GetLabReport(qrCode: string, fileName:string) {
+    this.medconService.GetLabHistoryReport(qrCode, fileName);
   }
 }
