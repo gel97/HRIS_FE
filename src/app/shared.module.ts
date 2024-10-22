@@ -12,13 +12,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
+import { LoadingSpinnerGrowComponent } from './components/loading/loading-spinner-grow.component';
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,
     LoadingComponent,
     LoadingSquareJellyBoxComponent,
     ModalOtsComponent,
+    LoadingSpinnerGrowComponent
 
   ],
   imports: [
@@ -52,6 +53,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatSelectModule,
     MatInputModule,
     NgxMatSelectSearchModule,
+    LoadingSpinnerGrowComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

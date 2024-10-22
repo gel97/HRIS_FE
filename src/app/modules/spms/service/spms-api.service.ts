@@ -77,11 +77,13 @@ export class SpmsApiService {
   put_opcrdata            = () => `/tPMOpcrDatas`;
   post_opcrdata           = () => `/tPMOpcrDatas`;
 
-  delete_opcrdata         = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
-  put_opcrdata_sortby_mfo = (opcrId: string)     => `/tPMOpcrDatas/${opcrId}/sortOpcrMfoes`;
-  get_opcrdetails         = (opcrId: string)     => `/tPMOpcrDatas/${opcrId}`;
-  get_opcr_data_actual    = (opcrId: string)     => `/tPMOpcrDatas/actual/list/${opcrId}/try`;
-  get_opcr_target_report  = (opcrId: string)     => `/tPMOpcrDatas/GetOpcrTargetReport/${opcrId}`;
+  delete_opcrdata          = (opcrDataId: string) => `/tPMOpcrDatas/${opcrDataId}`;
+  put_opcrdata_sortby_mfo  = (opcrId: string)     => `/tPMOpcrDatas/${opcrId}/sortOpcrMfoes`;
+  get_opcrdetails          = (opcrId: string)     => `/tPMOpcrDatas/${opcrId}`;
+  get_opcr_data_actual     = (opcrId: string)     => `/tPMOpcrDatas/actual/list/${opcrId}/try`;
+  get_opcr_target_report   = (opcrId: string)     => `/tPMOpcrDatas/GetOpcrTargetReport/${opcrId}`;
+  get_opcr_final_report    = (opcrId: string)     => `/tPMOpcrDatas/GetOpcrFinalReport/${opcrId}`;
+  get_opcr_standard_report = (opcrId: string)     => `/tPMOpcrDatas/GetOpcrStandardReport/${opcrId}`;
 
   put_opcr_data_actual_qty = () => `/tPMOpcrDatas/update/percentage_actual_target`;
 
