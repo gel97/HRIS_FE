@@ -304,12 +304,21 @@ import Swal from 'sweetalert2'
             ></button>
           </div>
           <div class="modal-body row">
-            <iframe
-              [src]="ipcrService.ipcrActualReportUrl"
-              width="100%"
-              height="100%"
-              frameborder="0"
-            ></iframe>
+          <ng-container
+              *ngIf="ipcrActualReport.isLoadingReport; else ShowReportIpcrActual"
+            >
+              <app-loading-square-jelly-box
+                [loading]="ipcrActualReport.isLoadingReport"
+              />
+            </ng-container>
+            <ng-template #ShowReportIpcrActual>
+              <iframe
+                [src]="ipcrActualReport.data"
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </ng-template>
           </div>
           <div class="modal-footer">
             <button
@@ -514,6 +523,7 @@ export class ViewIpcrComponent implements OnInit {
 
   mporMonths     : any = this.ipcrService.mporMonths();
 
+  ipcrActualReport : any = this.ipcrService.ipcrActualReport();
   ipcrMporReport : any = this.ipcrService.ipcrMPOR();
   ipcrSmporReport: any = this.ipcrService.ipcrSMPOR();
   ipcrStandardReport: any = this.ipcrService.ipcrStandard();
