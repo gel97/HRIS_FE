@@ -194,7 +194,7 @@
                 <div class="">
                     <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
                         <div cdkDropList (cdkDropListDropped)="drop($event)">
-                            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index"
+                            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data | filter:'mfo':utilsService.globalSearch(); let parent = index"
                                 cdkDrag>
                                 <div class="card-body">
                                     <div class="row">
@@ -944,7 +944,7 @@
                 </div>
             </div>
             <br />
-            <ng-container *ngIf="mfo().data.length != 0; else noDataMfo">
+            <ng-container *ngIf="mfoData().data.length != 0; else noDataMfo">
                 <div class="" *ngIf="loading != true; else isLoadingMfoes">
                     <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
                         <div class="table-responsive text-nowrap">
@@ -954,7 +954,7 @@
                                         <th style="width: 100px; color: blue">Indicator</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0">
+                                <tbody *ngFor="let data of mfoData().data" class="table-border-bottom-0">
                                     <ng-container *ngIf="data.si.length > 0">
                                         <tr class="text-justify" style="color: blue; white-space: normal">
                                             <div class="row">

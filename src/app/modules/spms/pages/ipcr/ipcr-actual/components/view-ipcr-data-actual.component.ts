@@ -2,7 +2,7 @@ import { Component, OnInit , inject } from '@angular/core';
 import { IpcrService } from 'src/app/modules/spms/service/ipcr.service';
 import { OtsService } from 'src/app/modules/spms/service/ots.service';
 import { PageEvent } from '@angular/material/paginator';
-
+import { UtilsService } from 'src/app/service/utils.service';
 @Component({
   selector: 'app-view-ipcr-data-actual',
   template: `
@@ -100,7 +100,7 @@ import { PageEvent } from '@angular/material/paginator';
         </div>
       </div>
     </div>
-    <ng-container *ngFor="let a of ipcrDataActual.data; let i = index">
+    <ng-container *ngFor="let a of ipcrDataActual.data | filter:'mfo':utilsService.globalSearch(); let i = index">
       <div class="card my-2 ">
         <div class="card-header">
           <div class="row">
@@ -838,6 +838,8 @@ export class ViewIpcrDataActualComponent implements OnInit {
 
   ipcrService    = inject(IpcrService);
   otsService     = inject(OtsService);
+  utilsService   = inject(UtilsService);
+
 
   ipcrDataActual = this.ipcrService.ipcrDataActual();
   otsMfo         = this.otsService.otsMfo();
@@ -886,6 +888,10 @@ export class ViewIpcrDataActualComponent implements OnInit {
   ]
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.utilsService.setGlobalSearch("");
   }
 
   GetIPCRActual(){

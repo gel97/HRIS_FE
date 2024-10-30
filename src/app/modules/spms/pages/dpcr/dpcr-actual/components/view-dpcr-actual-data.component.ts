@@ -1,5 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
+import { UtilsService } from 'src/app/service/utils.service';
 
 @Component({
   selector: 'app-view-dpcr-actual-data',
@@ -132,7 +133,7 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
         </div>
       </div>
     </div>
-    <ng-container *ngFor="let a of dpcrDataActual.data; let i = index">
+    <ng-container *ngFor="let a of dpcrDataActual.data | filter:'mfo':utilsService.globalSearch(); let i = index">
       <div class="card my-2 ">
         <div class="card-header">
           <div class="row">
@@ -862,7 +863,9 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
   `,
 })
 export class ViewDpcrActualDataComponent implements OnInit {
-  dpcrService     = inject(DpcrService);
+  dpcrService  = inject(DpcrService);
+  utilsService = inject(UtilsService);
+
   dpcrDataActual  = this.dpcrService.dpcrDataActual();
   dpcrMfoEmployee = this.dpcrService.dpcrMfoEmployee();
 
@@ -884,6 +887,10 @@ export class ViewDpcrActualDataComponent implements OnInit {
   stData:any = {};
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.utilsService.setGlobalSearch("");
   }
 
   setRatingData(dpcrDataId:string){

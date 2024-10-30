@@ -3,6 +3,7 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
 import { ReportActualService } from 'src/app/modules/spms/service/report-actual.service';
 import { ReportStandardService } from 'src/app/modules/spms/service/report-standard.service';
 import { StandardReportService } from 'src/app/modules/spms/service/standard-report.service';
+
 @Component({
   selector: 'app-dpcr-actual',
   templateUrl: './dpcr-actual.component.html',

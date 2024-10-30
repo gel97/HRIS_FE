@@ -1,5 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { OpcrService } from 'src/app/modules/spms/service/opcr.service';
+import { UtilsService } from 'src/app/service/utils.service';
 @Component({
   selector: 'app-view-opcr-actual-data',
   template: `
@@ -131,7 +132,7 @@ import { OpcrService } from 'src/app/modules/spms/service/opcr.service';
         </div>
       </div>
     </div>
-    <ng-container *ngFor="let a of opcrDataActual.data; let i = index">
+    <ng-container *ngFor="let a of opcrDataActual.data | filter:'mfo':utilsService.globalSearch(); let i = index">
       <div class="card my-2 ">
         <div class="card-header">
           <div class="row">
@@ -487,7 +488,9 @@ import { OpcrService } from 'src/app/modules/spms/service/opcr.service';
   `,
 })
 export class ViewOpcrActualDataComponent implements OnInit {
-  opcrService = inject(OpcrService);
+  opcrService  = inject(OpcrService);
+  utilsService = inject(UtilsService);
+
   opcrDataActual = this.opcrService.opcrDataActual();
 
   currentSIindex: any = null;
@@ -510,6 +513,10 @@ export class ViewOpcrActualDataComponent implements OnInit {
   data  :any = {};
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.utilsService.setGlobalSearch("");
+  }
 
   SaveActualTarget(){
     this.opcrService.PutOPCRSPrcntActualQty(this.data);

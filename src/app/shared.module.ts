@@ -13,9 +13,11 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { LoadingSpinnerGrowComponent } from './components/loading/loading-spinner-grow.component';
+import { GlobalFilterPipe } from './pipe/globalFilter.pipe';
 @NgModule({
   declarations: [
     FirstLetterUppercasePipe,
+    GlobalFilterPipe,
     LoadingComponent,
     LoadingSquareJellyBoxComponent,
     ModalOtsComponent,
@@ -43,6 +45,7 @@ import { LoadingSpinnerGrowComponent } from './components/loading/loading-spinne
   exports: [
     NgCircleProgressModule,
     FirstLetterUppercasePipe,
+    GlobalFilterPipe,
     NgxSpinnerModule,
     LoadingComponent,
     MatTooltipModule,

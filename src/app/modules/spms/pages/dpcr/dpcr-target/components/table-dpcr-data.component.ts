@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Output, Input, inject, OnDestroy } from '@angular/core';
 import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
 import { OpcrService } from 'src/app/modules/spms/service/opcr.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-
+import { UtilsService } from 'src/app/service/utils.service';
 import {
   trigger,
   state,
@@ -29,7 +29,7 @@ import {
             data-bs-target="#offcanvasDpcrMfoes"
             class="btn btn-primary m-2 float-end"
           >
-            OPCR MFO
+            + MFO
           </button>
         </div>
       </div>
@@ -42,7 +42,7 @@ import {
             </tr>
           </thead>
           <tbody class="table-border-bottom-0" cdkDropList (cdkDropListDropped)="drop($event)">
-            <ng-container *ngFor="let a of dpcrData.data; let i = index" >
+            <ng-container *ngFor="let a of dpcrData.data | filter:'mfo':utilsService.globalSearch(); let i = index" >
               <tr class="cursor-pointer" [@rowState]="a" cdkDrag>
                 <td colspan="2" *ngIf="!dpcrData.isLoading; else LoadingMfo">
                   <div class="row">
@@ -394,8 +394,9 @@ import {
   ],
 })
 export class TableDpcrDataComponent {
-  dpcrService = inject(DpcrService);
-  opcrService = inject(OpcrService);
+  dpcrService  = inject(DpcrService);
+  opcrService  = inject(OpcrService);
+  utilsService = inject(UtilsService);
 
   @Input() dpcrData: any;
   @Input() isShowCanvasOpcrMfoes: any;
@@ -410,6 +411,10 @@ export class TableDpcrDataComponent {
   currentMfoIndex: any;
   currentSiIndex: any;
   subtaskData: any = {};
+
+  ngOnDestroy(): void {
+    this.utilsService.setGlobalSearch("");
+  }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.dpcrData.data, event.previousIndex, event.currentIndex);
