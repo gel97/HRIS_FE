@@ -109,7 +109,7 @@ import { FormBuilder, Validators } from '@angular/forms';
                     (change)="handleIsFiveStandard($event)"
                   />
                   <label class="form-check-label" for="defaultCheck1">
-                    Set standard to five rating
+                    Set standard rating to five {{data.isFiveStndrd}}
                   </label>
                 </div>
               </div>

@@ -104,7 +104,7 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                 (change)="handleIsFiveStandard($event)"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Set standard to five rating
+                Set standard rating to five
               </label>
             </div>
           </div>
