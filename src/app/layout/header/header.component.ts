@@ -20,11 +20,17 @@ export class HeaderComponent implements OnInit {
   public profilePicture: any = {};
 
   utilsService = inject(UtilsService);
+  globalSearch = this.utilsService.globalSearch();
+  search:string = "";
   ngOnInit(): void {
     this.fullName = localStorage.getItem('fullName');
     this.officeName = localStorage.getItem('officeName');
     this.divisionName = localStorage.getItem('divisionName');
     this.get_profile_picture();
+  }
+
+  onGlobalSearchChange(){
+    this.utilsService.setGlobalSearch(this.search);
   }
 
   setSidebarMobileView(){

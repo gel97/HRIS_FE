@@ -54,7 +54,7 @@ import { Component, EventEmitter, Output, Input, ViewChild  } from '@angular/cor
                 (change)="handleIsFiveStandard($event)"
               />
               <label class="form-check-label" for="defaultCheck1">
-                Set standard to five rating
+                Set standard rating to five
               </label>
             </div>
             <label for="nameWithTitle" class="form-label">QUALITY</label>

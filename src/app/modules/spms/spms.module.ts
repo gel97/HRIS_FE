@@ -40,6 +40,9 @@ import { HeaderOpcrActualComponent } from './pages/opcr/opcr-actual/components/h
 import { ViewOpcrActualComponent } from './pages/opcr/opcr-actual/components/view-opcr-actual.component';
 import { ViewOpcrActualDataComponent } from './pages/opcr/opcr-actual/components/view-opcr-actual-data.component';
 import { IpcrComponent } from './pages/ipcr/ipcr.component';
+import { ModalOpcrFinalReportComponent } from './pages/opcr/opcr-actual/components/modal-opcr-final-report.component';
+import { ModalOpcrTargetReportComponent } from './pages/opcr/opcr-target/components/modal-opcr-target-report.component';
+import { ModalOpcrStandardReportComponent } from './pages/opcr/opcr-actual/components/modal-opcr-standard-report.component';
 @NgModule({
   declarations: [
     SpmsComponent,
@@ -66,6 +69,9 @@ import { IpcrComponent } from './pages/ipcr/ipcr.component';
     ViewOpcrActualComponent,
     ViewOpcrActualDataComponent,
     IpcrComponent,
+    ModalOpcrFinalReportComponent,
+    ModalOpcrTargetReportComponent,
+    ModalOpcrStandardReportComponent
    // FirstLetterUppercasePipe
   ],
   imports: [

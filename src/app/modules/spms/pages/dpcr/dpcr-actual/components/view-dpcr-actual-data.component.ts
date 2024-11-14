@@ -1,5 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
+import { UtilsService } from 'src/app/service/utils.service';
 
 @Component({
   selector: 'app-view-dpcr-actual-data',
@@ -132,7 +133,7 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
         </div>
       </div>
     </div>
-    <ng-container *ngFor="let a of dpcrDataActual.data; let i = index">
+    <ng-container *ngFor="let a of dpcrDataActual.data | filter:'mfo':utilsService.globalSearch(); let i = index">
       <div class="card my-2 ">
         <div class="card-header">
           <div class="row">
@@ -516,6 +517,11 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                                       }}{{c.qtyUnit ? '%': ''}}</u></strong
                                     ></span
                                   >
+                                  <span class="text-primary" *ngIf="c.qtyUnit && c.actual?.qtyPrcntActual > 0"
+                                    ><strong
+                                      >&nbsp;({{c.actual.qtyPrcntActual ?? 0}})</strong
+                                    ></span
+                                  >
                                   {{ c.actual?.actualAc ?? '' }}
                                   <ng-template #noActualSt>
                                     <div class="d-flex justify-content-center">
@@ -617,10 +623,10 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                                       > -->
                                       <a 
                                         *ngIf="c.qtyUnit"
-                                        (click)="setSTData(b,c)"
+                                        (click)="setSTData(b,c,w)"
                                         class="dropdown-item cursor-pointer"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modalDpcrActualQty"
+                                        data-bs-target="#modalDpcrSTActualQty"
                                         ><i class="bx bx-show-alt me-1"></i> Actual Target</a
                                       >
                                     </div>
@@ -810,11 +816,56 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
         </div>
       </div>
     </div>
+    <div class="modal fade" id="modalDpcrSTActualQty" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel2"> Set actual target for subtask</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating px-2">
+              <input
+                type="number"
+                class="form-control"
+                id="target"
+                [(ngModel)] = "stData.prcntActualQty"
+                aria-describedby="target"
+              />
+              <label for="target">Target</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              (click)="SaveSubtaskActualTarget()"
+              type="button"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <app-modal-set-subtask-rating/>
   `,
 })
 export class ViewDpcrActualDataComponent implements OnInit {
-  dpcrService     = inject(DpcrService);
+  dpcrService  = inject(DpcrService);
+  utilsService = inject(UtilsService);
+
   dpcrDataActual  = this.dpcrService.dpcrDataActual();
   dpcrMfoEmployee = this.dpcrService.dpcrMfoEmployee();
 
@@ -838,24 +889,27 @@ export class ViewDpcrActualDataComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.utilsService.setGlobalSearch("");
+  }
+
   setRatingData(dpcrDataId:string){
     this.dpcrService.GetDpcrSubtaskRating(dpcrDataId);
   }
 
-  setSTData(b:any,c:any){
-    this.data = b;
-    this.data.prcntActualQty = c.prcntActualQty;
-    this.data.dpcrDataId = c.actual.dpcrDataId;
-    this.data.subTaskId = c.subTaskId;
+  stIndex:number = 0;
+  setSTData(b:any,c:any, d:number){
+    this.stData = c
+    this.stData.dpcrDataId = c.actual.dpcrDataId;
+    this.stData.subTaskId = c.subTaskId;
   }
 
   SaveActualTarget(){
-    if(this.data.isSubTask === 1){
-      this.dpcrService.PutSubtaskPrcntActualQty(this.data);
-    }else{
-      this.data.dpcrDataId = this.data.actual.dpcrDataId
-      this.dpcrService.PutDPCRSPrcntActualQty(this.data);
-    }
+    this.dpcrService.PutDPCRSPrcntActualQty(this.data);
+  }
+
+  SaveSubtaskActualTarget(){
+    this.dpcrService.PutSubtaskPrcntActualQty(this.stData);
   }
 
   GetDpcrMfoEmployee(subtaskId:string, dpcrDataId:string){

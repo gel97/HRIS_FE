@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, OnDestroy  } from '@angular/core';
 import { OpcrService } from 'src/app/modules/spms/service/opcr.service';
 import { MfoService } from 'src/app/modules/spms/service/mfo.service';
 import { interval, take } from 'rxjs';
@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { MonthRangeService } from 'src/app/modules/spms/service/month-range.service';
 import { SignatoriesService } from 'src/app/modules/spms/service/signatories.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { UtilsService } from 'src/app/service/utils.service';
 @Component({
   selector: 'app-opcr-target',
   templateUrl: './opcr-target.component.html',
@@ -20,6 +21,7 @@ export class OpcrTargetComponent implements OnInit {
   signatoriesService = inject(SignatoriesService);
   reportActualService = inject(ReportActualService);
   monthRangeService = inject(MonthRangeService);
+  utilsService = inject(UtilsService);
 
   getYear = new Date().getFullYear().toString();
   years: number[] = [];
@@ -29,7 +31,7 @@ export class OpcrTargetComponent implements OnInit {
   opcr: any = this.opcrService.opcr;
   isShow: number | any = this.opcrService.storageIsShow;
 
-  mfo: any = this.mfoService.mfo;
+  mfoData: any = this.mfoService.mfo;
   mfoDetails: any = {};
   opcrDetails: any = this.opcrService.opcrDetails;
   officeDivision: any = this.opcrService.officeDivision;
@@ -66,6 +68,10 @@ export class OpcrTargetComponent implements OnInit {
     this.GetOfficeDivision();
     this.opcrYear();
     this.opcrService.GetOPCRYearsSubmitted();
+  }
+
+  ngOnDestroy(): void {
+    this.utilsService.setGlobalSearch("");
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -592,7 +598,7 @@ export class OpcrTargetComponent implements OnInit {
       .pipe(take(1))
       .subscribe((value) => {
         this.counter = 0;
-        for (let outerItem of this.mfo().data) {
+        for (let outerItem of this.mfoData().data) {
           for (let innerItem of outerItem.si) {
             for (let opcrDetail of this.opcrDetails().data) {
               for (let opcrDetailItem of opcrDetail.si) {
@@ -606,7 +612,7 @@ export class OpcrTargetComponent implements OnInit {
 
         while (this.counter != 0) {
           this.counter -= 1;
-          for (let outerItem of this.mfo().data) {
+          for (let outerItem of this.mfoData().data) {
             for (let innerItem of outerItem.si) {
               for (let opcrDetail of this.opcrDetails().data) {
                 for (let opcrDetailItem of opcrDetail.si) {

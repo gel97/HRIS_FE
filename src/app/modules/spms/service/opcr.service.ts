@@ -81,6 +81,20 @@ export class OpcrService {
     isLoadingReport: false,
   });
 
+  opcrFinalReportUrl:SafeResourceUrl = "";
+  opcrFinalReport = signal<any>({
+    data: null,
+    error: false,
+    isLoadingReport: false,
+  });
+
+  opcrStandardReportUrl:SafeResourceUrl = "";
+  opcrStandardReport = signal<any>({
+    data: null,
+    error: false,
+    isLoadingReport: false,
+  });
+
   PutOPCRSPrcntActualQty(data: any) {
     this.http
       .put<any[]>(api + this.url.put_opcr_data_actual_qty(), data, {
@@ -333,6 +347,58 @@ export class OpcrService {
           this.alertService.error();
         },
         complete: () => {},
+      });
+  }
+
+  GetOpcrFinalReport(opcrId: string) {
+
+    this.opcrFinalReport.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_opcr_final_report(opcrId), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.opcrFinalReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.opcrFinalReport.mutate((a) => (a.data = this.opcrFinalReportUrl));
+          this.opcrFinalReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.opcrFinalReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.opcrFinalReport())
+          this.opcrFinalReport.mutate((a) => (a.isLoadingReport = false));
+
+        },
+      });
+  }
+
+  GetOpcrStandardReport(opcrId: string) {
+
+    this.opcrStandardReport.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_opcr_standard_report(opcrId), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.opcrStandardReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.opcrStandardReport.mutate((a) => (a.data = this.opcrStandardReportUrl));
+          this.opcrStandardReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        error: () => {
+          this.alertService.error();
+          this.opcrStandardReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.opcrStandardReport())
+          this.opcrStandardReport.mutate((a) => (a.isLoadingReport = false));
+
+        },
       });
   }
 

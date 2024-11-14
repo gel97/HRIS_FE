@@ -64,7 +64,6 @@ export class IpcrService {
     isLoading: false,
   });
 
-  ipcrActualReportUrl:SafeResourceUrl = "";
 
   ipcr_rem = signal<number>(0);
   ipcrST_rem = signal<number>(0);
@@ -118,6 +117,41 @@ export class IpcrService {
     error: false,
     isLoadingMPORReport: false,
   });
+
+  ipcrActualReportUrl:SafeResourceUrl = "";
+  ipcrActualReport = signal<any>({
+    data: null,
+    error: false,
+    isLoadingIPCRReport: false,
+  });
+
+  GetIpcrActualReport(ipcrId: string) {
+    this.ipcrActualReport.mutate((a) => (a.isLoadingReport = true));
+    this.http
+      .get<any[]>(api + this.url.get_ipcr_actual_report(ipcrId), {
+        responseType: 'blob' as 'json',
+      })
+      .subscribe({
+        next: (response: any) => {
+
+          this.ipcrActualReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(response));
+
+          this.ipcrActualReport.mutate((a) => (a.data = this.ipcrActualReportUrl));
+          this.ipcrActualReport.mutate((a) => (a.isLoadingReport = false));
+
+
+        },
+        error: () => {
+          this.alertService.error();
+          this.ipcrActualReport.mutate((a) => (a.isLoadingReport = false));
+        },
+        complete: () => {
+          console.log(this.ipcrActualReport())
+          this.ipcrActualReport.mutate((a) => (a.isLoadingReport = false));
+
+        },
+      });
+  }
 
   GetIpcrMPOReport(ipcrId: string, year:number, monthNo:number) {
     this.ipcrMPOR.mutate((a) => (a.isLoadingReport = true));
@@ -233,9 +267,9 @@ export class IpcrService {
   }
 
 
-  GetIpcrActualReport(ipcrId: string) {
-    this.ipcrActualReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_actual_report(ipcrId));
-  }
+  // GetIpcrActualReport(ipcrId: string) {
+  //   this.ipcrActualReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_actual_report(ipcrId));
+  // }
 
   GetIpcrTargetReport(ipcrId: string) {
     this.ipcrTargetReportUrl = this.sanitizer.bypassSecurityTrustResourceUrl(api + this.url.get_ipcr_target_report(ipcrId));
@@ -459,6 +493,23 @@ export class IpcrService {
             Toast.fire({
               icon: 'warning',
               title: 'Not yet open',
+            });
+          } else if (error.status == 400){
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-start',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+              },
+            });
+
+            Toast.fire({
+              icon: 'warning',
+              title: error.error,
             });
           }
         },

@@ -1,5 +1,5 @@
 <!-- OPCR-->
-<!-- <app-loading [loading]="opcr().isLoading" /> -->
+<app-loading [loading]="opcr().isLoading" /> 
 <ng-container>
     <div class="card">
         <div class="card-header x-space-between">
@@ -32,9 +32,10 @@
                     </a>
                 </div>
                 <div *ngIf="isShow() == 0" class=" x-space-between">
-                    <div *ngIf="opcr().data.length == 0"  style="margin-right: 5px">
+                    <div *ngIf="opcr().data.length == 0" style="margin-right: 5px">
                         <button (click)="flag_opcr = true " class="btn btn-primary" type="button"
-                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
+                            aria-controls="offcanvasScroll">
                             <i class="bx bx-plus"></i>OPCR
                         </button>
                     </div>
@@ -45,7 +46,7 @@
                         </button>
                     </div>
                 </div>
-            </div>      
+            </div>
         </div>
         <div *ngIf="isShow() == 0" class="card-body">
             <div>
@@ -132,10 +133,10 @@
                                             <!-- <a (click)="ReportOPCR(data_opcr)" class="dropdown-item"><i
                                                     class="bx bx-printer me-1"></i> Print
                                                 OPCR</a> -->
-                                            <a (click)="ReportOPCR(data_opcr)" class="dropdown-item" data-bs-target="#modalOpcrTargetReport"
-                                            data-bs-toggle="modal"><i
+                                            <a (click)="ReportOPCR(data_opcr)" class="dropdown-item"
+                                                data-bs-target="#modalOpcrTargetReport" data-bs-toggle="modal"><i
                                                     class="bx bx-printer me-1"></i> Print
-                                                OPCR</a>
+                                                OPCR Target</a>
                                             <a (click)="SubmitOpcr(data_opcr.opcrId, data_opcr.submitAt)"
                                                 class="dropdown-item"><i class="bx bx-send"></i>
                                                 Submit</a>
@@ -193,7 +194,7 @@
                 <div class="">
                     <ng-container *ngIf="opcrDetails().isLoading != true; else isLoading">
                         <div cdkDropList (cdkDropListDropped)="drop($event)">
-                            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data; let parent = index"
+                            <div class="card mb-2 shadow-sm" *ngFor="let data of opcrDetails().data | filter:'mfo':utilsService.globalSearch(); let parent = index"
                                 cdkDrag>
                                 <div class="card-body">
                                     <div class="row">
@@ -269,17 +270,13 @@
                                                         <div class="accordion-body">
                                                             <!-- Bordered Table -->
                                                             <div class="form-check mt-3">
-                                                                <input
-                                                                  class="form-check-input"
-                                                                  type="checkbox"
-                                                                  id="defaultCheck1"
-                                                                  [checked]="si.isFiveStndrd"
-                                                                  (change)="handleIsFiveStandard($event, si)"
-                                                                />
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="defaultCheck1" [checked]="si.isFiveStndrd"
+                                                                    (change)="handleIsFiveStandard($event, si)" />
                                                                 <label class="form-check-label" for="defaultCheck1">
-                                                                  Set standard to five rating
+                                                                    Set standard rating to five
                                                                 </label>
-                                                              </div>
+                                                            </div>
                                                             <div class="table-responsive text-nowrap">
                                                                 <table class="table table-bordered">
                                                                     <thead>
@@ -458,7 +455,7 @@
                                     {{ year }}
                                 </option>
                             </ng-container>
-                            
+
                         </select>
                     </div>
                     <div class="p-1">
@@ -469,37 +466,19 @@
                     <label class="p-1 mt-2">Do you want to overwrite data?</label>
                     <div class="row mt-2">
                         <div class="form-check col-3">
-                            <input
-                              (click)="isOverwrite = 1"
-                              [checked]="isOverwrite === 1"
-                              class="form-check-input"
-                              type="radio"
-                              name="inlineRadioOptions"
-                              id="inlineRadio11"
-                              value="1"
-                            />
-                            <label class="form-check-label" for="inlineRadio11"
-                              >Yes</label
-                            >
+                            <input (click)="isOverwrite = 1" [checked]="isOverwrite === 1" class="form-check-input"
+                                type="radio" name="inlineRadioOptions" id="inlineRadio11" value="1" />
+                            <label class="form-check-label" for="inlineRadio11">Yes</label>
                         </div>
                         <div class="form-check col-3">
-                            <input
-                              (click)="isOverwrite = 0"
-                              [checked]="isOverwrite === 0"
-                              class="form-check-input"
-                              type="radio"
-                              name="inlineRadioOptions"
-                              id="inlineRadio22"
-                              value="0"
-                            />
-                            <label class="form-check-label" for="inlineRadio22"
-                              >No</label
-                            >
+                            <input (click)="isOverwrite = 0" [checked]="isOverwrite === 0" class="form-check-input"
+                                type="radio" name="inlineRadioOptions" id="inlineRadio22" value="0" />
+                            <label class="form-check-label" for="inlineRadio22">No</label>
                         </div>
                         <div *ngIf="isOverwrite" class="col-12">
                             <span class="badge bg-label-danger">
-                                <i class='bx bx-info-circle' ></i>
-                                This will overwrite the existing data per MFO 
+                                <i class='bx bx-info-circle'></i>
+                                This will overwrite the existing data per MFO
                             </span>
 
                         </div>
@@ -556,8 +535,8 @@
                             </div>
                             <div class="col-12 mt-4">
                                 <label class="form-label">Alloted Budget</label>
-                                <input [(ngModel)]="mfoDetails.alloted" type="number"
-                                    class="form-control" id="basic-default-fullname" placeholder="" />
+                                <input [(ngModel)]="mfoDetails.alloted" type="number" class="form-control"
+                                    id="basic-default-fullname" placeholder="" />
                             </div>
                         </div>
                         <!-- *ngIf="!mfoService.isCommon()" -->
@@ -758,8 +737,8 @@
                             </div>
                             <div class="col-12 mt-4">
                                 <label class="form-label">Alloted Budget</label>
-                                <input [(ngModel)]="editopcrDetails.alloted" type="number"
-                                    class="form-control" id="basic-default-fullname" placeholder="" />
+                                <input [(ngModel)]="editopcrDetails.alloted" type="number" class="form-control"
+                                    id="basic-default-fullname" placeholder="" />
                             </div>
                         </div>
                         <!-- *ngIf="!editMFODetails.isCommon" -->
@@ -965,7 +944,7 @@
                 </div>
             </div>
             <br />
-            <ng-container *ngIf="mfo().data.length != 0; else noDataMfo">
+            <ng-container *ngIf="mfoData().data.length != 0; else noDataMfo">
                 <div class="" *ngIf="loading != true; else isLoadingMfoes">
                     <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
                         <div class="table-responsive text-nowrap">
@@ -975,7 +954,7 @@
                                         <th style="width: 100px; color: blue">Indicator</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngFor="let data of mfo().data" class="table-border-bottom-0">
+                                <tbody *ngFor="let data of mfoData().data" class="table-border-bottom-0">
                                     <ng-container *ngIf="data.si.length > 0">
                                         <tr class="text-justify" style="color: blue; white-space: normal">
                                             <div class="row">
@@ -1037,7 +1016,9 @@
     </div>
 </div>
 
-<!-- Modal -->
+<app-modal-opcr-target-report />
+
+<!-- Modal
 <div class="modal fade" id="modalOpcrTargetReport" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-fullscreen" style="padding: 50px 100px 50px 100px;"
         role="document">
@@ -1061,4 +1042,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

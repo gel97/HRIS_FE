@@ -5,6 +5,7 @@ import {
   Input,
   inject,
   OnInit,
+  OnDestroy
 } from '@angular/core';
 import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
 import { OpcrService } from 'src/app/modules/spms/service/opcr.service';
@@ -17,6 +18,7 @@ import {
   transition,
   animate,
 } from '@angular/animations';
+import { UtilsService } from 'src/app/service/utils.service';
 
 @Component({
   selector: 'app-table-ipcr-data',
@@ -38,7 +40,7 @@ import {
         <div cdkDropList (cdkDropListDropped)="drop($event)">
           <div
             class="card my-2"
-            *ngFor="let a of mfoes.data; let i = index"
+            *ngFor="let a of mfoes.data | filter:'mfo':utilsService.globalSearch(); let i = index"
             cdkDrag
           >
             <div class="card-header x-space-between">
@@ -555,9 +557,10 @@ import {
   ],
 })
 export class TableIpcrDataComponent implements OnInit {
-  dpcrService = inject(DpcrService);
-  opcrService = inject(OpcrService);
-  ipcrService = inject(IpcrService);
+  dpcrService  = inject(DpcrService);
+  opcrService  = inject(OpcrService);
+  ipcrService  = inject(IpcrService);
+  utilsService = inject(UtilsService);
 
   mfoes = this.ipcrService.ipcrDetails();
 
@@ -569,6 +572,10 @@ export class TableIpcrDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.ipcrService.GetIPCRDetails();
+  }
+
+  ngOnDestroy(): void {
+    this.utilsService.setGlobalSearch("");
   }
 
   drop(event: any) {

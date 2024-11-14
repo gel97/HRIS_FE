@@ -45,7 +45,7 @@ import { MfoService } from 'src/app/modules/spms/service/mfo.service';
                   (change)="handleIsIpcrShow($event)"
                 />
                 <label class="form-check-label" for="defaultCheck1">
-                  Specify if MFO is directly displayed in the IPCR
+                  Display in IPCR
                 </label>
             </div>
             <button
