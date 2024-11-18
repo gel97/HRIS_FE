@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export class SpmsApiService {
   constructor() {}
 
-  get_overview_mfo_target_offices = () => '/Overview/target/mfo/offices';
+  get_overview_mfo_target_offices = (year:string) => `/Overview/target/mfo/offices/${year}`;
 
   get_mfoes_ipcr           = () => `/tPMMFOes/ipcr`;
   post_mfo_search_office   = () => `/tPMMFOes/Search`;
