@@ -180,7 +180,7 @@ import { UtilsService } from 'src/app/service/utils.service';
               <ng-container *ngFor="let b of a.si; let y = index">
                 <tr>
                   <!-- <td><strong>{{i+1}}.{{y+1}}</strong></td> -->
-                  <td (click)="GetDpcrMfoEmployee('null', b.actual.dpcrDataId);setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.dpcrDataId);setSIindex(i, y)">
                     <span class="text-success"
                       ><strong
                         ><u>{{ b.qty }}{{b.qtyUnit ? '%': ''}}</u></strong
@@ -193,7 +193,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                     >
                     {{ b.indicator }}
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.dpcrDataId);setSIindex(i, y)">
                     <span *ngIf="b.actual; else noActualSt" class="text-primary"
                       ><strong
                         ><u>{{ b.actual?.totalQty ?? 0 }}{{b.qtyUnit ? '%': ''}}</u></strong
@@ -214,7 +214,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                       </div>
                     </ng-template>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.dpcrDataId);setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <circle-progress
                         [percent]="b.actual?.qtyPrcnt ?? 0"
@@ -228,7 +228,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                       ></circle-progress>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.dpcrDataId);setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQuantiySt">
                         <strong class="text-primary">{{
@@ -243,7 +243,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.dpcrDataId);setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noQualitySt">
                         <strong class="text-primary">{{
@@ -258,7 +258,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.dpcrDataId);setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noTimelySt">
                         <strong class="text-primary">{{
@@ -273,7 +273,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                       </ng-template>
                     </div>
                   </td>
-                  <td (click)="setSIindex(i, y)">
+                  <td (click)="GetDpcrMfoEmployee('null', b.dpcrDataId);setSIindex(i, y)">
                     <div class="d-flex justify-content-center">
                       <h2 *ngIf="b.actual; else noAveSt">
                         <strong class="text-success">{{
@@ -494,7 +494,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                             </thead>
                             <tbody>
                               <tr>
-                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.dpcrDataId); setStMfoIndex(w, i)">
                                   <span class="text-success"
                                     ><strong
                                       ><u>{{ c.qty }}{{c.qtyUnit ? '%': ''}}</u></strong
@@ -507,7 +507,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                                   >
                                   {{ c.stIndicator }}
                                 </td>
-                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.dpcrDataId); setStMfoIndex(w, i)">
                                   <span
                                     *ngIf="c.actual; else noActualSt"
                                     class="text-primary"
@@ -532,7 +532,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                                     </div>
                                   </ng-template>
                                 </td>
-                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <circle-progress
                                       [percent]="c.actual?.qtyPrcnt ?? 0"
@@ -546,7 +546,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                                     ></circle-progress>
                                   </div>
                                 </td>
-                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noQuantiySt">
                                       <strong class="text-primary">{{
@@ -561,7 +561,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                                     </ng-template>
                                   </div>
                                 </td>
-                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noQualitySt">
                                       <strong class="text-primary">{{
@@ -576,7 +576,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                                     </ng-template>
                                   </div>
                                 </td>
-                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noTimelySt">
                                       <strong class="text-primary">{{
@@ -591,7 +591,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                                     </ng-template>
                                   </div>
                                 </td>
-                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.actual.dpcrDataId); setStMfoIndex(w, i)">
+                                <td (click)="GetDpcrMfoEmployee(c.subTaskId, c.dpcrDataId); setStMfoIndex(w, i)">
                                   <div class="d-flex justify-content-center">
                                     <h2 *ngIf="c.actual; else noAveSt">
                                       <strong class="text-success">{{
@@ -900,7 +900,7 @@ export class ViewDpcrActualDataComponent implements OnInit {
   stIndex:number = 0;
   setSTData(b:any,c:any, d:number){
     this.stData = c
-    this.stData.dpcrDataId = c.actual.dpcrDataId;
+    this.stData.dpcrDataId = c.dpcrDataId;
     this.stData.subTaskId = c.subTaskId;
   }
 
