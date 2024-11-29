@@ -31,7 +31,7 @@ import { IpcrService } from 'src/app/modules/spms/service/ipcr.service';
         >
           <div class="offcanvas-header">
             <h1 id="offcanvasEndLabel" class="offcanvas-title">
-              MAJOR FINAL OUTPUT
+              MAJOR FINAL OUTPUT <ng-container *ngIf="mfoes.divisionName !== ''">/ {{mfoes.divisionName | truncate : 10}} </ng-container>
             </h1>
             <button
               (click)="handleExpandCard()"
@@ -119,6 +119,20 @@ import { IpcrService } from 'src/app/modules/spms/service/ipcr.service';
                       />
                     </div>
                   </div> -->
+                  <div class="input-group px-2">
+                    <span class="input-group-text">
+                      <i class="tf-icons bx bx-search"></i>
+                    </span>
+                    <input
+                      type="text"
+                      type="search"
+                      [(ngModel)]="searchMfo"
+                      placeholder="Search MFO ..."
+                      id="html5-search-input"
+                      class="form-control"
+                      placeholder="Search MFO ..."
+                    />
+                  </div>
                 </div>
                 <div class="tab-content px-0 mt-2 pb-0">
                   <div
@@ -128,12 +142,13 @@ import { IpcrService } from 'src/app/modules/spms/service/ipcr.service';
                     "
                     id="navs-pills-justified-home"
                     role="tabpanel"
-                  >
+                  >                
+
                     <div class="table-responsive text-wrap">
                       <table class="table table-hover">
                         <tbody class="table-border-bottom-0">
                           <ng-container
-                            *ngFor="let a of mfoes.data; let i = index"
+                            *ngFor="let a of mfoes.data | filter:'mfo':searchMfo; let i = index"
                           >
                             <tr class="text-justify">
                               <td colspan="2">
@@ -519,7 +534,7 @@ import { IpcrService } from 'src/app/modules/spms/service/ipcr.service';
                       <table class="table table-hover">
                         <tbody class="table-border-bottom-0">
                           <ng-container
-                            *ngFor="let a of mfoes.data; let i = index"
+                            *ngFor="let a of mfoes.data | filter:'mfo':searchMfo; let i = index"
                           >
                             <tr class="text-justify">
                               <td colspan="2">
@@ -665,6 +680,7 @@ export class CanvasTargetMfoesComponent implements OnInit {
   mfo: any = {};
   subtask: any = {};
   quantity: number | any;
+  searchMfo: any = '';
 
   SearchMFO() {
     //   if (this.search === '' || this.search === null) {
