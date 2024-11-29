@@ -23,10 +23,37 @@ export class SidebarComponent implements OnInit {
   sample2: number = 0;
   sample3: number = 0;
 
+  isMobileView = (): boolean => {
+    return window.innerWidth <= 768; // Adjust the value as per your mobile breakpoint
+  };
+
   ngOnInit(): void {
     this.getSPMSMenu();
+    this.detectScreenChange();
   }
 
+  detectScreenChange = (): void => {
+    let isMobileView = window.innerWidth <= 768; // Initial state
+  
+    // Function to check and update the screen view
+    const updateScreenView = () => {
+      const currentIsMobileView = window.innerWidth <= 768;
+      if (currentIsMobileView !== isMobileView) {
+        isMobileView = currentIsMobileView;
+        this.utilsService.isShowSidebar.set(false)
+        console.log(
+          isMobileView
+            ? "Switched to mobile view."
+            : "Switched to desktop view."
+        );
+      }
+    };
+  
+    window.addEventListener("resize", updateScreenView);
+  
+    updateScreenView();
+  };
+  
   setSidebarMobileView(){
     this.utilsService.isShowSidebar.set(!this.utilsService.isShowSidebar())
   }
