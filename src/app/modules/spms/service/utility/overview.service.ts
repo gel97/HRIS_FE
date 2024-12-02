@@ -23,10 +23,10 @@ export class OverviewService {
 
   ) {}
 
-  async GetOverviewMfoTargetOffices() {
+  async GetOverviewMfoTargetOffices(year:string) {
     this.mfoesTgt.mutate((a) => (a.isLoading = true));
     this.http
-      .get<any[]>(api + this.url.get_overview_mfo_target_offices(), {
+      .get<any[]>(api + this.url.get_overview_mfo_target_offices(year), {
         responseType: `json`,
       })
       .subscribe({

@@ -77,6 +77,7 @@ export class IpcrService {
 
   dpcr_ipcr = signal<any>({
     data: [],
+    divisionName: "",
     error: false,
     errorMessage: "",
     isLoading: false,
@@ -428,9 +429,9 @@ export class IpcrService {
       )
       .subscribe({
         next: (response: any = {}) => {
-          this.dpcr_ipcr.mutate((a) => (a.data = response));
+          this.dpcr_ipcr.mutate((a) => (a.data = response.data));
           this.dpcr_ipcr.mutate((a) => (a.errorMessage = ""));
-
+          this.dpcr_ipcr.mutate((a) => (a.divisionName = response.divisionName));
         },
         error: (err:any) => {
           //this.alertService.error();
@@ -438,6 +439,7 @@ export class IpcrService {
           this.dpcr_ipcr.mutate((a) => (a.data = []));
           this.dpcr_ipcr.mutate((a) => (a.isSearchLoading = false));
           this.dpcr_ipcr.mutate((a) => (a.errorMessage = err.error));
+          this.dpcr_ipcr.mutate((a) => (a.divisionName = ""));
 
         },
         complete: () => {

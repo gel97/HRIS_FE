@@ -13,13 +13,21 @@ export class OverviewComponent {
   isSubmitted:any = null;
   filterData:any = [];
 
+  isLoading:boolean = true;
+  yearNow = new Date().getFullYear();
+  listYear: any = [];
+  startYear:any = 2022;
+
   ngOnInit(): void {
-    this.initData()
+    for (let year = this.startYear; year <= this.yearNow; year++) {
+      this.listYear.push(year);
+    }
+    this.initData();
   }
 
   handleClear(){
     this.isSubmitted = null;
-    this.initData();
+    //this.initData();
   }
 
   filterBySubmitted(event:any){
@@ -40,11 +48,16 @@ export class OverviewComponent {
   }
 
   initData(){
-    this.overviewService.GetOverviewMfoTargetOffices();
+    this.overviewService.GetOverviewMfoTargetOffices(this.yearNow.toString());
+
     setTimeout(() => {
       this.filterData =  this.overviewService.mfoesTgt().data;
-
+      this.isLoading = false;
     }, 2000);
+  }
+
+  onChangeYear(event: any) {
+    this.initData()
   }
 
   submittedOffices(){
