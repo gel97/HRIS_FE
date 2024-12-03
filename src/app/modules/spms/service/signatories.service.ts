@@ -44,4 +44,18 @@ export class SignatoriesService {
             },
           });
       }
+
+      put_signatories_opcr(data: any) {
+        this.http
+          .put<any[]>(api + this.url.put_signatories_opcr(), data, {
+            responseType: `json`,
+          })
+          .subscribe({
+            next: (response: any = {}) => {},
+            error: (error: any) => {},
+            complete: () => {
+              this.alertService.update();
+            },
+          });
+      }
 }  

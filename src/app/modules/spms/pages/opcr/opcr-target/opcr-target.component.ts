@@ -74,6 +74,10 @@ export class OpcrTargetComponent implements OnInit {
     this.utilsService.setGlobalSearch("");
   }
 
+  selectedOpcr(opcrId:string){
+    this.opcrService.GetOpcrSignatories(opcrId);
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.opcrDetails().data, event.previousIndex, event.currentIndex);
 

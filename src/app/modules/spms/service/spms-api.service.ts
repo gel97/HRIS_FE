@@ -177,6 +177,8 @@ export class SpmsApiService {
   get_signatories  = (typeId: any, officeId: any, divisionId: any) => `/tPMSignatories/${typeId}/${officeId}/${divisionId}`;
 
   put_signatories_ipcr  = () => `/tPMSignatories/ipcr`;
+  put_signatories_opcr  = () => `/tPMSignatories/opcr`;
+
   get_signatories_ipcr  = (ipcrId:string) => `/tPMSignatories/ipcr/${ipcrId}`;
 
   get_logs      = () => `/tPMLogs`;
