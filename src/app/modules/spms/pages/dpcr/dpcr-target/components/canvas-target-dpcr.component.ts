@@ -90,7 +90,7 @@ import {
 
     @Output() submit = new EventEmitter<any>();
   
-    currentYear = new Date().getFullYear();
+    currentYear = new Date().getFullYear() - 1;
     periods = [{period:1, desc: '1st Sem'},{period:2, desc: '2nd Sem'},]
     listYear: any = [];
   

@@ -1442,6 +1442,9 @@ Trademarks
 @devextreme/runtime
 SEE LICENSE IN LICENSE
 
+@e-signature/ng-signature-pad
+MIT
+
 @fortawesome/angular-fontawesome
 MIT
 MIT License

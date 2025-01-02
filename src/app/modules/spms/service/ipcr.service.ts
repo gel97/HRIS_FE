@@ -146,7 +146,7 @@ export class IpcrService {
           this.alertService.error();
           this.ipcrActualReport.mutate((a) => (a.isLoadingReport = false));
         },
-        complete: () => {
+        complete: () => {                                                                                                                                                                                               
           console.log(this.ipcrActualReport())
           this.ipcrActualReport.mutate((a) => (a.isLoadingReport = false));
 
