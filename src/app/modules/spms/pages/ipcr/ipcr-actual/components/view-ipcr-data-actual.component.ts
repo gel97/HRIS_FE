@@ -136,7 +136,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                 <th [width]="300" class="text-center">Success Indicator</th>
                 <th [width]="300" class="text-center">Actual Accomplishment</th>
                 <th class="text-center">Status</th>
-                <th class="text-center">Quantity</th>
+                <th class="text-center">Efficiency</th>
                 <th class="text-center">Quality</th>
                 <th class="text-center">Timeliness</th>
                 <th class="text-center">Average</th>

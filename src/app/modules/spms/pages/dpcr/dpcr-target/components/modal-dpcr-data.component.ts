@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Output, Input, inject, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
 @Component({
   selector: 'app-modal-dpcr-data',
@@ -24,7 +31,32 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
           </div>
           <div class="modal-body row">
             <ng-container *ngIf="dpcrSIData.qtyUnit === 1; else showQty">
-              <div><h3>Quantity: <strong>{{dpcrSIData.qty}}%</strong></h3></div>
+              <div class="form-floating px-2 col-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quantity"
+                  [(ngModel)]="dpcrSIData.qty"
+                  (ngModelChange)="calculateRating()"
+                  placeholder="Quantity"
+                  aria-describedby="quantity"
+                />
+                <label for="quantity">Quantity</label>
+              </div>
+              <div
+                class="form-floating px-2 col-4"
+              >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="qtyOpcr"
+                  placeholder="Quantity"
+                  [value]="dpcrSIData.prcntQty"
+                  aria-describedby="qtyOpcr"
+                  disabled
+                />
+                <label for="qtyOpcr">OPCR Percentage Quantity</label>
+              </div>
             </ng-container>
             <ng-template #showQty>
               <div class="form-floating px-2 col-4">
@@ -68,7 +100,10 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                   >
                 </div>
               </div>
-              <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo && addType === 0">
+              <div
+                class="form-floating px-2 col-5"
+                *ngIf="!dpcrSIData.isDpcrMfo && addType === 0"
+              >
                 <input
                   type="number"
                   class="form-control"
@@ -80,7 +115,10 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                 />
                 <label for="quantityOpcr">Remaining Quantity</label>
               </div>
-              <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo && addType === 0">
+              <div
+                class="form-floating px-2 col-3"
+                *ngIf="!dpcrSIData.isDpcrMfo && addType === 0"
+              >
                 <input
                   type="number"
                   class="form-control"
@@ -94,14 +132,16 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
               </div>
               <div
                 *ngIf="
-                  dpcrSIData.qty > dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted &&
-                  !dpcrSIData.isDpcrMfo && addType === 0
+                  dpcrSIData.qty >
+                    dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted &&
+                  !dpcrSIData.isDpcrMfo &&
+                  addType === 0
                 "
                 class="alert alert-danger mt-2"
                 role="alert"
               >
-                <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be greater
-                than
+                <i class="bx bxs-x-square"></i>&nbsp;Quantity must not be
+                greater than
                 <strong
                   ><u>{{
                     dpcrSIData.qtyOpcr - dpcrSIData.qtyCommitted
@@ -130,7 +170,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty5"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -150,7 +189,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty4"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -170,7 +208,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty3"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -190,7 +227,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty2"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -210,7 +246,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty1"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -225,7 +260,13 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
             </div>
           </div>
           <div class="modal-footer">
-            <div *ngIf="isEmptyUnit" class="alert alert-danger float-start" role="alert">Please select 'Numeric' or 'Percentage'</div>
+            <div
+              *ngIf="isEmptyUnit"
+              class="alert alert-danger float-start"
+              role="alert"
+            >
+              Please select 'Numeric' or 'Percentage'
+            </div>
             <button
               type="button"
               class="btn btn-outline-secondary"
@@ -242,7 +283,7 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
     </div>
   `,
 })
-export class ModalDpcrDataComponent{
+export class ModalDpcrDataComponent {
   @ViewChild('closeModal')
   closeModal!: { nativeElement: { click: () => void } };
 
@@ -250,7 +291,7 @@ export class ModalDpcrDataComponent{
 
   quantity: any = {};
   isEmptyUnit: boolean = false;
-  isPrcntUnit:boolean = false;
+  isPrcntUnit: boolean = false;
 
   @Input() dpcrMFOData: any;
   @Input() dpcrSIData: any;
@@ -264,19 +305,19 @@ export class ModalDpcrDataComponent{
     console.log(this.isPrcntUnit);
     console.log(this.addType);
 
-    if(this.addType === -1){
-      if(this.isPrcntUnit){
+    if (this.addType === -1) {
+      if (this.isPrcntUnit) {
         this.dpcrSIData.qtyUnit = 1;
         this.submit.emit('submit');
         this.handleStatus();
-      }else{
+      } else {
         this.dpcrSIData.qtyUnit = 0;
         this.submit.emit('submit');
         this.handleStatus();
       }
-    }else{
+    } else {
       this.submit.emit('submit');
-        this.handleStatus();
+      this.handleStatus();
     }
   }
 
@@ -289,10 +330,13 @@ export class ModalDpcrDataComponent{
   }
 
   calculateRating() {
-
     if (this.dpcrSIData.qty >= 7) {
-      this.dpcrSIData.qty5 = Math.floor(this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty);
-      this.dpcrSIData.qty4 = Math.floor(this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty5 = Math.floor(
+        this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
+      );
+      this.dpcrSIData.qty4 = Math.floor(
+        this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty
+      );
       this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
       this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
       this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);
@@ -339,6 +383,5 @@ export class ModalDpcrDataComponent{
       this.dpcrSIData.qty2 = null;
       this.dpcrSIData.qty1 = null;
     }
-
   }
 }

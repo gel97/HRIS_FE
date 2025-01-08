@@ -102,7 +102,7 @@ import {
   
     Submit() {
       if(this.dpcrObj.year === undefined || this.dpcrObj.year === null){
-        this.dpcrObj.year = new Date().getFullYear();
+        this.dpcrObj.year = new Date().getFullYear() - 1;
 
       }
       if(this.dpcrObj.semester === undefined || this.dpcrObj.semester === null){

@@ -102,21 +102,19 @@ import {
     }
   
     Submit() {
-      // if(this.ipcrObj.details === undefined || this.ipcrObj.details === null || this.ipcrObj.details === ""){
-      //   this.ipcrObj.detailsError = true;
-      //   return;
-      // }
       if(this.ipcrObj.year === undefined || this.ipcrObj.year === null){
-        this.ipcrObj.year = new Date().getFullYear();
+        this.ipcrObj.year = new Date().getFullYear() - 1;
 
       }
       if(this.ipcrObj.semester === undefined || this.ipcrObj.semester === null){
         this.ipcrObj.semester = this.periods[0].period;
       }
       this.submit.emit('Submit');
+
     }
 
     onChangeYear(event:any){
+      console.log(event.target.value);
         this.ipcrObj.year = event.target.value;
     }
 

@@ -1,15 +1,30 @@
-import { Component, EventEmitter, Output, Input, inject, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  inject,
+  ViewChild,
+} from '@angular/core';
 import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
-@Component({ 
+@Component({
   selector: 'app-modal-dpcr-data-edit-quantity',
   template: `
-     <!-- Modal -->
-     <div class="modal fade" id="modalDpcrDataEditQuantity" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modalDpcrDataEditQuantity"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-dialog-scrollable modal-lg"
+        role="document"
+      >
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalScrollableTitle">
-           {{dpcrSIData.qtyUnit}}   {{ dpcrSIData.indicator }}
+              {{ dpcrSIData.indicator }}
             </h5>
             <button
               #closeModal
@@ -20,8 +35,19 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
             ></button>
           </div>
           <div class="modal-body row">
-          <ng-container *ngIf="dpcrSIData.qtyUnit; else showQty">
-            <div><h3>Quantity: <strong>{{dpcrSIData.qty}}%</strong></h3></div>
+            <ng-container *ngIf="dpcrSIData.qtyUnit; else showQty">
+              <div class="form-floating px-2 col-4">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="quantity"
+                  [(ngModel)]="dpcrSIData.qty"
+                  (ngModelChange)="calculateRating($event)"
+                  placeholder="Quantity"
+                  aria-describedby="quantity"
+                />
+                <label for="quantity">Quantity</label>
+              </div>
             </ng-container>
             <ng-template #showQty>
               <div class="form-floating px-2 col-4">
@@ -38,7 +64,7 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                 />
                 <label for="quantity">Quantity</label>
               </div>
-              <div class="col-md"  *ngIf="dpcrSIData.isDpcrMfo">
+              <div class="col-md" *ngIf="dpcrSIData.isDpcrMfo">
                 <div class="form-check form-check-inline mt-3">
                   <input
                     (click)="dpcrSIData.qtyUnit = 0"
@@ -68,7 +94,10 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                   >
                 </div>
               </div>
-              <div class="form-floating px-2 col-5" *ngIf="!dpcrSIData.isDpcrMfo">
+              <div
+                class="form-floating px-2 col-5"
+                *ngIf="!dpcrSIData.isDpcrMfo"
+              >
                 <input
                   type="number"
                   class="form-control"
@@ -80,8 +109,11 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                 />
                 <label for="quantityOpcr">Remaining Quantity</label>
               </div>
-              <div class="form-floating px-2 col-3" *ngIf="!dpcrSIData.isDpcrMfo">
-              <input
+              <div
+                class="form-floating px-2 col-3"
+                *ngIf="!dpcrSIData.isDpcrMfo"
+              >
+                <input
                   type="number"
                   class="form-control"
                   id="qtyOpcr"
@@ -124,7 +156,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty5"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -144,7 +175,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty4"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -164,7 +194,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty3"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -184,7 +213,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty2"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -204,7 +232,6 @@ import { DpcrService } from 'src/app/modules/spms/service/dpcr.service';
                         type="number"
                         [(ngModel)]="dpcrSIData.qty1"
                         class="form-control"
-                        [disabled]="dpcrSIData.qtyUnit"
                       />
                     </td>
                     <td>
@@ -248,24 +275,31 @@ export class ModalDpcrDataEditQuantityComponent {
 
   @Output() submit = new EventEmitter<any>();
 
-  Submit(){
-    this.submit.emit("submit");
+  Submit() {
+    this.submit.emit('submit');
     this.handleStatus();
   }
 
-  handleStatus(){
+  handleStatus() {
     setTimeout(() => {
-      if(!this.error){
-          this.closeModal.nativeElement.click();
-        }    
+      if (!this.error) {
+        this.closeModal.nativeElement.click();
+      }
     }, 500);
   }
 
-  calculateRating(event:any) {
-    this.dpcrSIData.qtyRemaining = (this.dpcrSIData.qtyOpcr - this.dpcrSIData.qtyCommitted) - (this.dpcrSIData.qty - this.dpcrSIData.qtyTemp);
+  calculateRating(event: any) {
+    this.dpcrSIData.qtyRemaining =
+      this.dpcrSIData.qtyOpcr -
+      this.dpcrSIData.qtyCommitted -
+      (this.dpcrSIData.qty - this.dpcrSIData.qtyTemp);
     if (this.dpcrSIData.qty >= 7) {
-      this.dpcrSIData.qty5 = Math.floor(this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty);
-      this.dpcrSIData.qty4 = Math.floor(this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty);
+      this.dpcrSIData.qty5 = Math.floor(
+        this.dpcrSIData.qty * 0.3 + this.dpcrSIData.qty
+      );
+      this.dpcrSIData.qty4 = Math.floor(
+        this.dpcrSIData.qty * 0.15 + this.dpcrSIData.qty
+      );
       this.dpcrSIData.qty3 = Math.floor(this.dpcrSIData.qty);
       this.dpcrSIData.qty2 = Math.floor(this.dpcrSIData.qty / 2 + 1);
       this.dpcrSIData.qty1 = Math.floor(this.dpcrSIData.qty / 2);

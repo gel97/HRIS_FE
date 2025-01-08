@@ -100,6 +100,7 @@ export class DpcrTargetComponent implements OnInit{
   setDpcrDataObj(data:any){
     this.dpcrMFOData = data.mfoData;
     this.dpcrSIData = data.siData;
+    this.dpcrSIData.prcntQty = data.siData.qty;
   }
 
   localStorage() {
