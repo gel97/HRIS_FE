@@ -874,7 +874,7 @@ export class ViewIpcrDataActualComponent implements OnInit {
 
   months: any = [
     {id: 1,  month: "January"},
-    {id: 2,  month: "Febuary"},
+    {id: 2,  month: "February"},
     {id: 3,  month: "March"},
     {id: 4,  month: "April"},
     {id: 5,  month: "May"},
