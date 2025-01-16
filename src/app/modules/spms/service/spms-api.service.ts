@@ -124,7 +124,7 @@ export class SpmsApiService {
   post_subtask_add_common_mfo = () => `/tPMSubTask/add/common_mfo`;
   put_subtask                 = () => `/tPMSubTask`;
   put_subtask_actual_qty      = () => `/tPMSubTask/update/percentage_actual_target`;
-  delete_subtask              = (subTaskId: string) => `/tPMSubTask/${subTaskId}`;
+  delete_subtask              = (subTaskId: string, dpcrDataId: string) => `/tPMSubTask/${subTaskId}/${dpcrDataId}`;
 
   post_ots = () => `/tPMOts`;
   put_ots  = () => `/tPMOts`;

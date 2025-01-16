@@ -70,8 +70,8 @@ export class DpcrTargetComponent implements OnInit{
     this.dpcrService.DeleteDPCRData(dpcrDataId);
   }
 
-  DeleteSubtask(subTaskId:string){
-    this.dpcrService.DeleteSubtask(subTaskId);
+  DeleteSubtask(data:any){
+    this.dpcrService.DeleteSubtask(data.subTaskId, data.dpcrDataId);
   }
 
   AddSubTask(data:any){

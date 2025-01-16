@@ -285,7 +285,7 @@ import {
                             </a>
                             <a
                               class="dropdown-item cursor-pointer"
-                              (click)="DeleteSubtask(c.subTaskId)"
+                              (click)="DeleteSubtask(c.subTaskId, c.dpcrDataId)"
                               ><i class="bx bx-trash me-1"></i> Delete</a
                             >
                           </div>
@@ -354,7 +354,7 @@ import {
                               </a>
                               <a
                                 class="dropdown-item cursor-pointer"
-                                (click)="DeleteSubtask(e.indicatorId)"
+                                (click)="DeleteSubtask(e.indicatorId, e.dpcrDataId)"
                                 ><i class="bx bx-trash me-1"></i> Delete</a
                               >
                             </div>
@@ -404,7 +404,7 @@ export class TableDpcrDataComponent {
   @Output() isShowSubtask = new EventEmitter<boolean>();
   @Output() setDpcr = new EventEmitter<any>();
   @Output() deleteDpcrDataIndicator = new EventEmitter<string>();
-  @Output() deleteSubtask = new EventEmitter<string>();
+  @Output() deleteSubtask = new EventEmitter<any>();
   @Output() setDataSubTask = new EventEmitter<any>();
   @Output() showCanvasOpcrMfoes = new EventEmitter<boolean>();
 
@@ -436,8 +436,8 @@ export class TableDpcrDataComponent {
     this.deleteDpcrDataIndicator.emit(dpcrDataId);
   }
 
-  DeleteSubtask(id: string) {
-    this.deleteSubtask.emit(id);
+  DeleteSubtask(subTaskId: string, dpcrDataId:string) {
+    this.deleteSubtask.emit({subTaskId, dpcrDataId});
   }
 
   SetDataSubTask(mfoData: any, siData: any, indexMfo: number, indexSI: number) {

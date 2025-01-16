@@ -144,7 +144,7 @@ export class UtilityFocalComponent implements OnInit {
         this.employee_list = <any>response;
         this.searchFilter();
         this.total_user();
-        this.get_user_profile();
+        //this.get_user_profile();
       },
       (err) => {
         alert('error');

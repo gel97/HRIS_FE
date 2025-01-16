@@ -933,10 +933,10 @@ export class DpcrService {
     }
   }
 
-  async DeleteSubtask(subTaskId: string) {
+  async DeleteSubtask(subTaskId: string, dpcrDataId: string) {
     try {
       let deleteData = await this.alertService.delete(
-        this.url.delete_subtask(subTaskId)
+        this.url.delete_subtask(subTaskId, dpcrDataId)
       );
 
       if (deleteData) {

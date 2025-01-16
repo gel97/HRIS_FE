@@ -14,7 +14,7 @@
                 <li *ngFor="let u of i.user;let e = index" data-bs-toggle="tooltip" data-popup="tooltip-custom"
                   data-bs-placement="top" class="avatar avatar-sm pull-up" aria-label="Kim Karlos"
                   data-bs-original-title="Kim Karlos">
-                  <img class="rounded-circle" *ngIf="e<=5" [src]="u.profile" loading="lazy"
+                  <img class="rounded-circle" *ngIf="e<=5" src="this.src='./assets/img/avatars/user_picture.png'" loading="lazy"
                     onerror="this.src='./assets/img/avatars/user_picture.png'" alt="Avatar">
                 </li>
               </ul>
@@ -73,7 +73,7 @@
                     <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
                       <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                         class="avatar avatar-xs pull-up" title="" data-bs-original-title="Lilian Fuller">
-                        <img [src]="i.profile"  onerror="this.src='./assets/img/avatars/user_picture.png'"
+                        <img src="this.src='./assets/img/avatars/user_picture.png'"  onerror="this.src='./assets/img/avatars/user_picture.png'"
                           alt="Avatar" class="rounded-circle">
                       </li>
                     </ul>
