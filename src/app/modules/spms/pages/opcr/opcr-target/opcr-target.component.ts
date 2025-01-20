@@ -519,12 +519,15 @@ export class OpcrTargetComponent implements OnInit {
   }
 
   EditOPCRData() {
+    console.log(this.editMFODetails);
     this.editopcrDetails.qty5 = this.editopcrDetails.qty5;
     this.editopcrDetails.qty4 = this.editopcrDetails.qty4;
     this.editopcrDetails.qty3 = this.editopcrDetails.qty3;
     this.editopcrDetails.qty2 = this.editopcrDetails.qty2;
     this.editopcrDetails.qty1 = this.editopcrDetails.qty1;
     this.editopcrDetails.sharedDiv = this.sharedDivValue();
+    this.editopcrDetails.sortByMFO = this.editMFODetails.sortByMFO;
+
     this.opcrService.EditOPCRData(this.editopcrDetails);
     setTimeout(() => {
       if (!this.opcrDetails().error) {
