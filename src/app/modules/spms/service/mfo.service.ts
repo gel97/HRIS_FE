@@ -162,7 +162,7 @@ export class MfoService {
         },
         error: (error: any) => {
           if(error.status === 409){
-            this.alertService.customError("MFO already eixst")
+            this.alertService.customError("MFO already exists")
           }else{
             this.alertService.error();
           }
