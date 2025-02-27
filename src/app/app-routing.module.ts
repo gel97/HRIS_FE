@@ -5,11 +5,16 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UserComponent } from './components/user/user.component';
 import { UserLoginComponent } from './login/user-login/user-login.component';
 import { AuthGuard } from './auth.guard';
+import { PasswordResetComponent } from './guest/password-reset/password-reset.component';
 
 const routes: Routes = [
   {
-    path: 'user-login',
+    path: 'login',
     component: UserLoginComponent,
+  },
+  {
+    path: 'password-reset',
+    component: PasswordResetComponent,
   },
   {
     path: '',
@@ -46,6 +51,7 @@ const routes: Routes = [
     ],
     canActivate: [AuthGuard],
   },
+  
 ];
 
 @NgModule({

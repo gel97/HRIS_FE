@@ -20,6 +20,8 @@ import { TokenInterceptor } from './token.interceptor';
 import { DatePipe } from '@angular/common';
 import { SharedModule } from './shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PasswordResetComponent } from './guest/password-reset/password-reset.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +33,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MainlayoutComponent,
     ErrorComponent,
     UserLoginComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule,
