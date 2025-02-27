@@ -105,4 +105,63 @@ export class UserLoginComponent implements OnInit {
       },
     });
   }
+
+  PasswordReset() {
+    this.Router.navigate(['password-reset']);
+  }
+
+  // Login() {
+  //   this.loading = true;
+  //   this.loading = true;
+  //   this.Auth.loginHRIS('RD050872MALHECZ80310').subscribe({
+  //     next: (data: any) => {
+  //       this.Auth.storeDetails(data);
+  //       this.Auth.storeToken(data.token);
+  //       let tokenPayload = this.Auth.decodedToken();
+  //       this.UserStore.setOfficeIdFromStore(tokenPayload.officeId);
+  //       this.UserStore.setDivisionIdFromStore(tokenPayload.divisionId);
+  //       this.Router.navigate(['']);
+  //     },
+  //     error: (error: any) => {
+  //       if (error.status == 400) {
+  //         this.loading = false;
+  //         const Toast = Swal.mixin({
+  //           toast: true,
+  //           position: 'top-end',
+  //           showConfirmButton: false,
+  //           timer: 3000,
+  //           timerProgressBar: true,
+  //           didOpen: (toast) => {
+  //             toast.addEventListener('mouseenter', Swal.stopTimer);
+  //             toast.addEventListener('mouseleave', Swal.resumeTimer);
+  //           },
+  //         });
+
+  //         Toast.fire({
+  //           icon: 'error',
+  //           title: 'Contact OFFICE ADMIN to activate your account',
+  //         });
+  //       }
+  //     },
+  //     complete: () => {
+  //       this.loading = false;
+  //       const Toast = Swal.mixin({
+  //         toast: true,
+  //         position: 'top-end',
+  //         showConfirmButton: false,
+  //         timer: 3000,
+  //         timerProgressBar: true,
+  //         didOpen: (toast) => {
+  //           toast.addEventListener('mouseenter', Swal.stopTimer);
+  //           toast.addEventListener('mouseleave', Swal.resumeTimer);
+  //         },
+  //       });
+
+  //       Toast.fire({
+  //         icon: 'success',
+  //         title: 'Signed in successfully',
+  //       });
+  //     },
+  //   });
+  // }
 }
