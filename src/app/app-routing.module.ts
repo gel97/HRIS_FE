@@ -26,6 +26,11 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'attendance',
+        loadChildren: () =>
+          import('./modules/attendance/attendance.module').then((m) => m.AttendaceModule),
+      },
+      {
         path: 'spms',
         loadChildren: () =>
           import('./modules/spms/spms.module').then((m) => m.SpmsModule),
