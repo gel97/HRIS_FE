@@ -6,6 +6,7 @@ import { MfoComponent } from './pages/mfo/mfo.component';
 import { DpcrComponent } from './pages/dpcr/dpcr.component';
 import { OpcrActualComponent } from './pages/opcr/opcr-actual/opcr-actual.component';
 import { OpcrTargetComponent } from './pages/opcr/opcr-target/opcr-target.component';
+import { ModalOpcrSignatoriesComponent } from './pages/opcr/opcr-target/components/modal-opcr-signatories.component';
 import { SpmsRoutingModule } from './spms-routing.module';
 import { SpmsComponent } from './spms.component';
 import { SpinnerComponent } from './components/spinner.component';
@@ -71,7 +72,8 @@ import { ModalOpcrStandardReportComponent } from './pages/opcr/opcr-actual/compo
     IpcrComponent,
     ModalOpcrFinalReportComponent,
     ModalOpcrTargetReportComponent,
-    ModalOpcrStandardReportComponent
+    ModalOpcrStandardReportComponent,
+    ModalOpcrSignatoriesComponent
    // FirstLetterUppercasePipe
   ],
   imports: [

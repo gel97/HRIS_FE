@@ -15,6 +15,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { LoadingSpinnerGrowComponent } from './components/loading/loading-spinner-grow.component';
 import { GlobalFilterPipe } from './pipe/globalFilter.pipe';
 import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
+import { AngularCanvasModule } from '@e-signature/ng-signature-pad';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
     MatSelectModule,
     MatInputModule,
     NgxMatSelectSearchModule,
+    AngularCanvasModule
   ],
   exports: [
     NgCircleProgressModule,
@@ -60,7 +62,8 @@ import { TruncatePipe } from 'src/app/pipe/truncate.pipe';
     MatInputModule,
     NgxMatSelectSearchModule,
     LoadingSpinnerGrowComponent,
-    TruncatePipe
+    TruncatePipe,
+    AngularCanvasModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

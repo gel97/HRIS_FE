@@ -199,7 +199,7 @@ export class ViewIpcrSignatoryComponent implements OnInit {
       (response: any) => {
         this.employee_list = response.filter(
           (employee: any) =>
-            employee.salaryGrade >= 18 && employee.salaryGrade <= 26
+            employee.salaryGrade >= 11
         ).sort((a: any, b: any) => b.salaryGrade - a.salaryGrade);
 
         this.search_employee_list_reviewed_by    = this.employee_list;

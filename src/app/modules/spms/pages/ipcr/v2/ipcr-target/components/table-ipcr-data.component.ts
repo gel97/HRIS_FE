@@ -99,7 +99,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                     </a>
                   </li>
                 </ul>
-                <div
+                <!-- <div
                   class="dropdown"
                   style="position: absolute; right: 0px; top: 20px; z-index: 3;"
                 >
@@ -120,7 +120,7 @@ import { UtilsService } from 'src/app/service/utils.service';
                       ><i class="bx bx-trash me-1"></i> Delete</a
                     >
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="card-body">

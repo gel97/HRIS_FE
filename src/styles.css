@@ -61,6 +61,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   align-items: center;
 }
 
+.x-start {
+  display: flex;
+  justify-content: flex-start; 
+  align-items: center; /* Keeps vertical centering */
+}
+
 .icon-hover-edit {
   color: #59595a;
 }

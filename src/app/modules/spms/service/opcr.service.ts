@@ -95,6 +95,34 @@ export class OpcrService {
     isLoadingReport: false,
   });
 
+  opcrSignatories = signal<any>({});
+
+  selectedOpcrId = signal<string>("");
+
+  GetOpcrSignatories(opcrId:string){
+    this.http
+      .get<any[]>(
+        api + this.url.get_signatories_ipcr(opcrId),
+        {
+          responseType: `json`,
+        }
+      )
+      .subscribe({
+        next: (response: any = {}) => {
+          this.opcrSignatories.set(response ?? {});
+        },
+        error: () => {
+          this.alertService.error();
+          this.opcrSignatories.set({});
+
+        },
+        complete: () => {
+          console.log(this.opcrSignatories());
+          this.selectedOpcrId.set(opcrId);
+        },
+      });
+  }
+
   PutOPCRSPrcntActualQty(data: any) {
     this.http
       .put<any[]>(api + this.url.put_opcr_data_actual_qty(), data, {

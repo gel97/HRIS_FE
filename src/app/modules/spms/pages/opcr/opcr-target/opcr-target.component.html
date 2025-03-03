@@ -145,6 +145,11 @@
                                                 aria-controls="offcanvasScroll"><i class="bx bx-edit-alt me-1"></i>
                                                 Edit
                                             </a>
+                                            <a (click)="selectedOpcr(data_opcr.opcrId)" class="dropdown-item" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#modalOpcrSignatories"
+                                                aria-controls="offcanvasScroll"><i class="bx bx-edit-alt me-1"></i>
+                                                Signatories
+                                            </a>
                                             <a (click)="DeleteOPCR(data_opcr.opcrId)"
                                                 class="dropdown-item text-danger"><i class="bx bx-trash me-1"></i>
                                                 Delete</a>
@@ -1017,7 +1022,7 @@
 </div>
 
 <app-modal-opcr-target-report />
-
+<app-modal-opcr-signatories/>
 <!-- Modal
 <div class="modal fade" id="modalOpcrTargetReport" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-fullscreen" style="padding: 50px 100px 50px 100px;"

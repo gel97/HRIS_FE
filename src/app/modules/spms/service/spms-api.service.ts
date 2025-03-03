@@ -124,7 +124,7 @@ export class SpmsApiService {
   post_subtask_add_common_mfo = () => `/tPMSubTask/add/common_mfo`;
   put_subtask                 = () => `/tPMSubTask`;
   put_subtask_actual_qty      = () => `/tPMSubTask/update/percentage_actual_target`;
-  delete_subtask              = (subTaskId: string) => `/tPMSubTask/${subTaskId}`;
+  delete_subtask              = (subTaskId: string, dpcrDataId: string) => `/tPMSubTask/${subTaskId}/${dpcrDataId}`;
 
   post_ots = () => `/tPMOts`;
   put_ots  = () => `/tPMOts`;
@@ -177,6 +177,8 @@ export class SpmsApiService {
   get_signatories  = (typeId: any, officeId: any, divisionId: any) => `/tPMSignatories/${typeId}/${officeId}/${divisionId}`;
 
   put_signatories_ipcr  = () => `/tPMSignatories/ipcr`;
+  put_signatories_opcr  = () => `/tPMSignatories/opcr`;
+
   get_signatories_ipcr  = (ipcrId:string) => `/tPMSignatories/ipcr/${ipcrId}`;
 
   get_logs      = () => `/tPMLogs`;

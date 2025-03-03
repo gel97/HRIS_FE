@@ -59,6 +59,7 @@
                       class="btn btn-primary d-grid w-100 align-items-center justify-content-center" type="submit">
                       <ng-container *ngIf="!loading; else isLoad">Login</ng-container>
                     </button>
+                    <p class="x-center mt-2 text-primary cursor-pointer" (click)="PasswordReset()">Forgot password?</p>
                   </ng-container>
                   <ng-template #isLoad>
                     <div class="py-1.5">

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkhris_admin=self.webpackChunkhris_admin||[]).push([[592],{125:(_,s,n)=>{n.d(s,{W:()=>c});var a=n(5879);let c=(()=>{var e;class t{transform(r,u=50){return r?r.length>u?r.substring(0,u)+"...":r:""}}return(e=t).\u0275fac=function(r){return new(r||e)},e.\u0275pipe=a.Yjl({name:"truncate",type:e,pure:!0}),t})()}}]);

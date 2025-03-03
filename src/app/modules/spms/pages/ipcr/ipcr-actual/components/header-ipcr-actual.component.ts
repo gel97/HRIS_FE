@@ -398,13 +398,13 @@ export class HeaderIpcrActualComponent implements OnInit{
     let initial: number | any;
     let condition: number | any;
 
-    const sem = this.ipcrService.storageIpcrActualSem();
+    let sem = this.ipcrService.storageIpcrActualSem();
 
-    if (sem === 1) {
+    if (sem === '1' || sem === 1) {
       initial = 1;
       condition = 6;
       this.selectedMonth = initial;
-    } else if (sem === 2) {
+    } else if (sem === '2' || sem === 2) {
       initial = 6;
       condition = 12;
       this.selectedMonth = initial;
@@ -424,6 +424,7 @@ export class HeaderIpcrActualComponent implements OnInit{
   selectMonthOnChange(month: number) {
     this.reportMPOR.monthNum = month;
     this.reportMPOR.monthNum = parseInt(this.reportMPOR.monthNum, 10);
+
     this.ReportMPOR();
   }
 
@@ -431,7 +432,7 @@ export class HeaderIpcrActualComponent implements OnInit{
     const year = new Date().getFullYear();
      let _monthNo = 0;
 
-    if(this.ipcrService.storageIpcrActualSem() === 1){
+    if(this.ipcrService.storageIpcrActualSem() === '1' || this.ipcrService.storageIpcrActualSem() === 1){
       _monthNo = 1;
       this.ipcrService.GetMPORMonths(_monthNo);
     }else{
@@ -447,9 +448,9 @@ export class HeaderIpcrActualComponent implements OnInit{
 
     const year = new Date().getFullYear();
 
-    this.ipcrService.GetMPORMonths(this.reportMPOR.monthNum)
+    this.ipcrService.GetMPORMonths(this.reportMPOR.monthNum);
 
-    this.ipcrService.GetIpcrMPOReport(this.ipcrService.storageIpcrIdActual() ?? '', this.year === 0? year: this.year, this.reportMPOR.monthNum)
+    this.ipcrService.GetIpcrMPOReport(this.ipcrService.storageIpcrIdActual() ?? '', this.ipcrService.storageIpcrActualYear(), this.reportMPOR.monthNum);
   }
 
   SearchMFO() {
